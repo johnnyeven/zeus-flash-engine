@@ -7,7 +7,7 @@ package Apollo.Network.Processor
 	
 	import Apollo.CWoohaGame;
 	import Apollo.Objects.*;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
 	import Apollo.Network.Command.CCommandList;
 	import Apollo.Network.Command.receiving.*;
@@ -48,12 +48,12 @@ package Apollo.Network.Processor
 			//爆炸特效
 			var skillConfig: Object = SkillConfig.getSkillConfig(protocol.skillId);
 			var rs: CGraphicCharacter = new CGraphicCharacter();
-			var explode: CExplodeEffect = new CExplodeEffect(CWoohaScene.getInstance(), CWoohaScene.getInstance().player, protocol.target);
+			var explode: CExplodeEffect = new CExplodeEffect(CApolloScene.getInstance(), CApolloScene.getInstance().player, protocol.target);
 			rs.getResourceFromPool(protocol.skillId + "_EXPLODE", 1, skillConfig.explode, 15);
 			explode.graphic = rs;
 			var render: CRenderEffect = new CRenderEffect();
 			explode.render = render;
-			CWoohaScene.getInstance().addObject(explode);
+			CApolloScene.getInstance().addObject(explode);
 			
 			if (protocol.AttackInfo.length > 0)
 			{
@@ -63,7 +63,7 @@ package Apollo.Network.Processor
 					{
 						if (o.TargetId != '')
 						{
-							var scene: CWoohaScene = CWoohaScene.getInstance();
+							var scene: CApolloScene = CApolloScene.getInstance();
 							var target: CCharacterObject = scene.getCharacterById(o.TargetId);
 							target.underAttack(o.AttackPower);
 						}
@@ -78,7 +78,7 @@ package Apollo.Network.Processor
 		
 		private function onNPCSingConfirm(protocol: Receive_NPC_Battle_Sing): void
 		{
-			var scene: CWoohaScene = CWoohaScene.getInstance();
+			var scene: CApolloScene = CApolloScene.getInstance();
 			var target: CCharacterObject = scene.getCharacterById(protocol.guid);
 			target.direction = protocol.direction;
 			(target.controller.skillController as CSkillNPC).showSingEffectEx(protocol.skillId, protocol.skillLevel, protocol.target);

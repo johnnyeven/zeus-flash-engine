@@ -170,7 +170,7 @@ package Apollo.Objects
 		public function set direction(d: uint): void
 		{
 			_direction = d;
-			if (CWoohaScene.getInstance().player == this)
+			if (CApolloScene.getInstance().player == this)
 			{
 				CCommandCenter.commandChangeDirection(_direction);
 			}

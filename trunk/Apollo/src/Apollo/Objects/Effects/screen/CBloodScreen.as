@@ -1,6 +1,6 @@
 package Apollo.Objects.Effects.screen 
 {
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import Apollo.Objects.Effects.CEaseType;
 	import Apollo.Configuration.*;
 	

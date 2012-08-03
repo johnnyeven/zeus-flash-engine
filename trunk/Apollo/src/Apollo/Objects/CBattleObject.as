@@ -5,7 +5,7 @@ package Apollo.Objects
 	import Apollo.Objects.Effects.CBloodEffect;
 	import Apollo.Configuration.*;
 	import Apollo.Events.ControllerEvent;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	
 	import flash.geom.Point;
 	

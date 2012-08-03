@@ -17,8 +17,8 @@ package Apollo.Graphics
 	import Apollo.Events.ResourceEvent;
 	import Apollo.utils.Conversion;
 	
-	import Apollo.resources.character.*;
-	import Apollo.resources.font.*;
+	import wooha.resources.character.*;
+	import wooha.resources.font.*;
 	
 	/**
 	 * ...

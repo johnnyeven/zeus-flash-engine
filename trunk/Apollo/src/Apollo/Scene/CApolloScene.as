@@ -19,32 +19,32 @@ package Apollo.Scene
 	 * ...
 	 * @author john
 	 */
-	public class CWoohaScene extends CBaseScene 
+	public class CApolloScene extends CBaseScene 
 	{
 		protected var render_npc: CRenderNPC;
 		protected var render_monster: CRenderMonster;
 		protected var render_player: CRenderCharacter;
-		private static var instance: CWoohaScene;
+		private static var instance: CApolloScene;
 		private static var allowInstance: Boolean = false;
 		
-		public function CWoohaScene() 
+		public function CApolloScene() 
 		{
 			super(GlobalContextConfig.container, GlobalContextConfig.stage);
 			if (!allowInstance)
 			{
-				throw new IllegalOperationError("CWoohaScene类不允许实例化");
+				throw new IllegalOperationError("CApolloScene类不允许实例化");
 			}
 			render_npc = new CRenderNPC();
 			render_monster = new CRenderMonster();
 			render_player = new CRenderCharacter();
 		}
 		
-		public static function getInstance(): CWoohaScene
+		public static function getInstance(): CApolloScene
 		{
 			if (instance == null)
 			{
 				allowInstance = true;
-				instance = new CWoohaScene();
+				instance = new CApolloScene();
 				allowInstance = false;
 			}
 			return instance;
