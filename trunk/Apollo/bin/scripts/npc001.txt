@@ -1,0 +1,28 @@
+﻿//在select里加入位置调整参数
+
+[CLICK]
+
+//showDialog 窗口标识 标题 初始位置X 初始位置Y
+showNPCDialog npc001_1 {$character_name$}对你说 100 100
+
+//says 窗口标识 内容
+says npc001_1 测试一下
+
+says npc001_1 第二次测试一下
+
+//select 窗口标识 显示文字 跳转的标志
+select npc001_1 第一个选项 select1
+select npc001_1 第二个选项 select2
+
+stop
+
+closeNPCDialog npc001_1
+
+[select1]
+says npc001_1 这是第一个选项
+pause 2000
+says npc001_1 后续的话
+
+[select2]
+moveTo fcd52e6c-6184-4920-870e-9c04e9bfb18c 825 707
+closeNPCDialog npc001_1
