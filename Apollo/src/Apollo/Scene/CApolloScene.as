@@ -81,7 +81,7 @@ package Apollo.Scene
 			_player = player;
 			setPlayerController(ctrl);
 			addObject(player);
-			_map.follow(player);
+			//_map.follow(player);
 		}
 		
 		public function createOtherPlayer(resourceId: String, startDirection: uint = CDirection.DOWN, parameter: Object = null): COtherPlayerCharacter

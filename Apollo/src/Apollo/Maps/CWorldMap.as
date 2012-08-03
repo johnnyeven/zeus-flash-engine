@@ -278,8 +278,17 @@ package Apollo.Maps
 		/**
 		 * 设置镜头跟随某目标
 		 */
-		public function follow(o: CActionObject): void
+		public function follow(o: CActionObject, cancel: Boolean = false): void
 		{
+			if (cancel)
+			{
+				if (focus != null)
+				{
+					focus.beFocus = false;
+				}
+				focus = null;
+				return;
+			}
 			if (focus != null)
 			{
 				focus.beFocus = false;
