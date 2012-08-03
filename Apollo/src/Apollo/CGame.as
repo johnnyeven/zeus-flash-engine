@@ -31,9 +31,9 @@ package Apollo
 	 * ...
 	 * @author john
 	 */
-	public class CWoohaGame extends Sprite
+	public class CGame extends Sprite
 	{
-		private static var instance: CWoohaGame;
+		private static var instance: CGame;
 		private static var allowInstance: Boolean = false;
 		private var loader: URLLoader;
 		protected var _scene: CWoohaScene;
@@ -46,24 +46,24 @@ package Apollo
 		protected var _isChangingMap: Boolean = false;
 		protected var reconfigMapData: Function;
 		
-		public function CWoohaGame() 
+		public function CGame() 
 		{
 			super();
 			if (!allowInstance)
 			{
-				throw new IllegalOperationError("CWoohaGame不允许实例化");
+				throw new IllegalOperationError("CGame不允许实例化");
 			}
 			
 			_config = "game_config";
 			addEventListener(Event.ADDED_TO_STAGE, setup);
 		}
 		
-		public static function getInstance(): CWoohaGame
+		public static function getInstance(): CGame
 		{
 			if (instance == null)
 			{
 				allowInstance = true;
-				instance = new CWoohaGame();
+				instance = new CGame();
 				allowInstance = false;
 			}
 			return instance;
