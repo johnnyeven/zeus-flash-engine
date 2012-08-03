@@ -7,12 +7,9 @@
 	<tileHeight>226</tileHeight>
 	<blockWidth>50</blockWidth>
 	<blockHeight>34</blockHeight>
-	<startTileX>90</startTileX>
-	<startTileY>80</startTileY>
 	<radiansOffsetX>70</radiansOffsetX>
 	<radiansOffsetY>100</radiansOffsetY>
 	<thumbnail>thumbnail.jpg</thumbnail>
-	<path>
 		<tile>
 			<x>0</x>
 			<y>0</y>

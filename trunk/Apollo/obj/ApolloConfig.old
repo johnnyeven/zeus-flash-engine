@@ -23,6 +23,10 @@
       <path-element>E:\我的代码\我的Flash程序\Apollo\src</path-element>
       <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
+    <library-path append="true">
+      <path-element>E:\我的代码\我的Flash程序\Apollo\bin\resources\characters\character.swc</path-element>
+      <path-element>E:\我的代码\我的Flash程序\Apollo\bin\resources\font.swc</path-element>
+    </library-path>
   </compiler>
   <file-specs>
     <path-element>E:\我的代码\我的Flash程序\Apollo\src\Main.as</path-element>

@@ -97,7 +97,7 @@ package Apollo.Scene
 			_renderList = new Array();
 		}
 		
-		public function refreash(updateView: Boolean = true): void
+		public function refresh(updateView: Boolean = true): void
 		{
 			if (updateView)
 			{
@@ -314,7 +314,7 @@ package Apollo.Scene
 				}
 				//if (CCamera.needRefresh)
 				//{
-					refreash();
+					refresh();
 				//}
 			}
 		}
