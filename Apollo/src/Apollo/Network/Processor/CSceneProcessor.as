@@ -4,7 +4,7 @@ package Apollo.Network.Processor
 	import Apollo.Events.*;
 	import Apollo.CWoohaGame;
 	import Apollo.Objects.*;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
 	import Apollo.Network.Command.CCommandList;
 	import Apollo.Network.Command.receiving.*;
@@ -45,7 +45,7 @@ package Apollo.Network.Processor
 		
 		private function onNPCMoveTo(protocol: Receive_NPC_Move_MoveTo): void
 		{
-			var scene: CWoohaScene = CWoohaScene.getInstance();
+			var scene: CApolloScene = CApolloScene.getInstance();
 			var c: CGameObject = scene.getObjectById(protocol.guid);
 			if (c == null)
 			{
@@ -59,13 +59,13 @@ package Apollo.Network.Processor
 		
 		private function onNPCMove(protocol: Receive_NPC_Move_Move): void
 		{
-			var scene: CWoohaScene = CWoohaScene.getInstance();
+			var scene: CApolloScene = CApolloScene.getInstance();
 			var c: CGameObject = scene.getObjectById(protocol.guid);
 		}
 		
 		private function onCameraViewRefresh(protocol: Receive_Info_CameraView): void
 		{
-			var scene: CWoohaScene = CWoohaScene.getInstance();
+			var scene: CApolloScene = CApolloScene.getInstance();
 			var c: CGameObject = scene.getObjectById(protocol.guid);
 			if (c == null)
 			{

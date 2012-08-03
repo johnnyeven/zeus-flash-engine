@@ -8,7 +8,7 @@ package Apollo
 	import Apollo.Maps.CWorldMap;
 	import Apollo.Graphics.CGraphicPool;
 	import Apollo.Events.*;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
 	import Apollo.Objects.Effects.screen.*;
 	
@@ -36,7 +36,7 @@ package Apollo
 		private static var instance: CGame;
 		private static var allowInstance: Boolean = false;
 		private var loader: URLLoader;
-		protected var _scene: CWoohaScene;
+		protected var _scene: CApolloScene;
 		protected var _camera: CCamera;
 		protected var _config: String;
 		protected var _data: XML;
@@ -131,7 +131,7 @@ package Apollo
 		
 		public function rebuildScene(): void
 		{
-			_scene = CWoohaScene.getInstance();
+			_scene = CApolloScene.getInstance();
 			_scene.addEventListener(SceneEvent.SCENE_READY, onSceneReady);
 			//_scene.initMap(_mapId, _player_startX, _player_startY);
 			_scene.initMap(_mapId);
@@ -172,7 +172,7 @@ package Apollo
 			var target: CGraphicPool = event.target as CGraphicPool;
 			GlobalContextConfig.ResourcePool = target;
 			
-			_scene = CWoohaScene.getInstance();
+			_scene = CApolloScene.getInstance();
 			_scene.addEventListener(SceneEvent.SCENE_READY, onSceneReady);
 			_scene.initMap(_mapId);
 		}
@@ -218,7 +218,7 @@ package Apollo
 			timer.removeEventListener(TimerEvent.TIMER, autoClearNext);
 			timer = null;
 			
-			CWoohaScene.terminateInstance();
+			CApolloScene.terminateInstance();
 			
 			if (reconfigMapData != null)
 			{

@@ -1,7 +1,7 @@
 package Apollo.Network.Command.receiving 
 {
 	import Apollo.Configuration.SocketContextConfig;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
@@ -83,7 +83,7 @@ package Apollo.Network.Command.receiving
 			}
 			else
 			{
-				target = CWoohaScene.getInstance().getObjectById(targetId);
+				target = CApolloScene.getInstance().getObjectById(targetId);
 			}
 		}
 	}

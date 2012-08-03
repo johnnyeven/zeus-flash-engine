@@ -18,7 +18,7 @@ package Apollo.Controller
 	import Apollo.Configuration.*;
 	import Apollo.Maps.CWorldMap;
 	import Apollo.Renders.CRenderEffect;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import Apollo.Script.CScript;
 	import Apollo.utils.Vector2D;
 	import Apollo.Controller.Skill.*;

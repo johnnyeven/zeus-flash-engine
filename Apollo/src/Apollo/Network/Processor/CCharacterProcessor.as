@@ -6,7 +6,7 @@ package Apollo.Network.Processor
 	
 	import Apollo.CWoohaGame;
 	import Apollo.Objects.*;
-	import Apollo.Scene.CWoohaScene;
+	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
 	import Apollo.Network.Command.CCommandList;
 	import Apollo.Network.Command.receiving.*;
@@ -45,7 +45,7 @@ package Apollo.Network.Processor
 					{
 						if (o.TargetId != '')
 						{
-							var scene: CWoohaScene = CWoohaScene.getInstance();
+							var scene: CApolloScene = CApolloScene.getInstance();
 							var target: CCharacterObject = scene.getCharacterById(o.TargetId);
 							target.underAttack(o.AttackPower);
 						}
