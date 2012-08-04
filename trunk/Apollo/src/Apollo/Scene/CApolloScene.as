@@ -66,7 +66,7 @@ package Apollo.Scene
 			//配置控制器
 			var controller: CCharacterController = new CCharacterController(perception);
 			//渲染器
-			var render: CRenderOtherCharacter = new CRenderOtherCharacter();
+			var render: CRenderCharacter = new CRenderCharacter();
 			
 			//初始化游戏对象
 			var id: String;
