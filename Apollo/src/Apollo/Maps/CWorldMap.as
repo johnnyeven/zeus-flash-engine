@@ -674,7 +674,8 @@ package Apollo.Maps
 				MapContextConfig.yFixNum = Math.cos(Math.atan2(parseInt(_mapXMLData.radiansOffsetX) , parseInt(_mapXMLData.radiansOffsetY)));
 				
 				//设置初始点
-				var centerPos: CXYArray = new CXYArray(CharacterData.PosX, CharacterData.PosY);
+				//var centerPos: CXYArray = new CXYArray(CharacterData.PosX, CharacterData.PosY);
+				var centerPos: CXYArray = new CXYArray(parseInt(_mapXMLData.startPointX), parseInt(_mapXMLData.startPointY));
 				center = centerPos;
 				//缩略图地址
 				thumbnail = _mapXMLData.thumbnail;

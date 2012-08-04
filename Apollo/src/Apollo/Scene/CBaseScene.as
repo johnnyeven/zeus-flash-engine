@@ -86,7 +86,7 @@ package Apollo.Scene
 			
 			_mapGround = new Shape();
 			_mapGround.visible = false;
-			_ctrlCenter = new CControllerCenter();
+			_ctrlCenter = CControllerCenter.getInstance();
 			
 			buildQtree();
 		}
@@ -433,24 +433,9 @@ package Apollo.Scene
 			GlobalContextConfig.Timer = getTimer();
 		}
 
-		protected function setPlayerController(ctrl: CCharacterController): void
+		protected function setRoleController(ctrl: CCharacterController, key: Object ): void
 		{
-			_ctrlCenter.playerController = ctrl;
-		}
-
-		protected function setOtherPlayerController(ctrl: COtherPlayerController, key: Object ): void
-		{
-			_ctrlCenter.addOtherController(ctrl, key);
-		}
-		
-		protected function setNPCController(ctrl: CNPCController, key: Object ): void
-		{
-			_ctrlCenter.addNPCController(ctrl, key);
-		}
-		
-		protected function setMonsterController(ctrl: CMonsterController, key: Object ): void
-		{
-			_ctrlCenter.addMonsterController(ctrl, key);
+			_ctrlCenter.addRoleController(ctrl, key);
 		}
 		
 		public function changeScene(mapId: String, startX: uint = 0, startY:uint = 0): void

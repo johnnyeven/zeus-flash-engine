@@ -1,7 +1,7 @@
 package Apollo.Network.Processor 
 {
 	import Apollo.Center.CCommandCenter;
-	import Apollo.CWoohaGame;
+	import Apollo.CGame;
 	import flash.events.EventDispatcher;
 	
 	/**
@@ -11,14 +11,14 @@ package Apollo.Network.Processor
 	public class CBaseProcessor extends EventDispatcher 
 	{
 		private var processorName: String;
-		protected var woohaGame: CWoohaGame;
+		protected var woohaGame: CGame;
 		protected var commandCenter: CCommandCenter;
 		
 		public function CBaseProcessor(processorName: String) 
 		{
 			super(this);
 			this.processorName = processorName;
-			woohaGame = CWoohaGame.getInstance();
+			woohaGame = CGame.getInstance();
 			commandCenter = CCommandCenter.getInstance();
 		}
 		

@@ -2,7 +2,7 @@ package Apollo.Network.Processor
 {
 	import Apollo.Controller.IControllerMovable;
 	import Apollo.Events.*;
-	import Apollo.CWoohaGame;
+	import Apollo.CGame;
 	import Apollo.Objects.*;
 	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
@@ -76,7 +76,7 @@ package Apollo.Network.Processor
 				param.startX = protocol.posX;
 				param.startY = protocol.posY;
 				param.speed = protocol.speed;
-				var o: COtherPlayerCharacter = scene.createOtherPlayer(protocol.resourceId, protocol.direction, param);
+				var o: CCharacterObject = scene.createRole(protocol.resourceId, protocol.direction, param);
 				o.action = protocol.characterAction;
 			}
 			else

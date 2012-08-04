@@ -5,7 +5,7 @@ package Apollo.Network.Processor
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
-	import Apollo.CWoohaGame;
+	import Apollo.CGame;
 	import Apollo.Objects.*;
 	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
