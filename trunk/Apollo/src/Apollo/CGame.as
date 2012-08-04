@@ -157,7 +157,7 @@ package Apollo
 				_isChangingMap = false;
 			}
 			
-			initialPlayer();
+			//initialPlayer();
 			//createOhterPlayer();
 			//createMonster();
 			
@@ -175,21 +175,6 @@ package Apollo
 			_scene = CApolloScene.getInstance();
 			_scene.addEventListener(SceneEvent.SCENE_READY, onSceneReady);
 			_scene.initMap(_mapId);
-		}
-		
-		protected function initialPlayer(): void
-		{
-			_scene.createPlayer();
-		}
-		
-		protected function createOhterPlayer(): void
-		{
-			_scene.createNPC();
-		}
-		
-		protected function createMonster(): void
-		{
-			_scene.createMonster();
 		}
 		
 		public function get camera(): CCamera
@@ -241,6 +226,7 @@ package Apollo
 			{
 				_scene.player.controller.setupListener();
 			}
+			dispatchEvent(new GameEvent(GameEvent.GAME_START));
 		}
 		
 		public function stopGame(): void

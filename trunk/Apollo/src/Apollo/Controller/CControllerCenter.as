@@ -27,12 +27,13 @@ package Apollo.Controller
 	{
 		protected var eventDispatcher: EventDispatcher;
 		/**
+		 * 摄影机控制器
+		 */
+		protected var _camera_controller: CCameraController;
+		/**
 		 * 玩家控制器
 		 */
-		protected var _player_controller: CCharacterController;
-		protected var _other_controller: Dictionary;
-		protected var _npc_controller: Dictionary;
-		protected var _monster_controller: Dictionary;
+		protected var _role_controller: Dictionary;
 		private static var instance: CControllerCenter;
 		private static var allowInstance: Boolean = false;
 		
@@ -61,9 +62,7 @@ package Apollo.Controller
 		
 		protected function init(): void
 		{
-			_other_controller = new Dictionary();
-			_npc_controller = new Dictionary();
-			_monster_controller = new Dictionary();
+			_role_controller = new Dictionary();
 			setupNetworkProcessor();
 			_preCameraViewTimer = GlobalContextConfig.Timer;
 		}
@@ -71,14 +70,13 @@ package Apollo.Controller
 		protected function setupNetworkProcessor(): void
 		{
 			CProcessorRouter.getInstance().add(new CSceneProcessor());
-			CProcessorRouter.getInstance().add(new CBattleProcessor());
 		}
 		
 		public function requestRefreshCamaraView(): void
 		{
 			//if (GlobalContextConfig.Timer - _preCameraViewTimer > GlobalContextConfig.cameraview_trigger)
 			//{
-				var map: CWorldMap = _player_controller.perception.scene.map;
+				var map: CWorldMap = CApolloScene.getInstance().map;
 				//trace("当前坐标：" + _player_controller.controlObject.pos.x + ", " + _player_controller.controlObject.pos.y + "请求：" + map.cameraCutView.x + "," + map.cameraCutView.y + "," + map.cameraCutView.width + "," + map.cameraCutView.height);
 				var protocol: Send_Info_CameraView = new Send_Info_CameraView();
 				protocol.guid = CharacterData.Guid;
@@ -86,122 +84,9 @@ package Apollo.Controller
 				protocol.y = map.cameraCutView.y;
 				protocol.width = map.cameraCutView.width;
 				protocol.height = map.cameraCutView.height;
-				CCommandCenter.getInstance().send(protocol);
+				//CCommandCenter.getInstance().send(protocol);
 				//_preCameraViewTimer = GlobalContextConfig.Timer;
 			//}
-		}
-		
-		protected function npcAttackRequestHandler(event: NetworkEvent): void
-		{
-			var data: ByteArray = event.data as ByteArray;
-			var length: int;
-			var type: int;
-			var me: int = int.MAX_VALUE;
-			var targetId: String;
-			var playerId: String;
-			
-			while (data.bytesAvailable)
-			{
-				length = data.readInt();
-				type = data.readByte();
-				switch(type)
-				{
-					case CNetConnection.TYPE_INT:
-						me = data.readInt();
-						break;
-					case CNetConnection.TYPE_STRING:
-						if (targetId == null)
-						{
-							targetId = data.readUTFBytes(length);
-						}
-						else if (playerId == null)
-						{
-							playerId = data.readUTFBytes(length);
-						}
-						break;
-				}
-			}
-			
-			if (me == 0)
-			{
-				if (_monster_controller[targetId] != null)
-				{
-					var target: CBattleObject = (_monster_controller[targetId] as CMonsterController).controlObject as CBattleObject;
-					if (target.attacker == null)
-					{
-						target.prepareAttack(_player_controller.controlObject as CCharacterObject);
-					}
-				}
-			}
-			else
-			{
-				
-			}
-		}
-		
-		protected function npcAttackConfirmHandler(event: NetworkEvent): void
-		{
-			var data: ByteArray = event.data as ByteArray;
-			var length: int;
-			var type: int;
-			var targetId: String;
-			var playerId: String;
-			var power: int;
-			while (data.bytesAvailable)
-			{
-				length = data.readInt();
-				type = data.readByte();
-				switch(type)
-				{
-					case CNetConnection.TYPE_STRING:
-						if (targetId == null)
-						{
-							targetId = data.readUTFBytes(length);
-						}
-						else if (playerId == null)
-						{
-							playerId = data.readUTFBytes(length);
-						}
-						break;
-					case CNetConnection.TYPE_INT:
-						power = data.readInt();
-						break;
-				}
-			}
-			if (_monster_controller[targetId] != null)
-			{
-				var target: CBattleObject = (_monster_controller[targetId] as CMonsterController).controlObject as CBattleObject;
-				//target.prepareAttack(_player_controller.controlObject as CCharacterObject);
-				trace("我被攻击" + power + "点");
-			}
-		}
-		
-		protected function attackConfirmHandler(event: NetworkEvent): void
-		{
-			var data: ByteArray = event.data as ByteArray;
-			var length: int = data.readInt();
-			var type: int = data.readByte();
-			var power: int = data.readInt();
-			
-			(_player_controller.controlObject as CBattleObject).attacker.underAttack(power);
-			trace("我攻击" + power + "点");
-		}
-		
-		public function set playerController(ctrl: CCharacterController): void
-		{
-			if (_player_controller != null)
-			{
-				return;
-			}
-			else
-			{
-				_player_controller = ctrl;
-			}
-		}
-		
-		public function get playerController(): CCharacterController
-		{
-			return _player_controller;
 		}
 		
 		/**
@@ -209,101 +94,33 @@ package Apollo.Controller
 		 * @param	ctrl
 		 * @param	key
 		 */
-		public function addOtherController(ctrl: COtherPlayerController, key: * ): void
+		public function addRoleController(ctrl: CCharacterController, key: * ): void
 		{
-			if (_other_controller[key] != null)
+			if (_role_controller[key] != null)
 			{
 				return;
 			}
 			else
 			{
-				_other_controller[key] = ctrl;
+				_role_controller[key] = ctrl;
 			}
 		}
 		
-		public function removeOtherController(ctrl: COtherPlayerController): void
+		public function removeRoleController(ctrl: CCharacterController): void
 		{
-			for (var id: * in _other_controller)
+			for (var id: * in _role_controller)
 			{
-				if (_other_controller[id] == ctrl)
+				if (_role_controller[id] == ctrl)
 				{
-					delete _other_controller[id];
+					delete _role_controller[id];
 					return;
 				}
 			}
 		}
 		
-		public function getOtherController(id: * ): COtherPlayerController
+		public function getRoleController(id: * ): CCharacterController
 		{
-			return _other_controller[id];
-		}
-		
-		/**
-		 * 向NPC控制器容器中添加一个新控制器
-		 * @param	ctrl
-		 * @param	key
-		 */
-		public function addNPCController(ctrl: CNPCController, key: * ): void
-		{
-			if (_npc_controller[key] != null)
-			{
-				return;
-			}
-			else
-			{
-				_npc_controller[key] = ctrl;
-			}
-		}
-		
-		public function removeNPCController(ctrl: CNPCController): void
-		{
-			for (var id: * in _npc_controller)
-			{
-				if (_npc_controller[id] == ctrl)
-				{
-					delete _npc_controller[id];
-					return;
-				}
-			}
-		}
-		
-		public function getNPCController(id: * ): CNPCController
-		{
-			return _npc_controller[id];
-		}
-		
-		/**
-		 * 向Monster控制器容器中添加一个新控制器
-		 * @param	ctrl
-		 * @param	key
-		 */
-		public function addMonsterController(ctrl: CMonsterController, key: * ): void
-		{
-			if (_monster_controller[key] != null)
-			{
-				return;
-			}
-			else
-			{
-				_monster_controller[key] = ctrl;
-			}
-		}
-		
-		public function removeMonsterController(ctrl: CMonsterController): void
-		{
-			for (var id: * in _monster_controller)
-			{
-				if (_monster_controller[id] == ctrl)
-				{
-					delete _monster_controller[id];
-					return;
-				}
-			}
-		}
-		
-		public function getMonsterController(id: * ): CMonsterController
-		{
-			return _monster_controller[id];
+			return _role_controller[id];
 		}
 		
 		/**
@@ -311,17 +128,9 @@ package Apollo.Controller
 		 */
 		public function removeController(ctrl: CBaseController): void
 		{
-			if (ctrl is COtherPlayerController)
+			if (ctrl is CCharacterController)
 			{
-				removeOtherController(ctrl as COtherPlayerController);
-			}
-			else if (ctrl is CNPCController)
-			{
-				removeNPCController(ctrl as CNPCController);
-			}
-			else if (ctrl is CMonsterController)
-			{
-				removeMonsterController(ctrl as CMonsterController);
+				removeRoleController(ctrl as CCharacterController);
 			}
 		}
 		

@@ -8,6 +8,7 @@ package Apollo.Display
 	import Apollo.Objects.CActionObject;
 	import Apollo.Scene.CBaseScene;
 	import Apollo.utils.CXYArray;
+	import Apollo.Controller.CCameraController;
 	/**
 	 * ...
 	 * @author john
@@ -33,10 +34,13 @@ package Apollo.Display
 		private var _moveEnd: Point;
 		private var _moveAngle: Number;
 		private var _moveCallback: Function;
+		private var _controller: CCameraController;
 		
 		public function CCamera(scene: CBaseScene) 
 		{
 			_scene = scene;
+			_controller = new CCameraController();
+			_controller.setupListener();
 		}
 		
 		public function focus(target: CActionObject): void
@@ -56,7 +60,7 @@ package Apollo.Display
 			{
 				_scene.map.follow(target);
 			}
-			_scene.refreash();
+			_scene.refresh();
 		}
 		
 		public function get center(): CXYArray
@@ -64,11 +68,16 @@ package Apollo.Display
 			return _scene.map.center;
 		}
 		
+		public function get controller(): CCameraController
+		{
+			return _controller;
+		}
+		
 		public function setCenterPos(x: uint, y: uint): void
 		{
 			var center: CXYArray = new CXYArray(x, y);
 			_scene.map.center = center;
-			_scene.refreash();
+			_scene.refresh();
 		}
 		
 		public function set moveSpeed(value: uint): void
@@ -88,7 +97,7 @@ package Apollo.Display
 			_moveStart = new Point(_scene.map.center.x, _scene.map.center.y);
 			_moveEnd = new Point(x, y);
 			
-			_timer = new Timer(50);
+			_timer = new Timer(100);
 			_timer.addEventListener(TimerEvent.TIMER, moveCamera);
 			_timer.start();
 		}
@@ -98,7 +107,7 @@ package Apollo.Display
 			_moveStart.x += int((_moveEnd.x-_moveStart.x)/5);
 			_moveStart.y += int((_moveEnd.y - _moveStart.y) / 5);
 			_scene.map.center = new CXYArray(_moveStart.x, _moveStart.y);
-			_scene.refreash();
+			_scene.refresh();
 			
 			if (Point.distance(_moveStart, _moveEnd) < 10)
 			{

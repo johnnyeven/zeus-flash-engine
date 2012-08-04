@@ -22,9 +22,8 @@ package Apollo.Objects
 	 * @created 15-¶þÔÂ-2012 10:17:54
 	 */
 
-	public class CCharacterObject extends CBattleObject
+	public class CCharacterObject extends CActionObject
 	{
-		protected var _locker: CBattleObject;
 		protected var _characterName: String;
 		protected var _level: uint = 1;
 		
@@ -36,16 +35,6 @@ package Apollo.Objects
 		public function CCharacterObject(_ctrl:CBaseController = null, _direction: uint = CDirection.DOWN)
 		{
 			super(_ctrl, _direction);
-		}
-		
-		public function get locker(): CBattleObject
-		{
-			return _locker;
-		}
-		
-		public function set locker(value: CBattleObject): void
-		{
-			_locker = value;
 		}
 
 		/**

@@ -1,7 +1,7 @@
 package Apollo.Renders 
 {
 	import Apollo.Controller.Action;
-	import Apollo.Objects.COtherPlayerCharacter;
+	import Apollo.Objects.CCharacterObject;
 	import Apollo.Objects.CGameObject;
 	import flash.geom.Point;
 	
@@ -19,7 +19,7 @@ package Apollo.Renders
 		
 		override public function render(o: CGameObject, force: Boolean = false): void
 		{
-			var c: COtherPlayerCharacter = o as COtherPlayerCharacter;
+			var c: CCharacterObject = o as CCharacterObject;
 			var target: Point = c.controller.perception.scene.map.getScreenPosition(new Point(c.pos.x, c.pos.y));
 			
 			c.x = target.x;
