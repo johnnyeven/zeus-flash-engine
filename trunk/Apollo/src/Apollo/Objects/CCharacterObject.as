@@ -11,7 +11,6 @@ package Apollo.Objects
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	
-	import Apollo.Objects.CBattleObject;
 	import Apollo.Controller.CBaseController;
 	import Apollo.Display.TextFieldEx;
 	import Apollo.Controller.Action;
