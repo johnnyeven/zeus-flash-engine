@@ -34,6 +34,7 @@ package Apollo.Controller
 		 * 玩家控制器
 		 */
 		protected var _role_controller: Dictionary;
+		protected var _npc_controller: Dictionary;
 		private static var instance: CControllerCenter;
 		private static var allowInstance: Boolean = false;
 		
@@ -63,6 +64,7 @@ package Apollo.Controller
 		protected function init(): void
 		{
 			_role_controller = new Dictionary();
+			_npc_controller = new Dictionary();
 			setupNetworkProcessor();
 			_preCameraViewTimer = GlobalContextConfig.Timer;
 		}
@@ -124,6 +126,40 @@ package Apollo.Controller
 		}
 		
 		/**
+		 * 向NPC控制器容器中添加一个新控制器
+		 * @param	ctrl
+		 * @param	key
+		 */
+		public function addNPCController(ctrl: CNPCController, key: * ): void
+		{
+			if (_npc_controller[key] != null)
+			{
+				return;
+			}
+			else
+			{
+				_npc_controller[key] = ctrl;
+			}
+		}
+		
+		public function removeNPCController(ctrl: CNPCController): void
+		{
+			for (var id: * in _npc_controller)
+			{
+				if (_npc_controller[id] == ctrl)
+				{
+					delete _npc_controller[id];
+					return;
+				}
+			}
+		}
+		
+		public function getNPCController(id: * ): CNPCController
+		{
+			return _npc_controller[id];
+		}
+		
+		/**
 		 * 通用移除控制器
 		 */
 		public function removeController(ctrl: CBaseController): void
@@ -131,6 +167,10 @@ package Apollo.Controller
 			if (ctrl is CCharacterController)
 			{
 				removeRoleController(ctrl as CCharacterController);
+			}
+			else if (ctrl is CNPCController)
+			{
+				removeNPCController(ctrl as CNPCController);
 			}
 		}
 		
