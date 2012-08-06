@@ -10,6 +10,7 @@ package Apollo.Objects
 {
 	import Apollo.Objects.CGameObject;
 	import Apollo.Objects.CBuildingObject;
+	import Apollo.Controller.CBaseController;
 
 	/**
 	 * @author Administrator
@@ -21,10 +22,6 @@ package Apollo.Objects
 	{
 		protected var sequence: Array;
 		protected var maxSequence: uint = 1;
-
-		public function CFunctionBuilding(){
-
-		}
 
 		/**
 		 * 

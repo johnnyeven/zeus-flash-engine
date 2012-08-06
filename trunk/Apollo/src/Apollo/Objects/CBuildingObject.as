@@ -9,6 +9,7 @@
 package Apollo.Objects
 {
 	import Apollo.Objects.CMovieObject;
+	import Apollo.Controller.CBaseController;
 
 	/**
 	 * @author johnnyeven
@@ -22,10 +23,6 @@ package Apollo.Objects
 		protected var levelUpResource: Array;
 		protected var health: Number;
 		protected var healthMax: Number;
-
-		public function CBuildingObject(){
-
-		}
 
 		/**
 		 * 

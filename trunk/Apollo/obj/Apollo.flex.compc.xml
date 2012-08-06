@@ -19,6 +19,10 @@
     <source-path>
       <path-element>e:\我的代码\我的flash程序\apollo\src</path-element>
     </source-path>
+    <library-path>
+      <path-element>e:\我的代码\我的flash程序\apollo\bin\resources\characters\character.swc</path-element>
+      <path-element>e:\我的代码\我的flash程序\apollo\bin\resources\font.swc</path-element>
+    </library-path>
   </compiler>
   <include-classes>
     <class>Apollo.CGame</class>
