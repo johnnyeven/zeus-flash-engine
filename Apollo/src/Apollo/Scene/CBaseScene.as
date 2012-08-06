@@ -109,6 +109,7 @@ package Apollo.Scene
 				{
 					continue;
 				}
+				trace(CCamera.cameraView.toString() + " ---- " + o.pos.toString());
 				if (CCamera.cameraView.containsPoint(o.pos))
 				{
 					pushRenderList(o);
@@ -120,7 +121,6 @@ package Apollo.Scene
 				if (!_map.cameraCutView.containsPoint(o.pos))
 				{
 					pullRenderList(o);
-					o.destroy();
 				}
 			}
 		}
