@@ -39,6 +39,7 @@ package Apollo.Display
 		public function CCamera(scene: CBaseScene) 
 		{
 			_scene = scene;
+			_moveSpeed = 100;
 			_controller = new CCameraController(this);
 			_controller.setupListener();
 		}
@@ -101,21 +102,22 @@ package Apollo.Display
 			
 			_moveCallback = callback;
 			_moveStart = new Point(_scene.map.center.x, _scene.map.center.y);
-			_moveEnd = new Point(x, y);
+			var p: CXYArray = _scene.map.pointToCenter(new CXYArray(x, y));
+			_moveEnd = new Point(p.x, p.y);
 			
-			_timer = new Timer(100);
+			_timer = new Timer(10);
 			_timer.addEventListener(TimerEvent.TIMER, moveCamera);
 			_timer.start();
 		}
 		
 		protected function moveCamera(event: TimerEvent): void
 		{
-			_moveStart.x += int((_moveEnd.x-_moveStart.x)/5);
-			_moveStart.y += int((_moveEnd.y - _moveStart.y) / 5);
+			_moveStart.x += int((_moveEnd.x - _moveStart.x) / _moveSpeed);
+			_moveStart.y += int((_moveEnd.y - _moveStart.y) / _moveSpeed);
 			_scene.map.center = new CXYArray(_moveStart.x, _moveStart.y);
 			_scene.refresh();
-			
-			if (Point.distance(_moveStart, _moveEnd) < 10)
+			trace(_moveSpeed);
+			if (Point.distance(_moveStart, _moveEnd) < _moveSpeed * 2)
 			{
 				_timer.stop();
 				_timer.removeEventListener(TimerEvent.TIMER, moveCamera);

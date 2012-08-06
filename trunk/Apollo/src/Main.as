@@ -55,7 +55,6 @@ package
 		
 		private function onGameStart(evt: GameEvent):void
 		{
-			var game: CGame = evt.target as CGame;
 			var parameter: Object = new Object();
 			parameter.objectId = "adfasdfasdfasdf";
 			parameter.speed = 7;
@@ -63,7 +62,6 @@ package
 			parameter.startX = 400;
 			parameter.startY = 500;
 			CApolloScene.getInstance().createRole("char1", CDirection.DOWN, parameter);
-			//game.camera.moveTo(1200, 1200, null);
 		}
 		
 		private function deactivate(e:Event):void 
