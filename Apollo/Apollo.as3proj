@@ -52,6 +52,8 @@
   <libraryPaths>
     <element path="bin\resources\characters\character.swc" />
     <element path="bin\resources\font.swc" />
+    <element path="lib\SkinBuilderLAF.swc" />
+    <element path="lib\AsWing.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

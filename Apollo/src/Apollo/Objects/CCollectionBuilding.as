@@ -9,6 +9,7 @@
 package Apollo.Objects
 {
 	import Apollo.Objects.CBuildingObject;
+	import Apollo.Controller.CBaseController;
 
 	/**
 	 * @author johnnyeven
@@ -24,10 +25,6 @@ package Apollo.Objects
 		private var workers: CWorkerList;
 		private var workerAbility: uint;
 		private var productionCycle: uint;
-
-		public function CCollectionBuilding(){
-
-		}
 
 		/**
 		 * 
