@@ -39,7 +39,7 @@ package Apollo.Display
 		public function CCamera(scene: CBaseScene) 
 		{
 			_scene = scene;
-			_controller = new CCameraController();
+			_controller = new CCameraController(this);
 			_controller.setupListener();
 		}
 		
@@ -66,6 +66,12 @@ package Apollo.Display
 		public function get center(): CXYArray
 		{
 			return _scene.map.center;
+		}
+		
+		public function set center(_center: CXYArray): void
+		{
+			_scene.map.center = _center;
+			_scene.refresh();
 		}
 		
 		public function get controller(): CCameraController
