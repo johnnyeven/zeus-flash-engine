@@ -194,6 +194,17 @@ package Apollo.Maps
 			this._center = _pos;
 		}
 		
+		public function pointToCenter(_pos: CXYArray): CXYArray
+		{
+			_pos.x = Math.max(_pos.x, GlobalContextConfig.Width / 2);
+			_pos.x = Math.min(_pos.x, MapContextConfig.MapSize.x - GlobalContextConfig.Width / 2);
+			
+			_pos.y = Math.max(_pos.y, GlobalContextConfig.Height / 2);
+			_pos.y = Math.min(_pos.y, MapContextConfig.MapSize.y- GlobalContextConfig.Height / 2);
+			
+			return _pos;
+		}
+		
 		/**
 		 * 计算屏幕左上角对应的实际地图坐标X
 		 */
