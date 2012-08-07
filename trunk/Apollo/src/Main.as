@@ -1,7 +1,5 @@
 package 
 {
-	import Apollo.Objects.CDirection;
-	import Apollo.Scene.CApolloScene;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -15,6 +13,10 @@ package
 	
 	import Apollo.CGame;
 	import Apollo.Events.GameEvent;
+	import Apollo.Objects.CDirection;
+	import Apollo.Objects.Data.CRoleParameter;
+	import Apollo.Scene.CApolloScene;
+	import Apollo.utils.Monitor.CMonitorFPS;
 	/**
 	 * ...
 	 * @author Johnny.EVE
@@ -51,11 +53,20 @@ package
 				txt.setTextFormat(format);
 				addChild(txt);
 			}
+			CONFIG::DebugMode {
+				var line: Sprite = new Sprite();
+				line.graphics.lineStyle(2, 0xff0000);
+				line.graphics.drawRect(0, 0, 960, 640);
+				addChild(line);
+				
+				var fpsMonitor: CMonitorFPS = new CMonitorFPS();
+				addChild(fpsMonitor);
+			}
 		}
 		
 		private function onGameStart(evt: GameEvent):void
 		{
-			var parameter: Object = new Object();
+			var parameter: CRoleParameter = new CRoleParameter();
 			parameter.objectId = "adfasdfasdfasdf";
 			parameter.speed = 7;
 			parameter.playerName = "test";
