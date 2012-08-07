@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <map>
 	<id>map1</id>
-	<tileNumWidth>15</tileNumWidth>
-	<tileNumHeight>15</tileNumHeight>
-	<tileWidth>334</tileWidth>
-	<tileHeight>226</tileHeight>
+	
+	<path>
+		<data>data.jpg</data>
+		<road>road.png</road>
+		<alpha>alpha.png</alpha>
+		<thumbnail>thumbnail.jpg</thumbnail>
+	</path>
+	
+	<width>2400</width>
+	<height>2400</height>
+	
+	<tileWidth>240</tileWidth>
+	<tileHeight>240</tileHeight>
+	
 	<blockWidth>50</blockWidth>
-	<blockHeight>34</blockHeight>
-	<radiansOffsetX>70</radiansOffsetX>
-	<radiansOffsetY>100</radiansOffsetY>
-	<startPointX>1200</startPointX>
-	<startPointY>1800</startPointY>
-	<thumbnail>thumbnail.jpg</thumbnail>
+	<blockHeight>50</blockHeight>
+	
+	<startPointX>500</startPointX>
+	<startPointY>800</startPointY>
 </map>

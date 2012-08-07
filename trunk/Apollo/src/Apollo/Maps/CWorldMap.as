@@ -53,8 +53,10 @@ package Apollo.Maps
 	public class CWorldMap implements IEventDispatcher
 	{
 		public var MapId: String = 'default';
-		public static var RES_DIR: String = 'asset/';
-		private var thumbnail: String;
+		private var mapPath: String;
+		private var roadMapPath: String;
+		private var alphaMapPath: String;
+		private var thumbnailMapPath: String;
 		private static var _astar: SilzAstar;
 		private var _urlLoader: URLLoader;
 		/**
@@ -89,17 +91,19 @@ package Apollo.Maps
 		 * 不能走的区块, true为可移动, false为不可移动
 		 */
 		private var _negativePath: Array;
+		private var _mapReady: Boolean;
+		private var _smallMapReady: Boolean;
+		private var _roadMapReady: Boolean;
+		private var _alphaMapReady: Boolean;
+		//大地图缓存
+		protected var _mapCache: BitmapData;
+		//缩略图
 		protected var _smallMap: BitmapData;
 		protected var _smallMapCache: BitmapData;
-		private var _loadList: Vector.<CLoaderEx>;
 		/**
 		 * 透明碰撞检测位图
 		 */
 		private var _alphaMap: BitmapData;
-		/**
-		 * 地图的分块图形数据
-		 */
-		protected var _mapResource: Object = {tiles: new Object()};
 		/**
 		 * 屏幕左上角对应的地图实际坐标X
 		 */
@@ -108,31 +112,10 @@ package Apollo.Maps
 		 * 屏幕左上角对应的地图实际坐标Y
 		 */
 		private var _screenStartY: int;
-		/**
-		 * 读取地图素材过程中的偏移值X
-		 */
-		private var _tileOffsetX: int = 0;
-		/**
-		 * 读取地图素材过程中的偏移值Y
-		 */
-		private var _tileOffsetY: int = 0;
-		/**
-		 * 渲染地图过程中的偏移值X
-		 */
-		private var _renderMapOffsetX: int = 0;
-		/**
-		 * 渲染地图过程中的偏移值Y
-		 */
-		private var _renderMapOffsetY: int = 0;
 		protected var eventDispatcher: EventDispatcher;
 		
 		private var _cameraView: Rectangle = new Rectangle();
 		private var _cameraCutView: Rectangle = new Rectangle();
-		
-		/**
-		 * 待渲染的地图碎片
-		 */
-		private var _prepareRenderPos: Array;
 		
 		/**
 		 * 当前屏幕内容纳的最大地图碎片数量
@@ -140,7 +123,7 @@ package Apollo.Maps
 		private var _screenTileNum: CXYArray;
 		
 		/**
-		 * 只加载图片碎片 不显示的开关
+		 * 只加载图片 不显示的开关
 		 */
 		private var _prepareLoadTile: Boolean;
 		
@@ -159,8 +142,11 @@ package Apollo.Maps
 			_target = new CXYArray();
 			_screenTileNum = new CXYArray();
 			eventDispatcher = new EventDispatcher(this);
-			_loadList = new Vector.<CLoaderEx>();
 			_prepareLoadTile = false;
+			_mapReady = false;
+			_smallMapReady = false;
+			_roadMapReady = false;
+			_alphaMapReady = false;
 		}
 		
 		public function get mapXMLData(): XML
@@ -364,7 +350,7 @@ package Apollo.Maps
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, configAlphaMap);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			loader.load(new URLRequest(SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/alpha.png'));
+			loader.load(new URLRequest(SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/' + alphaMapPath));
 		}
 		
 		private function configAlphaMap(event: Event): void
@@ -376,6 +362,11 @@ package Apollo.Maps
 			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, configAlphaMap);
 			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			loader = null;
+			
+			_alphaMapReady = true;
+			if (_mapReady && _alphaMapReady && _roadMapReady && _smallMapReady) {
+				dispatchEvent(new MapEvent(MapEvent.MAP_DATA_LOADED));
+			}
 		}
 		
 		public function loadRoadMap(): void
@@ -383,7 +374,7 @@ package Apollo.Maps
 			var loader: Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, configRoadMap);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			loader.load(new URLRequest(SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/road.png'));
+			loader.load(new URLRequest(SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/' + roadMapPath));
 		}
 		
 		private function configRoadMap(event: Event): void
@@ -409,6 +400,34 @@ package Apollo.Maps
 			}
 			roadMap.dispose();
 			setupAstar();
+			
+			_roadMapReady = true;
+			if (_mapReady && _alphaMapReady && _roadMapReady && _smallMapReady) {
+				dispatchEvent(new MapEvent(MapEvent.MAP_DATA_LOADED));
+			}
+		}
+		
+		public function loadMap(): void
+		{
+			var loader: Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, configMap);
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loader.load(new URLRequest(SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/' + mapPath));
+		}
+		
+		private function configMap(event: Event): void
+		{
+			var loader: LoaderInfo = event.target as LoaderInfo;
+			
+			loader.removeEventListener(Event.COMPLETE, configRoadMap);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			
+			_mapCache = (loader.content as Bitmap).bitmapData;
+			
+			_mapReady = true;
+			if (_mapReady && _alphaMapReady && _roadMapReady && _smallMapReady) {
+				dispatchEvent(new MapEvent(MapEvent.MAP_DATA_LOADED));
+			}
 		}
 		
 		private function setupAstar(): void
@@ -513,20 +532,18 @@ package Apollo.Maps
 
 		public function render(enforceRender: Boolean = false): void
 		{
-			if (!enforceRender && focus != null && focus.action == Action.STOP)
+			if (!enforceRender && (focus != null && focus.action == Action.STOP))
+			{
+				return;
+			}
+			if (_center.x == _pre_center.x && _center.y == _pre_center.y)
 			{
 				return;
 			}
 			else
 			{
-				prepareRenderData();
-				//开始渲染
-				if (!enforceRender && _center.x == _pre_center.x && _center.y == _pre_center.y)
-				{
-					return;
-				}
-				_displayBuffer.x = -(screenStartX % MapContextConfig.TileSize.x);
-				_displayBuffer.y = -(screenStartY % MapContextConfig.TileSize.y);
+				_displayBuffer.x = -screenStartX;
+				_displayBuffer.y = -screenStartY;
 				//渲染结束
 				_pre_center.x = _center.x;
 				_pre_center.y = _center.y;
@@ -542,39 +559,43 @@ package Apollo.Maps
 			var startY: int = int(screenStartY / MapContextConfig.TileSize.y);
 			
 			if (startX == _pre_start.x && startY == _pre_start.y)
-			//if (_center.x == _pre_center.x && _center.y == _pre_center.y)
 			{
 				return;
 			}
 			else
 			{
-				//载入数据之前先用缩略图代替显示
-				drawThumbnail(startX, startY);
-				
-				if (_prepareRenderPos != null)
-				{
-					_prepareRenderPos.splice(0, _prepareRenderPos.length);
-				}
-				_prepareRenderPos = new Array();
 				var maxX: int = Math.min(startX + _screenTileNum.x, MapContextConfig.TileNum.x);
 				var maxY: int = Math.min(startY + _screenTileNum.y, MapContextConfig.TileNum.y);
 				
-				for (var i:int = startX; i < maxX; i++)
-				{
-					var tempPos: Array = new Array();
-					for (var j:int = startY; j < maxY; j++)
-					{
-						tempPos.push(j + "_" + i);
-					}
-					_prepareRenderPos.push(tempPos);
-				}
+				var preparedX: int = startX * MapContextConfig.TileSize.x;
+				var preparedY: int = startY * MapContextConfig.TileSize.y;
+				
 				if (!_prepareLoadTile)
 				{
 					_pre_start.x = startX;
 					_pre_start.y = startY;
 				}
+				loadMapFromCache(0, 0, MapContextConfig.MapSize.x, MapContextConfig.MapSize.y);
 			}
-			loadTiles();
+		}
+		
+		public function loadMapFromCache(x: int, y: int, width: int = 0, height: int = 0): void
+		{
+			if (width == 0)
+			{
+				width = cameraCutView.width;
+			}
+			if (height == 0)
+			{
+				height = cameraCutView.height;
+			}
+			_buffer.draw(_mapCache, new Matrix(), null, null, null, true);
+			_displayBuffer.cacheAsBitmap = true;
+			if (_prepareLoadTile)
+			{
+				_prepareLoadTile = false;
+			}
+			dispatchEvent(new MapEvent(MapEvent.MAP_LOADED));
 		}
 		
 		/**
@@ -619,7 +640,7 @@ package Apollo.Maps
 		public function initBuffer(): void
 		{
 			//初始化缓冲区
-			_buffer = new BitmapData(GlobalContextConfig.Width + 2 * MapContextConfig.TileSize.x, GlobalContextConfig.Height + 2 * MapContextConfig.TileSize.y, false);
+			_buffer = new BitmapData(MapContextConfig.MapSize.x, MapContextConfig.MapSize.y, false);
 		}
 
 		/**
@@ -627,12 +648,48 @@ package Apollo.Maps
 		 */
 		public function init(): void
 		{
+			var per: Number = _smallMap.width / MapContextConfig.MapSize.x;
+			_smallMapCache = new BitmapData(_buffer.width * per, _buffer.height * per, false, 0);
+			
+			//预读地图碎片
+			_prepareLoadTile = true;
+			prepareRenderData();
+		}
+		
+		/**
+		 * 加载缩略图
+		 * @param	e
+		 */
+		public function loadSmallMap(): void
+		{
 			//读取缩略图
-			var mapThumbnail: String = SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/' + thumbnail;
+			var mapThumbnail: String = SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/' + thumbnailMapPath;
 			var loader: Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onSmallMapLoaded);
 			loader.load(new URLRequest(mapThumbnail));
+		}
+
+		/**
+		 * 缩略图加载完成，处理缩略图
+		 * 
+		 * @param e
+		 */
+		public function onSmallMapLoaded(e:Event): void
+		{
+			var loaderInfo: LoaderInfo = e.target as LoaderInfo;
+			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loaderInfo.removeEventListener(Event.COMPLETE, onSmallMapLoaded);
+			
+			_smallMap = (loaderInfo.content as Bitmap).bitmapData;
+			
+			loaderInfo.loader.unload();
+			loaderInfo = null;
+			
+			_smallMapReady = true;
+			if (_mapReady && _alphaMapReady && _roadMapReady && _smallMapReady) {
+				dispatchEvent(new MapEvent(MapEvent.MAP_DATA_LOADED));
+			}
 		}
 		
 		/**
@@ -662,15 +719,20 @@ package Apollo.Maps
 			}
 			else
 			{
-				//地图碎片数量
-				MapContextConfig.TileNum.x = parseInt(_mapXMLData.tileNumWidth);
-				MapContextConfig.TileNum.y = parseInt(_mapXMLData.tileNumHeight);
+				mapPath = _mapXMLData.path.data;
+				roadMapPath = _mapXMLData.path.road;
+				alphaMapPath = _mapXMLData.path.alpha;
+				//缩略图地址
+				thumbnailMapPath = _mapXMLData.path.thumbnail;
+				//地图大小
+				MapContextConfig.MapSize.x = parseInt(_mapXMLData.width);
+				MapContextConfig.MapSize.y = parseInt(_mapXMLData.height);
 				//地图碎片大小
 				MapContextConfig.TileSize.x = parseInt(_mapXMLData.tileWidth);
 				MapContextConfig.TileSize.y = parseInt(_mapXMLData.tileHeight);
-				//地图大小
-				MapContextConfig.MapSize.x = MapContextConfig.TileNum.x * MapContextConfig.TileSize.x;
-				MapContextConfig.MapSize.y = MapContextConfig.TileNum.y * MapContextConfig.TileSize.y;
+				//地图碎片数量
+				MapContextConfig.TileNum.x = Math.floor(MapContextConfig.MapSize.x / MapContextConfig.TileSize.x);
+				MapContextConfig.TileNum.y = Math.floor(MapContextConfig.MapSize.y / MapContextConfig.TileSize.y);
 				//寻路格子大小
 				MapContextConfig.BlockSize.x = parseInt(_mapXMLData.blockWidth);
 				MapContextConfig.BlockSize.y = parseInt(_mapXMLData.blockHeight);
@@ -681,145 +743,18 @@ package Apollo.Maps
 				_screenTileNum.x = Math.ceil(GlobalContextConfig.Width / MapContextConfig.TileSize.x) + 2;
 				_screenTileNum.y = Math.ceil(GlobalContextConfig.Height / MapContextConfig.TileSize.y) + 2;
 				//设置X、Y轴上的速度修正量
-				MapContextConfig.xFixNum = Math.cos(Math.atan2(parseInt(_mapXMLData.radiansOffsetY) , parseInt(_mapXMLData.radiansOffsetX)));
-				MapContextConfig.yFixNum = Math.cos(Math.atan2(parseInt(_mapXMLData.radiansOffsetX) , parseInt(_mapXMLData.radiansOffsetY)));
+				//MapContextConfig.xFixNum = Math.cos(Math.atan2(parseInt(_mapXMLData.radiansOffsetY) , parseInt(_mapXMLData.radiansOffsetX)));
+				//MapContextConfig.yFixNum = Math.cos(Math.atan2(parseInt(_mapXMLData.radiansOffsetX) , parseInt(_mapXMLData.radiansOffsetY)));
 				
 				//设置初始点
 				//var centerPos: CXYArray = new CXYArray(CharacterData.PosX, CharacterData.PosY);
 				var centerPos: CXYArray = new CXYArray(parseInt(_mapXMLData.startPointX), parseInt(_mapXMLData.startPointY));
 				center = centerPos;
-				//缩略图地址
-				thumbnail = _mapXMLData.thumbnail;
 				
-				resetRoadPath();
+				loadSmallMap();
 				loadAlphaMap();
 				loadRoadMap();
-				
-				dispatchEvent(new MapEvent(MapEvent.MAP_DATA_LOADED));
-			}
-		}
-
-		/**
-		 * 缩略图加载完成，处理缩略图
-		 * 
-		 * @param e
-		 */
-		public function onSmallMapLoaded(e:Event): void
-		{
-			var loaderInfo: LoaderInfo = e.target as LoaderInfo;
-			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			loaderInfo.removeEventListener(Event.COMPLETE, onSmallMapLoaded);
-			
-			_smallMap = (loaderInfo.content as Bitmap).bitmapData;
-			
-			loaderInfo.loader.unload();
-			loaderInfo = null;
-			
-			var per: Number = _smallMap.width / MapContextConfig.MapSize.x;
-			_smallMapCache = new BitmapData(_buffer.width * per, _buffer.height * per, false, 0);
-			
-			//预读地图碎片
-			_prepareLoadTile = true;
-			prepareRenderData();
-		}
-
-		/**
-		 * 加载地图素材
-		 */
-		public function loadTiles(): void
-		{
-			var x: int = 0;
-			var y: int = 0;
-			var _dataName: Array = new Array();
-			
-			if (_prepareRenderPos == null) 
-			{
-				return;
-			}
-			else
-			{
-				_displayBuffer.cacheAsBitmap = false;
-				for (var i:int = 0; i < _prepareRenderPos.length; i++)
-				{
-					for (var j:int = 0; j < _prepareRenderPos[i].length; j++)
-					{
-						if (_mapResource.tiles[_prepareRenderPos[i][j]] != null)
-						{
-							if (!_prepareLoadTile)
-							{
-								var _bufferPoint: Point = new Point();
-								_bufferPoint.x = i * MapContextConfig.TileSize.x;
-								_bufferPoint.y = j * MapContextConfig.TileSize.y;
-								_buffer.copyPixels(_mapResource.tiles[_prepareRenderPos[i][j]], _mapResource.tiles[_prepareRenderPos[i][j]].rect, _bufferPoint);
-								//trace('tile loaded:' + _bufferPoint.toString());
-							}
-						}
-						else
-						{
-							_dataName = _prepareRenderPos[i][j].split("_");
-							var loader:CLoaderEx = new CLoaderEx();
-							loader.name = SocketContextConfig.resource_server_ip + GlobalContextConfig.MAP_RES_PATH + MapId + '/' + CWorldMap.RES_DIR + _prepareRenderPos[i][j] + '.jpg';
-							loader.data = _prepareRenderPos[i][j];
-							_loadList.push(loader);
-						}
-					}
-				}
-				startLoad();
-			}
-		}
-
-		public function startLoad(): void
-		{
-			if (_loadList.length == 0)
-			{
-				return;
-			}
-			else
-			{
-				var loader:CLoaderEx = _loadList[0];
-				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadComplete);
-				loader.load(new URLRequest(loader.name));
-				_loadList.splice(0, 1);
-			}
-		}
-
-		/**
-		 * 
-		 * @param e
-		 */
-		public function onTileLoadComplete(e:Event): void
-		{
-			var loaderInfo: LoaderInfo = e.target as LoaderInfo;
-			var loader:CLoaderEx = loaderInfo.loader as CLoaderEx;
-			
-			_mapResource.tiles[loader.data] = (loaderInfo.content as Bitmap).bitmapData;
-			/*
-			if (!_prepareLoadTile)
-			{
-				var _pos: Array = loader.data.split("_");
-				var _bufferPoint: Point = new Point();
-				_bufferPoint.x = parseInt(_pos[1]) * Config.TileSize.x;
-				_bufferPoint.y = parseInt(_pos[0]) * Config.TileSize.y;
-				_buffer.copyPixels(_mapResource.tiles[loader.data], _mapResource.tiles[loader.data].rect, _bufferPoint);
-			}
-			*/
-			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			loaderInfo.removeEventListener(Event.COMPLETE, onTileLoadComplete);
-			loader.unload();
-			
-			if (_loadList.length > 0)
-			{
-				startLoad();
-			}
-			else
-			{
-				_displayBuffer.cacheAsBitmap = true;
-				if (_prepareLoadTile)
-				{
-					_prepareLoadTile = false;
-				}
-				dispatchEvent(new MapEvent(MapEvent.MAP_LOADED));
+				loadMap();
 			}
 		}
 

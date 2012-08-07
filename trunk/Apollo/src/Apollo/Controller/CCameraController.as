@@ -27,13 +27,6 @@ package Apollo.Controller
 			CApolloScene.getInstance().stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 			CApolloScene.getInstance().stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true);
 			CApolloScene.getInstance().stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
-			CApolloScene.getInstance().stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseDClick, false, 0, true);
-		}
-		
-		private function onMouseDClick(evt: MouseEvent): void
-		{
-			var game: CGame = CGame.getInstance();
-			game.camera.moveTo(100, 100, null);
 		}
 		
 		private function onMouseDown(evt: MouseEvent): void
