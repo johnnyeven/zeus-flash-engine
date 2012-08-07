@@ -4,6 +4,7 @@ package Apollo.Network.Processor
 	import Apollo.Events.*;
 	import Apollo.CGame;
 	import Apollo.Objects.*;
+	import Apollo.Objects.Data.CRoleParameter;
 	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
 	import Apollo.Network.Command.CCommandList;
@@ -70,7 +71,7 @@ package Apollo.Network.Processor
 			if (c == null)
 			{
 				//如果不存在则创建
-				var param: Object = new Object();
+				var param: CRoleParameter = new CRoleParameter();
 				param.objectId = protocol.guid;
 				param.playerName = protocol.characterName;
 				param.startX = protocol.posX;

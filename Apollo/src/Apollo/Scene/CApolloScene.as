@@ -2,6 +2,7 @@ package Apollo.Scene
 {
 	import Apollo.Controller.*;
 	import Apollo.Objects.*;
+	import Apollo.Objects.Data.CRoleParameter;
 	import Apollo.Objects.Effects.*;
 	import Apollo.Renders.*;
 	import Apollo.Graphics.*;
@@ -50,10 +51,10 @@ package Apollo.Scene
 			instance = null;
 		}
 		
-		public function createRole(resourceId: String, startDirection: uint = CDirection.DOWN, parameter: Object = null): CCharacterObject
+		public function createRole(resourceId: String, startDirection: uint = CDirection.DOWN, parameter: CRoleParameter = null): CCharacterObject
 		{
 			var c: CCharacterController = _ctrlCenter.getRoleController(parameter.objectId);
-			if (parameter != null && parameter.objectId != undefined && c != null)
+			if (parameter != null && parameter.objectId != null && c != null)
 			{
 				return null;
 			}
@@ -72,7 +73,7 @@ package Apollo.Scene
 			var id: String;
 			if (parameter != null)
 			{
-				if (parameter.objectId != undefined)
+				if (parameter.objectId != null)
 				{
 					id = parameter.objectId;
 				}
@@ -87,15 +88,15 @@ package Apollo.Scene
 			player.graphic = rs;
 			player.render = render;
 			player.action = Action.STOP;
-			player.speed = parameter.speed;
+			player.speed = (parameter.speed == int.MIN_VALUE ? 0 : parameter.speed);
 			
 			if (parameter != null)
 			{
-				if (parameter.playerName != undefined)
+				if (parameter.playerName != null)
 				{
 					player.setCharacterName(parameter.playerName, 0x00FFFF, 0x000000);
 				}
-				if (parameter.startX != undefined && parameter.startY != undefined)
+				if (parameter.startX != int.MIN_VALUE && parameter.startY != int.MIN_VALUE)
 				{
 					player.setPos(new Point(parameter.startX, parameter.startY));
 				}
