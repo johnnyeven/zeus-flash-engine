@@ -64,6 +64,11 @@ package Apollo.Display
 			_scene.refresh();
 		}
 		
+		public function follower(): CActionObject
+		{
+			return _scene.map.follower;
+		}
+		
 		public function get center(): CXYArray
 		{
 			return _scene.map.center;

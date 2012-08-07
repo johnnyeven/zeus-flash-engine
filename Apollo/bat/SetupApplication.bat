@@ -8,7 +8,7 @@
 
 :: Android packaging
 set AND_CERT_NAME="Apollo"
-set AND_CERT_PASS=fd
+set AND_CERT_PASS=1234
 set AND_CERT_FILE=cert\Apollo.p12
 set AND_ICONS=icons/android
 
@@ -16,9 +16,9 @@ set AND_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%AND_CERT_FILE%" -storepass
 
 :: iOS packaging
 set IOS_DIST_CERT_FILE=
-set IOS_DEV_CERT_FILE=
-set IOS_DEV_CERT_PASS=
-set IOS_PROVISION=cert\Apollo.mobileprovision
+set IOS_DEV_CERT_FILE=cert\p12.p12
+set IOS_DEV_CERT_PASS=1234
+set IOS_PROVISION=cert\mobileprovision.mobileprovision
 set IOS_ICONS=icons/ios
 
 set IOS_DEV_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%IOS_DEV_CERT_FILE%" -storepass %IOS_DEV_CERT_PASS% -provisioning-profile %IOS_PROVISION%
