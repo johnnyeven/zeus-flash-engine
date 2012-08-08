@@ -53,6 +53,7 @@ package Apollo.Graphics
 		private var referChar8: char8;
 		private var referChar9: char9;
 		private var referChar10: char10;
+		private var tst: test;
 		
 		private var referFontArialBlack: FontArialBlack;
 		private var referFontYuanGBK: FontYuanGBK;
