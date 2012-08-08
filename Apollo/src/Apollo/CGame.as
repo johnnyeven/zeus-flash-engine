@@ -4,6 +4,7 @@ package Apollo
 	import Apollo.Center.CResourceCenter;
 	import Apollo.Display.CCamera;
 	import Apollo.Objects.*;
+	import Apollo.Objects.Data.CResourceParameter;
 	import Apollo.Scene.CBaseScene;
 	import Apollo.Objects.Effects.*;
 	import Apollo.Controller.CControllerCenter;
@@ -185,6 +186,12 @@ package Apollo
 		{
 			CBuildingCenter.getInstance();
 			CResourceCenter.getInstance();
+			
+			CONFIG::DebugMode
+			{
+				var resource: CResourceParameter = new CResourceParameter(0xFF01, "水晶", 2000, 0);
+				CResourceCenter.getInstance().registerResource(0xFF01, resource, 10000);
+			}
 		}
 		
 		public function get camera(): CCamera

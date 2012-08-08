@@ -10,6 +10,8 @@ package Apollo.Center
 	public class CResourceCenter 
 	{
 		private var resourcesList: Dictionary;
+		private var resourceMax: Array;
+		private var resourceTrigger: Array;
 		private static var instance: CResourceCenter;
 		private static var allowInstance: Boolean = false;
 		
@@ -20,13 +22,17 @@ package Apollo.Center
 				throw new IllegalOperationError("CCommandCenter不允许实例化");
 			}
 			resourcesList = new Dictionary();
+			resourceMax = new Array();
+			resourceTrigger = new Array();
 		}
 		
-		public function registerResource(resourceId: uint, resourceParameter: CResourceParameter): void
+		public function registerResource(resourceId: uint, resourceParameter: CResourceParameter, resourceMax: uint = 10000): void
 		{
 			if (resourcesList[resourceId] == null)
 			{
 				resourcesList[resourceId] = resourceParameter;
+				resourceMax[resourceId] = resourceMax;
+				resourceTrigger[resourceId] = 0;
 			}
 			else
 			{
@@ -42,6 +48,23 @@ package Apollo.Center
 			{
 				resourcesList[resourceId] = null;
 				delete resourcesList[resourceId];
+				resourceMax.splice(resourceId, 1);
+				resourceTrigger.splice(resourceId, 1);
+			}
+		}
+		
+		public function modifyResource(resourceId: uint, amount: int): void
+		{
+			if (resourcesList[resourceId] != null)
+			{
+				var resource: CResourceParameter = resourcesList[resourceId] as CResourceParameter;
+				if (resource.resourceAmount + amount >= resourceMax[resourceId]) {
+					resource.resourceAmount = resourceMax[resourceId];
+					resourcesList[resourceId] = resource;
+					return;
+				}
+				resource.resourceAmount += amount;
+				resourcesList[resourceId] = resource;
 			}
 		}
 		

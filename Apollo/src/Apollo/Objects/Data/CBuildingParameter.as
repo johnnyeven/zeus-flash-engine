@@ -8,6 +8,7 @@ package Apollo.Objects.Data
 	 */
 	public class CBuildingParameter 
 	{
+		private var buildingId: uint;
 		private var buildingName: String;
 		private var level: uint;
 		/**
@@ -22,7 +23,8 @@ package Apollo.Objects.Data
 		
 		public function CBuildingParameter() 
 		{
-			
+			consumeList = new Array();
+			produceList = new Array();
 		}
 		
 	}

@@ -20,7 +20,7 @@ package Apollo.Objects
 
 	public class CBuildingObject extends CMovieObject
 	{
-		protected var buildingFlag: int;
+		protected var buildingId: uint;
 		protected var buildingName: String;
 		protected var level: uint;
 		protected var maxLevel: uint;
@@ -38,10 +38,10 @@ package Apollo.Objects
 		 * 
 		 * @param _ctrl
 		 */
-		public function CBuildingObject(_ctrl:CBaseController, _buildingFlag: int)
+		public function CBuildingObject(_ctrl:CBaseController, _buildingId: uint)
 		{
 			super(_ctrl);
-			buildingFlag = _buildingFlag;
+			buildingId = _buildingId;
 		}
 
 		/**
