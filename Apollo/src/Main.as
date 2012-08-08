@@ -72,7 +72,7 @@ package
 			parameter.playerName = "test";
 			parameter.startX = 400;
 			parameter.startY = 500;
-			CApolloScene.getInstance().createRole("char1", CDirection.DOWN, parameter);
+			CApolloScene.getInstance().createRole("test", CDirection.DOWN, parameter);
 		}
 		
 		private function deactivate(e:Event):void 

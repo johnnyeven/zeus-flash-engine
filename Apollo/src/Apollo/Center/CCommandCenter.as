@@ -50,7 +50,7 @@ package Apollo.Center
 		
 		public function remove(flag: int, processor: Function): void
 		{
-			remove(flag, processor);
+			removeCallback(flag, processor);
 		}
 		
 		public function send(protocol: INetPackageSending): void

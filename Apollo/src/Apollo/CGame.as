@@ -1,5 +1,7 @@
 package Apollo 
 {
+	import Apollo.Center.CBuildingCenter;
+	import Apollo.Center.CResourceCenter;
 	import Apollo.Display.CCamera;
 	import Apollo.Objects.*;
 	import Apollo.Scene.CBaseScene;
@@ -172,9 +174,17 @@ package Apollo
 			var target: CGraphicPool = event.target as CGraphicPool;
 			GlobalContextConfig.ResourcePool = target;
 			
+			initCenter();
+			
 			_scene = CApolloScene.getInstance();
 			_scene.addEventListener(SceneEvent.SCENE_READY, onSceneReady);
 			_scene.initMap(_mapId);
+		}
+		
+		private function initCenter(): void
+		{
+			CBuildingCenter.getInstance();
+			CResourceCenter.getInstance();
 		}
 		
 		public function get camera(): CCamera

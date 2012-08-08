@@ -10,6 +10,7 @@ package Apollo.Objects
 {
 	import Apollo.Objects.CMovieObject;
 	import Apollo.Controller.CBaseController;
+	import Apollo.Objects.dependency.CDependency;
 
 	/**
 	 * @author johnnyeven
@@ -19,65 +20,55 @@ package Apollo.Objects
 
 	public class CBuildingObject extends CMovieObject
 	{
-		protected var level: uint = 1;
-		protected var levelUpResource: Array;
-		protected var health: Number;
-		protected var healthMax: Number;
+		protected var buildingFlag: int;
+		protected var buildingName: String;
+		protected var level: uint;
+		protected var maxLevel: uint;
+		/**
+		 * 消耗的资源
+		 */
+		protected var consumeList: Array;
+		/**
+		 * 产出的资源
+		 */
+		protected var produceList: Array;
+		protected var dependency: CDependency;
 
 		/**
 		 * 
 		 * @param _ctrl
 		 */
-		public function CBuildingObject(_ctrl:CBaseController)
+		public function CBuildingObject(_ctrl:CBaseController, _buildingFlag: int)
 		{
-		}
-
-		/**
-		 * 
-		 * @param health
-		 */
-		public function set health(health:Number): void
-		{
-		}
-
-		public function get health(): Number
-		{
-		}
-
-		/**
-		 * 
-		 * @param healthMax
-		 */
-		public function set healthMax(healthMax:Number): void
-		{
-		}
-
-		public function get healthMax(): Number
-		{
+			super(_ctrl);
+			buildingFlag = _buildingFlag;
 		}
 
 		/**
 		 * 
 		 * @param level
 		 */
-		public function set level(level:uint): void
+		public function levelUp(value: uint = 1): Boolean;
 		{
+			if (level >= maxLevel)
+			{
+				return false;
+			}
+			else
+			{
+				level += value;
+				return true;
+			}
 		}
 
 		public function get level(): uint
 		{
+			return level;
 		}
 
-		public function get levelUpResource(): Array
+		public function get dependency(): CDependency
 		{
-		}
-
-		/**
-		 * 
-		 * @param _resource
-		 */
-		public function set levelUpResource(_resource:Array): void
-		{
+			return dependency;
 		}
 
 		public override function RenderObject(): void

@@ -1,6 +1,7 @@
 package Apollo.utils 
 {
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.events.DataEvent;
 	/**
 	 * ...
@@ -24,6 +25,12 @@ package Apollo.utils
 				try
 				{
 					data = new data();
+					if (data is MovieClip)
+					{
+						var bitmap: BitmapData = new BitmapData(data.width, data.height);
+						bitmap.draw(data);
+						data = bitmap;
+					}
 				}
 				catch (err: ArgumentError)
 				{
