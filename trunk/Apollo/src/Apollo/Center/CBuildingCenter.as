@@ -1,6 +1,6 @@
 package Apollo.Center 
 {
-	import Apollo.Objects.Data.CBuildingParameter;
+	import Apollo.Objects.CBuildingObject;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;
 	
@@ -18,20 +18,25 @@ package Apollo.Center
 		{
 			if (!allowInstance)
 			{
-				throw new IllegalOperationError("CCommandCenter不允许实例化");
+				throw new IllegalOperationError("CBuildingCenter不允许实例化");
 			}
 			buildingList = new Dictionary();
+		}
+		
+		public function registerBuilding(buildingId: uint, buildingParameter: CBuildingObject): void
+		{
+			
 		}
 		
 		/**
 		 * 
 		 * @param	flag 建筑ID
 		 */
-		public function getBuildingParameter(flag: int): CBuildingParameter
+		public function getBuilding(flag: uint): CBuildingObject
 		{
 			if (buildingList[flag] != null)
 			{
-				return buildingList[flag];
+				return buildingList[flag] as CBuildingObject;
 			}
 			return null;
 		}
