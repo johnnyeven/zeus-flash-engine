@@ -11,6 +11,8 @@ package Apollo.Objects
 	import Apollo.Objects.CMovieObject;
 	import Apollo.Controller.CBaseController;
 	import Apollo.Objects.dependency.CDependency;
+	
+	import flash.events.Event;
 
 	/**
 	 * @author johnnyeven
@@ -22,7 +24,7 @@ package Apollo.Objects
 	{
 		protected var buildingId: uint;
 		protected var buildingName: String;
-		protected var level: uint;
+		protected var _level: uint;
 		protected var maxLevel: uint;
 		/**
 		 * 消耗的资源
@@ -32,7 +34,7 @@ package Apollo.Objects
 		 * 产出的资源
 		 */
 		protected var produceList: Array;
-		protected var dependency: CDependency;
+		protected var _dependency: CDependency;
 
 		/**
 		 * 
@@ -48,27 +50,28 @@ package Apollo.Objects
 		 * 
 		 * @param level
 		 */
-		public function levelUp(value: uint = 1): Boolean;
+		public function levelUp(value: uint = 1): Boolean
 		{
-			if (level >= maxLevel)
+			if (_level >= maxLevel)
 			{
 				return false;
 			}
 			else
 			{
-				level += value;
+				Upgrade();
+				_level += value;
 				return true;
 			}
 		}
 
 		public function get level(): uint
 		{
-			return level;
+			return _level;
 		}
 
 		public function get dependency(): CDependency
 		{
-			return dependency;
+			return _dependency;
 		}
 
 		public override function RenderObject(): void
@@ -79,7 +82,7 @@ package Apollo.Objects
 		{
 		}
 
-		public override function Destroy(): Boolean
+		public override function destroy(event: Event = null): void
 		{
 		}
 

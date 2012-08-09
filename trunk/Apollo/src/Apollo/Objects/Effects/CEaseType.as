@@ -6,6 +6,7 @@ package Apollo.Objects.Effects
 	 */
 	public class CEaseType 
 	{
+		public static const None: String = "None";
 		public static const EaseIn: String = "EaseIn";
 		public static const EaseOut: String = "EaseOut";
 		
