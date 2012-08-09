@@ -18,6 +18,7 @@ package Apollo.Objects.Effects.screen
 	{
 		private var easeType: String;
 		private var duration: int;
+		private var startTime: int;
 		private var amount: Number;
 		private var blackScreenData: BitmapData;
 		private var blackScreen: Bitmap;
@@ -25,9 +26,9 @@ package Apollo.Objects.Effects.screen
 		public function CBlackScreen(easeType: String, duration: int, amount: Number) 
 		{
 			super();
-			if (easeType != CEaseType.EaseIn && easeType != CEaseType.EaseOut)
+			if (easeType != CEaseType.None && easeType != CEaseType.EaseIn && easeType != CEaseType.EaseOut)
 			{
-				this.easeType = CEaseType.EaseOut;
+				this.easeType = CEaseType.None;
 			}
 			else
 			{
@@ -35,6 +36,7 @@ package Apollo.Objects.Effects.screen
 			}
 			this.duration = duration;
 			this.amount = amount;
+			startTime = GlobalContextConfig.Timer;
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -64,6 +66,15 @@ package Apollo.Objects.Effects.screen
 		
 		private function render(evt: Event): void
 		{
+			if (easeType == CEaseType.None)
+			{
+				if ((GlobalContextConfig.Timer - startTime) >= duration)
+				{
+					removeEventListener(Event.ENTER_FRAME, render);
+					stage.removeChild(this);
+				}
+				return;
+			}
 			if (easeType == CEaseType.EaseIn)
 			{
 				blackScreen.alpha += amount;

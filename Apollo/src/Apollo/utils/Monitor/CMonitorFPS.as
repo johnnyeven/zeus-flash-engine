@@ -1,5 +1,6 @@
 package Apollo.utils.Monitor 
 {
+	import Apollo.Configuration.GlobalContextConfig;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;
@@ -11,10 +12,10 @@ package Apollo.utils.Monitor
 	 */
 	public class CMonitorFPS extends Sprite
 	{
-		private var numFrames: Number = 0; 
-		private var interval: Number = 10 
-		private var startTime: Number; 
-		private var fpsText: TextField; 
+		private var numFrames: Number = 0;
+		private var interval: Number = 10;
+		private var startTime: Number;
+		private var fpsText: TextField;
 		
 		public function CMonitorFPS()
 		{
@@ -50,7 +51,7 @@ package Apollo.utils.Monitor
 				var now:Number = getTimer();
 				var elapsedSeconds: Number = (now - startTime) / 1000;
 				var actualFPS:Number = numFrames / elapsedSeconds;
-				fpsText.text = (actualFPS.toFixed(2));
+				fpsText.text = "Timer: " + GlobalContextConfig.Timer + ", FPS: " + actualFPS.toFixed(2);
 				startTime = now;
 				numFrames = 0;
 			}

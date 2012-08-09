@@ -13,6 +13,10 @@ package Apollo.Configuration
 	public final class GlobalContextConfig 
 	{
 		public static var container: DisplayObjectContainer;
+		/**
+		 * 资源更新周期(秒)
+		 */
+		public static var resourceDelay: uint = 3600;
 		public static var stage: Stage;
 		/**
 		 * 移动同步间隔（毫秒）

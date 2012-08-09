@@ -1,5 +1,6 @@
 package Apollo.Center 
 {
+	import Apollo.Configuration.GlobalContextConfig;
 	import Apollo.Objects.Data.CResourceParameter;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;
@@ -10,8 +11,11 @@ package Apollo.Center
 	public class CResourceCenter 
 	{
 		private var resourcesList: Dictionary;
-		private var resourceMax: Array;
-		private var resourceTrigger: Array;
+		private var resourceMax: Dictionary;
+		private var resourceTrigger: uint;
+		private var startTime: int;
+		private var resourceUpdateTime: uint;
+		private var resourcePerUpdateTime: Number;
 		private static var instance: CResourceCenter;
 		private static var allowInstance: Boolean = false;
 		
@@ -22,17 +26,19 @@ package Apollo.Center
 				throw new IllegalOperationError("CCommandCenter不允许实例化");
 			}
 			resourcesList = new Dictionary();
-			resourceMax = new Array();
-			resourceTrigger = new Array();
+			resourceMax = new Dictionary();
+			resourceTrigger = 0;
+			startTime = GlobalContextConfig.Timer;
+			resourceUpdateTime = 30;
+			resourcePerUpdateTime = resourceUpdateTime / GlobalContextConfig.resourceDelay;
 		}
 		
-		public function registerResource(resourceId: uint, resourceParameter: CResourceParameter, resourceMax: uint = 10000): void
+		public function registerResource(resourceId: uint, resourceParameter: CResourceParameter, _resourceMax: uint = 10000): void
 		{
 			if (resourcesList[resourceId] == null)
 			{
 				resourcesList[resourceId] = resourceParameter;
-				resourceMax[resourceId] = resourceMax;
-				resourceTrigger[resourceId] = 0;
+				resourceMax[resourceId] = _resourceMax;
 			}
 			else
 			{
@@ -48,8 +54,8 @@ package Apollo.Center
 			{
 				resourcesList[resourceId] = null;
 				delete resourcesList[resourceId];
-				resourceMax.splice(resourceId, 1);
-				resourceTrigger.splice(resourceId, 1);
+				resourceMax[resourceId] = null;
+				delete resourceMax[resourceId];
 			}
 		}
 		
@@ -58,13 +64,41 @@ package Apollo.Center
 			if (resourcesList[resourceId] != null)
 			{
 				var resource: CResourceParameter = resourcesList[resourceId] as CResourceParameter;
-				if (resource.resourceAmount + amount >= resourceMax[resourceId]) {
-					resource.resourceAmount = resourceMax[resourceId];
-					resourcesList[resourceId] = resource;
-					return;
-				}
-				resource.resourceAmount += amount;
+				resource.resourceModified += amount;
 				resourcesList[resourceId] = resource;
+			}
+		}
+		
+		public function getResourceList(): Dictionary
+		{
+			return resourcesList;
+		}
+		
+		public function calcResource(): void
+		{
+			var timer: int = GlobalContextConfig.Timer - startTime;
+			if (timer >= resourceUpdateTime * 1000)
+			{
+				//更新资源
+				for (var key: Object in resourcesList)
+				{
+					var resource: CResourceParameter = resourcesList[key] as CResourceParameter;
+					var modified: Number = resource.resourceModified * resourcePerUpdateTime;
+					if ((resource.resourceAmount + modified) < 0)
+					{
+						resource.resourceAmount = 0;
+					}
+					else if (resource.resourceAmount + modified > resourceMax[key as uint])
+					{
+						resource.resourceAmount = resourceMax[key as uint];
+					}
+					else
+					{
+						resource.resourceAmount += modified;
+					}
+					resourcesList[key] = resource;
+				}
+				startTime = GlobalContextConfig.Timer;
 			}
 		}
 		

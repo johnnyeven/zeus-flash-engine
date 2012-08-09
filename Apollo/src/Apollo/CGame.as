@@ -189,8 +189,10 @@ package Apollo
 			
 			CONFIG::DebugMode
 			{
-				var resource: CResourceParameter = new CResourceParameter(0xFF01, "水晶", 2000, 0);
+				var resource: CResourceParameter = new CResourceParameter(0xFF01, "水晶", 2000, 90);
 				CResourceCenter.getInstance().registerResource(0xFF01, resource, 10000);
+				var resource1: CResourceParameter = new CResourceParameter(0xFF01, "光明", 1000, 30);
+				CResourceCenter.getInstance().registerResource(0xFF02, resource1, 5000);
 			}
 		}
 		
@@ -232,8 +234,8 @@ package Apollo
 		public function startGame(): void
 		{
 			_scene.showMap();
-			var blackScreen: CBlackScreen = new CBlackScreen(CEaseType.EaseOut, 100, .02);
-			stage.addChild(blackScreen);
+			//var blackScreen: CBlackScreen = new CBlackScreen(CEaseType.None, 5000, 0);
+			//stage.addChild(blackScreen);
 			if (hasEventListener(Event.ENTER_FRAME))
 			{
 				return;
@@ -259,6 +261,7 @@ package Apollo
 		{
 			GlobalContextConfig.Timer = getTimer();
 			
+			CResourceCenter.getInstance().calcResource();
 			if (_scene.isReady)
 			{
 				_scene.render();

@@ -1,5 +1,6 @@
 package 
 {
+	import Apollo.utils.Monitor.CMonitorResource;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -61,6 +62,9 @@ package
 				
 				var fpsMonitor: CMonitorFPS = new CMonitorFPS();
 				addChild(fpsMonitor);
+				
+				var resourceMonitor: CMonitorResource = new CMonitorResource();
+				addChild(resourceMonitor);
 			}
 		}
 		
@@ -72,7 +76,7 @@ package
 			parameter.playerName = "test";
 			parameter.startX = 400;
 			parameter.startY = 500;
-			CApolloScene.getInstance().createRole("test", CDirection.DOWN, parameter);
+			CApolloScene.getInstance().createRole("char1", CDirection.DOWN, parameter);
 		}
 		
 		private function deactivate(e:Event):void 
