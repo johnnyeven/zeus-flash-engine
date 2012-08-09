@@ -1,6 +1,7 @@
 package Apollo.utils.Monitor 
 {
 	import Apollo.Center.CResourceCenter;
+	import Apollo.Configuration.GlobalContextConfig;
 	import Apollo.Objects.Data.CResourceParameter;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -56,7 +57,7 @@ package Apollo.utils.Monitor
 				for (var key: Object in list)
 				{
 					var resource: CResourceParameter = list[key] as CResourceParameter;
-					textField.appendText("资源" + key + "(" + resource.resourceName + "): " + Math.floor(resource.resourceAmount) + ", 变化率: " + resource.resourceModified + "\n");
+					textField.appendText("资源" + key + "(" + resource.resourceName + "): " + Math.floor(resource.resourceAmount) + ", 变化率: " + resource.resourceModified + "单位/" + GlobalContextConfig.resourceDelay + "秒\n");
 				}
 				numFrames = 0;
 			}
