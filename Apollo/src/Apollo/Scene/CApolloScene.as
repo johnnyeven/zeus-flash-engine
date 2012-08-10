@@ -1,8 +1,9 @@
 package Apollo.Scene 
 {
 	import Apollo.Controller.*;
+	import Apollo.Network.Data.CBuildingParameter;
+	import Apollo.Network.Data.CRoleParameter;
 	import Apollo.Objects.*;
-	import Apollo.Objects.Data.CRoleParameter;
 	import Apollo.Objects.Effects.*;
 	import Apollo.Renders.*;
 	import Apollo.Graphics.*;
@@ -49,6 +50,42 @@ package Apollo.Scene
 		{
 			instance.clear();
 			instance = null;
+		}
+		
+		public function createBuilding(parameter: CBuildingParameter): CBuildingObject
+		{
+			//图形素材
+			var rs: CGraphicCharacter = new CGraphicCharacter();
+			rs.getResourceFromPool(resourceId, 8, 4, 7);
+			
+			//感知器
+			var perception: CPerception = new CPerception(this);
+			//配置控制器
+			var controller: CCharacterController = new CCharacterController(perception);
+			//渲染器
+			var render: CRenderCharacter = new CRenderCharacter();
+			
+			//初始化游戏对象
+			var id: String;
+			if (parameter != null)
+			{
+				if (parameter.objectId != null)
+				{
+					id = parameter.objectId;
+				}
+				else
+				{
+					id = GUID.create();
+				}
+			}
+			var building: CBuildingObject = new CBuildingObject(controller, parameter.buildingId);
+			building.objectId = id;
+			building.graphic = rs;
+			building.render = render;
+			building.setPos(new Point(parameter.x, parameter.y));
+			addObject(building);
+			
+			return building;
 		}
 		
 		public function createRole(resourceId: String, startDirection: uint = CDirection.DOWN, parameter: CRoleParameter = null): CCharacterObject
