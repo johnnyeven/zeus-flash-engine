@@ -5,6 +5,8 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -83,7 +85,17 @@ package
 		
 		private function createBuilding(): void
 		{
-			
+			var url: String = "http://localhost/getbuilding.php";
+			var request: URLRequest = new URLRequest(url);
+			var loader: URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, onLoadComplete);
+			loader.load(request);
+		}
+		
+		private function onLoadComplete(evt: Event): void
+		{
+			var loader: URLLoader = evt.target as URLLoader;
+			trace(loader.data);
 		}
 		
 		private function deactivate(e:Event):void 

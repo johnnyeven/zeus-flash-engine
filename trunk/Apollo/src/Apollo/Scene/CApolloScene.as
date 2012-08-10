@@ -56,7 +56,7 @@ package Apollo.Scene
 		{
 			//图形素材
 			var rs: CGraphicCharacter = new CGraphicCharacter();
-			rs.getResourceFromPool(resourceId, 8, 4, 7);
+			rs.getResourceFromPool(parameter.resourceId, 8, 4, 7);
 			
 			//感知器
 			var perception: CPerception = new CPerception(this);
