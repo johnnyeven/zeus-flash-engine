@@ -3,8 +3,8 @@ package Apollo
 	import Apollo.Center.CBuildingCenter;
 	import Apollo.Center.CResourceCenter;
 	import Apollo.Display.CCamera;
+	import Apollo.Network.Data.CResourceParameter;
 	import Apollo.Objects.*;
-	import Apollo.Objects.Data.CResourceParameter;
 	import Apollo.Scene.CBaseScene;
 	import Apollo.Objects.Effects.*;
 	import Apollo.Controller.CControllerCenter;

@@ -3,8 +3,8 @@ package Apollo.Network.Processor
 	import Apollo.Controller.IControllerMovable;
 	import Apollo.Events.*;
 	import Apollo.CGame;
+	import Apollo.Network.Data.CRoleParameter;
 	import Apollo.Objects.*;
-	import Apollo.Objects.Data.CRoleParameter;
 	import Apollo.Scene.CApolloScene;
 	import Apollo.Configuration.*;
 	import Apollo.Network.Command.CCommandList;

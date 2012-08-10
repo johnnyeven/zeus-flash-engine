@@ -10,7 +10,9 @@ package Apollo.Objects
 {
 	import Apollo.Objects.CMovieObject;
 	import Apollo.Controller.CBaseController;
+	import Apollo.Network.Data.CResourceParameter;
 	import Apollo.Objects.dependency.CDependency;
+	import Apollo.Center.CResourceCenter;
 	
 	import flash.events.Event;
 
@@ -22,18 +24,18 @@ package Apollo.Objects
 
 	public class CBuildingObject extends CMovieObject
 	{
-		protected var buildingId: uint;
-		protected var buildingName: String;
+		protected var _buildingId: uint;
+		protected var _buildingName: String;
 		protected var _level: uint;
-		protected var maxLevel: uint;
+		protected var _maxLevel: uint;
 		/**
 		 * 消耗的资源
 		 */
-		protected var consumeList: Array;
+		protected var _consumeList: Vector.<CResourceParameter>;
 		/**
 		 * 产出的资源
 		 */
-		protected var produceList: Array;
+		protected var _produceList: Vector.<CResourceParameter>;
 		protected var _dependency: CDependency;
 
 		/**
@@ -43,7 +45,53 @@ package Apollo.Objects
 		public function CBuildingObject(_ctrl:CBaseController, _buildingId: uint)
 		{
 			super(_ctrl);
-			buildingId = _buildingId;
+			this._buildingId = _buildingId;
+			_consumeList = new Vector.<CResourceParameter>();
+			_produceList = new Vector.<CResourceParameter>();
+		}
+		
+		public function get consumeList(): Vector.<CResourceParameter>
+		{
+			return _consumeList;
+		}
+		
+		public function get produceList(): Vector.<CResourceParameter>
+		{
+			return _produceList;
+		}
+		
+		public function addConsumeResource(resource: CResourceParameter): void
+		{
+			if (resource != null)
+			{
+				if (resource.resourceModified > 0)
+				{
+					resource.resourceModified *= -1;
+					CONFIG::DebugMode
+					{
+						trace("Warning: ConsumeResource的resourceModified大于零，已自动更正");
+					}
+				}
+				_consumeList.push(resource);
+				CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+			}
+		}
+		
+		public function addProduceResource(resource: CResourceParameter): void
+		{
+			if (resource != null)
+			{
+				if (resource.resourceModified < 0)
+				{
+					resource.resourceModified *= -1;
+					CONFIG::DebugMode
+					{
+						trace("Warning: ProduceResource的resourceModified小于零，已自动更正");
+					}
+				}
+				_produceList.push(resource);
+				CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+			}
 		}
 
 		/**
@@ -52,7 +100,7 @@ package Apollo.Objects
 		 */
 		public function levelUp(value: uint = 1): Boolean
 		{
-			if (_level >= maxLevel)
+			if (_level >= _maxLevel)
 			{
 				return false;
 			}
@@ -68,6 +116,16 @@ package Apollo.Objects
 		{
 			return _level;
 		}
+		
+		public function get buildingId(): uint
+		{
+			return _buildingId;
+		}
+		
+		public function get buildingName(): String
+		{
+			return _buildingName;
+		}
 
 		public function get dependency(): CDependency
 		{
@@ -80,6 +138,7 @@ package Apollo.Objects
 
 		public override function Upgrade(): void
 		{
+			super.Upgrade();
 		}
 
 		public override function destroy(event: Event = null): void

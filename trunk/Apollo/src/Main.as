@@ -1,6 +1,5 @@
 package 
 {
-	import Apollo.utils.Monitor.CMonitorResource;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -15,9 +14,10 @@ package
 	import Apollo.CGame;
 	import Apollo.Events.GameEvent;
 	import Apollo.Objects.CDirection;
-	import Apollo.Objects.Data.CRoleParameter;
 	import Apollo.Scene.CApolloScene;
 	import Apollo.utils.Monitor.CMonitorFPS;
+	import Apollo.Network.Data.CRoleParameter;
+	import Apollo.utils.Monitor.CMonitorResource;
 	/**
 	 * ...
 	 * @author Johnny.EVE
@@ -77,6 +77,13 @@ package
 			parameter.startX = 400;
 			parameter.startY = 500;
 			CApolloScene.getInstance().createRole("char1", CDirection.DOWN, parameter);
+			
+			createBuilding();
+		}
+		
+		private function createBuilding(): void
+		{
+			
 		}
 		
 		private function deactivate(e:Event):void 

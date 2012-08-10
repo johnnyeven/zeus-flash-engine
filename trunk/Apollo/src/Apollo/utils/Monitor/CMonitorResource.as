@@ -2,7 +2,7 @@ package Apollo.utils.Monitor
 {
 	import Apollo.Center.CResourceCenter;
 	import Apollo.Configuration.GlobalContextConfig;
-	import Apollo.Objects.Data.CResourceParameter;
+	import Apollo.Network.Data.CResourceParameter;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;

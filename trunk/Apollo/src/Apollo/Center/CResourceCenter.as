@@ -1,7 +1,7 @@
 package Apollo.Center 
 {
 	import Apollo.Configuration.GlobalContextConfig;
-	import Apollo.Objects.Data.CResourceParameter;
+	import Apollo.Network.Data.CResourceParameter;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;
 	/**
