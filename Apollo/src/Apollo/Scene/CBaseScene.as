@@ -392,6 +392,7 @@ package Apollo.Scene
 		private function onMapLoaded(e: MapEvent): void
 		{
 			_map.removeEventListener(MapEvent.MAP_LOADED, onMapLoaded);
+			_map.render();
 			_isReady = true;
 			dispatchEvent(new SceneEvent(SceneEvent.SCENE_READY));
 		}
