@@ -12,7 +12,6 @@ package Apollo.Center
 	{
 		private var resourcesList: Dictionary;
 		private var resourceMax: Dictionary;
-		private var resourceTrigger: uint;
 		private var startTime: int;
 		private var resourceUpdateTime: uint;
 		private var resourcePerUpdateTime: Number;
@@ -27,7 +26,6 @@ package Apollo.Center
 			}
 			resourcesList = new Dictionary();
 			resourceMax = new Dictionary();
-			resourceTrigger = 0;
 			startTime = GlobalContextConfig.Timer;
 			resourceUpdateTime = 30;
 			resourcePerUpdateTime = resourceUpdateTime / GlobalContextConfig.resourceDelay;
