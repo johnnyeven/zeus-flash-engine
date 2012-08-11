@@ -132,6 +132,7 @@ package Apollo.Objects
 
 		override public function Upgrade(): void
 		{
+			super.Upgrade();
 		}
 	} //end CCharacterObject
 

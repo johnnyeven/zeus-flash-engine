@@ -132,19 +132,10 @@ package Apollo.Objects
 			return _dependency;
 		}
 
-		public override function RenderObject(): void
-		{
-		}
-
 		public override function Upgrade(): void
 		{
 			super.Upgrade();
 		}
-
-		public override function destroy(event: Event = null): void
-		{
-		}
-
 	} //end CBuildingObject
 
 }

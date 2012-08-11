@@ -8,7 +8,7 @@
 
 package Apollo.Controller
 {
-	import Apollo.Controller.CBaseController;
+	import Apollo.Objects.CBuildingObject;
 
 	/**
 	 * @author Administrator
@@ -18,8 +18,13 @@ package Apollo.Controller
 
 	public class CBuildingController extends CBaseController
 	{
-		public function CBuildingController(){
-
+		public function CBuildingController(per: CPerception) {
+			super(per);
+		}
+		
+		override public function calcAction(): void
+		{
+			
 		}
 
 	} //end CBuildingController

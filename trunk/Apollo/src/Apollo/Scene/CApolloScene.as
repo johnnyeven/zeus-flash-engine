@@ -1,5 +1,6 @@
 package Apollo.Scene 
 {
+	import Apollo.Center.CBuildingCenter;
 	import Apollo.Controller.*;
 	import Apollo.Network.Data.CBuildingParameter;
 	import Apollo.Network.Data.CRoleParameter;
@@ -54,35 +55,7 @@ package Apollo.Scene
 		
 		public function createBuilding(parameter: CBuildingParameter): CBuildingObject
 		{
-			//图形素材
-			var rs: CGraphicCharacter = new CGraphicCharacter();
-			rs.getResourceFromPool(parameter.resourceId, 8, 4, 7);
-			
-			//感知器
-			var perception: CPerception = new CPerception(this);
-			//配置控制器
-			var controller: CCharacterController = new CCharacterController(perception);
-			//渲染器
-			var render: CRenderCharacter = new CRenderCharacter();
-			
-			//初始化游戏对象
-			var id: String;
-			if (parameter != null)
-			{
-				if (parameter.objectId != null)
-				{
-					id = parameter.objectId;
-				}
-				else
-				{
-					id = GUID.create();
-				}
-			}
-			var building: CBuildingObject = new CBuildingObject(controller, parameter.buildingId);
-			building.objectId = id;
-			building.graphic = rs;
-			building.render = render;
-			building.setPos(new Point(parameter.x, parameter.y));
+			var building: CBuildingObject = CBuildingCenter.getInstance().createBuilding(parameter);
 			addObject(building);
 			
 			return building;
