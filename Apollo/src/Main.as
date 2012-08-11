@@ -1,5 +1,7 @@
 package 
 {
+	import Apollo.Center.CBuildingCenter;
+	import Apollo.Network.Data.CBuildingParameter;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -85,7 +87,7 @@ package
 		
 		private function createBuilding(): void
 		{
-			var url: String = "http://localhost/getbuilding.php";
+			var url: String = "http://localhost:8080/getbuilding.php";
 			var request: URLRequest = new URLRequest(url);
 			var loader: URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onLoadComplete);
@@ -95,7 +97,10 @@ package
 		private function onLoadComplete(evt: Event): void
 		{
 			var loader: URLLoader = evt.target as URLLoader;
-			trace(loader.data);
+			var json: Object = JSON.parse(loader.data);
+			var buildingParameter: CBuildingParameter = new CBuildingParameter();
+			buildingParameter.fill(json);
+			CApolloScene.getInstance().createBuilding(buildingParameter);
 		}
 		
 		private function deactivate(e:Event):void 
