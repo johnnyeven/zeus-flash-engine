@@ -38,7 +38,7 @@
     <path-element>E:\我的代码\我的Flash程序\Apollo\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
-  <default-frame-rate>30</default-frame-rate>
+  <default-frame-rate>60</default-frame-rate>
   <default-size>
     <width>960</width>
     <height>640</height>

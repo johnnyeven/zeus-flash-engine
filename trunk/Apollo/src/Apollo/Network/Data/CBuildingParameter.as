@@ -89,13 +89,13 @@ package Apollo.Network.Data
 			
 			for (var i: String in data.buildingConsumeList as Array)
 			{
-				var consumeResource: CResourceParameter = new CResourceParameter(data.buildingConsumeList[i].resourceId, data.buildingConsumeList[i].resourceName, 0, data.buildingConsumeList[i].resourceModified);
+				var consumeResource: CResourceParameter = new CResourceParameter(data.buildingConsumeList[i].resourceId, data.buildingConsumeList[i].resourceName, 0, parseInt(data.buildingConsumeList[i].resourceModified));
 				_consumeList.push(consumeResource);
 			}
 			
 			for (var j: String in data.buildingProduceList as Array)
 			{
-				var produceResource: CResourceParameter = new CResourceParameter(data.buildingProduceList[i].resourceId, data.buildingProduceList[i].resourceName, 0, data.buildingProduceList[i].resourceModified);
+				var produceResource: CResourceParameter = new CResourceParameter(data.buildingProduceList[i].resourceId, data.buildingProduceList[i].resourceName, 0, parseInt(data.buildingProduceList[i].resourceModified));
 				_produceList.push(produceResource);
 			}
 		}

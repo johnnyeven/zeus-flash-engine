@@ -14,7 +14,7 @@ package Apollo.Network.Data
 		private var _resourceAmount: Number;
 		private var _resourceModified: uint;
 		
-		public function CResourceParameter(_resourceId: uint, _resourceName: String, _resourceAmount: uint, _resourceModified: uint) 
+		public function CResourceParameter(_resourceId: uint, _resourceName: String, _resourceAmount: uint, _resourceModified: int) 
 		{
 			this._resourceId = _resourceId;
 			this._resourceName = _resourceName;
@@ -52,12 +52,12 @@ package Apollo.Network.Data
 			_resourceAmount = value;
 		}
 		
-		public function get resourceModified():uint 
+		public function get resourceModified():int 
 		{
 			return _resourceModified;
 		}
 		
-		public function set resourceModified(value:uint):void 
+		public function set resourceModified(value: int):void 
 		{
 			_resourceModified = value;
 		}

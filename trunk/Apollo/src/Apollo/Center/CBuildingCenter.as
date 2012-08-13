@@ -4,6 +4,7 @@ package Apollo.Center
 	import Apollo.Controller.CPerception;
 	import Apollo.Graphics.CGraphicCharacter;
 	import Apollo.Network.Data.CBuildingParameter;
+	import Apollo.Network.Data.CResourceParameter;
 	import Apollo.Objects.CBuildingObject;
 	import Apollo.Renders.CRenderBuilding;
 	import Apollo.Scene.CApolloScene;
@@ -63,6 +64,14 @@ package Apollo.Center
 			building.render = render;
 			building.setPos(new Point(buildingParameter.x, buildingParameter.y));
 			building.setDisplayName(buildingParameter.buildingName, 0x00FFFF, 0x000000);
+			for (var keyConsume: String in buildingParameter.consumeList)
+			{
+				building.addConsumeResource(buildingParameter.consumeList[keyConsume] as CResourceParameter);
+			}
+			for (var keyProduce: String in buildingParameter.produceList)
+			{
+				building.addProduceResource(buildingParameter.consumeList[keyProduce] as CResourceParameter);
+			}
 			
 			registerBuilding(building);
 			return building;
