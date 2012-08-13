@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2012/8/11'</value>
+      <value>'2012/8/13'</value>
     </define>
     <define append="true">
       <name>CONFIG::DebugMode</name>
@@ -38,7 +38,7 @@
     <path-element>E:\我的代码\我的Flash程序\Apollo\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#000000</default-background-color>
-  <default-frame-rate>30</default-frame-rate>
+  <default-frame-rate>60</default-frame-rate>
   <default-size>
     <width>960</width>
     <height>640</height>

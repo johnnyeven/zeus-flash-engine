@@ -76,7 +76,7 @@ package Apollo.Objects
 			_characterName = _name;
 			
 			var nameText: TextFieldEx = new TextFieldEx('', 0xFFFFFF);
-			nameText.text = _name;
+			nameText.text = pos.x + "|||" + pos.y;
 			nameText.autoIncrease();
 			nameText.textColor = _color;
 			nameText.fontBorder = _borderColor;

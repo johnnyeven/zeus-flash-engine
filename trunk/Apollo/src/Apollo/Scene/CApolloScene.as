@@ -102,13 +102,13 @@ package Apollo.Scene
 			
 			if (parameter != null)
 			{
-				if (parameter.playerName != null)
-				{
-					player.setCharacterName(parameter.playerName, 0x00FFFF, 0x000000);
-				}
 				if (parameter.startX != int.MIN_VALUE && parameter.startY != int.MIN_VALUE)
 				{
 					player.setPos(new Point(parameter.startX, parameter.startY));
+				}
+				if (parameter.playerName != null)
+				{
+					player.setCharacterName(parameter.playerName, 0x00FFFF, 0x000000);
 				}
 			}
 			setRoleController(controller, player.objectId);
