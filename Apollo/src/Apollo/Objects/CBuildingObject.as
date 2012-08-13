@@ -13,7 +13,11 @@ package Apollo.Objects
 	import Apollo.Network.Data.CResourceParameter;
 	import Apollo.Objects.dependency.CDependency;
 	import Apollo.Center.CResourceCenter;
+	import Apollo.Display.TextFieldEx;
 	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 
 	/**
@@ -28,6 +32,8 @@ package Apollo.Objects
 		protected var _buildingName: String;
 		protected var _level: uint;
 		protected var _maxLevel: uint;
+		protected var _nameDisplayBuffer: Bitmap;
+		protected var _additionalDisplay: Array;
 		/**
 		 * 消耗的资源
 		 */
@@ -135,6 +141,111 @@ package Apollo.Objects
 		public override function Upgrade(): void
 		{
 			super.Upgrade();
+		}
+		
+		public function setDisplayName(_name: String, _color:Number, _borderColor:Number): void
+		{
+			if (_name == "" || _name == null)
+			{
+				return;
+			}
+			_buildingName = _name;
+			
+			var nameText: TextFieldEx = new TextFieldEx('', 0xFFFFFF);
+			nameText.text = pos.x + "|||" + pos.y;
+			nameText.autoIncrease();
+			nameText.textColor = _color;
+			nameText.fontBorder = _borderColor;
+			nameText.align = TextFieldEx.CENTER;
+			
+			if (_nameDisplayBuffer != null)
+			{
+				_nameDisplayBuffer.bitmapData.dispose();
+			}
+			else
+			{
+				_nameDisplayBuffer = new Bitmap();
+			}
+			
+			var _nameBitmapData: BitmapData = new BitmapData(nameText.width, nameText.height, true, 0x00000000);
+			_nameBitmapData.draw(nameText);
+			
+			_nameDisplayBuffer.bitmapData = _nameBitmapData;
+			autoFixNamePos();
+			addAdditionalDisplay(_nameDisplayBuffer);
+			
+			nameText = null;
+		}
+		
+		protected function autoFixNamePos(): void
+		{
+			_nameDisplayBuffer.x = -int(_nameDisplayBuffer.width / 2);
+			_nameDisplayBuffer.y = -int(_graphic.frameHeight);
+		}
+		
+		public function addAdditionalDisplay(o: DisplayObject): void
+		{
+			if (_additionalDisplay == null)
+			{
+				_additionalDisplay = new Array();
+			}
+			else
+			{
+				if (_additionalDisplay.indexOf(o) != -1)
+				{
+					return;
+				}
+			}
+			_additionalDisplay.push(o);
+			addChild(o);
+		}
+		
+		public function removeAdditionalDisplay(o: DisplayObject): void
+		{
+			if (o == null)
+			{
+				for each (var i: int in _additionalDisplay)
+				{
+					if (_additionalDisplay[i] == o)
+					{
+						_additionalDisplay[i].clear();
+						_additionalDisplay.splice(i, 1);
+						removeChild(_additionalDisplay[i]);
+						break;
+					}
+				}
+			}
+		}
+		
+		public function removeAdditionalDisplayById(id: int = -1): void
+		{
+			if (id == -1)
+			{
+				while (_additionalDisplay.length)
+				{
+					_additionalDisplay[0].clear();
+					_additionalDisplay.splice(0, 1);
+					removeChild(_additionalDisplay[0]);
+				}
+			}
+			else
+			{
+				if (id > _additionalDisplay.length || _additionalDisplay[id] == null)
+				{
+					return;
+				}
+				else
+				{
+					_additionalDisplay[id].clear();
+					_additionalDisplay.splice(id, 1);
+					removeChild(_additionalDisplay[id]);
+				}
+			}
+		}
+		
+		public function get additionalDisplay(): Array
+		{
+			return _additionalDisplay;
 		}
 	} //end CBuildingObject
 

@@ -62,6 +62,7 @@ package Apollo.Center
 			building.graphic = rs;
 			building.render = render;
 			building.setPos(new Point(buildingParameter.x, buildingParameter.y));
+			building.setDisplayName(buildingParameter.buildingName, 0x00FFFF, 0x000000);
 			
 			registerBuilding(building);
 			return building;

@@ -109,17 +109,21 @@ package Apollo.Scene
 				{
 					continue;
 				}
-				if (CCamera.cameraView.containsPoint(o.pos))
+				if (_map.cameraCutView.containsPoint(o.pos))
 				{
 					pushRenderList(o);
 				}
 				else
 				{
-					(o.controller == null || o is CCharacterObject) ? pullRenderList(o) : o.isMovingOut(); 
-				}
-				if (!_map.cameraCutView.containsPoint(o.pos))
-				{
 					pullRenderList(o);
+				}
+				if (CCamera.cameraView.containsPoint(o.pos))
+				{
+					o.isMovingIn();
+				}
+				else
+				{
+					o.isMovingOut();
 				}
 			}
 		}
@@ -140,6 +144,10 @@ package Apollo.Scene
 				if (map.cameraCutView.containsPoint(o.pos))
 				{
 					pushRenderList(o);
+				}
+				if (map.cameraView.containsPoint(o.pos))
+				{
+					o.isMovingIn();
 				}
 			}
 		}
