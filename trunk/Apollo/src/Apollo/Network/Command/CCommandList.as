@@ -20,7 +20,7 @@ package Apollo.Network.Command
 			}
 		}
 		
-		public function bind(flag: int, protocol: Class): void
+		public function bind(flag: uint, protocol: Class): void
 		{
 			if (commandList[flag] == null)
 			{
@@ -28,7 +28,7 @@ package Apollo.Network.Command
 			}
 		}
 		
-		public function unbind(flag: int, protocol: Class): void
+		public function unbind(flag: uint, protocol: Class): void
 		{
 			if (commandList[flag] != null)
 			{

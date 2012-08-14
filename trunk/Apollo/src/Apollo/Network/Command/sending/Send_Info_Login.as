@@ -1,6 +1,6 @@
 package Apollo.Network.Command.sending 
 {
-	import Apollo.Configuration.SocketContextConfig;
+	import Apollo.Configuration.ConnectorContextConfig;
 	/**
 	 * ...
 	 * @author johnnyeven
@@ -12,20 +12,15 @@ package Apollo.Network.Command.sending
 		
 		public function Send_Info_Login() 
 		{
-			super(SocketContextConfig.CONTROLLER_INFO, SocketContextConfig.ACTION_LOGIN);
+			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_LOGIN);
 		}
 		
 		override public function fill():void 
 		{
 			super.fill();
 			
-			_byteArray.writeInt(UserName.length);
-			_byteArray.writeByte(SocketContextConfig.TYPE_STRING);
-			_byteArray.writeUTFBytes(UserName);
-			
-			_byteArray.writeInt(UserPass.length);
-			_byteArray.writeByte(SocketContextConfig.TYPE_STRING);
-			_byteArray.writeUTFBytes(UserPass);
+			_urlVariables.user_name = UserName;
+			_urlVariables.user_pass = UserPass;
 		}
 	}
 

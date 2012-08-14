@@ -19,13 +19,8 @@ package Apollo.Network.Command.sending
 		{
 			super.fill();
 			
-			_byteArray.writeInt(AuthKey.length);
-			_byteArray.writeByte(SocketContextConfig.TYPE_STRING);
-			_byteArray.writeUTFBytes(AuthKey);
-			
-			_byteArray.writeInt(4);
-			_byteArray.writeByte(SocketContextConfig.TYPE_INT);
-			_byteArray.writeInt(UserId);
+			_urlVariables.auth_key = AuthKey;
+			_urlVariables.user_id = UserId;
 		}
 	}
 

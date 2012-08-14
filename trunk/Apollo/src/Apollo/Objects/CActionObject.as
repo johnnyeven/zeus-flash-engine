@@ -214,10 +214,6 @@ package Apollo.Objects
 				needChangeFrame = true;
 			}
 			_action = act;
-			if (_controller.perception.scene.player == this)
-			{
-				CCommandCenter.commandChangeAction(_action);
-			}
 			staticUpdate = false;
 			
 			setLoopPlay();

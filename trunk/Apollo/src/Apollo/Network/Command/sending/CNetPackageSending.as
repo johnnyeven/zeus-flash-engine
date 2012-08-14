@@ -2,7 +2,7 @@ package Apollo.Network.Command.sending
 {
 	import Apollo.Network.Command.CCommandBase;
 	import Apollo.Network.Command.interfaces.INetPackageSending;
-	import flash.utils.ByteArray;
+	import flash.net.URLVariables;
 	
 	/**
 	 * ...
@@ -10,25 +10,23 @@ package Apollo.Network.Command.sending
 	 */
 	public class CNetPackageSending extends CCommandBase implements INetPackageSending 
 	{
-		protected var _byteArray: ByteArray;
+		protected var _urlVariables: URLVariables;
 		
-		public function CNetPackageSending(controller:int, action:int) 
+		public function CNetPackageSending(controller: String, action: String) 
 		{
-			_byteArray = new ByteArray();
 			super(controller, action);
 		}
 		
 		/* INTERFACE com.Network.INetPackageSending */
 		
-		public function fill():void 
+		public function fill(): void 
 		{
-			_byteArray.clear();
-			_byteArray.writeByte((controller << 4) | action);
+			_urlVariables = new URLVariables();
 		}
 		
-		public function get byteArray():ByteArray 
+		public function get urlVariables(): URLVariables 
 		{
-			return _byteArray;
+			return _urlVariables;
 		}
 		
 	}

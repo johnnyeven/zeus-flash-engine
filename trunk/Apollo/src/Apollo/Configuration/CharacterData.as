@@ -8,7 +8,6 @@
 
 package Apollo.Configuration
 {
-	import Apollo.Network.CControlConnection;
 	import Apollo.Controller.KeyCode;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;

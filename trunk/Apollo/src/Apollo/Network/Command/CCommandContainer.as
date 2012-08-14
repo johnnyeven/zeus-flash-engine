@@ -17,13 +17,16 @@ package Apollo.Network.Command
 			commandList = new Dictionary();
 		}
 		
-		public function getCommand(flag: int): INetPackageReceiving
+		public function getCommand(flag: uint): INetPackageReceiving
 		{
 			if (commandList[flag] != null)
 			{
 				return new commandList[flag];
 			}
-			trace("Undefined Protocol Id: " + flag);
+			CONFIG::DebugMode
+			{
+				trace("Undefined Protocol Id: " + flag);
+			}
 			return null;
 		}
 	}
