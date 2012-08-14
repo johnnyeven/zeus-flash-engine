@@ -61,11 +61,9 @@ package Apollo.Center
 		{
 			if (resourcesList[resourceId] != null)
 			{
-				trace((resourcesList[resourceId] as CResourceParameter).resourceModified);
 				var resource: CResourceParameter = resourcesList[resourceId] as CResourceParameter;
 				resource.resourceModified += amount;
 				resourcesList[resourceId] = resource;
-				trace((resourcesList[resourceId] as CResourceParameter).resourceModified);
 			}
 		}
 		

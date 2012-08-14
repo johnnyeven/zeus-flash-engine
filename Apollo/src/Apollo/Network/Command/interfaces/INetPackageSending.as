@@ -1,6 +1,6 @@
 package Apollo.Network.Command.interfaces 
 {
-	import flash.utils.ByteArray;
+	import flash.net.URLVariables;
 	
 	/**
 	 * ...
@@ -9,7 +9,7 @@ package Apollo.Network.Command.interfaces
 	public interface INetPackageSending 
 	{
 		function fill(): void;
-		function get byteArray(): ByteArray;
+		function get urlVariables(): URLVariables;
 	}
 	
 }

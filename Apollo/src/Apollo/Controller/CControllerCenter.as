@@ -2,7 +2,6 @@ package Apollo.Controller
 {
 	import Apollo.Maps.CWorldMap;
 	import Apollo.Network.*;
-	import Apollo.Network.Command.receiving.Receive_Info_CameraView;
 	import Apollo.Objects.*;
 	import Apollo.Configuration.*;
 	import Apollo.Events.*;
@@ -71,23 +70,14 @@ package Apollo.Controller
 		
 		protected function setupNetworkProcessor(): void
 		{
-			CProcessorRouter.getInstance().add(new CSceneProcessor());
+			//CProcessorRouter.getInstance().add(new CSceneProcessor());
 		}
 		
 		public function requestRefreshCamaraView(): void
 		{
 			//if (GlobalContextConfig.Timer - _preCameraViewTimer > GlobalContextConfig.cameraview_trigger)
 			//{
-				var map: CWorldMap = CApolloScene.getInstance().map;
-				//trace("当前坐标：" + _player_controller.controlObject.pos.x + ", " + _player_controller.controlObject.pos.y + "请求：" + map.cameraCutView.x + "," + map.cameraCutView.y + "," + map.cameraCutView.width + "," + map.cameraCutView.height);
-				var protocol: Send_Info_CameraView = new Send_Info_CameraView();
-				protocol.guid = CharacterData.Guid;
-				protocol.x = map.cameraCutView.x;
-				protocol.y = map.cameraCutView.y;
-				protocol.width = map.cameraCutView.width;
-				protocol.height = map.cameraCutView.height;
-				//CCommandCenter.getInstance().send(protocol);
-				//_preCameraViewTimer = GlobalContextConfig.Timer;
+				
 			//}
 		}
 		

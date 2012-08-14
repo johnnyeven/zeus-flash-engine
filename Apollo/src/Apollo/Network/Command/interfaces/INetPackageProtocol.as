@@ -7,8 +7,8 @@ package Apollo.Network.Command.interfaces
 	 */
 	public interface INetPackageProtocol 
 	{
-		function get controller(): int;
-		function get action(): int;
+		function get controller(): String;
+		function get action(): String;
 	}
 	
 }

@@ -84,8 +84,6 @@ package Apollo.Controller.Skill
 			sing.addEventListener(SkillEvent.SING_COMPLETED, onSkillPrepared);
 			_controlObject.controller.perception.scene.addObject(sing);
 			_isLastActionOver = false;
-			
-			CCommandCenter.commandBattleSing(skillId, skillLevel, _controlObject.direction, target);
 		}
 		
 		protected function onSkillPrepared(event: SkillEvent): void

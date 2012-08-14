@@ -136,7 +136,6 @@ package Apollo
 		{
 			_scene = CApolloScene.getInstance();
 			_scene.addEventListener(SceneEvent.SCENE_READY, onSceneReady);
-			//_scene.initMap(_mapId, _player_startX, _player_startY);
 			_scene.initMap(_mapId);
 		}
 		

@@ -8,7 +8,7 @@ package Apollo.Network.Command.interfaces
 	 */
 	public interface INetPackageReceiving 
 	{
-		function fill(bytes: ByteArray): void;
+		function fill(data: Object): void;
 	}
 	
 }

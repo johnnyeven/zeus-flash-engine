@@ -13,7 +13,6 @@ package Apollo.Objects
 	import Apollo.Graphics.CGraphicResource;
 	import Apollo.Controller.CBaseController;
 	import Apollo.Renders.CRender;
-	import Apollo.Network.Command.sending.Send_Info_ChangeDirection;
 	import Apollo.Center.CCommandCenter;
 	
 	import flash.display.Bitmap;
@@ -170,10 +169,6 @@ package Apollo.Objects
 		public function set direction(d: uint): void
 		{
 			_direction = d;
-			if (CApolloScene.getInstance().player == this)
-			{
-				CCommandCenter.commandChangeDirection(_direction);
-			}
 		}
 		
 		public function get direction(): uint

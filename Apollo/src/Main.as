@@ -2,6 +2,7 @@ package
 {
 	import Apollo.Center.CBuildingCenter;
 	import Apollo.Network.Data.CBuildingParameter;
+	import Apollo.Network.CWebConnector;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -42,7 +43,7 @@ package
 			try
 			{
 				var game: CGame = CGame.getInstance();
-				game.addEventListener(GameEvent.GAME_START, onGameStart);
+				//game.addEventListener(GameEvent.GAME_START, onGameStart);
 				addChild(game);
 			}
 			catch (err: Error)

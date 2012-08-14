@@ -15,7 +15,6 @@ package Apollo.Controller
 	
 	import Apollo.Objects.CGameObject;
 	import Apollo.Objects.CDirection;
-	import Apollo.Network.CControlConnection;
 	import Apollo.Controller.Skill.CSkill;
 
 	/**

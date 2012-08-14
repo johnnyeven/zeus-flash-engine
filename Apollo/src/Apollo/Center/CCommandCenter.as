@@ -1,9 +1,9 @@
 package Apollo.Center 
 {
 	import Apollo.Network.Command.interfaces.*;
-	import Apollo.Network.CNetSocket;
 	import Apollo.Network.Command.CCommandList;
 	import Apollo.Network.Command.sending.*;
+	import Apollo.Network.CWebConnector;
 	import Apollo.Objects.CGameObject;
 	
 	import flash.errors.IllegalOperationError;
@@ -16,7 +16,7 @@ package Apollo.Center
 	 */
 	public class CCommandCenter extends CBaseCenter 
 	{
-		private var socket: CNetSocket;
+		private var connector: CWebConnector;
 		private var command: CCommandList;
 		private static var instance: CCommandCenter;
 		private static var allowInstance: Boolean = false;
@@ -29,11 +29,11 @@ package Apollo.Center
 				throw new IllegalOperationError("CCommandCenter不允许实例化");
 			}
 			command = CCommandList.getInstance();
-			socket = CNetSocket.getInstance();
-			socket.addCallback(process);
+			connector = CWebConnector.getInstance();
+			connector.addCallback(process);
 		}
 		
-		private function process(flag: int, data: ByteArray): void
+		private function process(flag: uint, data: Object): void
 		{
 			var protocol: INetPackageReceiving = command.getCommand(flag);
 			if (protocol != null)
@@ -43,20 +43,20 @@ package Apollo.Center
 			}
 		}
 		
-		public function add(flag: int, processor: Function): void
+		public function add(flag: uint, processor: Function): void
 		{
 			addCallback(flag, processor);
 		}
 		
-		public function remove(flag: int, processor: Function): void
+		public function remove(flag: uint, processor: Function): void
 		{
 			removeCallback(flag, processor);
 		}
 		
-		public function send(protocol: INetPackageSending): void
+		public function send(protocol: CNetPackageSending): void
 		{
 			protocol.fill();
-			socket.send(protocol.byteArray);
+			connector.send(protocol.urlPath, protocol.urlVariables);
 		}
 		
 		public static function getInstance(): CCommandCenter
@@ -68,62 +68,6 @@ package Apollo.Center
 				allowInstance = false;
 			}
 			return instance;
-		}
-		
-		public static function commandChangeAction(action: int): void
-		{
-			var protocol: Send_Info_ChangeAction = new Send_Info_ChangeAction();
-			protocol.Action = action;
-			getInstance().send(protocol);
-		}
-		
-		public static function commandChangeDirection(direction: int): void
-		{
-			var protocol: Send_Info_ChangeDirection = new Send_Info_ChangeDirection();
-			protocol.Direction = direction;
-			getInstance().send(protocol);
-		}
-		
-		public static function commandMoveSync(startX: int, startY: int): void
-		{
-			var protocol: Send_Move_Move = new Send_Move_Move();
-			protocol.TargetX = startX;
-			protocol.TargetY = startY;
-			getInstance().send(protocol);
-		}
-		
-		public static function commandMoveTo(startX: int, startY: int): void
-		{
-			var protocol: Send_Move_MoveTo = new Send_Move_MoveTo();
-			protocol.TargetX = startX;
-			protocol.TargetY = startY;
-			getInstance().send(protocol);
-		}
-		
-		public static function commandBattleSing(skillId: String, skillLevel: int, direction: int, target: *): void
-		{
-			var protocol: Send_Battle_Sing = new Send_Battle_Sing();
-			protocol.SkillId = skillId;
-			protocol.SkillLevel = skillLevel;
-			protocol.Direction = direction;
-			protocol.Target = target;
-			getInstance().send(protocol);
-		}
-		
-		public static function commandAttack(target: *, skillId: String): void
-		{
-			var protocol: Send_Battle_Attack = new Send_Battle_Attack();
-			protocol.SkillId = skillId;
-			if (target is Point)
-			{
-				protocol.TargetX = (target as Point).x;
-				protocol.TargetY = (target as Point).y;
-			}
-			else if (target is CGameObject)
-			{
-				protocol.TargetId = (target as CGameObject).objectId;
-			}
-			getInstance().send(protocol);
 		}
 	}
 

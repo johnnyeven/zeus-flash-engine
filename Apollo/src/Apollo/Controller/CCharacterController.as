@@ -11,7 +11,6 @@ package Apollo.Controller
 	import Apollo.Controller.CBaseController;
 	import Apollo.Objects.*;
 	import Apollo.Maps.CWorldMap;
-	import Apollo.Network.CControlConnection;
 	import Apollo.Controller.Skill.CSkillNPC;
 
 	import flash.geom.Point;

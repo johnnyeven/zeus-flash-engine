@@ -13,7 +13,6 @@ package Apollo.Controller
 	import Apollo.Objects.CNPCCharacter;
 	import Apollo.Maps.CWorldMap;
 	import Apollo.Objects.CDirection;
-	import Apollo.Network.CControlConnection;
 
 	import flash.geom.Point;
 	

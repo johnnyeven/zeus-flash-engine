@@ -26,42 +26,16 @@ package Apollo.Network.Processor
 			super("Processor.SceneProcessor");
 			var commandList: CCommandList = CCommandList.getInstance();
 			commandList.bind(0x0000, Receive_Info_CameraView);
-			commandList.bind(0x000b, Receive_NPC_Move_MoveTo);
-			commandList.bind(0x010b, Receive_NPC_Move_Move);
 		}
 		
 		override public function hook():void 
 		{
 			commandCenter.add(0x0000, onCameraViewRefresh);
-			commandCenter.add(0x000b, onNPCMoveTo);
-			commandCenter.add(0x010b, onNPCMove);
 		}
 		
 		override public function unhook():void 
 		{
 			commandCenter.remove(0x0000, onCameraViewRefresh);
-			commandCenter.remove(0x000b, onNPCMoveTo);
-			commandCenter.remove(0x010b, onNPCMove);
-		}
-		
-		private function onNPCMoveTo(protocol: Receive_NPC_Move_MoveTo): void
-		{
-			var scene: CApolloScene = CApolloScene.getInstance();
-			var c: CGameObject = scene.getObjectById(protocol.guid);
-			if (c == null)
-			{
-				
-			}
-			else
-			{
-				(c.controller as IControllerMovable).moveTo(protocol.targetX, protocol.targetY);
-			}
-		}
-		
-		private function onNPCMove(protocol: Receive_NPC_Move_Move): void
-		{
-			var scene: CApolloScene = CApolloScene.getInstance();
-			var c: CGameObject = scene.getObjectById(protocol.guid);
 		}
 		
 		private function onCameraViewRefresh(protocol: Receive_Info_CameraView): void
