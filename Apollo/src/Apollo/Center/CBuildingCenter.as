@@ -70,7 +70,7 @@ package Apollo.Center
 			}
 			for (var keyProduce: String in buildingParameter.produceList)
 			{
-				building.addProduceResource(buildingParameter.consumeList[keyProduce] as CResourceParameter);
+				building.addProduceResource(buildingParameter.produceList[keyProduce] as CResourceParameter);
 			}
 			
 			registerBuilding(building);

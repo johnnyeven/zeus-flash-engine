@@ -90,12 +90,14 @@ package Apollo.Network.Data
 			for (var i: String in data.buildingConsumeList as Array)
 			{
 				var consumeResource: CResourceParameter = new CResourceParameter(data.buildingConsumeList[i].resourceId, data.buildingConsumeList[i].resourceName, 0, parseInt(data.buildingConsumeList[i].resourceModified));
+				trace("consume: " + consumeResource.resourceId + "|||" + consumeResource.resourceName + "|||" + consumeResource.resourceAmount + "|||" + consumeResource.resourceModified);
 				_consumeList.push(consumeResource);
 			}
 			
 			for (var j: String in data.buildingProduceList as Array)
 			{
 				var produceResource: CResourceParameter = new CResourceParameter(data.buildingProduceList[i].resourceId, data.buildingProduceList[i].resourceName, 0, parseInt(data.buildingProduceList[i].resourceModified));
+				trace("produce: " + produceResource.resourceId + "|||" + produceResource.resourceName + "|||" + produceResource.resourceAmount + "|||" + produceResource.resourceModified);
 				_produceList.push(produceResource);
 			}
 		}
