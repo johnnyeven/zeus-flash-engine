@@ -79,6 +79,7 @@ package Apollo.Objects
 					}
 				}
 				_consumeList.push(resource);
+				trace("modify consume Resource: " + resource.resourceId);
 				CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
 			}
 		}
@@ -96,6 +97,7 @@ package Apollo.Objects
 					}
 				}
 				_produceList.push(resource);
+				trace("modify produce Resource: " + resource.resourceId);
 				CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
 			}
 		}
