@@ -18,6 +18,7 @@ package Apollo.Configuration
 		public static var ACTION_LOGIN: String = "login";
 		public static var ACTION_REQUEST_CHARACTER: String = "requestCharacterList";
 		public static var ACTION_INIT_CHARACTER: String = "initCharacter";
+		public static var ACTION_CAMERAVIEW_OBJECT_LIST: String = "requestViewObjects";
 		
 		public function ConnectorContextConfig() 
 		{

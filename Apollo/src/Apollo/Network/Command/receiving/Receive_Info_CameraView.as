@@ -32,7 +32,7 @@ package Apollo.Network.Command.receiving
 		
 		public function Receive_Info_CameraView() 
 		{
-			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_INIT_CHARACTER);
+			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_CAMERAVIEW_OBJECT_LIST);
 		}
 		
 		override public function fill(data: Object): void 
