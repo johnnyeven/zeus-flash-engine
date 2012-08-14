@@ -70,7 +70,7 @@ package Apollo.Controller
 		
 		protected function setupNetworkProcessor(): void
 		{
-			//CProcessorRouter.getInstance().add(new CSceneProcessor());
+			CProcessorRouter.getInstance().add(new CSceneProcessor());
 		}
 		
 		public function requestRefreshCamaraView(): void

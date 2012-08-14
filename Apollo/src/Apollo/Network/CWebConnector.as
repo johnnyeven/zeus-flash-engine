@@ -90,7 +90,7 @@ package Apollo.Network
 				{
 					CONFIG::DebugMode
 					{
-						trace("Error: CWebConnector.as[66] JSON.parse error - error id: " + err.errorID + ", error message: " + err.message);
+						trace("Error: CWebConnector.as[93] JSON.parse error - error id: " + err.errorID + ", error message: " + err.message);
 					}
 				}
 			}
@@ -119,7 +119,7 @@ package Apollo.Network
 				{
 					CONFIG::DebugMode
 					{
-						trace("Error: CWebConnector.as[93] URLLoader.load error - error id: " + err.errorID + ", error message: " + err.message);
+						trace("Error: CWebConnector.as[122] URLLoader.load error - error id: " + err.errorID + ", error message: " + err.message);
 					}
 				}
 			}
@@ -127,7 +127,7 @@ package Apollo.Network
 			{
 				CONFIG::DebugMode
 				{
-					trace("Warning: CWebConnector.as[125] URLVariables is empty");
+					trace("Warning: CWebConnector.as[130] URLVariables is empty");
 				}
 			}
 		}
