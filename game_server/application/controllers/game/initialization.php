@@ -105,6 +105,66 @@ class Initialization extends CI_Controller {
 			$this->logs->write($logParameter);
 		}
 	}
+	
+	public function requestCharacterList($format = 'json') {
+		$guid  			=	$this->input->get_post('guid', TRUE);
+		$gameId		=	$this->input->get_post('game_id', TRUE);
+		$section_id	=	$this->input->get_post('server_section', TRUE);
+		$server_id  	=	$this->input->get_post('server_id', TRUE);
+		
+		if(!empty($guid) && $gameId!==FALSE && $section_id!==FALSE && $server_id!==FALSE) {
+			/*
+			 * 检测参数合法性
+			*/
+			$authToken	=	$this->authKey[$gameId]['auth_key'];
+			$check = array($guid, $gameId, $section_id, $server_id);
+			//$this->load->helper('security');
+			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
+			if(!$this->param_check->check($check, $authToken)) {
+				$jsonData = Array(
+						'flag'			=>	0x0400,
+						'message'	=>	-4
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'		=>	'PARAM_INVALID',
+						'account_guid'	=>	$guid
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			/*
+			 * 检查完毕
+			*/
+			$this->load->model('game_account');
+			$parameter = array(
+				'account_guid'				=>	$guid,
+				'game_id'						=>	$gameId,
+				'account_server_section'	=>	$section_id,
+				'account_server_id'			=>	$server_id
+			);
+			$result = $this->game_account->getAllResult($parameter);
+			$jsonData = Array(
+				'flag'			=>	0x0400,
+				'message'	=>	1,
+				'result'		=>	$result
+			);
+			echo $this->return_format->format($jsonData, $format);
+		} else {
+			$jsonData = Array(
+					'flag'			=>	0x0400,
+					'message'	=>	0
+			);
+			echo $this->return_format->format($jsonData, $format);
+			
+			$logParameter = array(
+					'log_action'	=>	'ACCOUNT_LOGIN_ERROR_NO_PARAM',
+					'account_guid'	=>	'',
+					'account_name'	=>	''
+			);
+			$this->logs->write($logParameter);
+		}
+	}
 }
 
 /* End of file welcome.php */
