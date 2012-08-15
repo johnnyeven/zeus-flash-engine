@@ -8,10 +8,7 @@ package Apollo.Network.Command.receiving
 	 */
 	public class Receive_Info_Login extends CNetPackageReceiving 
 	{
-		public var ServerIP: String;
-		public var ServerPort: int = int.MIN_VALUE;
-		public var AuthKey: String;
-		public var UserId: int = int.MIN_VALUE;
+		public var GUID: String = "";
 		
 		public function Receive_Info_Login() 
 		{
@@ -24,10 +21,7 @@ package Apollo.Network.Command.receiving
 			
 			if (message == ConnectorContextConfig.ACK_CONFIRM)
 			{
-				ServerIP = data.server_ip;
-				ServerPort = data.server_port;
-				AuthKey = data.auth_key;
-				UserId = data.user_id;
+				GUID = data.guid;
 			}
 		}
 	}

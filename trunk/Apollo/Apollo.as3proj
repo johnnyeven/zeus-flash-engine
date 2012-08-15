@@ -54,6 +54,7 @@
     <element path="bin\resources\font.swc" />
     <element path="lib\SkinBuilderLAF.swc" />
     <element path="lib\AsWing.swc" />
+    <element path="lib\as3corelib.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

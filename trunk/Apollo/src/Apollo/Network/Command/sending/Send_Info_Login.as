@@ -1,6 +1,7 @@
 package Apollo.Network.Command.sending 
 {
 	import Apollo.Configuration.ConnectorContextConfig;
+	import com.adobe.crypto.*;
 	/**
 	 * ...
 	 * @author johnnyeven
@@ -21,6 +22,14 @@ package Apollo.Network.Command.sending
 			
 			_urlVariables.user_name = UserName;
 			_urlVariables.user_pass = UserPass;
+			
+			generateCode();
+		}
+		
+		override protected function generateCode(): void
+		{
+			var check: Array = new Array(_urlVariables.user_name, _urlVariables.user_pass, _urlVariables.game_id, _urlVariables.server_section);
+			_urlVariables.check_code = generateArrayCode(check);
 		}
 	}
 
