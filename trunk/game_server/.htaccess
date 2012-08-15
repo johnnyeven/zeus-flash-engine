@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteBase /game_server/
+RewriteCond $1 !^(default\.html|index\.php|resources|robot\.txt|WebManageSystemV2|phpMyAdmin|update|~update|froum)
+RewriteRule ^(.*)$ index.php/$1 [L]
