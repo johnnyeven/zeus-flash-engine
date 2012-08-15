@@ -1,8 +1,13 @@
 package 
 {
 	import Apollo.Center.CBuildingCenter;
+	import Apollo.Center.CCommandCenter;
+	import Apollo.Events.NetworkEvent;
+	import Apollo.Network.Command.sending.Send_Info_Login;
 	import Apollo.Network.Data.CBuildingParameter;
 	import Apollo.Network.CWebConnector;
+	import Apollo.Network.Processor.CLoginProcessor;
+	import Apollo.Network.Processor.CProcessorRouter;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -40,6 +45,18 @@ package
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			// entry point
+			var processorRouter: CProcessorRouter = CProcessorRouter.getInstance();
+			processorRouter.add(new CLoginProcessor());
+			
+			var loginProtocol: Send_Info_Login = new Send_Info_Login();
+			loginProtocol.UserName = "johnnyeven";
+			loginProtocol.UserPass = "19871113";
+			CCommandCenter.getInstance().send(loginProtocol);
+			CCommandCenter.getInstance().addEventListener(NetworkEvent.LOGIN_SUCCESS, onLoginSuccess);
+		}
+		
+		private function onLoginSuccess(evt: NetworkEvent): void
+		{
 			try
 			{
 				var game: CGame = CGame.getInstance();

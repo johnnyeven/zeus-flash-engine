@@ -1,7 +1,10 @@
 package Apollo.Network.Command.sending 
 {
+	import Apollo.Configuration.ConnectorContextConfig;
 	import Apollo.Network.Command.CCommandBase;
 	import Apollo.Network.Command.interfaces.INetPackageSending;
+	
+	import com.adobe.crypto.*;
 	import flash.net.URLVariables;
 	
 	/**
@@ -22,11 +25,28 @@ package Apollo.Network.Command.sending
 		public function fill(): void 
 		{
 			_urlVariables = new URLVariables();
+			_urlVariables.game_id = ConnectorContextConfig.GAME_ID;
+			_urlVariables.server_section = ConnectorContextConfig.SECTION_ID;
 		}
 		
 		public function get urlVariables(): URLVariables 
 		{
 			return _urlVariables;
+		}
+		
+		protected function generateCode(): void
+		{
+			CONFIG::DebugMode
+			{
+				trace('Please override generateCode()');
+			}
+		}
+		
+		protected function generateArrayCode(arr: Array): String
+		{
+			var originText: String = arr.join("|||");
+			originText += ("|||" + ConnectorContextConfig.AUTH_KEY);
+			return SHA1.hash(MD5.hash(originText));
 		}
 		
 	}

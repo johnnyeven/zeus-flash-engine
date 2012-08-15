@@ -25,7 +25,7 @@ package Apollo.Network.Command
 			}
 			CONFIG::DebugMode
 			{
-				trace("Undefined Protocol Id: " + flag);
+				trace("Undefined protocol id: " + flag);
 			}
 			return null;
 		}
