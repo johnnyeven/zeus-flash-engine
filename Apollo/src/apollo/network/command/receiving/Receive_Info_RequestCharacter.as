@@ -8,9 +8,7 @@ package apollo.network.command.receiving
 	 */
 	public class Receive_Info_RequestCharacter extends CNetPackageReceiving 
 	{
-		public var Guid: String;
-		public var AuthKey: String;
-		public var CharacterName: String;
+		public var Result: Array;
 		
 		public function Receive_Info_RequestCharacter() 
 		{
@@ -23,9 +21,7 @@ package apollo.network.command.receiving
 			
 			if (message == ConnectorContextConfig.ACK_CONFIRM)
 			{
-				Guid = data.guid;
-				AuthKey = data.auth_key;
-				CharacterName = data.character_name;
+				Result = new Array();
 			}
 		}
 	}

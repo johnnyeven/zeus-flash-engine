@@ -1,26 +1,33 @@
 package apollo.network.command.sending 
 {
-	import apollo.configuration.SocketContextConfig;
+	import apollo.configuration.ConnectorContextConfig;
 	/**
 	 * ...
 	 * @author johnnyeven
 	 */
 	public class Send_Info_RequestCharacter extends CNetPackageSending 
 	{
-		public var AuthKey: String;
-		public var UserId: int;
+		public var GUID: String;
 		
 		public function Send_Info_RequestCharacter() 
 		{
-			super(SocketContextConfig.CONTROLLER_INFO, SocketContextConfig.ACTION_REQUEST_CHARACTER);
+			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_REQUEST_CHARACTER);
 		}
 		
 		override public function fill():void 
 		{
 			super.fill();
 			
-			_urlVariables.auth_key = AuthKey;
-			_urlVariables.user_id = UserId;
+			_urlVariables.guid = GUID;
+			_urlVariables.server_id = ConnectorContextConfig.SERVER_ID;
+			
+			generateCode();
+		}
+		
+		override protected function generateCode(): void
+		{
+			var check: Array = new Array(_urlVariables.guid, _urlVariables.game_id, _urlVariables.server_section, _urlVariables.server_id);
+			_urlVariables.check_code = generateArrayCode(check);
 		}
 	}
 
