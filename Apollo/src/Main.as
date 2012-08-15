@@ -11,6 +11,7 @@ package
 	import apollo.network.CWebConnector;
 	import apollo.network.processor.CLoginProcessor;
 	import apollo.network.processor.CProcessorRouter;
+	import apollo.utils.monitor.CMonitorConsole;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.display.Sprite;
@@ -48,6 +49,7 @@ package
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			// entry point
+			addChild(CMonitorConsole.getInstance());
 			var processorRouter: CProcessorRouter = CProcessorRouter.getInstance();
 			processorRouter.add(new CLoginProcessor());
 			
