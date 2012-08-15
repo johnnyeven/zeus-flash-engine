@@ -2,8 +2,11 @@ package
 {
 	import apollo.center.CBuildingCenter;
 	import apollo.center.CCommandCenter;
+	import apollo.configuration.CharacterData;
 	import apollo.events.NetworkEvent;
+	import apollo.network.command.receiving.Receive_Info_RequestCharacter;
 	import apollo.network.command.sending.Send_Info_Login;
+	import apollo.network.command.sending.Send_Info_RequestCharacter;
 	import apollo.network.data.CBuildingParameter;
 	import apollo.network.CWebConnector;
 	import apollo.network.processor.CLoginProcessor;
@@ -57,6 +60,15 @@ package
 		
 		private function onLoginSuccess(evt: NetworkEvent): void
 		{
+			var requestCharacterProtocol: Send_Info_RequestCharacter = new Send_Info_RequestCharacter();
+			requestCharacterProtocol.GUID = CharacterData.Guid;
+			CCommandCenter.getInstance().send(requestCharacterProtocol);
+			CCommandCenter.getInstance().addEventListener(NetworkEvent.REQUEST_CHARACTER, onCharacterData);
+		}
+		
+		private function onCharacterData(evt: NetworkEvent): void
+		{
+			var protocol: Receive_Info_RequestCharacter = evt.data as Receive_Info_RequestCharacter;
 			try
 			{
 				var game: CGame = CGame.getInstance();

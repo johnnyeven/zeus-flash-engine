@@ -6,8 +6,10 @@ package apollo.configuration
 	 */
 	public final class ConnectorContextConfig 
 	{
-		private static var server_ip: String = '66.148.112.175';
-		private static var server_port: String = '80';
+		//private static var server_ip: String = '66.148.112.175';
+		//private static var server_port: String = '80';
+		private static var server_ip: String = 'localhost';
+		private static var server_port: String = '8080';
 		private static var server_app_root: String = 'game_server';
 		private static var useSSL: Boolean = false;
 		
