@@ -1,6 +1,7 @@
 package apollo.network 
 {
 	import apollo.configuration.ConnectorContextConfig;
+	import apollo.utils.monitor.CMonitorConsole;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -78,6 +79,7 @@ package apollo.network
 			CONFIG::DebugMode
 			{
 				trace(data);
+				CMonitorConsole.getInstance().log(data);
 			}
 			if (data)
 			{
@@ -95,6 +97,7 @@ package apollo.network
 					CONFIG::DebugMode
 					{
 						trace("Error: CWebConnector.as[97] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
+						CMonitorConsole.getInstance().log("Error: CWebConnector.as[97] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
 					}
 				}
 			}
@@ -103,6 +106,7 @@ package apollo.network
 				CONFIG::DebugMode
 				{
 					trace("Warning: URLLoader.data is empty");
+					CMonitorConsole.getInstance().log("Warning: URLLoader.data is empty");
 				}
 			}
 		}
@@ -121,6 +125,7 @@ package apollo.network
 					CONFIG::DebugMode
 					{
 						trace("Message: URLLoader.load " + path);
+						CMonitorConsole.getInstance().log("Message: URLLoader.load " + path);
 					}
 				}
 				catch (err: Error)
@@ -128,6 +133,7 @@ package apollo.network
 					CONFIG::DebugMode
 					{
 						trace("Error: CWebConnector.as[130] URLLoader.load error - error name: " + err.name + ", error message: " + err.message);
+						CMonitorConsole.getInstance().log("Error: CWebConnector.as[130] URLLoader.load error - error name: " + err.name + ", error message: " + err.message);
 					}
 				}
 			}
@@ -136,6 +142,7 @@ package apollo.network
 				CONFIG::DebugMode
 				{
 					trace("Warning: CWebConnector.as[138] URLVariables is empty");
+					CMonitorConsole.getInstance().log("Warning: CWebConnector.as[138] URLVariables is empty");
 				}
 			}
 		}
