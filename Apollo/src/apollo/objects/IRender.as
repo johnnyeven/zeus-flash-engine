@@ -1,0 +1,22 @@
+package apollo.objects
+{
+	import apollo.objects.effects.CShadow;
+	import apollo.scene.CBaseScene;
+	
+	import flash.geom.ColorTransform;
+	import flash.geom.Point;
+	
+	/**
+	 * ...
+	 * @author john
+	 */
+	public interface IRender 
+	{
+		function get scene(): CBaseScene;
+		function get rendPos(): Point;
+		function get colorPan(): ColorTransform;
+		function get shadow(): CShadow;
+		function get isOver(): Boolean;
+	}
+	
+}

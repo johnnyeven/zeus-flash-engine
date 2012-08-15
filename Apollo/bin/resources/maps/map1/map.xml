@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<map>
+	<id>map1</id>
+	
+	<path>
+		<data>data.jpg</data>
+		<road>road.png</road>
+		<alpha>alpha.png</alpha>
+		<thumbnail>thumbnail.jpg</thumbnail>
+	</path>
+	
+	<width>2400</width>
+	<height>2400</height>
+	
+	<tileWidth>240</tileWidth>
+	<tileHeight>240</tileHeight>
+	
+	<blockWidth>50</blockWidth>
+	<blockHeight>50</blockHeight>
+	
+	<startPointX>500</startPointX>
+	<startPointY>800</startPointY>
+</map>
