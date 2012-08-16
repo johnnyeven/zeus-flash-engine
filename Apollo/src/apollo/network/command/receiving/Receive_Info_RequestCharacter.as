@@ -21,7 +21,7 @@ package apollo.network.command.receiving
 			
 			if (message == ConnectorContextConfig.ACK_CONFIRM)
 			{
-				Result = new Array();
+				Result = data.result;
 			}
 		}
 	}

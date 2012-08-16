@@ -5,11 +5,11 @@ package apollo.network.command.sending
 	 * ...
 	 * @author johnnyeven
 	 */
-	public class Send_Info_RequestCharacter extends CNetPackageSending 
+	public class Send_Info_RequestAccountId extends CNetPackageSending 
 	{
 		public var GUID: String;
 		
-		public function Send_Info_RequestCharacter() 
+		public function Send_Info_RequestAccountId() 
 		{
 			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_REQUEST_CHARACTER);
 		}
