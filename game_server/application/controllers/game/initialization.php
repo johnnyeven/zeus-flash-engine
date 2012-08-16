@@ -165,6 +165,311 @@ class Initialization extends CI_Controller {
 			$this->logs->write($logParameter);
 		}
 	}
+	
+	public function requestAccountId($format = 'json') {
+		$accountGuid	=	$this->input->get_post('guid', TRUE);
+		$nickName		=	$this->input->get_post('nick_name', TRUE);
+		$gameId			=	$this->input->get_post('game_id', TRUE);
+		$serverSection	=	$this->input->get_post('server_section', TRUE);
+		$serverId		=	$this->input->get_post('server_id', TRUE);
+		$autoCreate		=	$this->input->get_post('auto_create', TRUE);
+	
+		if($autoCreate === FALSE || ($autoCreate !== '0' && $autoCreate !== '1')) {
+			$autoCreate = true;
+		} else {
+			$autoCreate = $autoCreate=='1' ? true : false;
+		}
+		$nickName = $nickName===FALSE ? '' : $nickName;
+	
+		$this->load->model('game_account');
+		$this->load->model('game_product');
+	
+		if(!empty($accountGuid) &&
+				$gameId!==FALSE &&
+				$serverId!==FALSE &&
+				$serverSection!==FALSE) {
+			/*
+			 * 检测参数合法性
+			*/
+			$authToken	=	$this->authKey[$gameId]['auth_key'];
+			$check = array($accountGuid, $gameId, $serverSection, $serverId);
+			//$this->load->helper('security');
+			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
+			if(!$this->param_check->check($check, $authToken)) {
+				$jsonData = Array(
+						'flag'			=>	0x0400,
+						'message'	=>	0
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'	=>	'PARAM_INVALID',
+						'account_guid'	=>	$accountGuid,
+						'account_name'	=>	''
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			/*
+			 * 检查完毕
+			*/
+			if($this->game_product->get($gameId) != false) {
+				if($this->web_account->get($accountGuid) != false) {
+					$parameter = array(
+							'account_guid'				=>	$accountGuid,
+							'game_id'					=>	$gameId,
+							'account_server_id'			=>	$serverId,
+							'account_server_section'	=>	$serverSection
+					);
+					$result = $this->game_account->getAllResult($parameter);
+					if($result != FALSE) {
+						$accountId = $result[0]->account_id;
+					} else {
+						if($autoCreate) {
+							$accountId = $this->_registerAccountId($accountGuid, $gameId, $serverId, $serverSection, $nickName);
+							if($accountId === FALSE) {
+								$jsonData = Array(
+										'flag'			=>	0x0400,
+										'message'	=>	-1
+								);
+								exit($this->return_format->format($jsonData, $format));
+							}
+						} else {
+							$jsonData = Array(
+									'flag'			=>	0x0400,
+									'message'	=>	-2
+							);
+							exit($this->return_format->format($jsonData, $format));
+								
+							$logParameter = array(
+									'log_action'	=>	'ACCOUNT_ERROR_NO_ID',
+									'account_guid'	=>	$accountGuid,
+									'account_name'	=>	''
+							);
+							$this->logs->write($logParameter);
+						}
+					}
+					$jsonData = Array(
+							'flag'			=>	0x0400,
+							'message'	=>	1,
+							'account_id'=>	$accountId,
+							'nick_name'	=>	$nickName
+					);
+					echo $this->return_format->format($jsonData, $format);
+						
+					$logParameter = array(
+							'log_action'	=>	'ACCOUNT_REQUEST_ID_SUCCESS',
+							'account_guid'	=>	$accountGuid,
+							'account_name'	=>	$accountId
+					);
+					$this->logs->write($logParameter);
+				} else {
+					$jsonData = Array(
+							'flag'			=>	0x0400,
+							'message'	=>	-3
+					);
+					echo $this->return_format->format($jsonData, $format);
+						
+					$logParameter = array(
+							'log_action'	=>	'ACCOUNT_ERROR_NO_GUID',
+							'account_guid'	=>	$accountGuid,
+							'account_name'	=>	''
+					);
+					$this->logs->write($logParameter);
+				}
+			} else {
+				$jsonData = Array(
+						'flag'			=>	0x0400,
+						'message'	=>	-4
+				);
+				echo $this->return_format->format($jsonData, $format);
+	
+				$logParameter = array(
+						'log_action'	=>	'ACCOUNT_ERROR_NO_GAME',
+						'account_guid'	=>	$accountGuid,
+						'account_name'	=>	''
+				);
+				$this->logs->write($logParameter);
+			}
+		} else {
+			$jsonData = Array(
+					'flag'			=>	0x0400,
+					'message'	=>	-99
+			);
+			echo $this->return_format->format($jsonData, $format);
+				
+			$logParameter = array(
+					'log_action'	=>	'ACCOUNT_ERROR_NO_PARAM',
+					'account_guid'	=>	'',
+					'account_name'	=>	''
+			);
+			$this->logs->write($logParameter);
+		}
+	}
+	
+	private function _registerAccountId($accountGuid, $gameId, $serverId, $serverSection, $nickName = '') {
+		if(!empty($accountGuid) &&
+				$gameId!==FALSE &&
+				$serverId!==FALSE &&
+				$serverSection!==FALSE) {
+			$this->load->model('game_account');
+			$accountId = $this->_generateAccountId($gameId, $serverId, $serverSection);
+			if($accountId === false) {
+				return false;
+			}
+			$parameter = array(
+					'account_id'			=>	$accountId,
+					'account_guid'			=>	$accountGuid,
+					'game_id'				=>	$gameId,
+					'account_server_id'		=>	$serverId,
+					'account_server_section'=>	$serverSection,
+					'nick_name'				=>	$nickName
+			);
+			$this->game_account->insert($parameter);
+			$this->load->model('data/account_added_game', 'account_game');
+			$gameAdded = $this->account_game->get($accountGuid, $gameId);
+			if($gameAdded===FALSE) {
+				$parameter = array(
+						'GUID'		=>	$accountGuid,
+						'game_id'	=>	$gameId
+				);
+				$this->account_game->insert($parameter);
+			}
+			$this->initAccountData($accountId);
+			return $accountId;
+		} else {
+			return false;
+		}
+	}
+	
+	private function _generateAccountId($gameId, $serverId, $serverSection) {
+		$this->load->model('data/account_count');
+		$parameter = array(
+				'game_id'				=>	$gameId,
+				'account_server_id'		=>	$serverId,
+				'account_server_section'=>	$serverSection
+		);
+		$nextAvailableId = $this->account_count->getNextAvailableId($parameter);
+		if($nextAvailableId < 0) {
+			return false;
+		}
+		/*
+			$code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$accountId = substr($code, $gameId - 1, 1);
+		$accountId .= substr($code, $serverSection - 1, 1);
+		$accountId .= substr($code, $serverId - 1, 1);
+		*/
+		$accountId = $gameId . $serverSection . $serverId;
+	
+		$containCount = $this->config->item('contain_id_count');
+		$accountId .= sprintf('%0' . $containCount . 'd', $nextAvailableId);
+		return $accountId;
+	}
+	
+	private function initAccountData($accountId) {
+		$this->load->config('game_init_data');
+		$this->load->model('data/resources', 'resource');
+		
+		foreach($this->config->item('init_data_resources') as $key => $value) {
+			$parameter = array(
+				'account_id'			=>	$accountId,
+				'resource_id'			=>	intval($key),
+				'resource_name'		=>	$value['resource_name'],
+				'resource_current'	=>	$value['resource_current'],
+				'resource_max'		=>	$value['resource_max'],
+				'resource_incremental'	=>	$value['resource_incremental'],
+				'resource_last_increase'	=>	time()
+			);
+			$this->resource->insert($parameter);
+		}
+	}
+	
+	public function requestViewObjects($format = 'json') {
+		
+	}
+	
+	public function requestResources($format = 'json') {
+		$accountId = $this->input->get_post('account_id', TRUE);
+		$gameId = $this->input->get_post('game_id', TRUE);
+		
+		if(!empty($accountId)) {
+			/*
+			 * 检测参数合法性
+			*/
+			$authToken	=	$this->authKey[$gameId]['auth_key'];
+			$check = array($accountId, $gameId);
+			//$this->load->helper('security');
+			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
+			if(!$this->param_check->check($check, $authToken)) {
+				$jsonData = Array(
+						'flag'			=>	0x0001,
+						'message'	=>	0
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'	=>	'PARAM_INVALID',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			/*
+			 * 检查完毕
+			*/
+			
+			$this->load->model('data/resources', 'resource');
+			$this->load->helper('template');
+			$this->load->config('game_init_data');
+			$sql = $this->config->item('sql_update_resource_amount');
+			$parser = array(
+				'update_time'		=>	$this->config->item('resource_update_time'),
+				'account_id'		=>	$accountId
+			);
+			$this->resource->query(parseTemplate($sql, $parser));
+			$result = $this->resource->get($accountId);
+			if($result != FALSE) {
+				$jsonData = Array(
+					'flag'			=>	0x0001,
+					'message'	=>	1,
+					'resource_list'	=>	$result
+				);
+				echo $this->return_format->format($jsonData, $format);
+					
+				$logParameter = array(
+						'log_action'	=>	'ACCOUNT_REQUEST_RESOURCE_SUCCESS',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+			} else {
+				$jsonData = Array(
+						'flag'			=>	0x0001,
+						'message'	=>	-1
+				);
+				echo $this->return_format->format($jsonData, $format);
+					
+				$logParameter = array(
+						'log_action'	=>	'ACCOUNT_ERROR_NO_ACCOUNTID',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+			}
+		} else {
+			$jsonData = Array(
+					'flag'			=>	0x0001,
+					'message'	=>	-99
+			);
+			echo $this->return_format->format($jsonData, $format);
+				
+			$logParameter = array(
+					'log_action'	=>	'ACCOUNT_ERROR_NO_PARAM',
+					'account_guid'	=>	'',
+					'account_name'	=>	''
+			);
+			$this->logs->write($logParameter);
+		}
+	}
 }
 
 /* End of file welcome.php */
