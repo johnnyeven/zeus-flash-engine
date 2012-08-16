@@ -21,7 +21,7 @@ package apollo.network.processor
 			super("Processor.LoginProcessor");
 			var commandList: CCommandList = CCommandList.getInstance();
 			commandList.bind(0x0100, Receive_Info_Login);
-			commandList.bind(0x0400, Receive_Info_RequestCharacter);
+			commandList.bind(0x0400, Receive_Info_RequestAccountId);
 			commandList.bind(0x0600, Receive_Info_InitCharacter);
 		}
 		
@@ -52,7 +52,7 @@ package apollo.network.processor
 			}
 		}
 		
-		private function onCharacterData(protocol: Receive_Info_RequestCharacter): void
+		private function onCharacterData(protocol: Receive_Info_RequestAccountId): void
 		{
 			if (protocol.message == ConnectorContextConfig.ACK_CONFIRM)
 			{

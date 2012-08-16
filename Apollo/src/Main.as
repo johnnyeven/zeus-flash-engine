@@ -6,7 +6,7 @@ package
 	import apollo.events.NetworkEvent;
 	import apollo.network.command.receiving.Receive_Info_RequestAccountId;
 	import apollo.network.command.sending.Send_Info_Login;
-	import apollo.network.command.sending.Send_Info_RequestCharacter;
+	import apollo.network.command.sending.Send_Info_RequestAccountId;
 	import apollo.network.data.CBuildingParameter;
 	import apollo.network.CWebConnector;
 	import apollo.network.processor.CLoginProcessor;
@@ -62,7 +62,7 @@ package
 		
 		private function onLoginSuccess(evt: NetworkEvent): void
 		{
-			var requestCharacterProtocol: Send_Info_RequestCharacter = new Send_Info_RequestCharacter();
+			var requestCharacterProtocol: Send_Info_RequestAccountId = new Send_Info_RequestAccountId();
 			requestCharacterProtocol.GUID = CharacterData.Guid;
 			CCommandCenter.getInstance().send(requestCharacterProtocol);
 			CCommandCenter.getInstance().addEventListener(NetworkEvent.REQUEST_CHARACTER, onCharacterData);
@@ -70,7 +70,7 @@ package
 		
 		private function onCharacterData(evt: NetworkEvent): void
 		{
-			var protocol: Receive_Info_RequestCharacter = evt.data as Receive_Info_RequestCharacter;
+			var protocol: Receive_Info_RequestAccountId = evt.data as Receive_Info_RequestAccountId;
 			for (var key: String in protocol.Result)
 			{
 				trace(protocol.Result[key].account_id);
