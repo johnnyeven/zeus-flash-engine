@@ -4,7 +4,7 @@ package
 	import apollo.center.CCommandCenter;
 	import apollo.configuration.CharacterData;
 	import apollo.events.NetworkEvent;
-	import apollo.network.command.receiving.Receive_Info_RequestCharacter;
+	import apollo.network.command.receiving.Receive_Info_RequestAccountId;
 	import apollo.network.command.sending.Send_Info_Login;
 	import apollo.network.command.sending.Send_Info_RequestCharacter;
 	import apollo.network.data.CBuildingParameter;
@@ -71,11 +71,15 @@ package
 		private function onCharacterData(evt: NetworkEvent): void
 		{
 			var protocol: Receive_Info_RequestCharacter = evt.data as Receive_Info_RequestCharacter;
+			for (var key: String in protocol.Result)
+			{
+				trace(protocol.Result[key].account_id);
+			}
 			try
 			{
-				var game: CGame = CGame.getInstance();
+				//var game: CGame = CGame.getInstance();
 				//game.addEventListener(GameEvent.GAME_START, onGameStart);
-				addChild(game);
+				//addChild(game);
 			}
 			catch (err: Error)
 			{
