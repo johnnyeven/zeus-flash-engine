@@ -13,13 +13,15 @@ package apollo.network.data
 		 */
 		private var _resourceAmount: Number;
 		private var _resourceModified: uint;
+		private var _resourceMax: Number;
 		
-		public function CResourceParameter(_resourceId: uint, _resourceName: String, _resourceAmount: uint, _resourceModified: int) 
+		public function CResourceParameter(_resourceId: uint, _resourceName: String, _resourceAmount: Number, _resourceModified: int, _resourceMax: uint = 100000) 
 		{
 			this._resourceId = _resourceId;
 			this._resourceName = _resourceName;
 			this._resourceAmount = _resourceAmount;
 			this._resourceModified = _resourceModified;
+			this._resourceMax = _resourceMax;
 		}
 		
 		public function get resourceId(): uint
@@ -60,6 +62,16 @@ package apollo.network.data
 		public function set resourceModified(value: int):void 
 		{
 			_resourceModified = value;
+		}
+		
+		public function get resourceMax():Number 
+		{
+			return _resourceMax;
+		}
+		
+		public function set resourceMax(value:Number):void 
+		{
+			_resourceMax = value;
 		}
 		
 	}

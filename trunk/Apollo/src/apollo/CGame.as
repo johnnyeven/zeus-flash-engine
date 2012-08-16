@@ -188,10 +188,12 @@ package apollo
 			
 			CONFIG::DebugMode
 			{
+				/*
 				var resource: CResourceParameter = new CResourceParameter(0xFF01, "水晶", 2000, 90);
 				CResourceCenter.getInstance().registerResource(0xFF01, resource, 10000);
 				var resource1: CResourceParameter = new CResourceParameter(0xFF01, "光明", 1000, 30);
 				CResourceCenter.getInstance().registerResource(0xFF02, resource1, 5000);
+				*/
 			}
 		}
 		

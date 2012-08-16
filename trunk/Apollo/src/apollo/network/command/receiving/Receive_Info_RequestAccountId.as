@@ -6,13 +6,14 @@ package apollo.network.command.receiving
 	 * ...
 	 * @author john
 	 */
-	public class Receive_Info_RequestCharacter extends CNetPackageReceiving 
+	public class Receive_Info_RequestAccountId extends CNetPackageReceiving 
 	{
-		public var Result: Array;
+		public var AccountId: String;
+		public var NickName: String;
 		
-		public function Receive_Info_RequestCharacter() 
+		public function Receive_Info_RequestAccountId() 
 		{
-			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_REQUEST_CHARACTER);
+			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_REQUEST_ACCOUNTID);
 		}
 		
 		override public function fill(data: Object): void 
@@ -21,7 +22,8 @@ package apollo.network.command.receiving
 			
 			if (message == ConnectorContextConfig.ACK_CONFIRM)
 			{
-				Result = data.result;
+				AccountId = data.account_id;
+				NickName = data.nick_name;
 			}
 		}
 	}

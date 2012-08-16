@@ -41,35 +41,7 @@ package apollo.network.processor
 		private function onCameraViewRefresh(protocol: Receive_Info_CameraView): void
 		{
 			var scene: CApolloScene = CApolloScene.getInstance();
-			var c: CGameObject = scene.getObjectById(protocol.guid);
-			if (c == null)
-			{
-				//如果不存在则创建
-				var param: CRoleParameter = new CRoleParameter();
-				param.objectId = protocol.guid;
-				param.playerName = protocol.characterName;
-				param.startX = protocol.posX;
-				param.startY = protocol.posY;
-				param.speed = protocol.speed;
-				var o: CCharacterObject = scene.createRole(protocol.resourceId, protocol.direction, param);
-				o.action = protocol.characterAction;
-			}
-			else
-			{
-				//如果已经存在则更新状态
-				if (c.pos.x != protocol.posX || c.pos.y != protocol.posY)
-				{
-					c.setPos(new Point(protocol.posX, protocol.posY));
-				}
-				if (c is CActionObject && (c as CActionObject).action != protocol.characterAction)
-				{
-					(c as CActionObject).action = protocol.characterAction;
-				}
-				if (c.direction != protocol.direction)
-				{
-					c.direction = protocol.direction;
-				}
-			}
+			
 		}
 	}
 

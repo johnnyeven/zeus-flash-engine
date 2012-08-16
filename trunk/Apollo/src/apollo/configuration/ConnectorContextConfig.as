@@ -6,10 +6,10 @@ package apollo.configuration
 	 */
 	public final class ConnectorContextConfig 
 	{
-		//private static var server_ip: String = '66.148.112.175';
-		//private static var server_port: String = '80';
-		private static var server_ip: String = 'localhost';
-		private static var server_port: String = '8080';
+		private static var server_ip: String = '66.148.112.175';
+		private static var server_port: String = '80';
+		//private static var server_ip: String = 'localhost';
+		//private static var server_port: String = '8080';
 		private static var server_app_root: String = 'game_server';
 		private static var useSSL: Boolean = false;
 		
@@ -19,8 +19,10 @@ package apollo.configuration
 		public static var CONTROLLER_INFO: String = "game/initialization";
 		public static var ACTION_LOGIN: String = "login";
 		public static var ACTION_REQUEST_CHARACTER: String = "requestCharacterList";
+		public static var ACTION_REQUEST_ACCOUNTID: String = "requestAccountId";
 		public static var ACTION_INIT_CHARACTER: String = "initCharacter";
 		public static var ACTION_CAMERAVIEW_OBJECT_LIST: String = "requestViewObjects";
+		public static var ACTION_REQUEST_RESOURCES: String = "requestResources";
 		
 		public static var GAME_ID: String = "A";
 		public static var SECTION_ID: String = "Z";

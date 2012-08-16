@@ -77,7 +77,7 @@ package apollo.controller
 		{
 			//if (GlobalContextConfig.Timer - _preCameraViewTimer > GlobalContextConfig.cameraview_trigger)
 			//{
-				
+			
 			//}
 		}
 		
