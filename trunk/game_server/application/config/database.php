@@ -79,6 +79,22 @@ $db['productdb']['swap_pre'] = '';
 $db['productdb']['autoinit'] = TRUE;
 $db['productdb']['stricton'] = FALSE;
 
+$db['datadb']['hostname'] = 'localhost';
+$db['datadb']['username'] = 'root';
+$db['datadb']['password'] = '100200';
+$db['datadb']['database'] = 'game_data_db';
+$db['datadb']['dbdriver'] = 'mysqli';
+$db['datadb']['dbprefix'] = '';
+$db['datadb']['pconnect'] = FALSE;
+$db['datadb']['db_debug'] = TRUE;
+$db['datadb']['cache_on'] = FALSE;
+$db['datadb']['cachedir'] = '';
+$db['datadb']['char_set'] = 'utf8';
+$db['datadb']['dbcollat'] = 'utf8_general_ci';
+$db['datadb']['swap_pre'] = '';
+$db['datadb']['autoinit'] = TRUE;
+$db['datadb']['stricton'] = FALSE;
+
 $db['fundsdb']['hostname'] = 'localhost';
 $db['fundsdb']['username'] = 'root';
 $db['fundsdb']['password'] = '100200';
