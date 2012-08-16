@@ -1,7 +1,11 @@
 package apollo.center 
 {
+	import apollo.configuration.CharacterData;
 	import apollo.configuration.GlobalContextConfig;
+	import apollo.network.command.sending.Send_Info_RequestResources;
 	import apollo.network.data.CResourceParameter;
+	import apollo.network.processor.CProcessorRouter;
+	import apollo.network.processor.CResourceProcessor;
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;
 	/**
@@ -29,6 +33,16 @@ package apollo.center
 			startTime = GlobalContextConfig.Timer;
 			resourceUpdateTime = 30;
 			resourcePerUpdateTime = resourceUpdateTime / GlobalContextConfig.resourceDelay;
+			
+			CProcessorRouter.getInstance().add(new CResourceProcessor());
+			initialization();
+		}
+		
+		private function initialization(): void
+		{
+			var protocol: Send_Info_RequestResources = new Send_Info_RequestResources();
+			protocol.AccountId = CharacterData.AccountId;
+			CCommandCenter.getInstance().send(protocol);
 		}
 		
 		public function registerResource(resourceId: uint, resourceParameter: CResourceParameter, _resourceMax: uint = 10000): void

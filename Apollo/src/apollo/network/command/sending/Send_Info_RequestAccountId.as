@@ -11,7 +11,7 @@ package apollo.network.command.sending
 		
 		public function Send_Info_RequestAccountId() 
 		{
-			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_REQUEST_CHARACTER);
+			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_REQUEST_ACCOUNTID);
 		}
 		
 		override public function fill():void 

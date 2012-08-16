@@ -71,15 +71,13 @@ package
 		private function onCharacterData(evt: NetworkEvent): void
 		{
 			var protocol: Receive_Info_RequestAccountId = evt.data as Receive_Info_RequestAccountId;
-			for (var key: String in protocol.Result)
-			{
-				trace(protocol.Result[key].account_id);
-			}
+			CharacterData.AccountId = protocol.AccountId;
+			CharacterData.UserName = protocol.NickName;
 			try
 			{
-				//var game: CGame = CGame.getInstance();
+				var game: CGame = CGame.getInstance();
 				//game.addEventListener(GameEvent.GAME_START, onGameStart);
-				//addChild(game);
+				addChild(game);
 			}
 			catch (err: Error)
 			{

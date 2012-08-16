@@ -45,6 +45,11 @@ package apollo.network
 		
 		private function ioErrorHandler(e:IOErrorEvent):void 
 		{
+			CONFIG::DebugMode
+			{
+				trace("Error: CWebConnector.as[97] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
+				CMonitorConsole.getInstance().log("Error: CWebConnector.as[97] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
+			}
 			dispatchEvent(e);
 		}
 		

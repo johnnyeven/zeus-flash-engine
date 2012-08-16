@@ -7,7 +7,7 @@ package apollo.network.command.sending
 	 */
 	public class Send_Info_CameraView extends CNetPackageSending 
 	{
-		public var guid: String;
+		public var AccountId: String;
 		
 		public function Send_Info_CameraView() 
 		{
@@ -18,7 +18,7 @@ package apollo.network.command.sending
 		{
 			super.fill();
 			
-			_urlVariables.guid = guid;
+			_urlVariables.account_id = AccountId;
 		}
 	}
 

@@ -22,7 +22,7 @@ package apollo.configuration
 	public class CharacterData extends Object
 	{
 		public static var Camp: uint = 0;
-		public static var AccountId: int = 0;
+		public static var AccountId: String;
 		public static var Guid: String;
 		public static var UserName: String;
 		public static var Level: uint;
