@@ -32,7 +32,7 @@ package apollo.center
 			buildingList = new Dictionary();
 		}
 		
-		public function createBuilding(buildingParameter: CBuildingParameter): CBuildingObject
+		public function createBuilding(buildingParameter: CBuildingParameter, sysnc: Boolean = true): CBuildingObject
 		{
 			//图形素材
 			var rs: CGraphicCharacter = new CGraphicCharacter();
@@ -66,11 +66,11 @@ package apollo.center
 			building.setDisplayName(buildingParameter.buildingName, 0x00FFFF, 0x000000);
 			for (var keyConsume: String in buildingParameter.consumeList)
 			{
-				building.addConsumeResource(buildingParameter.consumeList[keyConsume] as CResourceParameter);
+				building.addConsumeResource(buildingParameter.consumeList[keyConsume] as CResourceParameter, sysnc);
 			}
 			for (var keyProduce: String in buildingParameter.produceList)
 			{
-				building.addProduceResource(buildingParameter.produceList[keyProduce] as CResourceParameter);
+				building.addProduceResource(buildingParameter.produceList[keyProduce] as CResourceParameter, sysnc);
 			}
 			
 			registerBuilding(building);

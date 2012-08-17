@@ -44,7 +44,7 @@ package apollo.network.processor
 		{
 			for (var key: String in protocol.BuildingList)
 			{
-				CApolloScene.getInstance().createBuilding(protocol.BuildingList[key] as CBuildingParameter);
+				CApolloScene.getInstance().createBuilding(protocol.BuildingList[key] as CBuildingParameter, false);
 			}
 		}
 	}

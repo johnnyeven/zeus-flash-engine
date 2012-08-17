@@ -53,9 +53,9 @@ package apollo.scene
 			instance = null;
 		}
 		
-		public function createBuilding(parameter: CBuildingParameter): CBuildingObject
+		public function createBuilding(parameter: CBuildingParameter, sysnc: Boolean = true): CBuildingObject
 		{
-			var building: CBuildingObject = CBuildingCenter.getInstance().createBuilding(parameter);
+			var building: CBuildingObject = CBuildingCenter.getInstance().createBuilding(parameter, sysnc);
 			addObject(building);
 			
 			return building;
