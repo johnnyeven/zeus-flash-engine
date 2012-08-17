@@ -151,6 +151,10 @@ package apollo.graphics
 			{
 				return getCharacter(resourceId);
 			}
+			else if (domainId == "building")
+			{
+				return getBuilding(resourceId);
+			}
 			else
 			{
 				return _pool[resourceId];
@@ -162,6 +166,17 @@ package apollo.graphics
 			if (_pool[resourceId] == null)
 			{
 				var _class: Class = _resourceList["character"].getDefinition("wooha.resources.character." + resourceId) as Class;
+				var _display: BitmapData = Conversion.Bitmap(_class);
+				_pool[resourceId] = _display;
+			}
+			return _pool[resourceId];
+		}
+		
+		public function getBuilding(resourceId: String): BitmapData
+		{
+			if (_pool[resourceId] == null)
+			{
+				var _class: Class = _resourceList["building"].getDefinition("wooha.resources.building." + resourceId) as Class;
 				var _display: BitmapData = Conversion.Bitmap(_class);
 				_pool[resourceId] = _display;
 			}

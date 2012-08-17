@@ -2,7 +2,7 @@ package apollo.center
 {
 	import apollo.controller.CBuildingController;
 	import apollo.controller.CPerception;
-	import apollo.graphics.CGraphicCharacter;
+	import apollo.graphics.CGraphicBuilding;
 	import apollo.network.data.CBuildingParameter;
 	import apollo.network.data.CResourceParameter;
 	import apollo.objects.CBuildingObject;
@@ -35,7 +35,7 @@ package apollo.center
 		public function createBuilding(buildingParameter: CBuildingParameter, sysnc: Boolean = true): CBuildingObject
 		{
 			//图形素材
-			var rs: CGraphicCharacter = new CGraphicCharacter();
+			var rs: CGraphicBuilding = new CGraphicBuilding();
 			rs.getResourceFromPool(buildingParameter.resourceId, 8, 4, 7);
 			
 			//感知器

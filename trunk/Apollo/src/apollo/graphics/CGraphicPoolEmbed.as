@@ -18,6 +18,7 @@ package apollo.graphics
 	import apollo.utils.Conversion;
 	
 	import wooha.resources.character.*;
+	import wooha.resources.building.*;
 	import wooha.resources.font.*;
 	
 	/**
@@ -32,7 +33,7 @@ package apollo.graphics
 		/**
 		 * 反射引用
 		 */
-		private var referDefault: Default;
+		private var referDefault: wooha.resources.character.Default;
 		private var referBloodScreen: bloodScreen;
 		private var referPrepareSkill1: prepareSkill1;
 		private var referSkill1_EXPLODE: skill1_EXPLODE;
@@ -53,7 +54,8 @@ package apollo.graphics
 		private var referChar8: char8;
 		private var referChar9: char9;
 		private var referChar10: char10;
-		private var tst: test;
+		
+		private var referBuildingDefault: wooha.resources.building.Default;
 		
 		private var referFontArialBlack: FontArialBlack;
 		private var referFontYuanGBK: FontYuanGBK;
@@ -104,6 +106,10 @@ package apollo.graphics
 			{
 				return getCharacter(resourceId);
 			}
+			else if (domainId == "building")
+			{
+				return getBuilding(resourceId);
+			}
 			else
 			{
 				return _pool[resourceId];
@@ -115,6 +121,17 @@ package apollo.graphics
 			if (_pool[resourceId] == null)
 			{
 				var _class: Class = getDefinitionByName("wooha.resources.character." + resourceId) as Class;
+				var _display: BitmapData = Conversion.Bitmap(_class);
+				_pool[resourceId] = _display;
+			}
+			return _pool[resourceId];
+		}
+		
+		public function getBuilding(resourceId: String): BitmapData
+		{
+			if (_pool[resourceId] == null)
+			{
+				var _class: Class = getDefinitionByName("wooha.resources.building." + resourceId) as Class;
 				var _display: BitmapData = Conversion.Bitmap(_class);
 				_pool[resourceId] = _display;
 			}
