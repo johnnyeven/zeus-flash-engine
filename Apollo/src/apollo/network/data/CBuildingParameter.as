@@ -79,23 +79,25 @@ package apollo.network.data
 		
 		public function fill(data: Object): void
 		{
-			_objectId = data.objectId;
-			_resourceId = data.resourceId;
-			_buildingId = data.buildingId;
-			_buildingName = data.buildingName;
-			_buildingLevel = data.buildingLevel;
-			_x = data.buildingPosX;
-			_y = data.buildingPosY;
+			_objectId = data.object_id;
+			_resourceId = data.resource_id;
+			_buildingId = data.building_id;
+			_buildingName = data.building_name;
+			_buildingLevel = data.building_level;
+			_x = data.building_pos_x;
+			_y = data.building_pos_y;
 			
-			for (var i: String in data.buildingConsumeList as Array)
+			data.building_consume = JSON.parse(data.building_consume);
+			for (var i: String in data.building_consume)
 			{
-				var consumeResource: CResourceParameter = new CResourceParameter(data.buildingConsumeList[i].resourceId, data.buildingConsumeList[i].resourceName, 0, parseInt(data.buildingConsumeList[i].resourceModified));
+				var consumeResource: CResourceParameter = new CResourceParameter(parseInt(i), data.building_consume[i].resource_name, 0, parseInt(data.building_consume[i].resource_incremental));
 				_consumeList.push(consumeResource);
 			}
 			
-			for (var j: String in data.buildingProduceList as Array)
+			data.building_produce = JSON.parse(data.building_produce);
+			for (var j: String in data.building_produce)
 			{
-				var produceResource: CResourceParameter = new CResourceParameter(data.buildingProduceList[i].resourceId, data.buildingProduceList[i].resourceName, 0, parseInt(data.buildingProduceList[i].resourceModified));
+				var produceResource: CResourceParameter = new CResourceParameter(parseInt(i), data.building_produce[i].resource_name, 0, parseInt(data.building_consume[i].resource_incremental));
 				_produceList.push(produceResource);
 			}
 		}

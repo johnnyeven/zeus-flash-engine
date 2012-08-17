@@ -1,8 +1,10 @@
 package apollo.network.processor 
 {
+	import apollo.center.CBuildingCenter;
 	import apollo.controller.IControllerMovable;
 	import apollo.events.*;
 	import apollo.CGame;
+	import apollo.network.data.CBuildingParameter;
 	import apollo.network.data.CRoleParameter;
 	import apollo.objects.*;
 	import apollo.scene.CApolloScene;
@@ -40,8 +42,10 @@ package apollo.network.processor
 		
 		private function onCameraViewRefresh(protocol: Receive_Info_CameraView): void
 		{
-			var scene: CApolloScene = CApolloScene.getInstance();
-			
+			for (var key: String in protocol.BuildingList)
+			{
+				CApolloScene.getInstance().createBuilding(protocol.BuildingList[key] as CBuildingParameter);
+			}
 		}
 	}
 

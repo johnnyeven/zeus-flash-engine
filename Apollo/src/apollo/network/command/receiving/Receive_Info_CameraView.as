@@ -1,6 +1,7 @@
 package apollo.network.command.receiving 
 {
 	import apollo.configuration.ConnectorContextConfig;
+	import apollo.network.data.CBuildingParameter;
 	
 	/**
 	 * ...
@@ -8,6 +9,7 @@ package apollo.network.command.receiving
 	 */
 	public class Receive_Info_CameraView extends CNetPackageReceiving 
 	{
+		public var BuildingList: Vector.<CBuildingParameter>;
 		
 		public function Receive_Info_CameraView() 
 		{
@@ -20,9 +22,14 @@ package apollo.network.command.receiving
 			
 			if (message == ConnectorContextConfig.ACK_CONFIRM)
 			{
-				
+				BuildingList = new Vector.<CBuildingParameter>();
+				for (var key: String in data.building_list)
+				{
+					var parameter: CBuildingParameter = new CBuildingParameter();
+					parameter.fill(data.building_list[key]);
+					BuildingList.push(parameter);
+				}
 			}
 		}
 	}
-
 }

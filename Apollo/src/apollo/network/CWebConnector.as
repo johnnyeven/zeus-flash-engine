@@ -1,6 +1,7 @@
 package apollo.network 
 {
 	import apollo.configuration.ConnectorContextConfig;
+	import apollo.utils.loader.URLSmartLoader;
 	import apollo.utils.monitor.CMonitorConsole;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
@@ -9,8 +10,8 @@ package apollo.network
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
@@ -21,7 +22,9 @@ package apollo.network
 	 */
 	public class CWebConnector implements IEventDispatcher 
 	{
-		private var coreLoader: URLLoader;
+		//private var coreLoader: URLSmartLoader;
+		private static const MAX_LOADER: uint = 3;
+		private var loaderContainer: Vector.<URLSmartLoader>;
 		private var eventDispatcher: EventDispatcher;
 		protected var callback: Function;
 		protected static var instance: CWebConnector;
@@ -34,13 +37,34 @@ package apollo.network
 				throw new IllegalOperationError("CWebConnector不允许实例化");
 			}
 			eventDispatcher = new EventDispatcher(this);
-			coreLoader = new URLLoader();
-			coreLoader.dataFormat = URLLoaderDataFormat.TEXT;
-			coreLoader.addEventListener(Event.COMPLETE, onDataCallback);
-			coreLoader.addEventListener(Event.COMPLETE, loaderCompleteHandler, false, 0, true);
-			coreLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler, false, 0, true);
-			coreLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
-			coreLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+			loaderContainer = new Vector.<URLSmartLoader>();
+		}
+		
+		private function getAvailableLoader(): URLSmartLoader
+		{
+			for (var key: String in loaderContainer)
+			{
+				if (!(loaderContainer[key] as URLSmartLoader).isLoading)
+				{
+					return (loaderContainer[key] as URLSmartLoader);
+				}
+				else
+				{
+					if (loaderContainer.length > MAX_LOADER)
+					{
+						loaderContainer[key] = null;
+						delete loaderContainer[key];
+					}
+				}
+			}
+			var loader: URLSmartLoader = new URLSmartLoader();
+			loader.dataFormat = URLLoaderDataFormat.TEXT;
+			loader.addEventListener(Event.COMPLETE, onDataCallback, false, 0, true);
+			loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler, false, 0, true);
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+			loaderContainer.push(loader);
+			return loader;
 		}
 		
 		private function ioErrorHandler(e:IOErrorEvent):void 
@@ -63,11 +87,6 @@ package apollo.network
 			dispatchEvent(e);
 		}
 		
-		private function loaderCompleteHandler(e:Event):void 
-		{
-			dispatchEvent(e);
-		}
-		
 		public function addCallback(callback: Function): void
 		{
 			this.callback = callback;
@@ -75,12 +94,13 @@ package apollo.network
 		
 		protected function onDataCallback(evt: Event): void
 		{
-			var loader: URLLoader = evt.target as URLLoader;
-			process(loader.data as String);
+			var loader: URLSmartLoader = evt.target as URLSmartLoader;
+			process(loader);
 		}
 		
-		private function process(data: String): void
+		private function process(loader: URLSmartLoader): void
 		{
+			var data: String = loader.data as String;
 			CONFIG::DebugMode
 			{
 				trace(data);
@@ -91,6 +111,7 @@ package apollo.network
 				try
 				{
 					var json: Object = JSON.parse(data);
+					loader.isLoading = false;
 					var flag: uint = parseInt(json.flag);
 					if (callback != null)
 					{
@@ -126,10 +147,12 @@ package apollo.network
 				request.method = URLRequestMethod.POST;
 				try
 				{
+					var coreLoader: URLSmartLoader = getAvailableLoader();
 					coreLoader.load(request);
+					coreLoader.isLoading = true;
 					CONFIG::DebugMode
 					{
-						trace("Message: URLLoader.load " + path);
+						trace("Message: URLSmartLoader.id: " + coreLoader + " URLLoader.load " + path);
 						CMonitorConsole.getInstance().log("Message: URLLoader.load " + path);
 					}
 				}
