@@ -367,23 +367,11 @@ class Initialization extends CI_Controller {
 	
 	private function _initAccountData($accountId) {
 		$this->load->config('game_init_data');
-		$this->load->model('data/resources', 'resource');
-		
-		foreach($this->config->item('init_data_resources') as $key => $value) {
-			$parameter = array(
-				'account_id'			=>	$accountId,
-				'resource_id'			=>	intval($key),
-				'resource_name'		=>	$value['resource_name'],
-				'resource_current'	=>	$value['resource_current'],
-				'resource_max'		=>	$value['resource_max'],
-				'resource_incremental'	=>	$value['resource_incremental'],
-				'resource_last_increase'	=>	time()
-			);
-			$this->resource->insert($parameter);
-		}
 		
 		$this->load->model('data/buildings', 'building');
 		$this->load->library('Guid');
+		
+		$initResourceIncremental = array();
 		foreach($this->config->item('init_data_building') as $key => $value) {
 			$parameter  = array(
 				'object_id'							=>	$this->guid->toString(),
@@ -398,6 +386,27 @@ class Initialization extends CI_Controller {
 				'building_pos_y'					=>	$value['building_pos_y']
 			);
 			$this->building->insert($parameter);
+			
+			foreach($value['building_consume'] as $key => $row) {
+				$initResourceIncremental[$key] += intval($row['resource_incremental']);
+			}
+			foreach($value['building_produce'] as $key => $row) {
+				$initResourceIncremental[$key] += intval($row['resource_incremental']);
+			}
+		}
+
+		$this->load->model('data/resources', 'resource');
+		foreach($this->config->item('init_data_resources') as $key => $value) {
+			$parameter = array(
+				'account_id'			=>	$accountId,
+				'resource_id'			=>	intval($key),
+				'resource_name'		=>	$value['resource_name'],
+				'resource_current'	=>	$value['resource_current'],
+				'resource_max'		=>	$value['resource_max'],
+				'resource_incremental'	=>	$value['resource_incremental'] + $initResourceIncremental[$key],
+				'resource_last_increase'	=>	time()
+			);
+			$this->resource->insert($parameter);
 		}
 	}
 	
