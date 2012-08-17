@@ -19,6 +19,14 @@ package apollo.network.command.sending
 			super.fill();
 			
 			_urlVariables.account_id = AccountId;
+			
+			generateCode();
+		}
+		
+		override protected function generateCode(): void
+		{
+			var check: Array = new Array(_urlVariables.account_id, _urlVariables.game_id);
+			_urlVariables.check_code = generateArrayCode(check);
 		}
 	}
 

@@ -12,7 +12,7 @@ package apollo.network.data
 		 * 对于CResourceCenter类来说，_resourceAmount表示剩余资源数，对于consumeList,produceList来说，没有_resourceAmount这个值，只有_resourceModified
 		 */
 		private var _resourceAmount: Number;
-		private var _resourceModified: uint;
+		private var _resourceModified: int;
 		private var _resourceMax: Number;
 		
 		public function CResourceParameter(_resourceId: uint, _resourceName: String, _resourceAmount: Number, _resourceModified: int, _resourceMax: uint = 100000) 

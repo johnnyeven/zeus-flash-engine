@@ -77,7 +77,9 @@ package apollo.controller
 		{
 			//if (GlobalContextConfig.Timer - _preCameraViewTimer > GlobalContextConfig.cameraview_trigger)
 			//{
-			
+			var protocol: Send_Info_CameraView = new Send_Info_CameraView();
+			protocol.AccountId = CharacterData.AccountId;
+			CCommandCenter.getInstance().send(protocol);
 			//}
 		}
 		
