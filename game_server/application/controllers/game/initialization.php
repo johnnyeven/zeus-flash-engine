@@ -32,7 +32,7 @@ class Initialization extends CI_Controller {
 			if(!$this->param_check->check($check, $authToken)) {
 				$jsonData = Array(
 						'flag'			=>	0x0100,
-						'message'	=>	4
+						'message'	=>	0
 				);
 				echo $this->return_format->format($jsonData, $format);
 				$logParameter = array(
@@ -79,7 +79,7 @@ class Initialization extends CI_Controller {
 			} else {
 				$jsonData = Array(
 						'flag'			=>	0x0100,
-						'message'	=>	3
+						'message'	=>	-1
 				);
 				echo $this->return_format->format($jsonData, $format);
 					
@@ -93,7 +93,7 @@ class Initialization extends CI_Controller {
 		} else {
 			$jsonData = Array(
 					'flag'			=>	0x0100,
-					'message'	=>	0
+					'message'	=>	-99
 			);
 			echo $this->return_format->format($jsonData, $format);
 		
@@ -334,7 +334,7 @@ class Initialization extends CI_Controller {
 				);
 				$this->account_game->insert($parameter);
 			}
-			$this->initAccountData($accountId);
+			$this->_initAccountData($accountId);
 			return $accountId;
 		} else {
 			return false;
@@ -365,7 +365,7 @@ class Initialization extends CI_Controller {
 		return $accountId;
 	}
 	
-	private function initAccountData($accountId) {
+	private function _initAccountData($accountId) {
 		$this->load->config('game_init_data');
 		$this->load->model('data/resources', 'resource');
 		
@@ -381,10 +381,82 @@ class Initialization extends CI_Controller {
 			);
 			$this->resource->insert($parameter);
 		}
+		
+		$this->load->model('data/buildings', 'building');
+		$this->load->library('Guid');
+		foreach($this->config->item('init_data_building') as $key => $value) {
+			$parameter  = array(
+				'object_id'							=>	$this->guid->toString(),
+				'account_id'						=>	$accountId,
+				'building_id'						=>	intval($key),
+				'resource_id'						=>	$value['resource_id'],
+				'building_name'					=>	$value['building_name'],
+				'building_level'					=>	$value['building_level'],
+				'building_consume'				=>	json_encode($value['building_consume']),
+				'building_produce'				=>	json_encode($value['building_produce']),
+				'building_pos_x'					=>	$value['building_pos_x'],
+				'building_pos_y'					=>	$value['building_pos_y']
+			);
+			$this->building->insert($parameter);
+		}
 	}
 	
 	public function requestViewObjects($format = 'json') {
+		$accountId	=	$this->input->get_post('account_id', TRUE);
+		$gameId		=	$this->input->get_post('game_id', TRUE);
 		
+		if(!empty($accountId) && !empty($gameId)) {
+			/*
+			 * 检测参数合法性
+			*/
+			$authToken	=	$this->authKey[$gameId]['auth_key'];
+			$check = array($accountId, $gameId);
+			//$this->load->helper('security');
+			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
+			if(!$this->param_check->check($check, $authToken)) {
+				$jsonData = Array(
+						'flag'			=>	0x0000,
+						'message'	=>	0
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'	=>	'PARAM_INVALID',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			/*
+			 * 检查完毕
+			*/
+			
+			$this->load->model('data/buildings', 'building');
+			$parameter = array(
+				'account_id'		=>	$accountId
+			);
+			$buildingResult = $this->building->getAllResult($parameter);
+			
+			$jsonData = array(
+				'flag'						=>	0x0000,
+				'message'				=>	1,
+				'building_list'			=>	$buildingResult
+			);
+			echo $this->return_format->format($jsonData, $format);
+		} else {
+			$jsonData = Array(
+					'flag'			=>	0x0000,
+					'message'	=>	-99
+			);
+			echo $this->return_format->format($jsonData, $format);
+				
+			$logParameter = array(
+					'log_action'	=>	'ACCOUNT_ERROR_NO_PARAM',
+					'account_guid'	=>	'',
+					'account_name'	=>	$accountId
+			);
+			$this->logs->write($logParameter);
+		}
 	}
 	
 	public function requestResources($format = 'json') {
