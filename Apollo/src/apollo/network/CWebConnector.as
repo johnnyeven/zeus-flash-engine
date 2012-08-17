@@ -152,7 +152,7 @@ package apollo.network
 					coreLoader.isLoading = true;
 					CONFIG::DebugMode
 					{
-						trace("Message: URLSmartLoader.id: " + coreLoader + " URLLoader.load " + path);
+						trace("Message: URLLoader.load " + path);
 						CMonitorConsole.getInstance().log("Message: URLLoader.load " + path);
 					}
 				}

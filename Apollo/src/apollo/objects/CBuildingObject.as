@@ -66,7 +66,7 @@ package apollo.objects
 			return _produceList;
 		}
 		
-		public function addConsumeResource(resource: CResourceParameter): void
+		public function addConsumeResource(resource: CResourceParameter, sysnc: Boolean = true): void
 		{
 			if (resource != null)
 			{
@@ -79,11 +79,14 @@ package apollo.objects
 					}
 				}
 				_consumeList.push(resource);
-				CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+				if (sysnc)
+				{
+					CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+				}
 			}
 		}
 		
-		public function addProduceResource(resource: CResourceParameter): void
+		public function addProduceResource(resource: CResourceParameter, sysnc: Boolean = true): void
 		{
 			if (resource != null)
 			{
@@ -96,7 +99,10 @@ package apollo.objects
 					}
 				}
 				_produceList.push(resource);
-				CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+				if (sysnc)
+				{
+					CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+				}
 			}
 		}
 
