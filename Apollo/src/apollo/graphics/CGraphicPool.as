@@ -88,6 +88,11 @@ package apollo.graphics
 			return graphicPool.getCharacter(resourceId);
 		}
 		
+		public function getBuilding(resourceId: String): BitmapData
+		{
+			return graphicPool.getBuilding(resourceId);
+		}
+		
 		public function getFont(resourceId: String): Font
 		{
 			return graphicPool.getFont(resourceId);

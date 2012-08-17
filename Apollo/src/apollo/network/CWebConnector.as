@@ -71,8 +71,8 @@ package apollo.network
 		{
 			CONFIG::DebugMode
 			{
-				trace("Error: CWebConnector.as[97] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
-				CMonitorConsole.getInstance().log("Error: CWebConnector.as[97] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
+				trace("Error: CWebConnector.as[74] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
+				CMonitorConsole.getInstance().log("Error: CWebConnector.as[74] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
 			}
 			dispatchEvent(e);
 		}
@@ -122,8 +122,8 @@ package apollo.network
 				{
 					CONFIG::DebugMode
 					{
-						trace("Error: CWebConnector.as[97] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
-						CMonitorConsole.getInstance().log("Error: CWebConnector.as[97] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
+						trace("Error: CWebConnector.as[125] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
+						CMonitorConsole.getInstance().log("Error: CWebConnector.as[125] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
 					}
 				}
 			}
@@ -160,8 +160,8 @@ package apollo.network
 				{
 					CONFIG::DebugMode
 					{
-						trace("Error: CWebConnector.as[130] URLLoader.load error - error name: " + err.name + ", error message: " + err.message);
-						CMonitorConsole.getInstance().log("Error: CWebConnector.as[130] URLLoader.load error - error name: " + err.name + ", error message: " + err.message);
+						trace("Error: CWebConnector.as[163] URLLoader.load error - error name: " + err.name + ", error message: " + err.message);
+						CMonitorConsole.getInstance().log("Error: CWebConnector.as[163] URLLoader.load error - error name: " + err.name + ", error message: " + err.message);
 					}
 				}
 			}
@@ -169,8 +169,8 @@ package apollo.network
 			{
 				CONFIG::DebugMode
 				{
-					trace("Warning: CWebConnector.as[138] URLVariables is empty");
-					CMonitorConsole.getInstance().log("Warning: CWebConnector.as[138] URLVariables is empty");
+					trace("Warning: CWebConnector.as[172] URLVariables is empty");
+					CMonitorConsole.getInstance().log("Warning: CWebConnector.as[172] URLVariables is empty");
 				}
 			}
 		}

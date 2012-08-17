@@ -55,6 +55,7 @@
     <element path="lib\SkinBuilderLAF.swc" />
     <element path="lib\AsWing.swc" />
     <element path="lib\as3corelib.swc" />
+    <element path="bin\resources\buildings\building.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
