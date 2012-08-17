@@ -39,9 +39,11 @@ $config['init_data_building'] = array(
 		'building_level'				=>	1,
 		'building_consume'			=>	array(
 			0x0003		=>	array(
+				'resource_name'					=>	'粮食',
 				'resource_incremental'		=>	-5
 			),
 			0x0004		=>	array(
+				'resource_name'					=>	'肉类',
 				'resource_incremental'		=>	-7
 			)
 		),
