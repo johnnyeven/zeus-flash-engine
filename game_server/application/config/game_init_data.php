@@ -34,7 +34,7 @@ $config['init_data_resources'] = array(
 
 $config['init_data_building'] = array(
 	0xAA01	=>	array(
-		'resource_id'					=>	'char5',
+		'resource_id'					=>	'building_AA01',
 		'building_name'				=>	'管理中心',
 		'building_level'				=>	1,
 		'building_consume'			=>	array(
