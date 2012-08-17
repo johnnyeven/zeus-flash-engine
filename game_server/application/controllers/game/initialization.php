@@ -470,7 +470,7 @@ class Initialization extends CI_Controller {
 			$authToken	=	$this->authKey[$gameId]['auth_key'];
 			$check = array($accountId, $gameId);
 			//$this->load->helper('security');
-			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
+			//exit(do_hash(do_hash(implode('|||', $check) . '|||' . $authToken, 'md5')));
 			if(!$this->param_check->check($check, $authToken)) {
 				$jsonData = Array(
 						'flag'			=>	0x0001,
