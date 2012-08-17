@@ -39,7 +39,7 @@
     <renderMode>auto</renderMode>
     <systemChrome>standard</systemChrome>
     <aspectRatio>landscape</aspectRatio>
-    <autoOrients>true</autoOrients>
+    <autoOrients>false</autoOrients>
   </initialWindow>
   <icon>
     <image48x48>icons/icon_48.png</image48x48>
