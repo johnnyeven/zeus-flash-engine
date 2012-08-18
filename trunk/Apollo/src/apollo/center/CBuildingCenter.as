@@ -36,7 +36,7 @@ package apollo.center
 		{
 			//图形素材
 			var rs: CGraphicBuilding = new CGraphicBuilding();
-			rs.getResourceFromPool(buildingParameter.resourceId, 8, 4, 7);
+			rs.getResourceFromPool(buildingParameter.resourceId, 1, 1, 0);
 			
 			//感知器
 			var perception: CPerception = new CPerception(CApolloScene.getInstance());
