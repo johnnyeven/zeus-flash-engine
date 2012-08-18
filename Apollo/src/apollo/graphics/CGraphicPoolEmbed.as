@@ -56,6 +56,12 @@ package apollo.graphics
 		private var referChar10: char10;
 		
 		private var referBuildingDefault: wooha.resources.building.Default;
+		private var referBuildingAA01: building_AA01;
+		private var referBuildingAA02: building_AA02;
+		private var referBuildingAA03: building_AA03;
+		private var referBuildingAA04: building_AA04;
+		private var referBuildingAA05: building_AA05;
+		private var referBuildingAA06: building_AA06;
 		
 		private var referFontArialBlack: FontArialBlack;
 		private var referFontYuanGBK: FontYuanGBK;
