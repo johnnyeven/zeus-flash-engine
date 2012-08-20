@@ -24,7 +24,7 @@ package apollo.network.data
 		 * 产出的资源
 		 */
 		private var _produceList: Vector.<CResourceParameter>;
-		private var dependency: CDependency;
+		private var _dependency: CDependency;
 		
 		public function CBuildingParameter() 
 		{
@@ -77,6 +77,16 @@ package apollo.network.data
 			return _objectId;
 		}
 		
+		public function get dependency():CDependency 
+		{
+			return _dependency;
+		}
+		
+		public function set dependency(value:CDependency):void 
+		{
+			_dependency = value;
+		}
+		
 		public function fill(data: Object): void
 		{
 			_objectId = data.object_id;
@@ -86,6 +96,8 @@ package apollo.network.data
 			_buildingLevel = data.building_level;
 			_x = data.building_pos_x;
 			_y = data.building_pos_y;
+			
+			data.building_dependency = JSON.parse(data.building_dependency);
 			
 			data.building_consume = JSON.parse(data.building_consume);
 			for (var i: String in data.building_consume)
