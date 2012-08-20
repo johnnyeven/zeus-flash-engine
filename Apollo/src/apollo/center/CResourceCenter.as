@@ -15,7 +15,6 @@ package apollo.center
 	public class CResourceCenter 
 	{
 		private var resourcesList: Dictionary;
-		private var resourceMax: Dictionary;
 		private var startTime: int;
 		private var resourceUpdateTime: uint;
 		private var resourcePerUpdateTime: Number;
@@ -29,7 +28,6 @@ package apollo.center
 				throw new IllegalOperationError("CCommandCenter不允许实例化");
 			}
 			resourcesList = new Dictionary();
-			resourceMax = new Dictionary();
 			startTime = GlobalContextConfig.Timer;
 			resourceUpdateTime = 30;
 			resourcePerUpdateTime = resourceUpdateTime / GlobalContextConfig.resourceDelay;
@@ -45,17 +43,16 @@ package apollo.center
 			CCommandCenter.getInstance().send(protocol);
 		}
 		
-		public function registerResource(resourceId: uint, resourceParameter: CResourceParameter, _resourceMax: uint = 10000): void
+		public function registerResource(resourceParameter: CResourceParameter): void
 		{
-			if (resourcesList[resourceId] == null)
+			if (resourcesList[resourceParameter.resourceId] == null)
 			{
-				resourcesList[resourceId] = resourceParameter;
-				resourceMax[resourceId] = _resourceMax;
+				resourcesList[resourceParameter.resourceId] = resourceParameter;
 			}
 			else
 			{
 				CONFIG::DebugMode {
-					trace('Resource Id Duplicated: ' + resourceId);
+					trace('Resource Id Duplicated: ' + resourceParameter.resourceId);
 				}
 			}
 		}
@@ -66,8 +63,6 @@ package apollo.center
 			{
 				resourcesList[resourceId] = null;
 				delete resourcesList[resourceId];
-				resourceMax[resourceId] = null;
-				delete resourceMax[resourceId];
 			}
 		}
 		
@@ -100,9 +95,9 @@ package apollo.center
 					{
 						resource.resourceAmount = 0;
 					}
-					else if (resource.resourceAmount + modified > resourceMax[key as uint])
+					else if (resource.resourceAmount + modified > resource.resourceMax)
 					{
-						resource.resourceAmount = resourceMax[key as uint];
+						resource.resourceAmount = resource.resourceMax;
 					}
 					else
 					{

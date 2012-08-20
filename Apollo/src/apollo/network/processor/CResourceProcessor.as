@@ -44,7 +44,7 @@ package apollo.network.processor
 			for (var key: String in protocol.ResourcesList)
 			{
 				var resource: CResourceParameter = protocol.ResourcesList[key] as CResourceParameter;
-				CResourceCenter.getInstance().registerResource(resource.resourceId, resource, resource.resourceMax);
+				CResourceCenter.getInstance().registerResource(resource);
 			}
 		}
 	}

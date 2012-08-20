@@ -144,6 +144,11 @@ package apollo.objects
 			return _dependency;
 		}
 
+		public function set dependency(value: CDependency): void
+		{
+			_dependency = value;
+		}
+
 		public override function Upgrade(): void
 		{
 			super.Upgrade();

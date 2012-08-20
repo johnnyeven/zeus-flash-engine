@@ -72,6 +72,7 @@ package apollo.center
 			{
 				building.addProduceResource(buildingParameter.produceList[keyProduce] as CResourceParameter, sysnc);
 			}
+			building.dependency = buildingParameter.dependency;
 			
 			registerBuilding(building);
 			return building;
