@@ -452,7 +452,7 @@ class Initialization extends CI_Controller {
 			$jsonData = array(
 				'flag'						=>	0x0000,
 				'message'				=>	1,
-				'building_list'			=>	$buildingResult
+				'building_result'		=>	$buildingResult
 			);
 			echo $this->return_format->format($jsonData, $format);
 		} else {
