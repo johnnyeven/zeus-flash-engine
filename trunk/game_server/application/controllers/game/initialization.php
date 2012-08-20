@@ -367,21 +367,24 @@ class Initialization extends CI_Controller {
 	
 	private function _initAccountData($accountId) {
 		$this->load->config('game_init_data');
+		$this->load->config('game_dependency');
 		
 		$this->load->model('data/buildings', 'building');
 		$this->load->library('Guid');
 		
+		$dependencyBuilding = $this->config->item('dependency_building');
 		$initResourceIncremental = array();
 		foreach($this->config->item('init_data_building') as $key => $value) {
 			$parameter  = array(
-				'object_id'							=>	$this->guid->toString(),
+				'object_id'							=>	$this->guid->newGuid()->toString(),
 				'account_id'						=>	$accountId,
 				'building_id'						=>	intval($key),
 				'resource_id'						=>	$value['resource_id'],
 				'building_name'					=>	$value['building_name'],
 				'building_level'					=>	$value['building_level'],
-				'building_consume'				=>	json_encode($value['building_consume']),
-				'building_produce'				=>	json_encode($value['building_produce']),
+				'building_dependency'		=>	empty($dependencyBuilding[intval($key)]) ? '' : json_encode($dependencyBuilding[intval($key)]),
+				'building_consume'				=>	empty($value['building_consume']) ? '' : json_encode($value['building_consume']),
+				'building_produce'				=>	empty($value['building_produce']) ? '' : json_encode($value['building_produce']),
 				'building_pos_x'					=>	$value['building_pos_x'],
 				'building_pos_y'					=>	$value['building_pos_y']
 			);

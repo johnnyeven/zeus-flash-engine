@@ -1,4 +1,4 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $config['init_data_resources'] = array(
 	0x0001	=>	array(
 		'resource_name'				=>	'木材',
@@ -50,6 +50,29 @@ $config['init_data_building'] = array(
 		'building_produce'			=>	array(),
 		'building_pos_x'				=>	200,
 		'building_pos_y'				=>	200
+	),
+	0xAA03	=>	array(
+		'resource_id'					=>	'building_AA03',
+		'building_name'				=>	'科研中心',
+		'building_level'				=>	1,
+		'building_consume'			=>	array(
+			0x0003		=>	array(
+				'resource_name'					=>	'粮食',
+				'resource_incremental'		=>	-10
+			),
+			0x0004		=>	array(
+				'resource_name'					=>	'肉类',
+				'resource_incremental'		=>	-10
+			)
+		),
+		'building_produce'			=>	array(
+			0x0002		=>	array(
+				'resource_name'					=>	'石材',
+				'resource_incremental'		=>	20
+			)
+		),
+		'building_pos_x'				=>	500,
+		'building_pos_y'				=>	600
 	)
 );
 
