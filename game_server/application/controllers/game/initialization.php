@@ -380,6 +380,7 @@ class Initialization extends CI_Controller {
 				'account_id'						=>	$accountId,
 				'building_id'						=>	intval($key),
 				'resource_id'						=>	$value['resource_id'],
+				'building_type'					=>	$value['building_type'],
 				'building_name'					=>	$value['building_name'],
 				'building_level'					=>	$value['building_level'],
 				'building_dependency'		=>	empty($dependencyBuilding[intval($key)]) ? '' : json_encode($dependencyBuilding[intval($key)]),
@@ -452,7 +453,7 @@ class Initialization extends CI_Controller {
 			$jsonData = array(
 				'flag'						=>	0x0000,
 				'message'				=>	1,
-				'building_result'		=>	$buildingResult
+				'building_list'			=>	$buildingResult
 			);
 			echo $this->return_format->format($jsonData, $format);
 		} else {
