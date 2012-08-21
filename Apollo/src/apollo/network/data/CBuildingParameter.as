@@ -97,20 +97,29 @@ package apollo.network.data
 			_x = data.building_pos_x;
 			_y = data.building_pos_y;
 			
-			data.building_dependency = JSON.parse(data.building_dependency);
-			
-			data.building_consume = JSON.parse(data.building_consume);
-			for (var i: String in data.building_consume)
+			if (data.building_dependency != '')
 			{
-				var consumeResource: CResourceParameter = new CResourceParameter(parseInt(i), data.building_consume[i].resource_name, 0, parseInt(data.building_consume[i].resource_incremental));
-				_consumeList.push(consumeResource);
+				data.building_dependency = JSON.parse(data.building_dependency);
 			}
 			
-			data.building_produce = JSON.parse(data.building_produce);
-			for (var j: String in data.building_produce)
+			if (data.building_consume != '')
 			{
-				var produceResource: CResourceParameter = new CResourceParameter(parseInt(i), data.building_produce[i].resource_name, 0, parseInt(data.building_consume[i].resource_incremental));
-				_produceList.push(produceResource);
+				data.building_consume = JSON.parse(data.building_consume);
+				for (var i: String in data.building_consume)
+				{
+					var consumeResource: CResourceParameter = new CResourceParameter(parseInt(i), data.building_consume[i].resource_name, 0, parseInt(data.building_consume[i].resource_incremental));
+					_consumeList.push(consumeResource);
+				}
+			}
+			
+			if (data.building_produce != '')
+			{
+				data.building_produce = JSON.parse(data.building_produce);
+				for (var j: String in data.building_produce)
+				{
+					var produceResource: CResourceParameter = new CResourceParameter(parseInt(j), data.building_produce[j].resource_name, 0, parseInt(data.building_produce[j].resource_incremental));
+					_produceList.push(produceResource);
+				}
 			}
 		}
 		

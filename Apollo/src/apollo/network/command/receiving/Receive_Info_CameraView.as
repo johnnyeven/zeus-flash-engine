@@ -23,10 +23,10 @@ package apollo.network.command.receiving
 			if (message == ConnectorContextConfig.ACK_CONFIRM)
 			{
 				BuildingList = new Vector.<CBuildingParameter>();
-				for (var key: String in data.building_result)
+				for (var key: String in data.building_list)
 				{
 					var parameter: CBuildingParameter = new CBuildingParameter();
-					parameter.fill(data.building_result[key]);
+					parameter.fill(data.building_list[key]);
 					BuildingList.push(parameter);
 				}
 			}
