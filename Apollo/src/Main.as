@@ -23,6 +23,7 @@ package
 	import flash.text.TextFormat;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import org.aswing.event.AWEvent;
 	
 	import apollo.CGame;
 	import apollo.events.GameEvent;
@@ -31,6 +32,8 @@ package
 	import apollo.utils.monitor.CMonitorFPS;
 	import apollo.network.data.CRoleParameter;
 	import apollo.utils.monitor.CMonitorResource;
+	
+	import apollo.ui.UILogin;
 	/**
 	 * ...
 	 * @author Johnny.EVE
@@ -48,6 +51,13 @@ package
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			// entry point
+			var login: UILogin = new UILogin();
+			login.setBtnStartListener(start);
+			addChild(login);
+		}
+		
+		private function start(evt: AWEvent): void
+		{
 			addChild(CMonitorConsole.getInstance());
 			var processorRouter: CProcessorRouter = CProcessorRouter.getInstance();
 			processorRouter.add(new CLoginProcessor());
