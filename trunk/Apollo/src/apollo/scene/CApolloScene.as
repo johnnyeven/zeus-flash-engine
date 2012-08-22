@@ -2,7 +2,7 @@ package apollo.scene
 {
 	import apollo.center.CBuildingCenter;
 	import apollo.controller.*;
-	import apollo.network.data.CBuildingParameter;
+	import apollo.network.data.basic.CBuildingParameter;
 	import apollo.network.data.CRoleParameter;
 	import apollo.objects.*;
 	import apollo.objects.effects.*;

@@ -1,7 +1,8 @@
 package apollo.network.command.receiving 
 {
 	import apollo.configuration.ConnectorContextConfig;
-	import apollo.network.data.CBuildingParameter;
+	import apollo.network.data.basic.CBuildingParameter;
+	import apollo.network.data.CCollectionBuildingParameter;
 	
 	/**
 	 * ...
@@ -25,7 +26,10 @@ package apollo.network.command.receiving
 				BuildingList = new Vector.<CBuildingParameter>();
 				for (var key: String in data.building_list)
 				{
-					var parameter: CBuildingParameter = new CBuildingParameter();
+					if (data.building_list[key].building_type == "COLLECTION")
+					{
+						var parameter: CCollectionBuildingParameter = new CCollectionBuildingParameter();
+					}
 					parameter.fill(data.building_list[key]);
 					BuildingList.push(parameter);
 				}
