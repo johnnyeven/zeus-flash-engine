@@ -34,14 +34,6 @@ package apollo.objects
 		protected var _maxLevel: uint;
 		protected var _nameDisplayBuffer: Bitmap;
 		protected var _additionalDisplay: Array;
-		/**
-		 * 消耗的资源
-		 */
-		protected var _consumeList: Vector.<CResourceParameter>;
-		/**
-		 * 产出的资源
-		 */
-		protected var _produceList: Vector.<CResourceParameter>;
 		protected var _dependency: CDependency;
 
 		/**
@@ -52,58 +44,6 @@ package apollo.objects
 		{
 			super(_ctrl);
 			this._buildingId = _buildingId;
-			_consumeList = new Vector.<CResourceParameter>();
-			_produceList = new Vector.<CResourceParameter>();
-		}
-		
-		public function get consumeList(): Vector.<CResourceParameter>
-		{
-			return _consumeList;
-		}
-		
-		public function get produceList(): Vector.<CResourceParameter>
-		{
-			return _produceList;
-		}
-		
-		public function addConsumeResource(resource: CResourceParameter, sysnc: Boolean = true): void
-		{
-			if (resource != null)
-			{
-				if (resource.resourceModified > 0)
-				{
-					resource.resourceModified *= -1;
-					CONFIG::DebugMode
-					{
-						trace("Warning: ConsumeResource的resourceModified大于零，已自动更正");
-					}
-				}
-				_consumeList.push(resource);
-				if (sysnc)
-				{
-					CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
-				}
-			}
-		}
-		
-		public function addProduceResource(resource: CResourceParameter, sysnc: Boolean = true): void
-		{
-			if (resource != null)
-			{
-				if (resource.resourceModified < 0)
-				{
-					resource.resourceModified *= -1;
-					CONFIG::DebugMode
-					{
-						trace("Warning: ProduceResource的resourceModified小于零，已自动更正");
-					}
-				}
-				_produceList.push(resource);
-				if (sysnc)
-				{
-					CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
-				}
-			}
 		}
 
 		/**

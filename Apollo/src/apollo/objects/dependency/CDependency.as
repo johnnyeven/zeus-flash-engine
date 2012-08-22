@@ -1,7 +1,7 @@
 package apollo.objects.dependency 
 {
 	import apollo.center.CResourceCenter;
-	import apollo.network.data.CBuildingParameter;
+	import apollo.network.data.basic.CBuildingParameter;
 	import apollo.network.data.CResourceParameter;
 	
 	import flash.utils.Dictionary;

@@ -7,7 +7,6 @@ package
 	import apollo.network.command.receiving.Receive_Info_RequestAccountId;
 	import apollo.network.command.sending.Send_Info_Login;
 	import apollo.network.command.sending.Send_Info_RequestAccountId;
-	import apollo.network.data.CBuildingParameter;
 	import apollo.network.CWebConnector;
 	import apollo.network.processor.CLoginProcessor;
 	import apollo.network.processor.CProcessorRouter;
@@ -104,37 +103,6 @@ package
 				var resourceMonitor: CMonitorResource = new CMonitorResource();
 				addChild(resourceMonitor);
 			}
-		}
-		
-		private function onGameStart(evt: GameEvent):void
-		{
-			var parameter: CRoleParameter = new CRoleParameter();
-			parameter.objectId = "adfasdfasdfasdf";
-			parameter.speed = 7;
-			parameter.playerName = "test";
-			parameter.startX = 400;
-			parameter.startY = 500;
-			CApolloScene.getInstance().createRole("char1", CDirection.DOWN, parameter);
-			
-			createBuilding();
-		}
-		
-		private function createBuilding(): void
-		{
-			var url: String = "http://localhost:8080/getbuilding.php";
-			var request: URLRequest = new URLRequest(url);
-			var loader: URLLoader = new URLLoader();
-			loader.addEventListener(Event.COMPLETE, onLoadComplete);
-			loader.load(request);
-		}
-		
-		private function onLoadComplete(evt: Event): void
-		{
-			var loader: URLLoader = evt.target as URLLoader;
-			var json: Object = JSON.parse(loader.data);
-			var buildingParameter: CBuildingParameter = new CBuildingParameter();
-			buildingParameter.fill(json);
-			CApolloScene.getInstance().createBuilding(buildingParameter);
 		}
 		
 		private function deactivate(e:Event):void 

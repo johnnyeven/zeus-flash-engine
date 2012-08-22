@@ -3,9 +3,11 @@ package apollo.center
 	import apollo.controller.CBuildingController;
 	import apollo.controller.CPerception;
 	import apollo.graphics.CGraphicBuilding;
-	import apollo.network.data.CBuildingParameter;
+	import apollo.network.data.basic.CBuildingParameter;
+	import apollo.network.data.CCollectionBuildingParameter;
 	import apollo.network.data.CResourceParameter;
 	import apollo.objects.CBuildingObject;
+	import apollo.objects.CCollectionBuilding;
 	import apollo.renders.CRenderBuilding;
 	import apollo.scene.CApolloScene;
 	import apollo.utils.GUID;
@@ -58,24 +60,43 @@ package apollo.center
 					id = GUID.create();
 				}
 			}
-			var building: CBuildingObject = new CBuildingObject(controller, buildingParameter.buildingId);
-			building.objectId = id;
-			building.graphic = rs;
-			building.render = render;
-			building.setPos(new Point(buildingParameter.x, buildingParameter.y));
-			building.setDisplayName(buildingParameter.buildingName, 0x00FFFF, 0x000000);
-			for (var keyConsume: String in buildingParameter.consumeList)
-			{
-				building.addConsumeResource(buildingParameter.consumeList[keyConsume] as CResourceParameter, sysnc);
-			}
-			for (var keyProduce: String in buildingParameter.produceList)
-			{
-				building.addProduceResource(buildingParameter.produceList[keyProduce] as CResourceParameter, sysnc);
-			}
-			building.dependency = buildingParameter.dependency;
 			
-			registerBuilding(building);
-			return building;
+			if (buildingParameter is CCollectionBuildingParameter)
+			{
+				var buildingCollection: CCollectionBuilding = new CCollectionBuilding(controller, buildingParameter.buildingId);
+				buildingCollection.objectId = id;
+				buildingCollection.graphic = rs;
+				buildingCollection.render = render;
+				buildingCollection.setPos(new Point(buildingParameter.x, buildingParameter.y));
+				buildingCollection.setDisplayName(buildingParameter.buildingName, 0x00FFFF, 0x000000);
+				buildingCollection.dependency = buildingParameter.dependency;
+				
+				var collectionParameter: CCollectionBuildingParameter = buildingParameter as CCollectionBuildingParameter;
+				for (var keyConsume: String in collectionParameter.consumeList)
+				{
+					buildingCollection.addConsumeResource(collectionParameter.consumeList[keyConsume] as CResourceParameter, sysnc);
+				}
+				for (var keyProduce: String in collectionParameter.produceList)
+				{
+					buildingCollection.addProduceResource(collectionParameter.produceList[keyProduce] as CResourceParameter, sysnc);
+				}
+				
+				registerBuilding(buildingCollection);
+				return buildingCollection;
+			}
+			else
+			{
+				var building: CBuildingObject = new CBuildingObject(controller, buildingParameter.buildingId);
+				building.objectId = id;
+				building.graphic = rs;
+				building.render = render;
+				building.setPos(new Point(buildingParameter.x, buildingParameter.y));
+				building.setDisplayName(buildingParameter.buildingName, 0x00FFFF, 0x000000);
+				building.dependency = buildingParameter.dependency;
+				
+				registerBuilding(building);
+				return building;
+			}
 		}
 		
 		public function registerBuilding(building: CBuildingObject): void

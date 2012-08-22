@@ -10,6 +10,8 @@ package apollo.objects
 {
 	import apollo.objects.CBuildingObject;
 	import apollo.controller.CBaseController;
+	import apollo.network.data.CResourceParameter;
+	import apollo.center.CResourceCenter;
 
 	/**
 	 * @author johnnyeven
@@ -19,97 +21,76 @@ package apollo.objects
 
 	public class CCollectionBuilding extends CBuildingObject
 	{
-		private var rate: uint = 100;
-		private var requireResource: Array;
-		private var productResource: Array;
-		private var workers: CWorkerList;
-		private var workerAbility: uint;
-		private var productionCycle: uint;
+		/**
+		 * 消耗的资源
+		 */
+		protected var _consumeList: Vector.<CResourceParameter>;
+		/**
+		 * 产出的资源
+		 */
+		protected var _produceList: Vector.<CResourceParameter>;
 
 		/**
 		 * 
 		 * @param _ctrl
 		 */
-		public function CCollectionBuilding(_ctrl:CBaseController)
+		public function CCollectionBuilding(_ctrl:CBaseController, _buildingId: uint)
 		{
+			super(_ctrl, _buildingId);
+			_consumeList = new Vector.<CResourceParameter>();
+			_produceList = new Vector.<CResourceParameter>();
+		}
+		
+		public function get consumeList(): Vector.<CResourceParameter>
+		{
+			return _consumeList;
+		}
+		
+		public function get produceList(): Vector.<CResourceParameter>
+		{
+			return _produceList;
+		}
+		
+		public function addConsumeResource(resource: CResourceParameter, sysnc: Boolean = true): void
+		{
+			if (resource != null)
+			{
+				if (resource.resourceModified > 0)
+				{
+					resource.resourceModified *= -1;
+					CONFIG::DebugMode
+					{
+						trace("Warning: ConsumeResource的resourceModified大于零，已自动更正");
+					}
+				}
+				_consumeList.push(resource);
+				if (sysnc)
+				{
+					CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+				}
+			}
+		}
+		
+		public function addProduceResource(resource: CResourceParameter, sysnc: Boolean = true): void
+		{
+			if (resource != null)
+			{
+				if (resource.resourceModified < 0)
+				{
+					resource.resourceModified *= -1;
+					CONFIG::DebugMode
+					{
+						trace("Warning: ProduceResource的resourceModified小于零，已自动更正");
+					}
+				}
+				_produceList.push(resource);
+				if (sysnc)
+				{
+					CResourceCenter.getInstance().modifyResource(resource.resourceId, resource.resourceModified);
+				}
+			}
 		}
 
-		public function GenerateWorker(): uint
-		{
-		}
-
-		/**
-		 * 
-		 * @param id
-		 */
-		public function GetWorker(id:uint): CWorkerCharacter
-		{
-		}
-
-		/**
-		 * 
-		 * @param _name
-		 */
-		public function GetWorker(_name:String): CWorkerCharacter
-		{
-		}
-
-		public function get productResource(): Array
-		{
-		}
-
-		/**
-		 * 
-		 * @param _resource
-		 */
-		public function set productResource(_resource:Array): void
-		{
-		}
-
-		/**
-		 * 
-		 * @param rate
-		 */
-		public function set rate(rate:uint): void
-		{
-		}
-
-		public function get rate(): uint
-		{
-		}
-
-		public function get requireResource(): Array
-		{
-		}
-
-		/**
-		 * 
-		 * @param _resource
-		 */
-		public function set requireResource(_resource:Array): void
-		{
-		}
-
-		/**
-		 * 
-		 * @param workerAbility
-		 */
-		public function set workerAbility(workerAbility:uint): void
-		{
-		}
-
-		public function get workerAbility(): uint
-		{
-		}
-
-		/**
-		 * 
-		 * @param _rate
-		 */
-		public function ChangeRate(_rate:uint): void
-		{
-		}
-
-	} //end CCollectionBuilding
+	}
 
 }
