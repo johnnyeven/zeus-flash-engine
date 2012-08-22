@@ -111,12 +111,6 @@ package apollo.network
 				try
 				{
 					var json: Object = JSON.parse(data);
-					loader.isLoading = false;
-					var flag: uint = parseInt(json.flag);
-					if (callback != null)
-					{
-						callback(flag, json);
-					}
 				}
 				catch (err: Error)
 				{
@@ -125,6 +119,12 @@ package apollo.network
 						trace("Error: CWebConnector.as[125] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
 						CMonitorConsole.getInstance().log("Error: CWebConnector.as[125] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
 					}
+				}
+				loader.isLoading = false;
+				var flag: uint = parseInt(json.flag);
+				if (callback != null)
+				{
+					callback(flag, json);
 				}
 			}
 			else
