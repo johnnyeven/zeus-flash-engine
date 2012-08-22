@@ -9,6 +9,8 @@
 package apollo.controller
 {
 	import apollo.objects.CBuildingObject;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	/**
 	 * @author Administrator
@@ -23,6 +25,21 @@ package apollo.controller
 		}
 		
 		override public function calcAction(): void
+		{
+			
+		}
+
+		override public function setupListener(): void
+		{
+			_controlObject.addEventListener(MouseEvent.CLICK, onObjectClick, false, 0, true);
+		}
+
+		override public function removeListener(): void
+		{
+			_controlObject.removeEventListener(MouseEvent.CLICK, onObjectClick);
+		}
+		
+		private function onObjectClick(evt: MouseEvent): void
 		{
 			
 		}
