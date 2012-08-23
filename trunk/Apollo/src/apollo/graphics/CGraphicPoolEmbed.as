@@ -2,6 +2,7 @@ package apollo.graphics
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.DisplayObject;
 	import flash.errors.IllegalOperationError;
@@ -20,6 +21,8 @@ package apollo.graphics
 	import wooha.resources.character.*;
 	import wooha.resources.building.*;
 	import wooha.resources.font.*;
+	import apollo.ui.*;
+	import apollo.ui.graphics.*;
 	
 	/**
 	 * ...
@@ -64,7 +67,10 @@ package apollo.graphics
 		private var referBuildingAA06: building_AA06;
 		
 		private var referFontArialBlack: FontArialBlack;
-		private var referFontYuanGBK: FontYuanGBK;
+		private var referFontWRYH: FontWRYH;
+		
+		private var referUILogin: UILogin;
+		private var referUIMenuItem: MenuItem;
 		/**
 		 * 资源池
 		 */
@@ -152,6 +158,27 @@ package apollo.graphics
 				Font.registerFont(_class);
 				var _font: Font = new _class() as Font;
 				_pool[resourceId] = _font;
+			}
+			return _pool[resourceId];
+		}
+		
+		public function getUI(resourceId: String): MovieClip
+		{
+			if (_pool[resourceId] == null)
+			{
+				var _class: Class = getDefinitionByName("apollo.ui." + resourceId) as Class;
+				_pool[resourceId] = new _class() as MovieClip;
+			}
+			return _pool[resourceId];
+		}
+		
+		public function getUIResource(resourceId: String): BitmapData
+		{
+			if (_pool[resourceId] == null)
+			{
+				var _class: Class = getDefinitionByName("apollo.ui.graphics." + resourceId) as Class;
+				var _display: BitmapData = Conversion.Bitmap(_class);
+				_pool[resourceId] = _display;
 			}
 			return _pool[resourceId];
 		}

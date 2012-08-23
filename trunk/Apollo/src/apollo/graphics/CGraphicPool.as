@@ -2,6 +2,7 @@ package apollo.graphics
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.DisplayObject;
 	import flash.errors.IllegalOperationError;
@@ -96,6 +97,16 @@ package apollo.graphics
 		public function getFont(resourceId: String): Font
 		{
 			return graphicPool.getFont(resourceId);
+		}
+		
+		public function getUI(resourceId: String): MovieClip
+		{
+			return graphicPool.getUI(resourceId);
+		}
+		
+		public function getUIResource(resourceId: String): BitmapData
+		{
+			return graphicPool.getUIResource(resourceId);
 		}
 		
 		/* INTERFACE flash.events.IEventDispatcher */

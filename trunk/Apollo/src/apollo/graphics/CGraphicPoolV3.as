@@ -2,6 +2,7 @@ package apollo.graphics
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.DisplayObject;
 	import flash.errors.IllegalOperationError;
@@ -191,6 +192,28 @@ package apollo.graphics
 				Font.registerFont(_class);
 				var _font: Font = new _class() as Font;
 				_pool[resourceId] = _font;
+			}
+			return _pool[resourceId];
+		}
+		
+		public function getUI(resourceId: String): MovieClip
+		{
+			if (_pool[resourceId] == null)
+			{
+				var _class: Class = _resourceList["ui"].getDefinition("apollo.ui." + resourceId) as Class;
+				Font.registerFont(_class);
+				_pool[resourceId] = new _class();
+			}
+			return _pool[resourceId];
+		}
+		
+		public function getUIResource(resourceId: String): BitmapData
+		{
+			if (_pool[resourceId] == null)
+			{
+				var _class: Class = _resourceList["ui"].getDefinition("apollo.ui.graphics." + resourceId) as Class;
+				var _display: BitmapData = Conversion.Bitmap(_class);
+				_pool[resourceId] = _display;
 			}
 			return _pool[resourceId];
 		}
