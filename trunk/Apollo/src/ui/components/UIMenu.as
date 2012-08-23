@@ -24,7 +24,7 @@
 			_menuItemBg = CGraphicPool.getInstance().getUIResource("MenuItem");
 			_nextX = 0;
 			_nextY = 0;
-			addEventListener(Event.ADDED_TO_STAGE, render, false, 0, true);
+			addEventListener(Event.ADDED, readyToRender, false, 0, true);
 		}
 		
 		public function addMenuItem(title: String, listener: Function): void
@@ -33,8 +33,9 @@
 			_menuListCallback.push(listener);
 		}
 		
-		private function render(evt: Event): void
+		private function readyToRender(evt: Event): void
 		{
+			removeEventListener(Event.ADDED, readyToRender);
 			for (var key: String in _menuList)
 			{
 				var item: UIMenuItem = new UIMenuItem(_menuList[key]);
@@ -46,6 +47,16 @@
 				
 				_nextY += (_menuItemBg.height + 5);
 			}
+		}
+		
+		public function slideDown(): void
+		{
+			
+		}
+		
+		public function slideUp(): void
+		{
+			
 		}
 	}
 	
