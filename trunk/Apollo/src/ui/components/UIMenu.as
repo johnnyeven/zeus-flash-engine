@@ -10,16 +10,17 @@
 	
 	public class UIMenu extends Sprite
 	{
-		private var _menuList: Dictionary;
+		private var _menuList: Vector.<String>;
+		private var _menuListCallback: Vector.<Function>;
 		private var _menuItemBg: BitmapData;
 		
 		private var _nextX: int;
 		private var _nextY: int;
 		
 		public function UIMenu() {
-			// constructor code
 			super();
-			_menuList = new Dictionary();
+			_menuList = new Vector.<String>();
+			_menuListCallback = new Vector.<Function>();
 			_menuItemBg = CGraphicPool.getInstance().getUIResource("MenuItem");
 			_nextX = 0;
 			_nextY = 0;
@@ -28,18 +29,19 @@
 		
 		public function addMenuItem(title: String, listener: Function): void
 		{
-			_menuList[title] = listener;
+			_menuList.push(title);
+			_menuListCallback.push(listener);
 		}
 		
 		private function render(evt: Event): void
 		{
-			for (var key: Object in _menuList)
+			for (var key: String in _menuList)
 			{
-				var item: UIMenuItem = new UIMenuItem(key as String);
+				var item: UIMenuItem = new UIMenuItem(_menuList[key]);
 				
 				item.x = _nextX;
 				item.y = _nextY;
-				item.addEventListener(MouseEvent.CLICK, _menuList[key]);
+				item.addEventListener(MouseEvent.CLICK, _menuListCallback[key]);
 				addChild(item);
 				
 				_nextY += (_menuItemBg.height + 5);
