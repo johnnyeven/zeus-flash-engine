@@ -3,7 +3,10 @@ package
 	import apollo.center.CBuildingCenter;
 	import apollo.center.CCommandCenter;
 	import apollo.configuration.CharacterData;
+	import apollo.configuration.GlobalContextConfig;
 	import apollo.events.NetworkEvent;
+	import apollo.events.ResourceEvent;
+	import apollo.graphics.CGraphicPool;
 	import apollo.network.command.receiving.Receive_Info_RequestAccountId;
 	import apollo.network.command.sending.Send_Info_Login;
 	import apollo.network.command.sending.Send_Info_RequestAccountId;
@@ -16,6 +19,7 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.events.MouseEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
@@ -33,7 +37,7 @@ package
 	import apollo.network.data.CRoleParameter;
 	import apollo.utils.monitor.CMonitorResource;
 	
-	import apollo.ui.UILogin;
+	import apollo.ui.*;
 	/**
 	 * ...
 	 * @author Johnny.EVE
@@ -51,7 +55,17 @@ package
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			// entry point
-			var login: UILogin = new UILogin();
+			
+			CGraphicPool.getInstance().addEventListener(ResourceEvent.RESOURCES_LOADED, onResourceLoaded);
+			CGraphicPool.getInstance().init();
+		}
+		
+		private function onResourceLoaded(event: ResourceEvent): void
+		{
+			var target: CGraphicPool = event.target as CGraphicPool;
+			GlobalContextConfig.ResourcePool = target;
+			
+			var login: UILogin = CGraphicPool.getInstance().getUI("UILogin") as UILogin;
 			login.setBtnStartListener(start);
 			addChild(login);
 		}

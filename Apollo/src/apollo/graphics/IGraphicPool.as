@@ -1,6 +1,7 @@
 package apollo.graphics 
 {
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.text.Font;
@@ -17,6 +18,8 @@ package apollo.graphics
 		function getCharacter(resourceId: String): BitmapData;
 		function getBuilding(resourceId: String): BitmapData;
 		function getFont(resourceId: String): Font;
+		function getUI(resourceId: String): MovieClip;
+		function getUIResource(resourceId: String): BitmapData;
 	}
 	
 }

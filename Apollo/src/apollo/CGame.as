@@ -128,8 +128,7 @@ package apollo
 			
 			_mapId = _data.defaultMapId;
 			
-			CGraphicPool.getInstance().addEventListener(ResourceEvent.RESOURCES_LOADED, onResourceLoaded);
-			CGraphicPool.getInstance().init();
+			loadScene();
 		}
 		
 		public function rebuildScene(): void
@@ -169,11 +168,8 @@ package apollo
 			startGame();
 		}
 		
-		protected function onResourceLoaded(event: ResourceEvent): void
+		private function loadScene(): void
 		{
-			var target: CGraphicPool = event.target as CGraphicPool;
-			GlobalContextConfig.ResourcePool = target;
-			
 			initCenter();
 			
 			_scene = CApolloScene.getInstance();
