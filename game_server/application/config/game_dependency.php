@@ -17,7 +17,8 @@ $config['dependency_building'] = array(
 					'resource_id'			=>	0x0001,
 					'resource_amount'	=>	100
 				)
-			)
+			),
+			'duration'	=>	10
 		),
 		'2'		=>	array(
 			'building'	=>	array(
@@ -35,7 +36,8 @@ $config['dependency_building'] = array(
 					'resource_id'			=>	0x0001,
 					'resource_amount'	=>	500
 				)
-			)
+			),
+			'duration'	=>	50
 		)
 	)
 );
