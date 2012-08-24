@@ -16,13 +16,16 @@ package apollo.configuration
 		public static const ACK_CONFIRM: int = 1;
 		public static const ACK_ERROR: int = 0;
 		
-		public static var CONTROLLER_INFO: String = "game/initialization";
-		public static var ACTION_LOGIN: String = "login";
-		public static var ACTION_REQUEST_CHARACTER: String = "requestCharacterList";
-		public static var ACTION_REQUEST_ACCOUNTID: String = "requestAccountId";
-		public static var ACTION_INIT_CHARACTER: String = "initCharacter";
-		public static var ACTION_CAMERAVIEW_OBJECT_LIST: String = "requestViewObjects";
-		public static var ACTION_REQUEST_RESOURCES: String = "requestResources";
+		public static const CONTROLLER_INFO: String = "game/initialization";
+		public static const ACTION_LOGIN: String = "login";
+		public static const ACTION_REQUEST_CHARACTER: String = "requestCharacterList";
+		public static const ACTION_REQUEST_ACCOUNTID: String = "requestAccountId";
+		public static const ACTION_INIT_CHARACTER: String = "initCharacter";
+		public static const ACTION_CAMERAVIEW_OBJECT_LIST: String = "requestViewObjects";
+		public static const ACTION_REQUEST_RESOURCES: String = "requestResources";
+		
+		public static const CONTROLLER_BUILDING: String = "game/building";
+		public static const ACTION_UPGRADE: String = "upgrade";
 		
 		public static var GAME_ID: String = "A";
 		public static var SECTION_ID: String = "Z";

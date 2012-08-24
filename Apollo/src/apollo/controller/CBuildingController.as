@@ -8,8 +8,10 @@
 
 package apollo.controller
 {
+	import apollo.center.CCommandCenter;
 	import apollo.center.CUICenter;
 	import apollo.CGame;
+	import apollo.network.command.sending.Send_Building_Upgrade;
 	import apollo.objects.CBuildingObject;
 	import apollo.objects.CGameObject;
 	import apollo.scene.CApolloScene;
@@ -17,6 +19,7 @@ package apollo.controller
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import org.aswing.event.AWEvent;
 	
 	import ui.components.*;
 	import apollo.graphics.CGraphicPool;
@@ -87,7 +90,15 @@ package apollo.controller
 			var o: CBuildingObject = _controlObject as CBuildingObject;
 			var form: UIBuildingUpdateForm = CGraphicPool.getInstance().getUI("UIBuildingUpdateForm") as UIBuildingUpdateForm;
 			form.setTitle(o.buildingName);
+			form.setBtnSubmitListener(onBtnUpdateClick);
 			CGame.getInstance().addChild(form);
+		}
+		
+		private function onBtnUpdateClick(evt: AWEvent): void
+		{
+			var protocol: Send_Building_Upgrade = new Send_Building_Upgrade();
+			protocol.ObjectId = _controlObject.objectId;
+			CCommandCenter.getInstance().send(protocol);
 		}
 		
 		private function onMenuInfo(evt: MouseEvent): void
