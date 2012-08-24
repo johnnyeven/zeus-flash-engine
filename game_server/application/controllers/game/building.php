@@ -44,6 +44,8 @@ class Building extends CI_Controller {
 			/*
 			 * 检查完毕
 			*/
+			$this->load->model('data/buildings');
+			$result = $this->buildings->get($objectId);
 		} else {
 			$jsonData = Array(
 					'flag'			=>	0x0100,
