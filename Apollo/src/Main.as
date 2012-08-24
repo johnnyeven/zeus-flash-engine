@@ -22,12 +22,16 @@ package
 	import flash.events.MouseEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import org.aswing.AsWingManager;
 	import org.aswing.event.AWEvent;
+	import org.aswing.skinbuilder.WoohaLAF;
+	import org.aswing.UIManager;
 	
 	import apollo.CGame;
 	import apollo.events.GameEvent;
@@ -64,6 +68,10 @@ package
 		{
 			var target: CGraphicPool = event.target as CGraphicPool;
 			GlobalContextConfig.ResourcePool = target;
+			
+			var _font: Font = CGraphicPool.getInstance().getFont("FontWRYH");
+			AsWingManager.setRoot(this);
+			UIManager.setLookAndFeel(new WoohaLAF(_font.fontName));
 			
 			var login: UILogin = CGraphicPool.getInstance().getUI("UILogin") as UILogin;
 			login.setBtnStartListener(start);

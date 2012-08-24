@@ -529,6 +529,11 @@ package apollo.maps
 			_displayBuffer.graphics.beginBitmapFill(_buffer);
 			_displayBuffer.graphics.drawRect(0, 0, _buffer.width, _buffer.height);
 		}
+		
+		public function get displayBuffer(): Shape
+		{
+			return _displayBuffer;
+		}
 
 		public function render(enforceRender: Boolean = false): void
 		{
