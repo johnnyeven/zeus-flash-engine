@@ -71,6 +71,7 @@ package apollo.graphics
 		
 		private var referUILogin: UILogin;
 		private var referUIMenuItem: MenuItem;
+		private var referUIBuildingUpdate: UIBuildingUpdateForm;
 		/**
 		 * 资源池
 		 */

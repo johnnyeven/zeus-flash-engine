@@ -8,8 +8,13 @@
 
 package apollo.controller
 {
+	import apollo.center.CUICenter;
+	import apollo.CGame;
 	import apollo.objects.CBuildingObject;
 	import apollo.objects.CGameObject;
+	import apollo.scene.CApolloScene;
+	import apollo.ui.UIBuildingUpdateForm;
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -46,16 +51,49 @@ package apollo.controller
 		
 		private function onObjectClick(evt: MouseEvent): void
 		{
-			var menu: UIMenu = new UIMenu();
-			menu.addMenuItem("升级1", onMenu1);
-			menu.addMenuItem("升级2", onMenu1);
-			menu.addMenuItem("升级3", onMenu1);
-			_controlObject.addChild(menu);
+			evt.stopImmediatePropagation();
+			var o: CBuildingObject = _controlObject as CBuildingObject;
+			o.menu = new UIMenu();
+			switch (o.buildingId)
+			{
+				case 0xAA01:
+					o.menu.addMenuItem("升级", onMenuUpdate);
+					o.menu.addMenuItem("信息", onMenuInfo);
+					break;
+				case 0xAA02:
+					o.menu.addMenuItem("精炼", onMenuUpdate);
+					o.menu.addMenuItem("信息", onMenuInfo);
+					break;
+				case 0xAA03:
+					o.menu.addMenuItem("扫描", onMenuUpdate);
+					o.menu.addMenuItem("信息", onMenuInfo);
+					break;
+			}
+			o.addAdditionalDisplay(o.menu);
+			o.menu.slideDown();
+			CGame.getInstance().addEventListener(MouseEvent.CLICK, onStageClick);
 		}
 		
-		private function onMenu1(evt: MouseEvent): void
+		private function onStageClick(evt: MouseEvent): void
 		{
-			trace('1 click');
+			_perception.scene.stage.removeEventListener(MouseEvent.CLICK, onStageClick);
+			var o: CBuildingObject = _controlObject as CBuildingObject;
+			o.menu.slideUp();
+		}
+		
+		private function onMenuUpdate(evt: MouseEvent): void
+		{
+			evt.stopImmediatePropagation();
+			var o: CBuildingObject = _controlObject as CBuildingObject;
+			var form: UIBuildingUpdateForm = CGraphicPool.getInstance().getUI("UIBuildingUpdateForm") as UIBuildingUpdateForm;
+			form.setTitle(o.buildingName);
+			CGame.getInstance().addChild(form);
+		}
+		
+		private function onMenuInfo(evt: MouseEvent): void
+		{
+			evt.stopImmediatePropagation();
+			trace('2 click');
 		}
 
 	} //end CBuildingController

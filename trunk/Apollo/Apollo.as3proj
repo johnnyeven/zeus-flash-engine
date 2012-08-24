@@ -51,12 +51,12 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="bin\resources\characters\character.swc" />
-    <element path="lib\SkinBuilderLAF.swc" />
     <element path="lib\as3corelib.swc" />
     <element path="bin\resources\buildings\building.swc" />
     <element path="bin\resources\ui\ui01.swc" />
-    <element path="lib\AsWing.swc" />
     <element path="bin\resources\font\font.swc" />
+    <element path="bin\resources\ui\AsWing.swc" />
+    <element path="bin\resources\ui\SkinBuilderLAF.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

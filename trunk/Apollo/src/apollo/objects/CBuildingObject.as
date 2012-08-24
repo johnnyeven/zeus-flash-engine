@@ -14,6 +14,7 @@ package apollo.objects
 	import apollo.objects.dependency.CDependency;
 	import apollo.center.CResourceCenter;
 	import apollo.display.TextFieldEx;
+	import ui.components.UIMenu;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -35,6 +36,7 @@ package apollo.objects
 		protected var _nameDisplayBuffer: Bitmap;
 		protected var _additionalDisplay: Array;
 		protected var _dependency: CDependency;
+		protected var _menu: UIMenu;
 
 		/**
 		 * 
@@ -197,6 +199,16 @@ package apollo.objects
 		public function get additionalDisplay(): Array
 		{
 			return _additionalDisplay;
+		}
+		
+		public function get menu(): UIMenu
+		{
+			return _menu;
+		}
+		
+		public function set menu(value: UIMenu): void
+		{
+			_menu = value;
 		}
 	} //end CBuildingObject
 
