@@ -56,6 +56,8 @@ package apollo.network.processor
 		{
 			if (protocol.message == ConnectorContextConfig.ACK_CONFIRM)
 			{
+				CharacterData.MaxBuildingQueue = protocol.MaxBuildingQueue;
+				CharacterData.MaxSkillQueue = protocol.MaxSkillQueue;
 				var event: NetworkEvent = new NetworkEvent(NetworkEvent.REQUEST_CHARACTER);
 				event.data = protocol;
 				commandCenter.dispatchEvent(event);

@@ -10,6 +10,8 @@ package apollo.network.command.receiving
 	{
 		public var AccountId: String;
 		public var NickName: String;
+		public var MaxBuildingQueue: uint;
+		public var MaxSkillQueue: uint;
 		
 		public function Receive_Info_RequestAccountId() 
 		{
@@ -24,6 +26,8 @@ package apollo.network.command.receiving
 			{
 				AccountId = data.account_id;
 				NickName = data.nick_name;
+				MaxBuildingQueue = data.max_building_queue;
+				MaxSkillQueue = data.max_skill_queue;
 			}
 		}
 	}
