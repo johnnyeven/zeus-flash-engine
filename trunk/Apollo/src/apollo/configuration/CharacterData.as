@@ -44,6 +44,9 @@ package apollo.configuration
 		private static var _skillList: Dictionary;
 		private static var instance: CharacterData;
 		private static var allowInstance: Boolean = false;
+		
+		public static var MaxBuildingQueue: uint;
+		public static var MaxSkillQueue: uint;
 
 		public function CharacterData()
 		{
