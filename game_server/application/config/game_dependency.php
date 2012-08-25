@@ -1,6 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $config['dependency_building'] = array(
+	0xAA01		=>	array(
+		'building_auto_increase'		=>	1,
+		'1'		=>	array(
+			
+		)
+	),
 	0xAA03		=>	array(
+		'building_auto_increase'		=>	0,
 		'1'		=>	array(
 			'building'	=>	array(
 				array(

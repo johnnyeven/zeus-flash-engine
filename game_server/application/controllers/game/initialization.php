@@ -223,9 +223,11 @@ class Initialization extends CI_Controller {
 					$result = $this->game_account->getAllResult($parameter);
 					if($result != FALSE) {
 						$accountId = $result[0]->account_id;
+						$accountParameter = $result[0];
 					} else {
 						if($autoCreate) {
-							$accountId = $this->_registerAccountId($accountGuid, $gameId, $serverId, $serverSection, $nickName);
+							$accountParameter = $this->_registerAccountId($accountGuid, $gameId, $serverId, $serverSection, $nickName);
+							$accountId = $accountParameter['account_id'];
 							if($accountId === FALSE) {
 								$jsonData = Array(
 										'flag'			=>	0x0400,
@@ -249,10 +251,12 @@ class Initialization extends CI_Controller {
 						}
 					}
 					$jsonData = Array(
-							'flag'			=>	0x0400,
-							'message'	=>	1,
-							'account_id'=>	$accountId,
-							'nick_name'	=>	$nickName
+							'flag'				=>	0x0400,
+							'message'		=>	1,
+							'account_id'	=>	$accountId,
+							'nick_name'	=>	$nickName,
+							'max_building_queue'	=>	!is_array($accountParameter) ? $accountParameter->account_max_building_queue : $accountParameter['account_max_building_queue'],
+							'max_skill_queue'		=>	!is_array($accountParameter) ? $accountParameter->account_max_skill_queue : $accountParameter['account_max_skill_queue']
 					);
 					echo $this->return_format->format($jsonData, $format);
 						
@@ -307,6 +311,7 @@ class Initialization extends CI_Controller {
 	}
 	
 	private function _registerAccountId($accountGuid, $gameId, $serverId, $serverSection, $nickName = '') {
+		$this->load->config('game_init_data');
 		if(!empty($accountGuid) &&
 				$gameId!==FALSE &&
 				$serverId!==FALSE &&
@@ -322,7 +327,9 @@ class Initialization extends CI_Controller {
 					'game_id'				=>	$gameId,
 					'account_server_id'		=>	$serverId,
 					'account_server_section'=>	$serverSection,
-					'nick_name'				=>	$nickName
+					'nick_name'				=>	$nickName,
+					'account_max_building_queue'			=>	$this->config->item('init_data_max_building_queue'),
+					'account_max_skill_queue'				=>	$this->config->item('init_data_max_skill_queue')
 			);
 			$this->game_account->insert($parameter);
 			$this->load->model('data/account_added_game', 'account_game');
@@ -335,7 +342,7 @@ class Initialization extends CI_Controller {
 				$this->account_game->insert($parameter);
 			}
 			$this->_initAccountData($accountId);
-			return $accountId;
+			return $parameter;
 		} else {
 			return false;
 		}

@@ -1,4 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+$config['init_data_max_building_queue']		=	2;
+$config['init_data_max_skill_queue']				=	5;
 $config['init_data_resources'] = array(
 	0x0001	=>	array(
 		'resource_name'				=>	'木材',
