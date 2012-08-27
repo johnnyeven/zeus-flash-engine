@@ -4,29 +4,53 @@ $config['game_building_data']	=	array(
 		'building_type'					=>	'COLLECTION',
 		'building_name'					=>	'管理中心',
 		'building_max_level'			=>	20,
-		'building_auto_increase'		=>	1,
 		'1'		=>	array(
 			'resource_id'					=>	'building_AA01',
 			'building_consume'			=>	array(
 				0x0003		=>	array(
 					'resource_name'					=>	'粮食',
-					'resource_incremental'		=>	-5,
-					'increase_rate'					=>	50
+					'resource_incremental'		=>	-5
 				),
 				0x0004		=>	array(
 					'resource_name'					=>	'肉类',
-					'resource_incremental'		=>	-7,
-					'increase_rate'					=>	100
+					'resource_incremental'		=>	-7
+				)
+			),
+			'building_produce'			=>	array()
+		),
+		'2'		=>	array(
+			'resource_id'					=>	'building_AA01',
+			'building_consume'			=>	array(
+				0x0003		=>	array(
+					'resource_name'					=>	'粮食',
+					'resource_incremental'		=>	-7
+				),
+				0x0004		=>	array(
+					'resource_name'					=>	'肉类',
+					'resource_incremental'		=>	-10
+				)
+			),
+			'building_produce'			=>	array()
+		),
+		'3'		=>	array(
+			'resource_id'					=>	'building_AA01',
+			'building_consume'			=>	array(
+				0x0003		=>	array(
+					'resource_name'					=>	'粮食',
+					'resource_incremental'		=>	-10
+				),
+				0x0004		=>	array(
+					'resource_name'					=>	'肉类',
+					'resource_incremental'		=>	-15
 				)
 			),
 			'building_produce'			=>	array()
 		)
 	),
 	0xAA03	=>	array(
-		'building_type'				=>	'COLLECTION	',
+		'building_type'				=>	'COLLECTION',
 		'building_name'				=>	'科研中心',
 		'building_max_level'		=>	2,
-		'building_auto_increase'	=>	0,
 		'1'		=>	array(
 			'resource_id'				=>	'building_AA03',
 			'building_consume'			=>	array(

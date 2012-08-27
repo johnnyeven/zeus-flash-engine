@@ -1,13 +1,59 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 $config['dependency_building'] = array(
 	0xAA01		=>	array(
-		'building_auto_increase'		=>	1,
 		'1'		=>	array(
-			
+			'building'	=>	array(
+				array(
+					'building_id'		=>	0xAA02,
+					'building_level'	=>	1
+				)
+			),
+			'resource'	=>	array(
+				array(
+					'resource_id'			=>	0x0001,
+					'resource_amount'	=>	100,
+				)
+			),
+			'duration'	=>	array(
+				'duration_amount'		=>	10
+			)
+		),
+		'2'		=>	array(
+			'building'	=>	array(
+				array(
+					'building_id'		=>	0xAA02,
+					'building_level'	=>	2
+				)
+			),
+			'resource'	=>	array(
+				array(
+					'resource_id'			=>	0x0001,
+					'resource_amount'	=>	130,
+				)
+			),
+			'duration'	=>	array(
+				'duration_amount'		=>	30
+			)
+		),
+		'3'		=>	array(
+			'building'	=>	array(
+				array(
+					'building_id'		=>	0xAA02,
+					'building_level'	=>	3
+				)
+			),
+			'resource'	=>	array(
+				array(
+					'resource_id'			=>	0x0001,
+					'resource_amount'	=>	176,
+				)
+			),
+			'duration'	=>	array(
+				'duration_amount'		=>	80
+			)
 		)
 	),
 	0xAA03		=>	array(
-		'building_auto_increase'		=>	0,
 		'1'		=>	array(
 			'building'	=>	array(
 				array(
@@ -25,7 +71,9 @@ $config['dependency_building'] = array(
 					'resource_amount'	=>	100
 				)
 			),
-			'duration'	=>	10
+			'duration'	=>	array(
+				'duration_amount'		=>	10
+			)
 		),
 		'2'		=>	array(
 			'building'	=>	array(
@@ -44,7 +92,9 @@ $config['dependency_building'] = array(
 					'resource_amount'	=>	500
 				)
 			),
-			'duration'	=>	50
+			'duration'	=>	array(
+				'duration_amount'		=>	50
+			)
 		)
 	)
 );
