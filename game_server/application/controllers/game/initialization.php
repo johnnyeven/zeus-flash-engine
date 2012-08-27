@@ -335,11 +335,11 @@ class Initialization extends CI_Controller {
 			$this->load->model('data/account_added_game', 'account_game');
 			$gameAdded = $this->account_game->get($accountGuid, $gameId);
 			if($gameAdded===FALSE) {
-				$parameter = array(
+				$parameter1 = array(
 						'GUID'		=>	$accountGuid,
 						'game_id'	=>	$gameId
 				);
-				$this->account_game->insert($parameter);
+				$this->account_game->insert($parameter1);
 			}
 			$this->_initAccountData($accountId);
 			return $parameter;
@@ -373,6 +373,7 @@ class Initialization extends CI_Controller {
 	}
 	
 	private function _initAccountData($accountId) {
+		$this->load->config('game_building_data');
 		$this->load->config('game_init_data');
 		$this->load->config('game_dependency');
 		
@@ -382,17 +383,19 @@ class Initialization extends CI_Controller {
 		$dependencyBuilding = $this->config->item('dependency_building');
 		$initResourceIncremental = array();
 		foreach($this->config->item('init_data_building') as $key => $value) {
+			$buildingData = $this->config->item('game_building_data');
+			$building = $buildingData[intval($key)];
 			$parameter  = array(
 				'object_id'							=>	$this->guid->newGuid()->toString(),
 				'account_id'						=>	$accountId,
 				'building_id'						=>	intval($key),
-				'resource_id'						=>	$value['resource_id'],
-				'building_type'					=>	$value['building_type'],
-				'building_name'					=>	$value['building_name'],
+				'resource_id'						=>	$building[strval($value['building_level'])]['resource_id'],
+				'building_type'					=>	$building['building_type'],
+				'building_name'					=>	$building['building_name'],
 				'building_level'					=>	$value['building_level'],
 				'building_dependency'		=>	empty($dependencyBuilding[intval($key)]) ? '' : json_encode($dependencyBuilding[intval($key)]),
-				'building_consume'				=>	empty($value['building_consume']) ? '' : json_encode($value['building_consume']),
-				'building_produce'				=>	empty($value['building_produce']) ? '' : json_encode($value['building_produce']),
+				'building_consume'				=>	empty($building[strval($value['building_level'])]['building_consume']) ? '' : json_encode($building[strval($value['building_level'])]['building_consume']),
+				'building_produce'				=>	empty($building[strval($value['building_level'])]['building_produce']) ? '' : json_encode($building[strval($value['building_level'])]['building_produce']),
 				'building_pos_x'					=>	$value['building_pos_x'],
 				'building_pos_y'					=>	$value['building_pos_y']
 			);
