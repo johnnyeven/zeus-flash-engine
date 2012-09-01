@@ -83,8 +83,38 @@ class Building extends CI_Controller {
 				}
 			}
 			
+			$this->load->config('game_building_data');
 			$this->load->model('data/buildings');
 			$result = $this->buildings->get($objectId);
+			$buildingId = intval($result->building_id);
+			$buildingNextLevel = intval($result->building_level) + 1;
+			$buildingData = $this->config->item('game_building_data');
+			$buildingData = $buildingData[$buildingId];
+			
+			if($buildingNextLevel > intval($buildingData['building_max_level'])) {
+				$jsonData = Array(
+						'flag'			=>	0xA001,
+						'message'	=>	-3
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'	=>	'BUILDING_UPGRADE_ERROR_MAX_LEVEL',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			
+			$this->load->config('game_dependency');
+			$buildingDependencyData = $this->config->item('dependency_building');
+			$buildingDependencyData = $buildingDependencyData[$buildingId][strval($buildingNextLevel)];
+			
+			$this->load->model('data/resources');
+			$parameter = array(
+				'account_id'	=>	$accountId
+			);
+			$resourceList = $this->resources->getAllResult($parameter);
 		} else {
 			$jsonData = Array(
 					'flag'			=>	0x0100,
