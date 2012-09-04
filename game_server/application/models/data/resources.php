@@ -66,11 +66,18 @@ class Resources extends CI_Model {
 		}
 	}
 
-	public function update($row, $accountId, $resourceId) {
+	public function update($row, $accountId, $resourceId, $autoConvert = TRUE) {
 		if(!empty($row)) {
 			$this->datadb->where('account_id', $accountId);
 			$this->datadb->where('resource_id', $resourceId);
-			return $this->datadb->update($this->accountTable, $row);
+			if($autoConvert) {
+				return $this->datadb->update($this->accountTable, $row);
+			} else {
+				foreach($row as $key => $value) {
+					$this->datadb->set($key, $value);
+				}
+				return $this->datadb->update($this->accountTable);
+			}
 		} else {
 			return false;
 		}

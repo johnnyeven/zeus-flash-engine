@@ -110,14 +110,96 @@ class Building extends CI_Controller {
 			$buildingDependencyData = $this->config->item('dependency_building');
 			$buildingDependencyData = $buildingDependencyData[$buildingId][strval($buildingNextLevel)];
 			
+			//检查建筑是否满足要求
+			$parameter = array(
+				'account_id'	=>	$accountId
+			);
+			$buildingList = $this->buildings->getAllResult($parameter);
+			foreach($buildingList as $value) {
+				$need = $buildingDependencyData['building'][intval($value->building_id)]['building_level'];
+				if(intval($value->building_level) < $need) {
+					$jsonData = Array(
+							'flag'			=>	0xA001,
+							'message'	=>	-4
+					);
+					echo $this->return_format->format($jsonData, $format);
+					$logParameter = array(
+							'log_action'	=>	'BUILDING_UPGRADE_ERROR_NO_BUILDING',
+							'account_guid'	=>	'',
+							'account_name'	=>	$accountId
+					);
+					$this->logs->write($logParameter);
+					exit();
+				}
+			}
+			
+			//检查资源是否足够
 			$this->load->model('data/resources');
 			$parameter = array(
 				'account_id'	=>	$accountId
 			);
 			$resourceList = $this->resources->getAllResult($parameter);
+			foreach($resourceList as $value) {
+				$need = $buildingDependencyData['resource'][intval($value->resource_id)]['resource_amount'];
+				if(intval($value->resource_current) < $need) {
+					$jsonData = Array(
+							'flag'			=>	0xA001,
+							'message'	=>	-5
+					);
+					echo $this->return_format->format($jsonData, $format);
+					$logParameter = array(
+							'log_action'	=>	'BUILDING_UPGRADE_ERROR_NO_RESOURCE',
+							'account_guid'	=>	'',
+							'account_name'	=>	$accountId
+					);
+					$this->logs->write($logParameter);
+					exit();
+				}
+			}
+			
+			//检查通过
+			//扣除资源
+			foreach($buildingDependencyData['resource'] as $key => $resource) {
+				$parameter = array(
+					'resource_current'	=>	'resource_current - ' . $resource['resource_amount']
+				);
+				$this->resources->update($parameter, $accountId, $key, FALSE);
+			}
+			
+			//开始加入队列
+			$parameter = array(
+				'object_id'				=>	$objectId,
+				'account_id'			=>	$accountId,
+				'building_id'			=>	$result->building_id,
+				'resource_id'			=>	$buildingData[strval($buildingNextLevel)]['resource_id'],
+				'building_type'		=>	$result->building_type,
+				'building_name'		=>	$result->building_name,
+				'building_level'		=>	$buildingNextLevel,
+				'building_consume'	=>	json_encode($buildingDependencyData['resource']),
+				'building_pos_x'		=>	$result->building_pos_x,
+				'building_pos_y'		=>	$result->building_pos_y,
+				'building_finished_timestamp'=>	time() + $buildingDependencyData['duration']['duration_amount'],
+				'queue_status'		=>	'PROCESS'
+			);
+			$this->building_queue->insert($parameter);
+			
+			$jsonData = Array(
+					'flag'			=>	0xA001,
+					'message'	=>	1,
+					'object_id'	=>	$objectId,
+					'building_finished_timestamp'	=>	$parameter['building_finished_timestamp']
+			);
+			echo $this->return_format->format($jsonData, $format);
+		
+			$logParameter = array(
+					'log_action'	=>	'BUILDING_UPGRADE_SUCCESS',
+					'account_guid'	=>	'',
+					'account_name'	=>	$accountId
+			);
+			$this->logs->write($logParameter);
 		} else {
 			$jsonData = Array(
-					'flag'			=>	0x0100,
+					'flag'			=>	0xA001,
 					'message'	=>	-99
 			);
 			echo $this->return_format->format($jsonData, $format);

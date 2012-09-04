@@ -3,14 +3,12 @@ $config['dependency_building'] = array(
 	0xAA01		=>	array(
 		'1'		=>	array(
 			'building'	=>	array(
-				array(
-					'building_id'		=>	0xAA02,
+				0xAA02	=>	array(
 					'building_level'	=>	1
 				)
 			),
 			'resource'	=>	array(
-				array(
-					'resource_id'			=>	0x0001,
+				0x0001	=>	array(
 					'resource_amount'	=>	100,
 				)
 			),
@@ -20,14 +18,12 @@ $config['dependency_building'] = array(
 		),
 		'2'		=>	array(
 			'building'	=>	array(
-				array(
-					'building_id'		=>	0xAA02,
+				0xAA02	=>	array(
 					'building_level'	=>	2
 				)
 			),
 			'resource'	=>	array(
-				array(
-					'resource_id'			=>	0x0001,
+				0x0001	=>	array(
 					'resource_amount'	=>	130,
 				)
 			),
@@ -37,14 +33,12 @@ $config['dependency_building'] = array(
 		),
 		'3'		=>	array(
 			'building'	=>	array(
-				array(
-					'building_id'		=>	0xAA02,
+				0xAA02	=>	array(
 					'building_level'	=>	3
 				)
 			),
 			'resource'	=>	array(
-				array(
-					'resource_id'			=>	0x0001,
+				0x0001	=>	array(
 					'resource_amount'	=>	176,
 				)
 			),
@@ -56,18 +50,15 @@ $config['dependency_building'] = array(
 	0xAA03		=>	array(
 		'1'		=>	array(
 			'building'	=>	array(
-				array(
-					'building_id'		=>	0xAA01,
+				0xAA01	=>	array(
 					'building_level'	=>	1
 				),
-				array(
-					'building_id'		=>	0xAA02,
+				0xAA02	=>	array(
 					'building_level'	=>	1
 				)
 			),
 			'resource'	=>	array(
-				array(
-					'resource_id'			=>	0x0001,
+				0x0001	=>	array(
 					'resource_amount'	=>	100
 				)
 			),
@@ -77,18 +68,15 @@ $config['dependency_building'] = array(
 		),
 		'2'		=>	array(
 			'building'	=>	array(
-				array(
-					'building_id'		=>	0xAA01,
-					'building_level'	=>	1
+				0xAA01	=>	array(
+					'building_level'	=>	2
 				),
-				array(
-					'building_id'		=>	0xAA02,
+				0xAA02	=>	array(
 					'building_level'	=>	1
 				)
 			),
 			'resource'	=>	array(
-				array(
-					'resource_id'			=>	0x0001,
+				0x0001	=>	array(
 					'resource_amount'	=>	500
 				)
 			),
