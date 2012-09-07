@@ -212,5 +212,51 @@ class Building extends CI_Controller {
 			$this->logs->write($logParameter);
 		}
 	}
+	
+	public function check_upgrade($format = 'json') {
+		$objectId  		=	$this->input->get_post('object_id', TRUE);
+		$accountId	=	$this->input->get_post('account_id', TRUE);
+		$gameId		=	$this->input->get_post('game_id', TRUE);
+		
+		if(!empty($objectId) && !empty($gameId)) {
+			/*
+			 * 检测参数合法性
+			*/
+			$authToken	=	$this->authKey[$gameId]['auth_key'];
+			$check = array($objectId, $accountId, $gameId);
+			//$this->load->helper('security');
+			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
+			if(!$this->param_check->check($check, $authToken)) {
+				$jsonData = Array(
+						'flag'			=>	0xA002,
+						'message'	=>	0
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'	=>	'PARAM_INVALID',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			/*
+			 * 检查完毕
+			*/
+		} else {
+			$jsonData = Array(
+					'flag'			=>	0xA002,
+					'message'	=>	-99
+			);
+			echo $this->return_format->format($jsonData, $format);
+		
+			$logParameter = array(
+					'log_action'	=>	'BUILDING_CHECK_UPGRADE_ERROR_NO_PARAM',
+					'account_guid'	=>	'',
+					'account_name'	=>	$accountId
+			);
+			$this->logs->write($logParameter);
+		}
+	}
 }
 ?>

@@ -44,6 +44,9 @@ class Building_queue extends CI_Model {
 			if(!empty($parameter['building_id'])) {
 				$this->datadb->where('building_id', $parameter['building_id']);
 			}
+			if(!empty($parameter['finished_time'])) {
+				$this->datadb->where('building_finished_timestamp <=', intval($parameter['finished_time']));
+			}
 		}
 		if($limit==0 && $offset==0) {
 			$query = $this->datadb->get($this->accountTable);
