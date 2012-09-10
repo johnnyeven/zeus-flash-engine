@@ -401,10 +401,10 @@ class Initialization extends CI_Controller {
 			);
 			$this->building->insert($parameter);
 			
-			foreach($value['building_consume'] as $key => $row) {
+			foreach($building[strval($value['building_level'])]['building_consume'] as $key => $row) {
 				$initResourceIncremental[$key] += intval($row['resource_incremental']);
 			}
-			foreach($value['building_produce'] as $key => $row) {
+			foreach($building[strval($value['building_level'])]['building_produce'] as $key => $row) {
 				$initResourceIncremental[$key] += intval($row['resource_incremental']);
 			}
 		}

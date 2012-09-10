@@ -80,7 +80,8 @@ class Building_queue extends CI_Model {
 	
 	public function insert($row) {
 		if(!empty($row)) {
-			return $this->datadb->insert($this->accountTable, $row);
+			$this->datadb->insert($this->accountTable, $row);
+			return $this->datadb->insert_id();
 		} else {
 			return false;
 		}

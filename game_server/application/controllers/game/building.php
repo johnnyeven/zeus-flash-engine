@@ -181,22 +181,29 @@ class Building extends CI_Controller {
 				'building_finished_timestamp'=>	time() + $buildingDependencyData['duration']['duration_amount'],
 				'queue_status'		=>	'PROCESS'
 			);
-			$this->building_queue->insert($parameter);
+			$queueId = $this->building_queue->insert($parameter);
 			
-			$jsonData = Array(
-					'flag'			=>	0xA001,
-					'message'	=>	1,
-					'object_id'	=>	$objectId,
-					'building_finished_timestamp'	=>	$parameter['building_finished_timestamp']
-			);
-			echo $this->return_format->format($jsonData, $format);
-		
-			$logParameter = array(
-					'log_action'	=>	'BUILDING_UPGRADE_SUCCESS',
-					'account_guid'	=>	'',
-					'account_name'	=>	$accountId
-			);
-			$this->logs->write($logParameter);
+			if($queueId !== FALSE) {
+				$parameter = array(
+					'queue_id'		=>	$queueId
+				);
+				$this->buildings->update($parameter, $objectId);
+				$jsonData = Array(
+						'flag'			=>	0xA001,
+						'message'	=>	1,
+						'object_id'	=>	$objectId,
+						'queue_id'	=>	$queueId,
+						'building_finished_timestamp'	=>	$parameter['building_finished_timestamp']
+				);
+				echo $this->return_format->format($jsonData, $format);
+			
+				$logParameter = array(
+						'log_action'	=>	'BUILDING_UPGRADE_SUCCESS',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+			}
 		} else {
 			$jsonData = Array(
 					'flag'			=>	0xA001,
@@ -214,16 +221,17 @@ class Building extends CI_Controller {
 	}
 	
 	public function check_upgrade($format = 'json') {
+		$queueId		=	$this->input->get_post('queue_id', TRUE);
 		$objectId  		=	$this->input->get_post('object_id', TRUE);
 		$accountId	=	$this->input->get_post('account_id', TRUE);
 		$gameId		=	$this->input->get_post('game_id', TRUE);
 		
-		if(!empty($objectId) && !empty($gameId)) {
+		if(!empty($queueId) && !empty($objectId) && !empty($gameId)) {
 			/*
 			 * 检测参数合法性
 			*/
 			$authToken	=	$this->authKey[$gameId]['auth_key'];
-			$check = array($objectId, $accountId, $gameId);
+			$check = array($queueId, $objectId, $accountId, $gameId);
 			//$this->load->helper('security');
 			//exit(do_hash(implode('|||', $check) . '|||' . $authToken));
 			if(!$this->param_check->check($check, $authToken)) {
@@ -243,6 +251,16 @@ class Building extends CI_Controller {
 			/*
 			 * 检查完毕
 			*/
+			
+			$this->load->model('data/building_queue');
+			$result = $this->building_queue->get($queueId);
+			if($result->object_id != $objectId || $result->account_id != $accountId) {
+				
+			}
+			$buildingId = intval($result->building_id);
+			$buildingLevel = $result->building_level;
+			$this->load->config('game_building_data');
+			$this->load->config('game_dependency');
 		} else {
 			$jsonData = Array(
 					'flag'			=>	0xA002,
