@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<loadBaseUI>load base ui</loadBaseUI>
+	<loadBaseUIError>load base ui error</loadBaseUIError>
+	<loadMain>load main game</loadMain>
+	<loadMainError>load main game error</loadMainError>
+	<loginFail>login failed</loginFail>
+	<createFail>create failed</createFail>
+	<tips>tips</tips>
+	<loaderConfig>load config file</loaderConfig>
+	<loaderPre>load base file</loaderPre>
+	<loaderConfigList>load config package</loaderConfigList>
+	<loaderMainGameRes>load enter res</loaderMainGameRes>
+	<loaderLogin>load login ui</loaderLogin>
+	<loaderMainView>load main ui</loaderMainView>
+</root>
