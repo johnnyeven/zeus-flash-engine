@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!--<SWFLoader name="roleSymbol" url="flash/role.swf" version="1"/> -->
+
+    <!--<XMLLoader name="config" url="config/config.xml" version="1"/> -->
+
+    <!--<ZipLoader name="configList.zip" url="config/zh_CN/configList.zip" version="1"/> -->
+
+    <LoaderMax name="preLoader">
+        <XMLLoader name="connectionConfig.xml"
+            url="config/zh_CN/connectionConfig.xml"
+            version="1"/>
+    </LoaderMax>
+
+    <!--配置文件 -->
+    <ZipLoader name="configList.zip"
+        url="config/zh_CN/configList.zip"
+        version="1"/>
+
+    <!--登陆 -->
+    <SWFLoader name="login.swf"
+        url="zh_CN/login.swf"
+        version="1"/>
+
+    <!--创建角色 -->
+    <SWFLoader name="createRole.swf"
+        url="zh_CN/createRole.swf"
+        version="1"/>
+
+    <!--进入游戏的必须资源 -->
+    <LoaderMax name="mainGame">
+
+        <!--主界面 -->
+        <SWFLoader name="mainView.swf"
+            url="zh_CN/mainView.swf"
+            version="1"/>
+    </LoaderMax>
+
+    <!--其他后台加载资源 -->
+    <LoaderMax name="otherRes">
+    </LoaderMax>
+
+</root>

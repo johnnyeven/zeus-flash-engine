@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<loadBaseUI>正在加载基础UI</loadBaseUI>
+	<loadBaseUIError>加载基础UI错误，请刷新页面或联系管理人员</loadBaseUIError>
+	<loadResUI>正在加载其他UI</loadResUI>
+	<loadResUIError>加载其他UI错误，请刷新页面或联系管理人员</loadResUIError>
+	<loadMain>正在加载主程序</loadMain>
+	<loadMainError>加载主程序错误，请刷新页面或联系管理人员</loadMainError>
+	<loginFail>登陆失败</loginFail>
+	<createFail>创建失败</createFail>
+	<tips>提示</tips>
+	<loaderConfig>正在加载配置文件</loaderConfig>
+	<loaderPre>正在加载基础文件</loaderPre>
+	<loaderConfigList>正在加载配置包</loaderConfigList>
+	<loaderMainGameRes>正在加载进入游戏资源</loaderMainGameRes>
+	<loaderLogin>正在加载登录界面</loaderLogin>
+	<loaderMainView>正在加载主界面</loaderMainView>
+</root>

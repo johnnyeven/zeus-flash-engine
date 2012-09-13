@@ -1,0 +1,31 @@
+<project default="copy" name="拷贝资源到调试目录">
+	<!--拷贝界面资源到程序项目 -->
+
+	<!--资源输出目录 -->
+	<property name="resOutFolder" value="E:\joy\gx\XingJi\前端\XingJiAs3">
+	</property>
+
+	<property name="outSwfFolder" value="${resOutFolder}/bin-debug/zh_CN">
+	</property>
+
+	<target name="copy" depends="copySwf">
+	</target>
+
+	<target name="copyImages">
+		<copy todir="${outSwfFolder}/images" overwrite="true">
+			<fileset dir="images">
+				<include name="*/**" />
+				<exclude name="*/**/*.fla" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copySwf">
+		<copy todir="${outSwfFolder}" overwrite="true">
+			<fileset dir="swf">
+				<include name="*.swf" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

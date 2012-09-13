@@ -1,0 +1,19 @@
+<config>
+
+	<!-- 当前使用通道 -->
+	<channel>1</channel>
+	
+	<!-- socket 连接方式 -->
+	<!-- 
+	
+	<socket channel="1">
+		<ip>192.168.0.98</ip>
+		<port>15055</port>
+	</socket>
+	 -->
+	 
+	<!-- http 连接方式 -->
+	<http channel="1">
+		<url>http://192.168.1.108/web/</url>
+	</http>
+</config>
