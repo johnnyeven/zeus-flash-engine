@@ -4,12 +4,15 @@ package mediator
     import com.greensock.easing.Linear;
 
     import flash.display.DisplayObject;
+    import flash.geom.Point;
 
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.patterns.mediator.Mediator;
 
     import ui.core.Component;
     import ui.managers.PopUpManager;
+    import ui.managers.SystemManager;
+    import ui.utils.UIUtil;
 
     /**
      *基础
@@ -19,7 +22,8 @@ package mediator
     public class BaseMediator extends Mediator implements IMediator
     {
         protected var _popUp:Boolean = true;
-		public var mode:Boolean=false;
+
+        public var mode:Boolean = false;
 
         public var childMedList:Array = [];
 
@@ -53,16 +57,14 @@ package mediator
         {
             if (_popUp)
             {
-                if (uiComp.scaleX == 1)
-                {
-                    uiComp.scaleX = uiComp.scaleY = 0.6;
-                    uiComp.alpha = 0.5;
-                }
+                uiComp.y = SystemManager.rootStage.stageHeight;
 
-                PopUpManager.addPopUp(uiComp,mode);
-                PopUpManager.centerPopUp(uiComp);
+                PopUpManager.addPopUp(uiComp, mode);
 
-                TweenLite.to(uiComp, 0.2, { transformAroundCenter: { scaleX: 1, scaleY: 1, alpha: 1 }, ease: Linear.easeNone, onComplete: showComplete });
+                var centerPoint:Point = UIUtil.stageCenterPoint(uiComp);
+                uiComp.x = centerPoint.x;
+
+                TweenLite.to(uiComp, 0.4, { transformAroundCenter: { y: centerPoint.y }, onComplete: showComplete });
             }
             else
             {
@@ -83,7 +85,7 @@ package mediator
         {
             if (_popUp)
             {
-                TweenLite.to(uiComp, 0.2, { transformAroundCenter: { scaleX: 0.6, scaleY: 0.6, alpha: 0.5 }, ease: Linear.easeNone, onComplete: function():void
+                TweenLite.to(uiComp, 0.4, { transformAroundCenter: { y: SystemManager.rootStage.stageHeight }, ease: Linear.easeNone, onComplete: function():void
                 {
                     PopUpManager.removePopUp(uiComp);
 
@@ -122,8 +124,8 @@ package mediator
         {
             if (destoryCallback != null)
                 destoryCallback();
-			
-			destoryCallback=null;
+
+            destoryCallback = null;
         }
     }
 }

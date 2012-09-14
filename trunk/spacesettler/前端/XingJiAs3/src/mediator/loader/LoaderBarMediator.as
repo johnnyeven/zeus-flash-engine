@@ -12,6 +12,7 @@ package mediator.loader
     import org.puremvc.as3.patterns.mediator.Mediator;
     
     import ui.managers.PopUpManager;
+    import ui.utils.UIUtil;
     
     import view.loader.LoaderBarComponent;
 
@@ -104,7 +105,7 @@ package mediator.loader
         private function showLoaderBar():void
         {
             PopUpManager.addPopUp(comp as DisplayObject, true);
-            PopUpManager.centerPopUp(comp as DisplayObject);
+            UIUtil.centerUI(comp as DisplayObject);
         }
 
         /**
