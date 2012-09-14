@@ -3,18 +3,26 @@ package mediator.prompt
     import com.greensock.TweenLite;
     import com.greensock.easing.Linear;
     import com.zn.multilanguage.MultilanguageManager;
-
+    import com.zn.utils.ClassUtil;
+    
+    import flash.display.MovieClip;
     import flash.system.System;
-
+    
+    import mediator.MainMediator;
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.mediator.Mediator;
-
+    
     import proxy.errorProxy.ErrorProxy;
-
+    
     import ui.components.Alert;
     import ui.components.Label;
+    import ui.managers.PopUpManager;
     import ui.managers.SystemManager;
+    import ui.utils.UIUtil;
+    
+    import view.prompt.PromptInfoComponent;
 
     /**
      *提示
@@ -31,9 +39,17 @@ package mediator.prompt
 
         public static const SHOW_ERROR_NOTE:String = "showErrorNote";
 
+		public static const SHOW_LOADWAITMC_NOTE:String="SHOW_LOADWAITMC_NOTE";// by rl
+		
+		public static const HIDE_LOADWAITMC_NOTE:String="HIDE_LOADWAITMC_NOTE";// by rl
+		
+		private var _loadWaitMC:MovieClip;// by rl
+
         public function PromptMediator(viewComponent:Object = null)
         {
             super(NAME, viewComponent);
+			_loadWaitMC=ClassUtil.getObject("res.loaderServerData");// by rl
+			
         }
 
         /**
@@ -43,7 +59,7 @@ package mediator.prompt
          */
         override public function listNotificationInterests():Array
         {
-            return [ SHOW_ALERT_NOTE, SCROLL_ALERT_NOTE, SHOW_ERROR_NOTE ];
+            return [ SHOW_ALERT_NOTE, SCROLL_ALERT_NOTE, SHOW_ERROR_NOTE, SHOW_LOADWAITMC_NOTE, HIDE_LOADWAITMC_NOTE ];// by rl
         }
 
         /**
@@ -70,6 +86,16 @@ package mediator.prompt
                     showErrorInfo(int(note.getBody()));
                     break;
                 }
+				case SHOW_LOADWAITMC_NOTE:// by rl
+				{
+					showLoadWaitMc();
+					break;
+				}
+				case HIDE_LOADWAITMC_NOTE:// by rl
+				{
+					hideLoadWaitMc();
+					break;
+				}
             }
         }
 
@@ -104,5 +130,21 @@ package mediator.prompt
             var errorProxy:ErrorProxy = getProxy(ErrorProxy);
             scrollAlert(errorProxy.getErrorInfoByID(errorID));
         }
+
+        /**
+         *显示信息
+         * @param param0
+         *
+         */		
+		private function showLoadWaitMc():void
+		{
+			MainMediator(getMediator(MainMediator)).component.addInfo(_loadWaitMC);
+			UIUtil.centerUI(_loadWaitMC);
+		}
+		
+		private function hideLoadWaitMc():void
+		{
+			MainMediator(getMediator(MainMediator)).component.removeInfo(_loadWaitMC);
+		}
     }
 }

@@ -2,7 +2,7 @@ package proxy.userInfo
 {
     import com.zn.net.Protocol;
     
-    import enum.CommandEnum;
+    import enum.command.CommandEnum;
     
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;

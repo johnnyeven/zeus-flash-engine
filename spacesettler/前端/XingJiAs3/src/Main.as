@@ -10,12 +10,11 @@ package
     import ui.managers.SystemManager;
     import ui.managers.ToolTipManager;
 
-    [SWF(width = "1064", height = "600", backgroundColor = "0xCCCCCC")]
+    [SWF(width = "1067", height = "700", backgroundColor = "0xCCCCCC")]
     public class Main extends SystemManager
     {
 		public static var debug:Boolean = true;
 		
-        public static var sim:Boolean = false;
         private var _facade:ApplicationFacade;
 		
         public function Main()

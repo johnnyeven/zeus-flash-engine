@@ -1,20 +1,11 @@
 <config>
 
-	<!-- 当前使用通道 -->
-	<channel>1</channel>
-	 <simulate>true</simulate> 
-	<!-- socket 连接方式 -->
-	<!-- 
-	
-	<socket channel="1">
-		<ip>192.168.0.98</ip>
-		<port>15055</port>
-	</socket>
-	 -->
-	 
-	<!-- http 连接方式 -->
-	<http channel="1">
-        <sendURL>http://192.168.1.108/web/</sendURL>
-        <receiveURL>http://192.168.1.108/web/</receiveURL>
-    </http>
+    <!-- 当前使用通道 -->
+    <channel>1</channel>
+
+    <!-- 获取服务器列表 -->
+    <serverList channel="1">
+    	<url>http://42.121.82.226/UserAgent/websrv/servers/server_list</url>
+    	<game_id>B</game_id>
+    </serverList>
 </config>

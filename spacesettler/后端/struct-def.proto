@@ -1,0 +1,267 @@
+message RESOURCE_OUTPUT {
+    required                    uint32                             x         =     10000;    //金晶矿
+    required                    uint32                             y         =     10100;    //氚氢
+    required                    uint32                             z         =     10200;    //暗物质
+    optional                     bytes                      reserved         =     10300;    //
+}
+
+message RESOURCE_GENERATE {
+    required                    string                          name         =     10000;    //资源名称
+    required                    uint32                   base_volume         =     10100;    //基础因子
+    required                    uint32                    on_destroy         =     10200;    //每建筑摧毁增量因子
+    required                    uint32                 factor_result         =     10300;    //最终决选比列
+    optional                     bytes                      reserved         =     10400;    //
+}
+
+message BLUEMAP_GENERATE {
+    required                    string                          name         =     10000;    //掉落图纸名称
+    required                    uint32                   base_factor         =     10100;    //基础掉率因子
+    required                    uint32                    on_destroy         =     10200;    //每建筑摧毁增量因子
+    required                    uint32      require_forbuilding_type         =     10300;    //必须匹配摧毁建筑类型
+    required                    uint32                  recipes_type         =     10400;    //掉落图纸附加信息
+    required                    uint32              recipes_category         =     10500;    //掉落图纸附加信息
+    optional                     bytes                      reserved         =     10600;    //
+}
+
+message BLUEMAP_LEVEL_GENERATE {
+    required                    uint32                   base_factor         =     10000;    //掉落图纸等级基础因子
+    required                    uint32                    on_destroy         =     10100;    //每建筑摧毁增量因子
+    required                    uint32    required_forbuilding_level         =     10200;    //必须匹配摧毁建筑等级
+    required                    uint32                         level         =     10300;    //掉落图纸等级
+    optional                     bytes                      reserved         =     10400;    //
+}
+
+message OTHER {
+    required                    string                          name         =     10000;    //
+    required                    uint32             fort_center_level         =     10100;    //匹配要塞中心等级
+    required                    uint32               refresh_timeout         =     10200;    //刷新时间
+    required                    uint64                   turret_type         =     10300;    //生成要塞类型（位集）
+    required                    uint64                    turret_pos         =     10400;    //生成要塞位置（位集）
+    required                    uint64                    buffer_pos         =     10500;    //初始摆放增益位置（位集）
+    required                    uint32              factor_endurance         =     10600;    //恢复耐久比例
+    required                    uint32                 factor_shield         =     10700;    //恢复护盾比例
+    required                    uint32                        factor         =     10800;    //耐久、护盾总产生比例
+    required                    uint64                      npc_bomb         =     10900;    //产生NPC自爆车身模板
+    required                    uint64             npc_bomb_tankpart         =     11000;    //产生NPC自爆挂件模板
+    required                    uint64                   npc_chariot         =     11100;    //
+    required                    uint64          npc_chariot_tankpart         =     11200;    //
+    required                    string                           xyz         =     11300;    //
+    required                    uint32                          type         =     11400;    //匹配要塞类型
+    required                    uint64             fort_center_index         =     11500;    //
+    optional                     bytes                      reserved         =     11600;    //
+}
+
+message BUFFER_DEF {
+    required                    uint32                          type         =     10000;    //增益效果类型0=属性1=资源2=僚机
+    required                    uint32                      sub_type         =     10100;    //type=00=耐久1=护盾type=10=金晶1=氚氢2=暗物质3=暗能水晶type=2=僚机
+    required                    uint32                         index         =     10200;    //增益编号
+    required                    uint32                         delta         =     10300;    //type=0&&type=1时有意义
+    required                    uint32                             x         =     10400;    //
+    required                    uint32                             y         =     10500;    //
+    repeated                   CHARIOT                       wingman         =     10600;    //type=2时有意义
+    optional                     bytes                      reserved         =     10700;    //
+}
+
+message POSITION {
+    required                    uint32                             x         =     10000;    //
+    required                    uint32                             y         =     10100;    //
+    required                    uint32                         index         =     10200;    //
+    optional                     bytes                      reserved         =     10300;    //
+}
+
+message SESSION_KEY {
+    required                    string                   session_key         =     10000;    //会话ID
+    required                    uint32                    expired_at         =     10100;    //since1970s
+    required                    uint64                     player_id         =     10200;    //玩家ID
+    optional                     bytes                      reserved         =     10300;    //
+}
+
+message PLAYER_BASE {
+    required                    uint64                            id         =     10000;    //玩家编号
+    required                    uint32                crystal_output         =     10100;    //军衔
+    required                    uint32                tritium_output         =     10200;    //军衔
+    required                    uint32         broken_crystal_output         =     10300;    //军衔
+    optional                     bytes                      reserved         =     10400;    //
+}
+
+message PLAYER {
+    required                    uint64                            id         =     10000;    //玩家编号
+    required                    uint64                       base_id         =     10100;    //基地编号
+    required                    uint64                    session_id         =     10200;    //会话编号
+    required                    string                    officer_id         =     10300;    //军官证
+    required                    string                      nickname         =     10400;    //昵称
+    required                    uint32                 military_rank         =     10500;    //军衔
+    required                    uint32                        honour         =     10600;    //荣誉
+    required                     int32                  dark_crystal         =     10700;    //暗能水晶
+    required                    string                  device_token         =     10800;    //设备描述串
+    required                     int32                   player_type         =     10900;    //玩家类型
+    required                    uint32                    created_at         =     11000;    //创建日期
+    required                    uint32                    updated_at         =     11100;    //更新日期
+    required                     int32                     age_level         =     11200;    //基地等级
+    required                     int32      collecting_factory_count         =     11300;    //带产量的要塞中的矿厂数量
+    optional                     bytes                      reserved         =     11400;    //
+}
+
+message TANKPART {
+    required                    uint64                            id         =     10000;    //
+    required                    uint64                    chariot_id         =     10100;    //
+    required                    uint64                     player_id         =     10200;    //
+    required                     int32                      category         =     10300;    //,Type::Integer#挂件种类
+    required                     int32                          type         =     10400;    //,Type::Integer#挂件型号
+    required                     int32                      enhanced         =     10500;    //,Type::Integer#是否为强化型
+    required                     int32                         level         =     10600;    //,Type::Integer#等级
+    required                     int32                         value         =     10700;    //,Type::Integer#价值
+    required                     int32                     slot_type         =     10800;    //,Type::Integer#挂件插槽类型{
+    required                     int32                        energy         =     10900;    //,Type::Integer#能量消耗
+    required                     int32                        weight         =     11000;    //,Type::Integer#载重消耗
+    required                     int32                   attack_type         =     11100;    //,Type::Integer#攻击类型
+    required                     float              attack_cool_down         =     11200;    //,Type::Float#攻击CD
+    required                     float                  explode_area         =     11300;    //,Type::Float#爆炸范围
+    required                     float                        attack         =     11400;    //,Type::Float#攻击力
+    required                     float                  attack_speed         =     11500;    //,Type::Float#攻击速度
+    required                     float                   attack_area         =     11600;    //,Type::Float#攻击范围
+    required                     int32              damage_desc_type         =     11700;    //,Type::Integer#减伤效果的类型
+    required                     float                   damage_desc         =     11800;    //,Type::Float#减伤效果
+    required                     float                     endurance         =     11900;    //,Type::Float#耐久
+    required                     int32                 energy_supply         =     12000;    //,Type::Integer#提供能量
+    required                     int32                        shield         =     12100;    //,Type::Integer#提供护盾
+    required                     int32                         speed         =     12200;    //,Type::Integer#提供推进
+    required                     int32                  repair_speed         =     12300;    //,Type::Integer#提供修理
+    required                     int32                          area         =     12400;    //,Type::Integer#提供范围
+    required                    uint32                    created_at         =     12500;    //创建日期
+    required                    uint32                    updated_at         =     12600;    //更新日期
+    optional                     bytes                      reserved         =     12700;    //
+}
+
+message CHARIOT {
+    required                    uint64                            id         =     10000;    //
+    required                    uint64                     player_id         =     10100;    //
+    required                     int32                      category         =     10200;    //Type::Integer#战车种类
+    required                     int32                          type         =     10300;    //,Type::Integer#战车型号
+    required                     int32                      enhanced         =     10400;    //,Type::Integer#是否为强化型
+    required                     int32                         level         =     10500;    //,Type::Integer#等级
+    required                     int32                         value         =     10600;    //,Type::Integer#价值
+    required                     int32                     main_slot         =     10700;    //,Type::Integer#主插槽的数量
+    required                     int32                     vice_slot         =     10800;    //,Type::Integer#副插槽的数量
+    required                     int32                   medium_slot         =     10900;    //,Type::Integer#中型插槽的数量
+    required                     int32                    small_slot         =     11000;    //,Type::Integer#小型插槽的数量
+    required                     float            basic_attack_speed         =     11100;    //,Type::Float#基础攻击速度(能量转换)
+    required                     float            total_attack_speed         =     11200;    //,Type::Float#总攻击速度(能量转换)
+    required                     float             basic_search_area         =     11300;    //,Type::Float#基础搜索范围
+    required                     float             total_search_area         =     11400;    //,Type::Float#搜索范围总值
+    required                     float             basic_attack_area         =     11500;    //,Type::Float#基础攻击范围
+    required                     float             total_attack_area         =     11600;    //,Type::Float#攻击范围总值
+    required                     float               basic_endurance         =     11700;    //,Type::Float#基础耐久
+    required                     float               total_endurance         =     11800;    //,Type::Float#耐久总值
+    required                     float             current_endurance         =     11900;    //,Type::Float#当前耐久
+    required                     float                  basic_weight         =     12000;    //,Type::Float#基础载重
+    required                     float                  total_weight         =     12100;    //,Type::Float#总载重
+    required                     float                 weight_in_use         =     12200;    //,Type::Float#已经使用的载重
+    required                     float                  basic_energy         =     12300;    //,Type::Float#基础能量
+    required                     float                  total_energy         =     12400;    //,Type::Float#总能量值
+    required                     float                 energy_in_use         =     12500;    //,Type::Float#已经使用的能量
+    required                     float                   basic_speed         =     12600;    //,Type::Float#基础推进力
+    required                     float                   total_speed         =     12700;    //,Type::Float#总推进力
+    required                     float            basic_repair_speed         =     12800;    //,Type::Float#基础维修速度
+    required                     float          current_repair_speed         =     12900;    //,Type::Float#总维修速度
+    required                     float                  basic_shield         =     13000;    //,Type::Float#基础护盾
+    required                     float                  total_shield         =     13100;    //,Type::Float#总护盾值
+    required                     float                current_shield         =     13200;    //,Type::Float#当前护盾值
+    required                     int32                    invincible         =     13300;    //无敌
+    required                    uint32                   recovery_at         =     13400;    //
+    required                    uint32                    created_at         =     13500;    //创建日期
+    required                    uint32                    updated_at         =     13600;    //更新日期
+    repeated                  TANKPART                     tankparts         =     13700;    //
+    optional                     bytes                      reserved         =     13800;    //
+}
+
+message FORTBUILDING {
+    required                    uint64                            id         =     10000;    //
+    required                    uint64                       fort_id         =     10100;    //
+    required                    uint32                          type         =     10200;    //#建筑类型
+    required                    uint32                         level         =     10300;    //#建筑等级
+    required                    uint32                             x         =     10400;    //#位置x
+    required                    uint32                             y         =     10500;    //#位置y
+    required                    uint32                  power_supply         =     10600;    //#提供的核电能
+    required                    uint32                 power_consume         =     10700;    //#消耗的核电能
+    required                    uint32                   attack_type         =     10800;    //#攻击类型
+    required                     float              basic_min_attack         =     10900;    //#最小基础攻击
+    required                     float            current_min_attack         =     11000;    //#当前最小基础攻击
+    required                     float              basic_max_attack         =     11100;    //#最大基础攻击
+    required                     float            current_max_attack         =     11200;    //#当前最小基础攻击
+    required                     float             basic_attack_area         =     11300;    //#基础爆炸范围
+    required                     float           current_attack_area         =     11400;    //#当前爆炸范围
+    required                     float               basic_endurance         =     11500;    //#基础建筑的耐久度
+    required                     float             current_endurance         =     11600;    //#当前耐久
+    required                     float               total_endurance         =     11700;    //#总耐久
+    required                     float            basic_repair_speed         =     11800;    //#基础维修速度(单位耐力/秒)
+    required                     float          current_repair_speed         =     11900;    //#总维修速率
+    required                    uint32                  attack_range         =     12000;    //#射程
+    required                     float        basic_attack_cool_down         =     12100;    //#基础射击CD(单位秒)
+    required                     float      current_attack_cool_down         =     12200;    //#当前总CD
+    required                    uint32                   recovery_at         =     12300;    //
+    required                    uint32                    created_at         =     12400;    //创建日期
+    required                    uint32                    updated_at         =     12500;    //更新日期
+    required                    uint32                           gid         =     12600;    //
+    required                    uint32                   search_area         =     12700;    //搜索范围
+    optional                     bytes                      reserved         =     12800;    //
+}
+
+message FORT {
+    required                    uint64                            id         =     10000;    //
+    required                    uint64                     player_id         =     10100;    //
+    required                    uint32                         level         =     10200;    //
+    required                    uint32                             x         =     10300;    //
+    required                    uint32                             y         =     10400;    //
+    required                    uint32                             z         =     10500;    //#位置z
+    required                    uint32                     fort_type         =     10600;    //
+    required                    uint32              last_attacked_at         =     10700;    //
+    required                    string                     fort_name         =     10800;    //
+    required                     int32                 battle_status         =     10900;    //
+    required                    uint32                battle_ip_addr         =     11000;    //
+    required                    uint32                   battle_port         =     11100;    //
+    required                    uint32               battle_passport         =     11200;    //
+    required                    uint32                battle_room_id         =     11300;    //
+    required                    uint32                    created_at         =     11400;    //
+    required                    uint32                    updated_at         =     11500;    //
+    repeated              FORTBUILDING                 fortbuildings         =     11600;    //
+    optional                     bytes                      reserved         =     11700;    //
+}
+
+message PLAYER1 {
+    repeated                    PLAYER                       players         =     10000;    //只有一个或者没有
+    repeated                      FORT                         forts         =     10100;    //只有一个或者没有
+    repeated                   CHARIOT                      chariots         =     10200;    //
+    required                    uint32                           gid         =     10300;    //
+    optional                     bytes                      reserved         =     10400;    //
+}
+
+message USER_DATA {
+    repeated                   PLAYER1                      player1s         =     10000;    //
+    repeated                BUFFER_DEF                       buffers         =     10100;    //
+    optional                     bytes                      reserved         =     10200;    //
+}
+
+message GENERATE_FORT {
+    required                    uint32                     fort_type         =     10000;    //
+    repeated         RESOURCE_GENERATE                     resources         =     10100;    //
+    repeated          BLUEMAP_GENERATE                      bluemaps         =     10200;    //
+    repeated    BLUEMAP_LEVEL_GENERATE                bluemap_levels         =     10300;    //
+    repeated                     OTHER                        others         =     10400;    //
+    repeated                BUFFER_DEF                placed_buffers         =     10500;    //
+    optional                     bytes                      reserved         =     10600;    //
+}
+
+message ALL_CONFIGURE {
+    repeated             GENERATE_FORT                         forts         =     10000;    //按照要塞类型
+    repeated                   CHARIOT                          npcs         =     10100;    //所有的NPC战车（巡逻、自曝）车身模板
+    repeated                  TANKPART                 npc_tankparts         =     10200;    //所有的NPC战车（巡逻、自曝）挂件模板
+    repeated              FORTBUILDING                turret_centers         =     10300;    //所有要塞中心攻击数据模板
+    repeated              FORTBUILDING                       turrets         =     10400;    //NPC星球炮塔模板
+    repeated                  POSITION                     positions         =     10500;    //NPC星球炮塔位置集定义
+    repeated           RESOURCE_OUTPUT                       outputs         =     10600;    //
+    repeated                  POSITION                   pickup_poss         =     10700;    //要塞初始化放置可获取BUFFER位置集定义
+    repeated                  TANKPART              buffer_tankparts         =     10800;    //玩家可获取僚机武器挂件集定义
+    optional                     bytes                      reserved         =     10900;    //
+}
+
