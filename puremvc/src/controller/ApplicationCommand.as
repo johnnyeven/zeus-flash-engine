@@ -18,6 +18,8 @@ package controller
 			var _main: Main = notification.getBody() as Main;
 			facade.registerMediator(new TextMediator(_main.txtReceiver));
 			facade.registerMediator(new BtnMediator(_main.btnSender));
+			
+			facade.registerCommand(ApplicationFacade.CHANGE_TEXT, ChangeTextCommand);
 		}
 	}
 }

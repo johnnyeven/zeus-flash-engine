@@ -14,7 +14,7 @@ package mediator
 		{
 			super(NAME, viewComponent);
 		}
-		
+		/*
 		override public function listNotificationInterests():Array
 		{
 			return [ApplicationFacade.CHANGE_TEXT];
@@ -29,8 +29,8 @@ package mediator
 					break;
 			}
 		}
-		
-		private function get controlObject(): TextField
+		*/
+		public function get controlObject(): TextField
 		{
 			return viewComponent as TextField;
 		}
