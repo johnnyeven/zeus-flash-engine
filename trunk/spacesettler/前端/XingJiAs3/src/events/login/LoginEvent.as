@@ -10,6 +10,7 @@ package events.login
 	public class LoginEvent extends Event
 	{
 		public static const LOGIN_EVENT:String="loginEvent";
+		public static const BACK_EVENT:String = "back_event";
 		private var _userName:String;
 		private var _password:String;
 

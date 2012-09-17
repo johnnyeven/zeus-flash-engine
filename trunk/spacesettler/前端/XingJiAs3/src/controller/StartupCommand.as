@@ -8,13 +8,24 @@ package controller
     import controller.init.LoadConfigCommand;
     import controller.init.LoaderResCommand;
     import controller.init.ParseConnectParmsCommand;
+    import controller.login.ShowLoginMediatorCommand;
+    import controller.login.ShowNameInforComponentMediatorCommand;
+    import controller.login.ShowPkComponentMediatorCommand;
+    import controller.login.ShowRegistComponentMediatorCommand;
+    import controller.login.ShowStartComponentMediatorCommand;
     
     import mediator.MainMediator;
     import mediator.loader.LoaderBarMediator;
+    import mediator.login.LoginMediator;
+    import mediator.login.NameInforComponentMediator;
+    import mediator.login.PkComponentMediator;
+    import mediator.login.RegistComponentMediator;
+    import mediator.login.StartComponentMediator;
     import mediator.prompt.PromptMediator;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    import org.puremvc.as3.patterns.facade.Facade;
     
     import proxy.login.LoginProxy;
     import proxy.userInfo.UserInfoProxy;
@@ -76,6 +87,19 @@ package controller
 			facade.registerCommand(ParseConnectParmsCommand.PARSE_CONNECT_PARMS_NOTE, ParseConnectParmsCommand);
 			//注册加载进入游戏资源
 			facade.registerCommand(LoaderResCommand.LOAD_RES_NOTE, LoaderResCommand);
+			/**************************************
+			        登陆流程
+			 **************************************/	
+			//开始界面
+			facade.registerCommand(StartComponentMediator.SHOW_NOTE,ShowStartComponentMediatorCommand);
+			//登陆界面
+			facade.registerCommand(LoginMediator.SHOW_NOTE,ShowLoginMediatorCommand);
+			//注册
+			facade.registerCommand(RegistComponentMediator.SHOW_NOTE,ShowRegistComponentMediatorCommand);
+			//昵称
+			facade.registerCommand(NameInforComponentMediator.SHOW_NOTE,ShowNameInforComponentMediatorCommand);
+			//阵营
+			facade.registerCommand(PkComponentMediator.SHOW_NOTE,ShowPkComponentMediatorCommand);
 			//注册初始化命令
 			facade.registerCommand(InitCommand.INIT_NOTE, InitCommand);
 		}

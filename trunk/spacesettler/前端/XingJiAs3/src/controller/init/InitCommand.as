@@ -1,8 +1,13 @@
 package controller.init
 {
+    import controller.login.ShowLoginMediatorCommand;
+    import controller.login.ShowStartComponentMediatorCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.mainView.ShowMainViewMediatorCommand;
     
+    import mediator.login.LoginMediator;
+    import mediator.login.RegistComponentMediator;
+    import mediator.login.StartComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.mainView.MainViewMediator;
     
