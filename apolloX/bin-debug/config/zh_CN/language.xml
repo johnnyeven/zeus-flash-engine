@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<load_base_ui>正在加载UI</load_base_ui>
+	<load_base_ui_error>加载UI错误，请联系游戏管理员</load_base_ui_error>
+</root>
