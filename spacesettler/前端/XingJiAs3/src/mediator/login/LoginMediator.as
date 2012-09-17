@@ -2,16 +2,17 @@ package mediator.login
 {
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.StringUtil;
+    
     import events.login.LoginEvent;
-
+    
     import mediator.BaseMediator;
     import mediator.prompt.PromptMediator;
-
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
-
+    
     import proxy.login.LoginProxy;
-
+    
     import view.login.LoginComponent;
 
     /**
@@ -32,6 +33,7 @@ package mediator.login
             super(NAME, new LoginComponent());
 
             comp.addEventListener(LoginEvent.LOGIN_EVENT, loginHandler);
+			comp.addEventListener(LoginEvent.BACK_EVENT,backHandler);
         }
 
         /**
@@ -82,5 +84,10 @@ package mediator.login
             var myProxy:LoginProxy = getProxy(LoginProxy);
             myProxy.login(event.userName, event.password);
         }
+		
+		private function backHandler(event:LoginEvent):void
+		{
+			sendNotification(StartComponentMediator.SHOW_NOTE);
+		}
     }
 }

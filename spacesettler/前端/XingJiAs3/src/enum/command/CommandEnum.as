@@ -10,6 +10,14 @@ package enum.command
         public static var get_server_list:String = "";
 
 		/**
+		 *快速登陆
+		 */
+		public static function get startLogin():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip + "/demo";
+		}
+		
+		/**
 		 *登陆
 		 */
 		public static function get login():String
@@ -17,6 +25,13 @@ package enum.command
 			return "http://"+LoginProxy.selectedServerVO.server_ip + "/login";
 		}
 
+		/**
+		 *注册
+		 */
+		public static function get regist():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip + "/register";
+		}
 
         /**
          *获取用户信息

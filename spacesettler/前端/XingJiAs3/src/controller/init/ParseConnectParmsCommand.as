@@ -1,15 +1,10 @@
 package controller.init
 {
-    import com.zn.net.http.HttpConn;
     import com.zn.utils.LoaderItemUtil;
-    
-    import controller.login.ShowLoginMediatorCommand;
     
     import enum.command.CommandEnum;
     
-    import flash.events.Event;
-    
-    import mediator.login.LoginMediator;
+    import mediator.login.StartComponentMediator;
     import mediator.prompt.PromptMediator;
     
     import org.puremvc.as3.interfaces.INotification;
@@ -42,8 +37,7 @@ package controller.init
         {
             facade.removeCommand(PARSE_CONNECT_PARMS_NOTE);
 			
-			sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);//
-			//sendNotification(PromptMediator.SHOW_INFO_NOTE,"loadingServer");
+			sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);
 
 			var configXML:XML = XML(LoaderItemUtil.getContent("connectionConfig.xml"));
 
@@ -55,7 +49,9 @@ package controller.init
 			GlobalData.game_id=connectionXML.game_id;
 			
 			var loginProxy:LoginProxy=getProxy(LoginProxy);
-			loginProxy.getServerList(connectHandler);
+//			loginProxy.getServerList(connectHandler);
+			
+			connectHandler();
 			
         }
 
@@ -66,7 +62,7 @@ package controller.init
          */
         protected function connectHandler():void
         {
-			sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);//
+			sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
 			
 //           载入登陆界面
             showLogin();
@@ -74,10 +70,7 @@ package controller.init
 
         protected function showLogin():void
         {
-            //注册登陆界面
-            facade.registerCommand(LoginMediator.SHOW_NOTE, ShowLoginMediatorCommand);
-
-            sendNotification(LoginMediator.SHOW_NOTE);
+            sendNotification(StartComponentMediator.SHOW_NOTE);
         }
     }
 }

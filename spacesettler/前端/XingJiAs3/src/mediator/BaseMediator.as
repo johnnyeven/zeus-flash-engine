@@ -64,7 +64,7 @@ package mediator
                 var centerPoint:Point = UIUtil.stageCenterPoint(uiComp);
                 uiComp.x = centerPoint.x;
 
-                TweenLite.to(uiComp, 0.4, { transformAroundCenter: { y: centerPoint.y }, onComplete: showComplete });
+                TweenLite.to(uiComp, 0.4, {  y: centerPoint.y , onComplete: showComplete });
             }
             else
             {
@@ -85,7 +85,7 @@ package mediator
         {
             if (_popUp)
             {
-                TweenLite.to(uiComp, 0.4, { transformAroundCenter: { y: SystemManager.rootStage.stageHeight }, ease: Linear.easeNone, onComplete: function():void
+                TweenLite.to(uiComp, 0.4, { y: SystemManager.rootStage.stageHeight, ease: Linear.easeNone, onComplete: function():void
                 {
                     PopUpManager.removePopUp(uiComp);
 

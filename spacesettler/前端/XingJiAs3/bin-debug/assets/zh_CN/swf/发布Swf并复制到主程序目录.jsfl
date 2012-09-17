@@ -17,8 +17,15 @@ function publishCopy(postfix,path)
 
 	var name=doc.name;
 	
+	//rl
+	//name=name.replace(".fla",postfix);//rl
+	//var targetFileURL="file:///E|/星际移民/前端/XingJiAs3/"+path+name;
+	
+	//zn
 	name=name.replace(".fla",postfix);
-	var targetFileURL="file:///E|/星际移民/前端/XingJiAs3/"+path+name;	
+	name=name+postfix;
+	var targetFileURL="file:///D|/工作文档/星际/svn/前端/XingJiAs3/"+path+name;	//zn
+	
 	//var targetFileURL="file:///MAC LION/Users/niko/Documents/Adobe Flash Builder 4.6/ProjectTempletAs3/"+path+name+postfix;
 	FLfile.remove(targetFileURL);
 	

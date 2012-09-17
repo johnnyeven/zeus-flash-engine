@@ -6,7 +6,6 @@ package mediator.prompt
     import com.zn.utils.ClassUtil;
     
     import flash.display.MovieClip;
-    import flash.system.System;
     
     import mediator.MainMediator;
     
@@ -18,7 +17,6 @@ package mediator.prompt
     
     import ui.components.Alert;
     import ui.components.Label;
-    import ui.managers.PopUpManager;
     import ui.managers.SystemManager;
     import ui.utils.UIUtil;
     
@@ -39,17 +37,24 @@ package mediator.prompt
 
         public static const SHOW_ERROR_NOTE:String = "showErrorNote";
 
-		public static const SHOW_LOADWAITMC_NOTE:String="SHOW_LOADWAITMC_NOTE";// by rl
-		
-		public static const HIDE_LOADWAITMC_NOTE:String="HIDE_LOADWAITMC_NOTE";// by rl
-		
-		private var _loadWaitMC:MovieClip;// by rl
+        public static const SHOW_LOADWAITMC_NOTE:String = "SHOW_LOADWAITMC_NOTE"; // by rl
+
+        public static const HIDE_LOADWAITMC_NOTE:String = "HIDE_LOADWAITMC_NOTE"; // by rl
+
+        public static const SHOW_INFO_NOTE:String = "SHOW_INFO_NOTE";
+
+        public static const HIDE_INFO_NOTE:String = "HIDE_INFO_NOTE";
+
+        private var _infoComp:PromptInfoComponent;
+
+        private var _loadWaitMC:MovieClip; // by rl
 
         public function PromptMediator(viewComponent:Object = null)
         {
             super(NAME, viewComponent);
-			_loadWaitMC=ClassUtil.getObject("res.loaderServerData");// by rl
-			
+            _infoComp = new PromptInfoComponent();
+            _loadWaitMC = ClassUtil.getObject("res.loaderServerData"); // by rl
+
         }
 
         /**
@@ -59,7 +64,8 @@ package mediator.prompt
          */
         override public function listNotificationInterests():Array
         {
-            return [ SHOW_ALERT_NOTE, SCROLL_ALERT_NOTE, SHOW_ERROR_NOTE, SHOW_LOADWAITMC_NOTE, HIDE_LOADWAITMC_NOTE ];// by rl
+            return [ SHOW_ALERT_NOTE, SCROLL_ALERT_NOTE, SHOW_ERROR_NOTE, SHOW_LOADWAITMC_NOTE, HIDE_LOADWAITMC_NOTE,
+                     SHOW_INFO_NOTE, HIDE_INFO_NOTE ]; // by rl
         }
 
         /**
@@ -86,16 +92,26 @@ package mediator.prompt
                     showErrorInfo(int(note.getBody()));
                     break;
                 }
-				case SHOW_LOADWAITMC_NOTE:// by rl
-				{
-					showLoadWaitMc();
-					break;
-				}
-				case HIDE_LOADWAITMC_NOTE:// by rl
-				{
-					hideLoadWaitMc();
-					break;
-				}
+                case SHOW_LOADWAITMC_NOTE: // by rl
+                {
+                    showLoadWaitMc();
+                    break;
+                }
+                case HIDE_LOADWAITMC_NOTE: // by rl
+                {
+                    hideLoadWaitMc();
+                    break;
+                }
+                case SHOW_INFO_NOTE:
+                {
+                    showInfo(String(note.getBody()));
+                    break;
+                }
+                case HIDE_INFO_NOTE:
+                {
+                    hideInfo();
+                    break;
+                }
             }
         }
 
@@ -135,16 +151,35 @@ package mediator.prompt
          *显示信息
          * @param param0
          *
-         */		
-		private function showLoadWaitMc():void
-		{
-			MainMediator(getMediator(MainMediator)).component.addInfo(_loadWaitMC);
-			UIUtil.centerUI(_loadWaitMC);
-		}
-		
-		private function hideLoadWaitMc():void
-		{
-			MainMediator(getMediator(MainMediator)).component.removeInfo(_loadWaitMC);
-		}
+         */
+        private function showLoadWaitMc():void
+        {
+            MainMediator(getMediator(MainMediator)).component.addInfo(_loadWaitMC);
+            UIUtil.centerUI(_loadWaitMC);
+        }
+
+        private function hideLoadWaitMc():void
+        {
+            MainMediator(getMediator(MainMediator)).component.removeInfo(_loadWaitMC);
+        }
+
+        /**
+         *显示信息
+         * @param param0
+         *
+         */
+        private function showInfo(infoFiled:String):void
+        {
+            var str:String = MultilanguageManager.getString(infoFiled);
+            _infoComp.text = str;
+
+            MainMediator(getMediator(MainMediator)).component.addInfo(_infoComp);
+            UIUtil.centerUI(_infoComp);
+        }
+
+        private function hideInfo():void
+        {
+            MainMediator(getMediator(MainMediator)).component.removeInfo(_infoComp);
+        }
     }
 }
