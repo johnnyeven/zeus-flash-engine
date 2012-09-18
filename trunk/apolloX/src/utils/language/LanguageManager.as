@@ -41,12 +41,20 @@ package utils.language
 			}
 			else
 			{
-				for(var key: String in value)
+				for(var key: String in value.children())
 				{
-					_container[key] = value.child(key);
-					trace(key + "|||" + value.child(key));
+					_container[value.child(key).name()] = value.child(key);
 				}
 			}
+		}
+		
+		public function lang(value: String): String
+		{
+			if(_container[value] != null)
+			{
+				return _container[value];
+			}
+			return null;
 		}
 
 		public static function get language():String

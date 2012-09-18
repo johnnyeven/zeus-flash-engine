@@ -1,5 +1,6 @@
 package loader
 {
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -8,16 +9,21 @@ package loader
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.Capabilities;
+	import flash.system.LoaderContext;
+	import flash.system.ApplicationDomain;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
 	import utils.language.LanguageManager;
 	
+	import view.loader.LoaderProgressBarComponent;
+	
 	[SWF(width="1028", height="600", backgroundColor="0xFFFFFF",frameRate="30")]
 	public class IndexLoader extends Sprite
 	{
-		private var msgText: TextField;
+		private var _msgText: TextField;
+		private var _progressBar: LoaderProgressBarComponent;
 		
 		public function IndexLoader()
 		{
@@ -25,14 +31,14 @@ package loader
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			msgText = new TextField();
-			msgText.text = "初始化Loader...";
-			msgText.autoSize = TextFieldAutoSize.CENTER;
-			msgText.width = 500;
+			_msgText = new TextField();
+			_msgText.text = "初始化Loader...";
+			_msgText.autoSize = TextFieldAutoSize.CENTER;
+			_msgText.width = 500;
 			
 			var txtFormat: TextFormat = new TextFormat(null, 14, 0x000000, true);
-			msgText.defaultTextFormat = txtFormat;
-			addChild(msgText);
+			_msgText.defaultTextFormat = txtFormat;
+			addChild(_msgText);
 			
 			loadVersion();
 		}
@@ -71,6 +77,38 @@ package loader
 			var _loader: URLLoader = evt.target as URLLoader;
 			var _xml: XML = XML(_loader.data);
 			LanguageManager.getInstance().init(_xml);
+			
+			loadLoaderProgressBar();
+		}
+		
+		private function loadLoaderProgressBar(): void
+		{
+			loaderMessage = LanguageManager.getInstance().lang("load_loader_progress_ui");
+			
+			var _loader: Loader = new Loader();
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onProgressBarLoaded);
+			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
+			
+			var urlRequest: URLRequest = new URLRequest("resources/ui/loader/processBar.swf");
+			var loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			_loader.load(urlRequest, loaderContext);
+		}
+		
+		private function onProgressBarLoaded(evt: Event): void
+		{
+			_progressBar = new LoaderProgressBarComponent();
+			addChild(_progressBar);
+			removeChild(_msgText);
+			_msgText = null;
+			
+			center();
+			
+			loadMain();
+		}
+		
+		private function loadMain(): void
+		{
+			_progressBar.title = LanguageManager.getInstance().lang("load_main");
 		}
 		
 		private function onLoadIOError(evt: IOErrorEvent): void
@@ -83,25 +121,22 @@ package loader
 			var sw:Number = stage.stageWidth * 0.5;
 			var sh:Number = stage.stageHeight * 0.5;
 			
-			if (msgText != null)
+			if (_msgText != null)
 			{
-				msgText.x = sw - msgText.width * 0.5;
-				msgText.y = sh - msgText.height * 0.5;
+				_msgText.x = sw - _msgText.width * 0.5;
+				_msgText.y = sh - _msgText.height * 0.5;
 			}
-			/*
-			if (_loaderBar)
+			
+			if (_progressBar)
 			{
-				var obj:DisplayObject = _loaderBar as DisplayObject;
-				
-				obj.x = sw - obj.width * 0.5;
-				obj.y = sh - obj.height * 0.5;
+				_progressBar.x = sw - _progressBar.width * 0.5;
+				_progressBar.y = sh - _progressBar.height * 0.5;
 			}
-			*/
 		}
 		
 		private function set loaderMessage(value: String):void
 		{
-			msgText.text = value;
+			_msgText.text = value;
 			center();
 		}
 	}
