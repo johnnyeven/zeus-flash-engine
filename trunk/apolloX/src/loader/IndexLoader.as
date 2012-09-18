@@ -109,6 +109,7 @@ package loader
 		private function loadMain(): void
 		{
 			_progressBar.title = LanguageManager.getInstance().lang("load_main");
+			_progressBar.percentage = 0;
 		}
 		
 		private function onLoadIOError(evt: IOErrorEvent): void
