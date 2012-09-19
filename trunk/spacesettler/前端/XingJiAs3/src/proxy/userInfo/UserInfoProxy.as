@@ -30,17 +30,9 @@ package proxy.userInfo
         public function UserInfoProxy(data:Object = null)
         {
             super(NAME, data);
-			Protocol.registerProtocol(CommandEnum.USER_INFO_GET,getUserInfoResult);
 			
 			var loginProxy:LoginProxy=getProxy(LoginProxy);
 			getUserInfoResult(loginProxy.serverData);
-        }
-
-        public function getUserInfo(callBack:Function = null):void
-        {
-            _getUserInfoCallBack = callBack;
-			
-            ConnDebug.send(CommandEnum.USER_INFO_GET);
         }
 
         public function getUserInfoResult(data:Object):void
@@ -58,8 +50,10 @@ package proxy.userInfo
 			userInfoVO.prestige=data.prestige;
 			userInfoVO.tritium=data.tritium;
 			userInfoVO.userName=data.name;
-			userInfoVO.camp=data.camp_id
+			
+			userInfoVO.camp=data.camp_id+1;
 		
+			
             if (_getUserInfoCallBack != null)
                 _getUserInfoCallBack();
             _getUserInfoCallBack = null;

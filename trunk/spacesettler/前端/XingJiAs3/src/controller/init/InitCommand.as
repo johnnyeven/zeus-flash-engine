@@ -11,6 +11,7 @@ package controller.init
     
     import proxy.BuildProxy;
     import proxy.userInfo.UserInfoProxy;
+    import controller.EnterMainSenceViewCommand;
 
     /**
      *初始化
@@ -41,7 +42,8 @@ package controller.init
             registerCommand();
             init();
 
-			sendNotification(GetServerDataCommand.GET_SERVER_DATA_COMMAND);
+			
+			sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
         }
 		
 		/**
@@ -91,7 +93,7 @@ package controller.init
         protected function registerCommand():void
         {
 			//登陆后获取信息 
-			facade.registerCommand(GetServerDataCommand.GET_SERVER_DATA_COMMAND, GetServerDataCommand);
+			facade.registerCommand(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND, EnterMainSenceViewCommand);
             //注册显示主界面命令
             facade.registerCommand(MainViewMediator.SHOW_NOTE, ShowMainViewMediatorCommand);
 			
