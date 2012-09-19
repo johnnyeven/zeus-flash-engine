@@ -10,7 +10,7 @@ package
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
     import flash.events.Event;
-    import flash.events.IOErrorEvent;
+    import flash.events.IOErrorEvent; 
     import flash.events.ProgressEvent;
     import flash.net.URLLoader;
     import flash.net.URLRequest;
@@ -23,7 +23,7 @@ package
     import view.loader.IndexLoaderBarComponent;
 
 
-	[SWF(width="1067", height="700", backgroundColor="0xCCCCCC",frameRate="15")]
+	[SWF(width="1067", height="600", backgroundColor="0xCCCCCC",frameRate="15")]
     public class index extends Sprite
     {
         public static var version:String = "";

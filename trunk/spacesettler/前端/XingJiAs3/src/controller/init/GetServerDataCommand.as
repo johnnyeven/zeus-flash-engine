@@ -41,12 +41,11 @@ package controller.init
          */
         public override function execute(notification:INotification):void
         {
-            _requestCount = 1;
-
             //显示加载进度条，设置加载条标题
             sendNotification(ResLoader.SET_LOADER_BAR_TITLE_NOTE, MultilanguageManager.getString("getServerData"));
             sendNotification(ResLoader.SHOW_LOADER_BAR_NOTE);
-
+			
+			_requestCount = 1;
             var userProxy:UserInfoProxy = getProxy(UserInfoProxy);
             userProxy.getUserInfo(getDateComplete);
         }
@@ -56,7 +55,6 @@ package controller.init
             _requestCount--;
             if (_requestCount == 0)
             {
-				
 				sendNotification(ResLoader.HIDE_LOADER_BAR_NOTE);
 
                 var loaderMax:LoaderMax = new LoaderMax("loaderMainSence");

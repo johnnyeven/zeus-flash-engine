@@ -1,7 +1,9 @@
 package
 {
     import com.zn.ResLoader;
+    
     import flash.net.registerClassAlias;
+    import flash.system.Security;
     
     import other.DebugInfo;
     import other.RegisterClass;
@@ -10,7 +12,7 @@ package
     import ui.managers.SystemManager;
     import ui.managers.ToolTipManager;
 
-    [SWF(width = "1067", height = "700", backgroundColor = "0xCCCCCC")]
+    [SWF(width = "1067", height = "600", backgroundColor = "0xCCCCCC")]
     public class Main extends SystemManager
     {
 		public static var debug:Boolean = true;
@@ -20,6 +22,8 @@ package
         public function Main()
         {
          	super();  
+			
+			Security.allowDomain("*");
         }
 		
 		public function start():void

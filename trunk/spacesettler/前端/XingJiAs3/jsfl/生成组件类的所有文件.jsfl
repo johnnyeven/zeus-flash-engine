@@ -1,6 +1,8 @@
 ﻿fl.outputPanel.clear();
 
-var fileURL="file:///D|/工作文档/星际/svn/前端/XingJiAs3/jsfl/createFile/";
+//var fileURL="file:///E|/svn/前端/XingJiAs3/jsfl/createFile/"; //lw
+
+var fileURL="file:///D|/工作文档/星际/svn/前端/XingJiAs3/jsfl/createFile/"; //zn
 
 var doc=fl.getDocumentDOM();
 var lib = doc.library;

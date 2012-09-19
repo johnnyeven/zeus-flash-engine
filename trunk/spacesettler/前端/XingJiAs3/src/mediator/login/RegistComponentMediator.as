@@ -1,11 +1,15 @@
 package mediator.login
 {
 	
+	import com.zn.multilanguage.MultilanguageManager;
+	import com.zn.utils.StringUtil;
+	
 	import events.login.RegistEvent;
 	
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.prompt.PromptMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -30,6 +34,7 @@ package mediator.login
 
 		public function RegistComponentMediator()
 		{
+			StartComponentMediator.addBG();
 			super(NAME, new RegistComponent());
 			
 			comp.addEventListener(RegistEvent.BACK_EVENT,backHandler);
@@ -59,6 +64,7 @@ package mediator.login
 				{
 					//销毁对象
 					destroy();
+					sendNotification(PromptMediator.HIDE_LOGIN_INFO_NOTE);
 					break;
 				}
 			}
@@ -76,14 +82,40 @@ package mediator.login
 
 		protected function backHandler(event:RegistEvent):void
 		{
-			sendNotification(StartComponentMediator.SHOW_NOTE);
+			destoryCallback = function():void
+			{
+				sendNotification(StartComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
 		
 		private function nextHandler(event:RegistEvent):void
 		{
+			if (StringUtil.isEmpty(event.userName))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registInfoEmpty"));
+				return;
+			}
+			else if(event.passWord.length <6)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registPasswordEmpty"));
+				return;
+			}
+			else if(event.passWord != event.passAgainWord)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registAgainEmpty"));
+				return;
+			}
+			// ok
 			var loginProxy:LoginProxy = getProxy(LoginProxy);
-			loginProxy.infor(event.severName,event.userName,event.passWord,event.passAgainWord);
-			sendNotification(NameInforComponentMediator.SHOW_NOTE);
+			loginProxy.userName = event.userName;
+			loginProxy.passWord = event.passWord;
+			
+			destoryCallback = function():void
+			{
+				sendNotification(NameInforComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

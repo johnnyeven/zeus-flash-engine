@@ -11,6 +11,7 @@ package events.login
 	{
 		public static const LOGIN_EVENT:String="loginEvent";
 		public static const BACK_EVENT:String = "back_event";
+		public static const NULL_EVENT:String = "null_event";
 		private var _userName:String;
 		private var _password:String;
 

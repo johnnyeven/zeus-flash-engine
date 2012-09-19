@@ -1,18 +1,16 @@
 package controller.init
 {
-    import controller.login.ShowLoginMediatorCommand;
-    import controller.login.ShowStartComponentMediatorCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.mainView.ShowMainViewMediatorCommand;
     
-    import mediator.login.LoginMediator;
-    import mediator.login.RegistComponentMediator;
-    import mediator.login.StartComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.mainView.MainViewMediator;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.BuildProxy;
+    import proxy.userInfo.UserInfoProxy;
 
     /**
      *初始化
@@ -72,6 +70,9 @@ package controller.init
          */
         protected function registerProxy():void
         {
+			facade.registerProxy(new UserInfoProxy());
+			facade.registerProxy(new BuildProxy());
+			
         }
 
         /**

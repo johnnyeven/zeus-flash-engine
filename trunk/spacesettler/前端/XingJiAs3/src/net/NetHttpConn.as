@@ -75,7 +75,7 @@ package net
             {
                 NetHttpConn.getInstance().serverToClientOne(commandID, data);
             });
-            httpRequest.load(params);
+            httpRequest.load(params,method);
         }
 
     }

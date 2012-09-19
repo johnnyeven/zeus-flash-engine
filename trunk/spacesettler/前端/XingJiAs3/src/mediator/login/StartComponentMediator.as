@@ -1,15 +1,21 @@
 package mediator.login
 {
 	
+	import com.zn.utils.ClassUtil;
+	
 	import events.login.StartLoginEvent;
 	
+	import flash.display.Sprite;
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.MainMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	
+	import proxy.login.LoginProxy;
 	
 	import view.login.StartComponent;
 
@@ -26,10 +32,17 @@ package mediator.login
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		public static var bgSp:Sprite;
+		
 		public function StartComponentMediator()
 		{
+			bgSp=ClassUtil.getObject("view.login.LoginBG");
+			addBG();
+			
 			super(NAME, new StartComponent());
 			
+			//是否为弹出框
+			_popUp=false;
 			comp.addEventListener(StartLoginEvent.START_LIGIN_EVENT,startLoginHandler);
 			comp.addEventListener(StartLoginEvent.ACCOUNT_EVENT,accountHandler);
 			comp.addEventListener(StartLoginEvent.REGIST_EVENT,registHandler);
@@ -73,19 +86,49 @@ package mediator.login
 			return viewComponent as StartComponent;
 		}
 
+		public static function addBG():void
+		{
+			MainMediator(ApplicationFacade.getInstance().getMediator(MainMediator)).addChild(bgSp);
+		}
+		
+		public static function removeBG():void
+		{
+			MainMediator(ApplicationFacade.getInstance().getMediator(MainMediator)).removeChild(bgSp);
+		}
+		
 		private function startLoginHandler(event:StartLoginEvent):void
 		{
-			
+			//TODO：lw ok 请求快速开始数据时应该有回调方法，数据返回后应该销毁这个界面
+			var loginProxy:LoginProxy = getProxy(LoginProxy);
+			loginProxy.startLogin();
+			sendNotification(DESTROY_NOTE);
 		}
 		
 		private function accountHandler(event:StartLoginEvent):void
 		{
-			sendNotification(LoginMediator.SHOW_NOTE);
+			
+			destoryCallback = function():void
+			{
+				sendNotification(LoginMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
 		
 		private function registHandler(event:StartLoginEvent):void
 		{
-			sendNotification(RegistComponentMediator.SHOW_NOTE);
+			
+			destoryCallback = function():void
+			{
+				sendNotification(RegistComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
+		
+		override public function show():void
+		{
+			super.show();
+			comp.guanMen();
+		}
+		
 	}
 }

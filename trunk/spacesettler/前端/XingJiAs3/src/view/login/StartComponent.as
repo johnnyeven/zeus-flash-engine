@@ -1,5 +1,8 @@
 package view.login
 {
+	import com.greensock.TimelineLite;
+	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.zn.utils.ClassUtil;
 	
 	import events.login.StartLoginEvent;
@@ -37,11 +40,13 @@ package view.login
 			startBtn=upDoorComp.createUI(Button,"startBtn");
 			upDoorComp.sortChildIndex();
 			
+			
 			downDoorComp=createUI(Component,"downDoor");
 			zhangHaoLogin=downDoorComp.createUI(Button,"zhangHaoLoginBtn");
 			registBtn=downDoorComp.createUI(Button,"registBtn");
 			downDoorComp.sortChildIndex();
 			
+				
 			sortChildIndex();
 			
 			startBtn.addEventListener(MouseEvent.CLICK,srartBtn_clickHandler);
@@ -52,17 +57,49 @@ package view.login
 		
 		protected function srartBtn_clickHandler(event:MouseEvent):void
 		{
-             dispatchEvent(new StartLoginEvent(StartLoginEvent.START_LIGIN_EVENT));
+			kaiMen(function():void
+			{
+             	dispatchEvent(new StartLoginEvent(StartLoginEvent.START_LIGIN_EVENT));
+			});
 		}
 		
 		protected function registBtn_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new StartLoginEvent(StartLoginEvent.REGIST_EVENT));
+			kaiMen(function():void
+			{
+				dispatchEvent(new StartLoginEvent(StartLoginEvent.REGIST_EVENT));
+			});
 		}
 		
 		protected function zhangHaoLogin_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new StartLoginEvent(StartLoginEvent.ACCOUNT_EVENT));
+			kaiMen(function():void
+			{
+				dispatchEvent(new StartLoginEvent(StartLoginEvent.ACCOUNT_EVENT));
+			});
+		}
+		
+		private function kaiMen(callBack:Function):void
+		{
+			//TODO：lw ok 在执行动画时，让界面不响应鼠标事件；
+			mouseEnabled=mouseChildren=false;
+			
+			var timelineLite:TimelineLite=new TimelineLite({onComplete:function():void
+				{
+				  mouseEnabled=mouseChildren=true;
+				  callBack();
+				}});
+			timelineLite.insert(TweenLite.to(upDoorComp,0.5,{y:-351}));
+			timelineLite.insert(TweenLite.to(downDoorComp,0.5,{y:715}));
+		}
+		
+		public function guanMen():void
+		{
+			upDoorComp.y=-351;
+			downDoorComp.y=715;
+			
+			TweenLite.to(upDoorComp,0.5,{y:0});
+			TweenLite.to(downDoorComp,0.5,{y:342});
 		}
 	}
 }

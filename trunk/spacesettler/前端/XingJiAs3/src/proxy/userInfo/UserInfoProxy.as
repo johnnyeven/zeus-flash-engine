@@ -9,6 +9,8 @@ package proxy.userInfo
     
     import other.ConnDebug;
     
+    import proxy.login.LoginProxy;
+    
     import vo.userInfo.UserInfoVO;
 
     /**
@@ -29,6 +31,9 @@ package proxy.userInfo
         {
             super(NAME, data);
 			Protocol.registerProtocol(CommandEnum.USER_INFO_GET,getUserInfoResult);
+			
+			var loginProxy:LoginProxy=getProxy(LoginProxy);
+			getUserInfoResult(loginProxy.serverData);
         }
 
         public function getUserInfo(callBack:Function = null):void
@@ -41,12 +46,26 @@ package proxy.userInfo
         public function getUserInfoResult(data:Object):void
         {
 			userInfoVO=new UserInfoVO();
-			userInfoVO.objectToVO(data);
-			
+			userInfoVO.id=data.id;
+			userInfoVO.player_id=data.player_id;
+			userInfoVO.nickname=data.nickname;
+			userInfoVO.current_power_consume=data.current_power_consume;
+			userInfoVO.crystal=data.crystal;
+			userInfoVO.broken_crysta=data.broken_crysta;
+			userInfoVO.current_power_supply=data.current_power_supply;
+			userInfoVO.dark_crystal=data.dark_crystal;
+			userInfoVO.level=data.level;
+			userInfoVO.prestige=data.prestige;
+			userInfoVO.tritium=data.tritium;
+			userInfoVO.userName=data.name;
+			userInfoVO.camp=data.camp_id
+		
             if (_getUserInfoCallBack != null)
                 _getUserInfoCallBack();
             _getUserInfoCallBack = null;
         }
+		
+		
 
     /***********************************************************
      *
