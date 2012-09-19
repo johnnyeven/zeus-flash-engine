@@ -1,9 +1,13 @@
 package mediator.login
 {
 	
+	import com.zn.multilanguage.MultilanguageManager;
+	import com.zn.utils.StringUtil;
+	
 	import events.login.NameInforEvent;
 	
 	import mediator.BaseMediator;
+	import mediator.prompt.PromptMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -57,6 +61,7 @@ package mediator.login
 				{
 					//销毁对象
 					destroy();
+					sendNotification(PromptMediator.HIDE_LOGIN_INFO_NOTE);
 					break;
 				}
 			}
@@ -74,15 +79,33 @@ package mediator.login
 
 		private function backHandler(event:NameInforEvent):void
 		{
-			sendNotification(RegistComponentMediator.SHOW_NOTE);
+			//TODO:lw ok 应该销毁完成后再显示下个界面
+			destoryCallback = function():void
+			{
+				sendNotification(RegistComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
 		
 		private function nextHandler(event:NameInforEvent):void
 		{
-			var loginProxy:LoginProxy = getProxy(LoginProxy);
-			loginProxy.regist(event.name,event.email);
+			var emailReg:RegExp=new RegExp("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$","g");
 			
-			sendNotification(PkComponentMediator.SHOW_NOTE);
+			if (!StringUtil.isEmpty(event.email) && !emailReg.test(event.email))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registEmailError"));
+				return;
+			}
+			
+			var loginProxy:LoginProxy = getProxy(LoginProxy);
+			loginProxy.name = event.name;
+			loginProxy.email = event.email;
+
+			destoryCallback = function():void
+			{
+				sendNotification(PkComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

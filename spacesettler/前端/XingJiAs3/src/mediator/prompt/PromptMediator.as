@@ -4,22 +4,24 @@ package mediator.prompt
     import com.greensock.easing.Linear;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-    
+
     import flash.display.MovieClip;
-    
+    import flash.geom.Point;
+
     import mediator.MainMediator;
-    
+
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.mediator.Mediator;
-    
+
     import proxy.errorProxy.ErrorProxy;
-    
+
     import ui.components.Alert;
     import ui.components.Label;
+    import ui.core.Component;
     import ui.managers.SystemManager;
     import ui.utils.UIUtil;
-    
+
     import view.prompt.PromptInfoComponent;
 
     /**
@@ -45,9 +47,17 @@ package mediator.prompt
 
         public static const HIDE_INFO_NOTE:String = "HIDE_INFO_NOTE";
 
+        public static const SHOW_LOGIN_INFO_NOTE:String = "SHOW_LOGIN_INFO_NOTE";
+
+        public static const HIDE_LOGIN_INFO_NOTE:String = "HIDE_LOGIN_INFO_NOTE";
+
         private var _infoComp:PromptInfoComponent;
 
         private var _loadWaitMC:MovieClip; // by rl
+
+        private var _loginInfoLabel:Label;
+
+        private var _loginInfoComp:Component;
 
         public function PromptMediator(viewComponent:Object = null)
         {
@@ -55,6 +65,11 @@ package mediator.prompt
             _infoComp = new PromptInfoComponent();
             _loadWaitMC = ClassUtil.getObject("res.loaderServerData"); // by rl
 
+            _loginInfoComp = new Component(ClassUtil.getObject("res.LoginInfoSkin"));
+            _loginInfoLabel = _loginInfoComp.createUI(Label, "label");
+            var centerP:Point = UIUtil.stageCenterPoint(_loginInfoComp);
+			_loginInfoComp.x = centerP.x;
+			_loginInfoComp.y = 500;
         }
 
         /**
@@ -65,7 +80,8 @@ package mediator.prompt
         override public function listNotificationInterests():Array
         {
             return [ SHOW_ALERT_NOTE, SCROLL_ALERT_NOTE, SHOW_ERROR_NOTE, SHOW_LOADWAITMC_NOTE, HIDE_LOADWAITMC_NOTE,
-                     SHOW_INFO_NOTE, HIDE_INFO_NOTE ]; // by rl
+                     SHOW_INFO_NOTE, HIDE_INFO_NOTE,
+                     SHOW_LOGIN_INFO_NOTE, HIDE_LOGIN_INFO_NOTE ]; // by rl
         }
 
         /**
@@ -110,6 +126,17 @@ package mediator.prompt
                 case HIDE_INFO_NOTE:
                 {
                     hideInfo();
+                    break;
+                }
+                case SHOW_LOGIN_INFO_NOTE:
+                {
+                    _loginInfoLabel.text = String(note.getBody());
+                    MainMediator(getMediator(MainMediator)).component.addInfo(_loginInfoComp);
+                    break;
+                }
+                case HIDE_LOGIN_INFO_NOTE:
+                {
+                    MainMediator(getMediator(MainMediator)).component.removeInfo(_loginInfoComp);
                     break;
                 }
             }

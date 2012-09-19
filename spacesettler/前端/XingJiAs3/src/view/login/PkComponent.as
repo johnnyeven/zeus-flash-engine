@@ -1,9 +1,11 @@
 package view.login
 {
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.ColorUtil;
 	
 	import events.login.PkEvent;
 	
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
@@ -26,6 +28,10 @@ package view.login
 		
 		private var alliance:String;
 		
+		private var _currentSelectedCamp:DisplayObject;
+
+		public var campID:int=0;
+		
         public function PkComponent()
         {
             super(ClassUtil.getObject("view.login.PkSkin"));
@@ -41,6 +47,8 @@ package view.login
 			haiDaoBtn.addEventListener(MouseEvent.CLICK,haiDaoBtn_clickHandler);
 			returnBtn.addEventListener(MouseEvent.CLICK,returnBtn_clickHandler);
 			beginBtn.addEventListener(MouseEvent.CLICK,beginBtn_clickHandler);
+			
+			currentSelectedCamp=allianceBtn;
         }
 		
 		protected function beginBtn_clickHandler(event:MouseEvent):void
@@ -55,12 +63,34 @@ package view.login
 		
 		protected function haiDaoBtn_clickHandler(event:MouseEvent):void
 		{
-			
+			currentSelectedCamp=haiDaoBtn;
 		}
 		
 		protected function allianceBtn_clickHandler(event:MouseEvent):void
 		{
+			currentSelectedCamp=allianceBtn;
+		}
+		
+		public function get currentSelectedCamp():DisplayObject
+		{
+			return _currentSelectedCamp;
+		}
+		
+		public function set currentSelectedCamp(value:DisplayObject):void
+		{
+			if(currentSelectedCamp)
+			{
+				currentSelectedCamp.filters=null;
+				_currentSelectedCamp=null;
+			}
 			
+			_currentSelectedCamp = value;
+			_currentSelectedCamp.filters=[ColorUtil.selectedFilter];
+			
+			if(currentSelectedCamp==allianceBtn)
+				campID=1;
+			else
+				campID=2;
 		}
 	}
 }

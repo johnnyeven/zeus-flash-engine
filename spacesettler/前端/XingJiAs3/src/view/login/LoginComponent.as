@@ -1,14 +1,22 @@
 package view.login
 {
+    import com.greensock.TweenLite;
     import com.zn.utils.ClassUtil;
     
     import events.login.LoginEvent;
     
+    import flash.display.SpreadMethod;
+    import flash.display.Sprite;
     import flash.events.MouseEvent;
+    import flash.text.TextField;
+    
+    import proxy.login.LoginProxy;
     
     import ui.components.Button;
     import ui.components.TextInput;
     import ui.core.Component;
+    
+    import vo.ServerItemVO;
 
     /**
      *登陆
@@ -17,36 +25,42 @@ package view.login
      */
     public class LoginComponent extends Component
     {
-        public var userNameTextInput:TextInput;
+        public var userNameTextInput:TextField;
 
-        public var passwordTextInput:TextInput;
+        public var passwordTextInput:TextField;
 
         public var submitButton:Button;
 		
 		public var backBtn:Button;
 		
+		/**
+		 *服务器列表 
+		 */		
 		public var serverList:Component;
 		
-		public var serverBar:Component;
-		
-		public var barServerName:TextInput;
-		
-		public var listComponent:Component;
-
         public function LoginComponent()
         {
             super(ClassUtil.getObject("view.login.LoginSkin"));
-			userNameTextInput=createUI(TextInput,"userNameInput");
-			passwordTextInput=createUI(TextInput,"passwordInput");
-			submitButton=createUI(Button,"loginBtn");
-			backBtn=createUI(Button,"backBtn");
 			
-			serverList=createUI(Component,"serverList");
-			serverBar=serverList.createUI(Component,"serverBar");
-			barServerName=serverBar.createUI(TextInput,"serverName");
+			var loginProxy:LoginProxy = ApplicationFacade.getProxy(LoginProxy);
 			
-			listComponent=serverList.createUI(Component,"list");
+			userNameTextInput = getSkin("userNameInput");
+			userNameTextInput.restrict = "a-zA-Z0-9\u4e00-\u9fa5_-";
+			userNameTextInput.maxChars = 16;
+//			userNameTextInput.restrict = "^[a-zA-Z0-9\u4e00-\u9fa5_-]{6,16}$";
+			passwordTextInput =getSkin("passwordInput");
+			passwordTextInput.restrict = "a-zA-Z0-9_-";
+			passwordTextInput.maxChars = 16;
+//			passwordTextInput.restrict = "^[a-zA-Z0-9_-]{6,16}$";
 			
+			passwordTextInput.displayAsPassword=true;
+			passwordTextInput.mouseEnabled=userNameTextInput.mouseEnabled=true;
+			passwordTextInput.text=userNameTextInput.text="";
+			
+			submitButton = createUI(Button,"loginBtn");
+			backBtn = createUI(Button,"backBtn");
+			
+			serverList = createUI(SeverComponent,"serverList");
 			
 			sortChildIndex();
 			

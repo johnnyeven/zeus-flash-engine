@@ -4,14 +4,18 @@ package controller.mainSence
     import com.zn.loading.LoaderEvent;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-
+    
     import enum.MainSenceEnum;
-
+    
     import mediator.BaseMediator;
     import mediator.mainSence.MainSenceComponentMediator;
-
+    
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.userInfo.UserInfoProxy;
+    
+    import vo.userInfo.UserInfoVO;
 
     /**
      *主场景
@@ -48,7 +52,9 @@ package controller.mainSence
             {
                 //加载界面SWF
                 _isLoading = true;
-                ResLoader.load(MainSenceEnum.campBGURL, MultilanguageManager.getString(""), loaderComplete);
+				
+				var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+                ResLoader.load("mainSence"+userInfoVO.camp, MultilanguageManager.getString(""), loaderComplete);
             }
         }
 

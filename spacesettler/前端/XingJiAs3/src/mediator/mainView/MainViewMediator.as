@@ -5,6 +5,7 @@ package mediator.mainView
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
+	import org.puremvc.as3.patterns.facade.Facade;
 	
 	import view.mainView.MainViewComponent;
 
@@ -26,6 +27,7 @@ package mediator.mainView
 			super(NAME, new MainViewComponent());
 
 			_popUp=false;
+			
 
 		}
 
@@ -55,6 +57,7 @@ package mediator.mainView
 				}
 			}
 		}
+		
 
 		/**
 		 *获取界面

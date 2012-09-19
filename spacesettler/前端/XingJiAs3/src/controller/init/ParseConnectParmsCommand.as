@@ -23,6 +23,8 @@ package controller.init
     {
         public static const PARSE_CONNECT_PARMS_NOTE:String = "ParseConnectParmsCommand.parseConnectParms";
 
+        private var loginProxy:LoginProxy;
+
         public function ParseConnectParmsCommand()
         {
             super();
@@ -48,11 +50,8 @@ package controller.init
 			CommandEnum.get_server_list=connectionXML.url;
 			GlobalData.game_id=connectionXML.game_id;
 			
-			var loginProxy:LoginProxy=getProxy(LoginProxy);
-//			loginProxy.getServerList(connectHandler);
-			
-			connectHandler();
-			
+			loginProxy=getProxy(LoginProxy);
+			loginProxy.getServerList(connectHandler);
         }
 
         /**

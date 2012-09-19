@@ -5,6 +5,8 @@ package mediator.login
     
     import events.login.LoginEvent;
     
+    import flash.events.Event;
+    
     import mediator.BaseMediator;
     import mediator.prompt.PromptMediator;
     
@@ -27,15 +29,19 @@ package mediator.login
         public static const SHOW_NOTE:String = "show" + NAME + "Note";
 
         public static const DESTROY_NOTE:String = "destroy" + NAME + "Note";
-
+		
+		
         public function LoginMediator(viewComponent:Object = null)
         {
+			StartComponentMediator.addBG();
+			
             super(NAME, new LoginComponent());
 
             comp.addEventListener(LoginEvent.LOGIN_EVENT, loginHandler);
 			comp.addEventListener(LoginEvent.BACK_EVENT,backHandler);
         }
-
+		
+		
         /**
          *添加要监听的消息
          * @return
@@ -59,6 +65,7 @@ package mediator.login
                 {
                     //销毁对象
                     destroy();
+					sendNotification(PromptMediator.HIDE_LOGIN_INFO_NOTE);
                     break;
                 }
             }
@@ -78,16 +85,26 @@ package mediator.login
         {
             if (StringUtil.isEmpty(event.userName))
             {
-                sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString("loginInfoEmpty"));
+                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginUserNameEmpty"));
                 return;
             }
-            var myProxy:LoginProxy = getProxy(LoginProxy);
-            myProxy.login(event.userName, event.password);
+			else if (StringUtil.isEmpty(event.password))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginPasswordEmpty"));
+				return;
+			}
+			
+			var myProxy:LoginProxy = getProxy(LoginProxy);
+			myProxy.login(event.userName, event.password);
         }
 		
 		private function backHandler(event:LoginEvent):void
 		{
-			sendNotification(StartComponentMediator.SHOW_NOTE);
+			destoryCallback = function():void
+			{
+				sendNotification(StartComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
 		}
     }
 }

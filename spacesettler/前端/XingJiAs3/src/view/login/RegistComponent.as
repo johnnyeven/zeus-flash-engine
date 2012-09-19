@@ -4,7 +4,11 @@ package view.login
 	
 	import events.login.RegistEvent;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
+	
+	import proxy.login.LoginProxy;
 	
 	import ui.components.Button;
 	import ui.components.TextInput;
@@ -17,11 +21,11 @@ package view.login
 	 */
     public class RegistComponent extends Component
     {
-		public var userNameTextInput:TextInput;
+		public var userNameTextInput:TextField;
 		
-		public var passwordTextInput:TextInput;
+		public var passwordTextInput:TextField;
 		
-		public var passwordAgainInput:TextInput;
+		public var passwordAgainInput:TextField;
 		
 		public var nextBtn:Button;
 		
@@ -29,26 +33,38 @@ package view.login
 		
 		public var serverList:Component;
 		
-		public var serverBar:Component;
-		
-		public var barServerName:TextInput;
-		
-		public var listComponent:Component;
-		
         public function RegistComponent()
         {
             super(ClassUtil.getObject("view.login.RegistSkin"));
-			userNameTextInput=createUI(TextInput,"userNameInput");
-			passwordTextInput=createUI(TextInput,"passwordInput");
-			passwordAgainInput=createUI(TextInput,"passwordAgainInput");
+			
+			var loginProxy:LoginProxy = ApplicationFacade.getProxy(LoginProxy);
+			
+			userNameTextInput=getSkin("userNameInput");
+			userNameTextInput.restrict = "a-zA-Z0-9\u4e00-\u9fa5_-";
+			userNameTextInput.maxChars = 16;
+//			userNameTextInput.restrict = "^[a-zA-Z0-9\u4e00-\u9fa5_-]{6,16}$";
+			
+			passwordTextInput=getSkin("passwordInput");
+			passwordTextInput.restrict = "a-zA-Z0-9_-";
+			passwordTextInput.maxChars = 16;
+//			passwordTextInput.restrict = "^[a-zA-Z0-9_-]{6,16}$";
+			
+			passwordTextInput.displayAsPassword = true;
+			passwordAgainInput=getSkin("passwordAgainInput");
+			passwordTextInput.restrict = "a-zA-Z0-9_-";
+			passwordTextInput.maxChars = 16;
+//			passwordAgainInput.restrict = "^[a-zA-Z0-9_-]{6,16}$";
+			passwordAgainInput.displayAsPassword = true;
+			
+			userNameTextInput.text = passwordTextInput.text = passwordAgainInput.text = "";
+			
+			userNameTextInput.mouseEnabled = passwordTextInput.mouseEnabled = passwordAgainInput.mouseEnabled = true;
+			
 			nextBtn=createUI(Button,"nextBtn");
 			returnBtn=createUI(Button,"returnBtn");
 			
-			serverList=createUI(Component,"serverList");
-			serverBar=serverList.createUI(Component,"serverBar");
-			barServerName=serverBar.createUI(TextInput,"serverName");
+			serverList=createUI(SeverComponent,"serverList");
 			
-			listComponent=serverList.createUI(Component,"list");
 			
 			sortChildIndex();
 			
@@ -63,7 +79,7 @@ package view.login
 		
 		protected function nextBtn_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new RegistEvent(RegistEvent.NEXT_EVENT,barServerName.text,userNameTextInput.text,passwordTextInput.text,passwordAgainInput.text));
+			dispatchEvent(new RegistEvent(RegistEvent.NEXT_EVENT,null,userNameTextInput.text,passwordTextInput.text,passwordAgainInput.text));
 		}
 	}
 }

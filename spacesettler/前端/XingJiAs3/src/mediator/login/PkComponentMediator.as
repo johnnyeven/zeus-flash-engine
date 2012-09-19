@@ -2,11 +2,16 @@ package mediator.login
 {
 	
 	
+	import events.login.PkEvent;
+	
 	import mediator.BaseMediator;
+	import mediator.prompt.PromptMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	
+	import proxy.login.LoginProxy;
 	
 	import view.login.PkComponent;
 
@@ -26,6 +31,9 @@ package mediator.login
 		public function PkComponentMediator()
 		{
 			super(NAME, new PkComponent());
+			
+			comp.addEventListener(PkEvent.BACK_EVENT,backHandler);
+			comp.addEventListener(PkEvent.START_EVENT,startHandler);
 		}
 		
 		/**
@@ -51,6 +59,7 @@ package mediator.login
 				{
 					//销毁对象
 					destroy();
+					sendNotification(PromptMediator.HIDE_LOGIN_INFO_NOTE);
 					break;
 				}
 			}
@@ -65,6 +74,26 @@ package mediator.login
 		{
 			return viewComponent as PkComponent;
 		}
+		
+		private function backHandler(event:PkEvent):void
+		{
+			destoryCallback = function():void
+			{
+			   sendNotification(NameInforComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
+		}
 
+		private function startHandler(evnet:PkEvent):void
+		{
+			
+			loginProxy.camp=comp.campID;
+			
+			var loginProxy:LoginProxy = getProxy(LoginProxy);
+			loginProxy.regist(function():void
+			{
+				sendNotification(DESTROY_NOTE);
+			});
+		}
 	}
 }

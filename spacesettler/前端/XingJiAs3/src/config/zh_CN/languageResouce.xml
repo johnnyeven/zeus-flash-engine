@@ -9,6 +9,12 @@
 	<loginFail>登陆失败</loginFail>
 	<createFail>创建失败</createFail>
 	<tips>提示</tips> 
+	<loginUserNameEmpty>用户名不能为空</loginUserNameEmpty>
+	<loginPasswordEmpty>密码不能为空</loginPasswordEmpty>
+	<registInfoEmpty>用户名不能为空</registInfoEmpty>
+	<registPasswordEmpty>密码长度至少为6位</registPasswordEmpty>
+	<registAgainEmpty>请核对您的密码</registAgainEmpty>
+	<registEmailError>邮件格式不正确</registEmailError>
 	<loaderConfig>正在加载配置文件</loaderConfig>
 	<loaderPre>正在加载基础文件</loaderPre>
 	<loaderConfigList>正在加载配置包</loaderConfigList>
