@@ -1,16 +1,19 @@
 package loader
 {
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
 	import flash.system.Capabilities;
 	import flash.system.LoaderContext;
-	import flash.system.ApplicationDomain;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -110,6 +113,28 @@ package loader
 		{
 			_progressBar.title = LanguageManager.getInstance().lang("load_main");
 			_progressBar.percentage = 0;
+			
+			var _loader: Loader = new Loader();
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onMainLoaded);
+			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onMainLoadProgress);
+			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
+			
+			var urlRequest: URLRequest = new URLRequest("Main.swf");
+			var loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			_loader.load(urlRequest, loaderContext);
+		}
+		
+		private function onMainLoaded(evt: Event): void
+		{
+			var _loader: LoaderInfo = evt.target as LoaderInfo;
+			var _main: DisplayObject = _loader.content;
+			addChild(_main);
+		}
+		
+		private function onMainLoadProgress(evt: ProgressEvent): void
+		{
+			var _percent: Number = Math.floor((evt.bytesLoaded / evt.bytesTotal) * 100);
+			_progressBar.percentage = _percent;
 		}
 		
 		private function onLoadIOError(evt: IOErrorEvent): void
