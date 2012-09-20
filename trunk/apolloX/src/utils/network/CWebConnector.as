@@ -1,8 +1,9 @@
 package apollo.network 
 {
-	import apollo.configuration.ConnectorContextConfig;
-	import apollo.utils.loader.URLSmartLoader;
-	import apollo.utils.monitor.CMonitorConsole;
+	import configuration.ConnectorContextConfig;
+	import utils.loader.URLSmartLoader;
+	import utils.monitor.CMonitorConsole;
+	
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

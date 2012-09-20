@@ -23,7 +23,7 @@ package controller
 			facade.registerMediator(new PromptMediator());
 			
 			sendNotification(PromptMediator.PROMPT_SHOW_NOTE, "Main Loaded");
-			sendNotification(PromptMediator.PROMPT_HIDE_NOTE);
+			sendNotification(PromptMediator.LOADING_SHOW_NOTE);
 			
 			//facade.registerCommand(ApplicationFacade.CHANGE_TEXT, ChangeTextCommand);
 		}
