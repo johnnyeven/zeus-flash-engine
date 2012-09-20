@@ -106,6 +106,26 @@ package loader
 			
 			center();
 			
+			loadBaseUI();
+		}
+		
+		private function loadBaseUI(): void
+		{
+			_progressBar.title = LanguageManager.getInstance().lang("load_base_ui");
+			_progressBar.percentage = 0;
+			
+			var _loader: Loader = new Loader();
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onBaseUILoaded);
+			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
+			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
+			
+			var urlRequest: URLRequest = new URLRequest("resources/ui/base_ui.swf");
+			var loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			_loader.load(urlRequest, loaderContext);
+		}
+		
+		private function onBaseUILoaded(evt: Event): void
+		{
 			loadMain();
 		}
 		
@@ -116,7 +136,7 @@ package loader
 			
 			var _loader: Loader = new Loader();
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onMainLoaded);
-			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onMainLoadProgress);
+			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
 			
 			var urlRequest: URLRequest = new URLRequest("Main.swf");
@@ -131,7 +151,7 @@ package loader
 			addChild(_main);
 		}
 		
-		private function onMainLoadProgress(evt: ProgressEvent): void
+		private function onLoadProgress(evt: ProgressEvent): void
 		{
 			var _percent: Number = Math.floor((evt.bytesLoaded / evt.bytesTotal) * 100);
 			_progressBar.percentage = _percent;

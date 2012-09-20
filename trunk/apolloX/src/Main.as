@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.system.Security;
 	
 	[SWF(width="1028", height="600", backgroundColor="0xFFFFFF",frameRate="30")]
 	public class Main extends Sprite
@@ -16,6 +17,7 @@ package
 			{
 				addEventListener(Event.ADDED_TO_STAGE, init);
 			}
+			//Security.allowDomain("*");
 		}
 		
 		public function init(evt: Event = null): void

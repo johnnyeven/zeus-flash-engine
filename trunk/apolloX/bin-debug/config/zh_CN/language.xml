@@ -2,6 +2,6 @@
 <root>
 	<load_loader_progress_ui>正在加载进度条UI...</load_loader_progress_ui>
 	<load_main>正在加载主场景...</load_main>
-	<load_base_ui>正在加载UI</load_base_ui>
+	<load_base_ui>正在加载基础UI...</load_base_ui>
 	<load_base_ui_error>加载UI错误，请联系游戏管理员</load_base_ui_error>
 </root>

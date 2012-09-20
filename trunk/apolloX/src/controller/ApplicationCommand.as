@@ -6,6 +6,8 @@ package controller
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
 	
+	import view.PromptComponent;
+	
 	public class ApplicationCommand extends SimpleCommand
 	{
 		public function ApplicationCommand()
@@ -16,7 +18,9 @@ package controller
 		override public function execute(notification: INotification): void
 		{
 			var _main: Main = notification.getBody() as Main;
-			trace("Main Loaded");
+			var prompt: PromptComponent = new PromptComponent();
+			prompt.title = "Main Loaded";
+			_main.addChild(prompt);
 			//facade.registerMediator(new TextMediator(_main.txtReceiver));
 			//facade.registerMediator(new BtnMediator(_main.btnSender));
 			
