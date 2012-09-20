@@ -1,7 +1,7 @@
 package controller
 {
-	import mediator.BtnMediator;
-	import mediator.TextMediator;
+	import mediator.StageMediator;
+	import mediator.PromptMediator;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
@@ -18,11 +18,12 @@ package controller
 		override public function execute(notification: INotification): void
 		{
 			var _main: Main = notification.getBody() as Main;
-			var prompt: PromptComponent = new PromptComponent();
-			prompt.title = "Main Loaded";
-			_main.addChild(prompt);
-			//facade.registerMediator(new TextMediator(_main.txtReceiver));
-			//facade.registerMediator(new BtnMediator(_main.btnSender));
+			
+			facade.registerMediator(new StageMediator(_main));
+			facade.registerMediator(new PromptMediator());
+			
+			sendNotification(PromptMediator.PROMPT_SHOW_NOTE, "Main Loaded");
+			sendNotification(PromptMediator.PROMPT_HIDE_NOTE);
 			
 			//facade.registerCommand(ApplicationFacade.CHANGE_TEXT, ChangeTextCommand);
 		}

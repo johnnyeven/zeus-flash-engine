@@ -18,7 +18,7 @@ package mediator
 		
 		private function onButtonClick(evt: MouseEvent): void
 		{
-			sendNotification(ApplicationFacade.CHANGE_TEXT, "test");
+			//sendNotification(ApplicationFacade.CHANGE_TEXT, "test");
 		}
 		
 		private function get controlObject(): Sprite
