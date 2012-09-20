@@ -1,6 +1,7 @@
 package mediator
 {
 	import flash.display.DisplayObject;
+	import flash.display.Stage;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -17,6 +18,11 @@ package mediator
 		public function get component(): Main
 		{
 			return viewComponent as Main;
+		}
+		
+		public function get stage(): Stage
+		{
+			return component.stage;
 		}
 		
 		public function addChild(value: DisplayObject): void
