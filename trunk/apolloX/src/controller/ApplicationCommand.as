@@ -26,10 +26,10 @@ package controller
 			
 			facade.registerProxy(new ServerListProxy());
 			
+			sendNotification(PromptMediator.PROMPT_SHOW_NOTE, "Main Loaded");
+			
 			var _proxy: ServerListProxy = facade.retrieveProxy(ServerListProxy.NAME) as ServerListProxy;
 			_proxy.getServerList();
-			
-			sendNotification(PromptMediator.PROMPT_SHOW_NOTE, "Main Loaded");
 		}
 	}
 }

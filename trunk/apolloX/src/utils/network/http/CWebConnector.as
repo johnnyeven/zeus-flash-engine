@@ -75,7 +75,7 @@ package utils.network.http
 				trace("Error: CWebConnector.as[74] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
 				CMonitorConsole.getInstance().log("Error: CWebConnector.as[74] IO_ERROR - error name: " + e.type + ", error message: " + e.text);
 			}
-			dispatchEvent(e);
+			//dispatchEvent(e);
 		}
 		
 		private function securityErrorHandler(e:SecurityErrorEvent):void 

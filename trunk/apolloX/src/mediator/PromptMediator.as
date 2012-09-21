@@ -9,6 +9,7 @@ package mediator
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import view.PromptComponent;
+	import utils.UIUtils;
 	
 	public class PromptMediator extends Mediator implements IMediator
 	{
@@ -60,6 +61,7 @@ package mediator
 		private function showPrompt(value: String): void
 		{
 			component.title = value;
+			UIUtils.center(component);
 			var _stageMediator: StageMediator = (facade.retrieveMediator(StageMediator.NAME)) as StageMediator;
 			_stageMediator.addChild(component);
 		}
@@ -73,8 +75,7 @@ package mediator
 		private function showLoading(): void
 		{
 			var _stageMediator: StageMediator = (facade.retrieveMediator(StageMediator.NAME)) as StageMediator;
-			_loadingMovieClip.x = _stageMediator.stage.stageWidth / 2;
-			_loadingMovieClip.y = _stageMediator.stage.stageHeight / 2;
+			UIUtils.center(_loadingMovieClip);
 			_stageMediator.addChild(_loadingMovieClip);
 		}
 		
