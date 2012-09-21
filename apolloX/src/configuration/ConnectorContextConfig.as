@@ -9,12 +9,15 @@ package configuration
 		//private static var server_ip: String = '66.148.112.175';
 		//private static var server_port: String = '80';
 		private static var server_ip: String = 'localhost';
-		private static var server_port: String = '8080';
+		private static var server_port: String = '80';
 		private static var server_app_root: String = 'game_server';
 		private static var useSSL: Boolean = false;
 		
 		public static const ACK_CONFIRM: int = 1;
 		public static const ACK_ERROR: int = 0;
+		
+		public static const CONTROLLER_SERVER: String = "websrv/servers";
+		public static const ACTION_SERVERLIST: String = "server_list";
 		
 		public static const CONTROLLER_INFO: String = "game/initialization";
 		public static const ACTION_LOGIN: String = "login";

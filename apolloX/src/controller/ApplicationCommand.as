@@ -1,10 +1,12 @@
 package controller
 {
-	import mediator.StageMediator;
 	import mediator.PromptMediator;
+	import mediator.StageMediator;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
+	
+	import proxy.ServerListProxy;
 	
 	import view.PromptComponent;
 	
@@ -22,10 +24,12 @@ package controller
 			facade.registerMediator(new StageMediator(_main));
 			facade.registerMediator(new PromptMediator());
 			
-			sendNotification(PromptMediator.PROMPT_SHOW_NOTE, "Main Loaded");
-			sendNotification(PromptMediator.LOADING_SHOW_NOTE);
+			facade.registerProxy(new ServerListProxy());
 			
-			//facade.registerCommand(ApplicationFacade.CHANGE_TEXT, ChangeTextCommand);
+			var _proxy: ServerListProxy = facade.retrieveProxy(ServerListProxy.NAME) as ServerListProxy;
+			_proxy.getServerList();
+			
+			sendNotification(PromptMediator.PROMPT_SHOW_NOTE, "Main Loaded");
 		}
 	}
 }
