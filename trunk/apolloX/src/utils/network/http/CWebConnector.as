@@ -65,7 +65,7 @@ package utils.network.http
 			_loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
 			_loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
 			loaderContainer.push(_loader);
-			return loader;
+			return _loader;
 		}
 		
 		private function ioErrorHandler(e:IOErrorEvent):void 
