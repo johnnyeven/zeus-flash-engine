@@ -149,6 +149,9 @@ package loader
 			var _loader: LoaderInfo = evt.target as LoaderInfo;
 			var _main: DisplayObject = _loader.content;
 			addChild(_main);
+			
+			removeChild(_progressBar);
+			_progressBar = null;
 		}
 		
 		private function onLoadProgress(evt: ProgressEvent): void
