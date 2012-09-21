@@ -1,6 +1,5 @@
-package apollo.network.command.interfaces 
+package utils.network.command.interfaces 
 {
-	import flash.utils.ByteArray;
 	
 	/**
 	 * ...

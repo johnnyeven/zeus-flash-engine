@@ -1,4 +1,4 @@
-package apollo.network.data.interfaces 
+package utils.network.data.interfaces 
 {
 	
 	/**

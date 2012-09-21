@@ -1,4 +1,4 @@
-package apollo.network.command 
+package utils.network.command 
 {
 	import flash.errors.IllegalOperationError;
 	

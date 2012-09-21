@@ -1,7 +1,7 @@
-package apollo.network.command.receiving 
+package utils.network.command.receiving 
 {
-	import apollo.network.command.interfaces.INetPackageReceiving;
-	import apollo.network.command.CCommandBase;
+	import utils.network.command.interfaces.INetPackageReceiving;
+	import utils.network.command.CCommandBase;
 	
 	/**
 	 * ...

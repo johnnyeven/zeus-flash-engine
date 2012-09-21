@@ -1,7 +1,7 @@
-package apollo.network.data.basic 
+package utils.network.data.basic 
 {
-	import apollo.network.data.interfaces.IParameterFill;
-	import apollo.objects.dependency.CDependency;
+	import utils.network.data.interfaces.IParameterFill;
+	import objects.dependency.CDependency;
 	
 	/**
 	 * ...

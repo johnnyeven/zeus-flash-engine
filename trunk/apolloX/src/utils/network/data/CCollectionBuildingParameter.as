@@ -1,7 +1,7 @@
-package apollo.network.data 
+package utils.network.data 
 {
-	import apollo.network.data.basic.CBuildingParameter;
-	import apollo.network.data.interfaces.IParameterFill;
+	import utils.network.data.basic.CBuildingParameter;
+	import utils.network.data.interfaces.IParameterFill;
 	
 	/**
 	 * ...

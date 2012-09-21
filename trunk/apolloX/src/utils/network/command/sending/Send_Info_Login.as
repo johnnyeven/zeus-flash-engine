@@ -1,7 +1,6 @@
-package apollo.network.command.sending 
+package utils.network.command.sending 
 {
-	import apollo.configuration.ConnectorContextConfig;
-	import com.adobe.crypto.*;
+	import configuration.ConnectorContextConfig;
 	/**
 	 * ...
 	 * @author johnnyeven

@@ -1,8 +1,8 @@
-package apollo.network.command.sending 
+package utils.network.command.sending 
 {
-	import apollo.configuration.ConnectorContextConfig;
-	import apollo.network.command.CCommandBase;
-	import apollo.network.command.interfaces.INetPackageSending;
+	import configuration.ConnectorContextConfig;
+	import utils.network.command.CCommandBase;
+	import utils.network.command.interfaces.INetPackageSending;
 	
 	import com.adobe.crypto.*;
 	import flash.net.URLVariables;
