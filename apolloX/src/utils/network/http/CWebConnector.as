@@ -1,4 +1,4 @@
-package apollo.network 
+package utils.network.http 
 {
 	import configuration.ConnectorContextConfig;
 	import utils.loader.URLSmartLoader;
@@ -58,13 +58,13 @@ package apollo.network
 					}
 				}
 			}
-			var loader: URLSmartLoader = new URLSmartLoader();
-			loader.dataFormat = URLLoaderDataFormat.TEXT;
-			loader.addEventListener(Event.COMPLETE, onDataCallback, false, 0, true);
-			loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler, false, 0, true);
-			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
-			loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
-			loaderContainer.push(loader);
+			var _loader: URLSmartLoader = new URLSmartLoader();
+			_loader.dataFormat = URLLoaderDataFormat.TEXT;
+			_loader.addEventListener(Event.COMPLETE, onDataCallback, false, 0, true);
+			_loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler, false, 0, true);
+			_loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler, false, 0, true);
+			_loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+			loaderContainer.push(_loader);
 			return loader;
 		}
 		
@@ -99,9 +99,9 @@ package apollo.network
 			process(loader);
 		}
 		
-		private function process(loader: URLSmartLoader): void
+		private function process(_loader: URLSmartLoader): void
 		{
-			var data: String = loader.data as String;
+			var data: String = _loader.data as String;
 			CONFIG::DebugMode
 			{
 				trace(data);
@@ -121,7 +121,7 @@ package apollo.network
 						CMonitorConsole.getInstance().log("Error: CWebConnector.as[125] JSON.parse error - error name: " + err.name + ", error message: " + err.message);
 					}
 				}
-				loader.isLoading = false;
+				_loader.isLoading = false;
 				var flag: uint = parseInt(json.flag);
 				if (callback != null)
 				{

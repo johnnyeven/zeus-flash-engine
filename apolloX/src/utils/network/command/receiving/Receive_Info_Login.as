@@ -1,6 +1,6 @@
-package apollo.network.command.receiving 
+package utils.network.command.receiving 
 {
-	import apollo.configuration.ConnectorContextConfig;
+	import configuration.ConnectorContextConfig;
 	
 	/**
 	 * ...

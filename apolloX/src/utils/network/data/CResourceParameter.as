@@ -1,4 +1,4 @@
-package apollo.network.data 
+package utils.network.data 
 {
 	/**
 	 * ...

@@ -1,6 +1,6 @@
-package apollo.network.command 
+package utils.network.command 
 {
-	import apollo.network.command.interfaces.INetPackageReceiving;
+	import utils.network.command.interfaces.INetPackageReceiving;
 	import flash.utils.Dictionary;
 	
 	/**
