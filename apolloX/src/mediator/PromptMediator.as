@@ -7,6 +7,7 @@ package mediator
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	import com.greensock.TweenLite;
 	
 	import view.PromptComponent;
 	import utils.UIUtils;
@@ -77,12 +78,20 @@ package mediator
 			var _stageMediator: StageMediator = (facade.retrieveMediator(StageMediator.NAME)) as StageMediator;
 			UIUtils.center(_loadingMovieClip);
 			_stageMediator.addChild(_loadingMovieClip);
+			TweenLite.from(_loadingMovieClip, .5, {
+				alpha: 0
+			});
 		}
 		
 		private function hideLoading(): void
 		{
 			var _stageMediator: StageMediator = (facade.retrieveMediator(StageMediator.NAME)) as StageMediator;
-			_stageMediator.removeChild(_loadingMovieClip);
+			TweenLite.to(_loadingMovieClip, .5, {
+				alpha: 0,
+				onComplete: function(): void {
+					_stageMediator.removeChild(_loadingMovieClip);
+				}
+			});
 		}
 		
 		private function get component(): PromptComponent

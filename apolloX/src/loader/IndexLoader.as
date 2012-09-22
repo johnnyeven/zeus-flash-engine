@@ -21,18 +21,23 @@ package loader
 	import utils.language.LanguageManager;
 	
 	import view.loader.LoaderProgressBarComponent;
+	import view.login.LoginBGComponent;
 	
-	[SWF(width="1028", height="600", backgroundColor="0xFFFFFF",frameRate="30")]
+	[SWF(width="1028", height="600", backgroundColor="0x000000",frameRate="30")]
 	public class IndexLoader extends Sprite
 	{
 		private var _msgText: TextField;
 		private var _progressBar: LoaderProgressBarComponent;
+		private var _bgBuffer: Sprite;
 		
 		public function IndexLoader()
 		{
 			LanguageManager.language = Capabilities.language;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			_bgBuffer = new Sprite();
+			addChild(_bgBuffer);
 			
 			_msgText = new TextField();
 			_msgText.text = "初始化Loader...";
@@ -126,6 +131,9 @@ package loader
 		
 		private function onBaseUILoaded(evt: Event): void
 		{
+			_bgBuffer.addChild(LoginBGComponent.getInstance());
+			LoginBGComponent.getInstance().show();
+			
 			loadMain();
 		}
 		
