@@ -70,6 +70,7 @@ package view.mainView
 			militaryExploitText=getSkin("shengwang_tf");
 			userNameText=getSkin("uesrname_tf");
 			
+			militaryRankText.text="新兵";//*****************************************
 			electricBar=createUI(ProgressBar,"dianliang_loader_bar");
 			enemy=createUI(Button,"diren_btn");//*******************敌人按钮暂时未加功能  以示！！！！
 			
@@ -78,13 +79,14 @@ package view.mainView
 			buff_3=getSkin("buff_3");					
 			
 			var userInfoProxy:UserInfoProxy=ApplicationFacade.getProxy(UserInfoProxy);
-			cwList.push(BindingUtils.bindProperty(userNameText,"text",userInfoProxy,["userInfoVO","userName"]));
+			
+			cwList.push(BindingUtils.bindProperty(userNameText,"text",userInfoProxy,["userInfoVO","nickname"]));
 			cwList.push(BindingUtils.bindProperty(pebbleText,"text",userInfoProxy,["userInfoVO","crystal"]));
 			cwList.push(BindingUtils.bindProperty(tritiumGasText,"text",userInfoProxy,["userInfoVO","tritium"]));
 			cwList.push(BindingUtils.bindProperty(darkText,"text",userInfoProxy,["userInfoVO","broken_crysta"]));
 			cwList.push(BindingUtils.bindProperty(moneyText,"text",userInfoProxy,["userInfoVO","dark_crystal"]));
 			cwList.push(BindingUtils.bindProperty(militaryExploitText,"text",userInfoProxy,["userInfoVO","prestige"]));
-			cwList.push(BindingUtils.bindProperty(militaryRankText,"text",userInfoProxy,["userInfoVO","militaryRrank"]));
+			//cwList.push(BindingUtils.bindProperty(militaryRankText,"text",userInfoProxy,["userInfoVO","militaryRrank"]));
 			cwList.push(BindingUtils.bindProperty(electricBar,"percent",userInfoProxy,["userInfoVO","power"]));
 			
 		}

@@ -36,7 +36,7 @@ package view.login
 			var loginProxy:LoginProxy = ApplicationFacade.getProxy(LoginProxy);
 			
 			nameTextInput=getSkin("nameInput");
-			nameTextInput.restrict = "[a-zA-Z0-9\u4e00-\u9fa5_-]{6,16}$";
+			nameTextInput.restrict = "a-zA-Z0-9\u4e00-\u9fa5_-";
 //			nameTextInput.restrict = "^[a-zA-Z0-9\u4e00-\u9fa5_-]{6,16}$";
 			emailTextInput=getSkin("emaillInput");
 //			emailTextInput.restrict = "^(?:[a-z\d]+[_\-\+\.]?)*[a-z\d]+@(?:([a-z\d]+\-?)*[a-z\d]+\.)+([a-z]{2,})+$";

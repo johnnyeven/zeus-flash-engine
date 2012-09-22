@@ -2,30 +2,30 @@ package proxy.login
 {
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.net.Protocol;
-
+    
     import controller.init.LoaderResCommand;
-
+    
     import enum.ServerItemEnum;
     import enum.command.CommandEnum;
     import enum.command.CommandResultTypeEnum;
-
+    
     import flash.net.URLRequestMethod;
-
+    
     import mediator.login.LoginMediator;
     import mediator.login.NameInforComponentMediator;
     import mediator.login.PkComponentMediator;
     import mediator.login.RegistComponentMediator;
     import mediator.login.StartComponentMediator;
     import mediator.prompt.PromptMediator;
-
+    
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;
-
+    
     import other.ConnDebug;
-
+    
     import proxy.BuildProxy;
     import proxy.userInfo.UserInfoProxy;
-
+    
     import vo.GlobalData;
     import vo.ServerItemVO;
     import vo.userInfo.UserInfoVO;
@@ -73,17 +73,20 @@ package proxy.login
 
         //注册的变量值
         public var userName:String;
+		public var passWord:String;
+		public var passAgainWord:String;
 
-        public var passWord:String;
-
-        public var name:String;
-
-        public var email:String;
+		public var name:String;
+		public var email:String;
+		public var alliance:String;
+		
 
         public var camp:int;
 
         private var _registCallBack:Function;
 
+        private var _startLoingCallBack:Function;
+		
         public function LoginProxy(data:Object = null)
         {
             super(NAME, data);
@@ -93,8 +96,10 @@ package proxy.login
          *快速登录
          *
          */
-        public function startLogin():void
+        public function startLogin(callBack:Function):void
         {
+			_startLoingCallBack=callBack;
+				
             if (!Protocol.hasProtocolFunction(CommandEnum.startLogin, startLoginResult))
                 Protocol.registerProtocol(CommandEnum.startLogin, startLoginResult);
             ConnDebug.send(CommandEnum.startLogin, null, ConnDebug.HTTP, URLRequestMethod.GET);
@@ -106,6 +111,10 @@ package proxy.login
          */
         public function startLoginResult(data:*):void
         {
+			if(_startLoingCallBack!=null)
+				_startLoingCallBack();
+			_startLoingCallBack=null;
+			
             serverData = data;
             enterGame();
         }
@@ -116,6 +125,8 @@ package proxy.login
          */
         public function login(userName:String, password:String):void
         {
+			this.userName=userName;
+			this.passWord=password;
             if (!Protocol.hasProtocolFunction(CommandEnum.login, loginResult))
                 Protocol.registerProtocol(CommandEnum.login, loginResult);
 
@@ -130,25 +141,25 @@ package proxy.login
          */
         private function loginResult(data:Object):void
         {
-            //TODO:lw  ok 应该判断是否为新玩家，如果是新玩家，则应该跳转到输入昵称界面
             if (data.errors == "")
-            {
-                sendNotification(LoginMediator.DESTROY_NOTE);
-                var loginMeditor:LoginMediator = getMediator(LoginMediator);
-                loginMeditor.destoryCallback = function():void
-                {
-                    sendNotification(NameInforComponentMediator.SHOW_NOTE);
-                };
-                return;
-            }
-            else if (data.hasOwnProperty("errors"))
-            {
-                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
-                return;
-            }
-
-            sendNotification(LoginMediator.DESTROY_NOTE);
-            enterGame();
+			{
+				sendNotification(LoginMediator.DESTROY_NOTE);
+				var loginMeditor:LoginMediator = getMediator(LoginMediator);
+				loginMeditor.destoryCallback = function():void
+				{
+				   sendNotification(NameInforComponentMediator.SHOW_NOTE);
+				};
+				
+				return ;
+			}
+			else if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
+			
+			
+			enterGame();
         }
 
         private function enterGame():void
@@ -219,37 +230,36 @@ package proxy.login
 
             _getServerListCallBack = null;
         }
-
-        /**
-         *注册
-         *
-         */
-        public function regist(callBack:Function):void
-        {
-            if (!Protocol.hasProtocolFunction(CommandEnum.regist, registResult))
-                Protocol.registerProtocol(CommandEnum.regist, registResult);
-
-            _registCallBack = callBack;
-            var obj:Object = { username: userName, password: passWord, nickname: name, email: email };
-            ConnDebug.send(CommandEnum.regist, obj);
-        }
-
-        private function registResult(data:Object):void
-        {
-            if (data.hasOwnProperty("errors"))
-            {
-                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
-                return;
-            }
-
-            if (_registCallBack != null)
-                _registCallBack();
-            _registCallBack = null;
-        }
-
-    /*****************************************
-     * 功能方法
-     * ****************************************/
-
+		
+		/**
+		 *注册
+		 *
+		 */
+		public function regist(callBack:Function):void
+		{
+			if (!Protocol.hasProtocolFunction(CommandEnum.regist, registResult))
+				Protocol.registerProtocol(CommandEnum.regist, registResult);
+			
+			_registCallBack = callBack;
+			var obj:Object = { username: userName, password: passWord, nickname: name, email: email,camp_id:camp };
+			ConnDebug.send(CommandEnum.regist, obj);
+		}
+		
+		private function registResult(data:Object):void
+		{
+			if (data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				return;
+			}
+			
+			if (_registCallBack != null)
+				_registCallBack();
+			_registCallBack = null;
+		}
+		
+		/*****************************************
+		 * 功能方法
+		 * ****************************************/
     }
 }

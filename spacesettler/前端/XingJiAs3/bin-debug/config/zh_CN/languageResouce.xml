@@ -66,4 +66,19 @@
 	<NICKNAME_DUPLICATE>昵称已存在</NICKNAME_DUPLICATE>
 	<ACCOUNT_VALIDATION_FAILD>账户验证失败</ACCOUNT_VALIDATION_FAILD>
 	<ACCOUNT_UPDATE_FAILED>更新账户失败</ACCOUNT_UPDATE_FAILED>
+	<INVALID_BUILDING_ID>建筑ID错误</INVALID_BUILDING_ID>
+	
+	<buildSelectorFieldUp>升级</buildSelectorFieldUp>
+	<buildSelectorFieldRongYu>荣誉</buildSelectorFieldRongYu>
+	<buildSelectorFieldZongLan>总览</buildSelectorFieldZongLan>
+	<buildSelectorFieldTime>时间加速</buildSelectorFieldTime>
+	<buildSelectorFieldChaKan>查看仓库</buildSelectorFieldChaKan>
+	<buildSelectorFieldRongLan>熔炼</buildSelectorFieldRongLan>
+	<buildSelectorFieldKeYan>科技研究</buildSelectorFieldKeYan>
+	<buildSelectorFieldZhiZao>制造工厂</buildSelectorFieldZhiZao>
+	<buildSelectorFieldGaiZhuang>改装工厂</buildSelectorFieldGaiZhuang>
+	<buildSelectorFieldWeiXiu>维修工厂</buildSelectorFieldWeiXiu>
+	
+	<timeMiao>秒</timeMiao>
+	<speedTimeInfo>使用时间机器完成本任务需花费</speedTimeInfo>
 </root>

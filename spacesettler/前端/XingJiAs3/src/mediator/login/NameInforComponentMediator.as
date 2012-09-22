@@ -96,6 +96,16 @@ package mediator.login
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registEmailError"));
 				return;
 			}
+			else if(StringUtil.isEmpty(event.name))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registNameEmpty"));
+				return;
+			}
+			else if(event.name.length <6)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registNameError"));
+				return;
+			}
 			
 			var loginProxy:LoginProxy = getProxy(LoginProxy);
 			loginProxy.name = event.name;

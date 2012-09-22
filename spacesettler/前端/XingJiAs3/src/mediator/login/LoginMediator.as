@@ -83,14 +83,25 @@ package mediator.login
 
         protected function loginHandler(event:LoginEvent):void
         {
-            if (StringUtil.isEmpty(event.userName))
-            {
-                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginUserNameEmpty"));
-                return;
-            }
+			if (StringUtil.isEmpty(event.userName))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginUserNameEmpty"));
+				return;
+			}
+			else if(event.userName.length < 6)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginNaneWrong"));
+				return;
+			}
 			else if (StringUtil.isEmpty(event.password))
 			{
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginPasswordEmpty"));
+				return;
+			}
+
+			else if(event.password.length < 6)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("loginPasswordWrong"));
 				return;
 			}
 			

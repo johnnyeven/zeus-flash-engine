@@ -12,6 +12,8 @@ package controller.init
     
     import proxy.login.LoginProxy;
     
+    import ui.components.StarComponent;
+    
     import vo.GlobalData;
 
     /**
@@ -39,8 +41,6 @@ package controller.init
         {
             facade.removeCommand(PARSE_CONNECT_PARMS_NOTE);
 			
-			sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);
-
 			var configXML:XML = XML(LoaderItemUtil.getContent("connectionConfig.xml"));
 
             if (GlobalData.channel == 0)
@@ -50,21 +50,7 @@ package controller.init
 			CommandEnum.get_server_list=connectionXML.url;
 			GlobalData.game_id=connectionXML.game_id;
 			
-			loginProxy=getProxy(LoginProxy);
-			loginProxy.getServerList(connectHandler);
-        }
-
-        /**
-         *联接成功
-         * @param event
-         *
-         */
-        protected function connectHandler():void
-        {
-			sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
-			
-//           载入登陆界面
-            showLogin();
+			showLogin();
         }
 
         protected function showLogin():void

@@ -7,6 +7,8 @@ package mediator.mainView
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import view.mainView.ChatViewComponent;
+	
 	public class ChatViewMediator extends BaseMediator implements IMediator
 	{
 		public static const NAME:String="ChatViewMediator";
@@ -15,9 +17,9 @@ package mediator.mainView
 		
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 		
-		public function ChatViewMediator(name:String, viewComponent:Object=null)
+		public function ChatViewMediator()
 		{
-			super(name, viewComponent);
+			super(NAME, new ChatViewComponent());
 		}
 		
 		/**

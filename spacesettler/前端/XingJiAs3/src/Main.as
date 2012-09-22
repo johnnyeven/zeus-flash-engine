@@ -1,7 +1,9 @@
 package
 {
     import com.zn.ResLoader;
+    import com.zn.utils.ClassUtil;
     
+    import flash.display.Sprite;
     import flash.net.registerClassAlias;
     import flash.system.Security;
     

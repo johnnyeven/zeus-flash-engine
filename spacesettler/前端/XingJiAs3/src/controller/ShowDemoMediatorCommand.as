@@ -15,11 +15,11 @@ package controller
      * @author zn
      *
      */
-    public class ShowDemoMediatorCommand extends SimpleCommand
+    public class ShowCangKuCreateComponentMediatorCommand extends SimpleCommand
     {
 		private static var _isLoading:Boolean=false;
 		
-        public function ShowDemoMediatorCommand()
+        public function ShowCangKuCreateComponentMediatorCommand()
         {
             super();
         }
@@ -43,7 +43,7 @@ package controller
             {
                 //加载界面SWF
 				_isLoading=true;
-                ResLoader.load("", MultilanguageManager.getString(""), loaderComplete, false, true);
+                ResLoader.load("", MultilanguageManager.getString(""), loaderComplete, true);
             }
         }
 

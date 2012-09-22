@@ -3,11 +3,13 @@ package net
     import com.zn.log.Log;
     import com.zn.net.Protocol;
     import com.zn.net.http.HttpRequest;
-
+    
     import flash.net.URLRequestMethod;
-
+    
+    import mediator.prompt.PromptMediator;
+    
     import mx.utils.ObjectUtil;
-
+    
     import org.puremvc.as3.patterns.facade.Facade;
 
     public class NetHttpConn
@@ -15,6 +17,8 @@ package net
         protected static var _instance:NetHttpConn;
 
         public static var sendURL:String = "";
+
+        private static var _requestCount:int=0;
 
         public static function getInstance():NetHttpConn
         {
@@ -31,18 +35,8 @@ package net
         private function serverToClientOne(commandID:String, data:*):void
         {
             data = JSON.parse(data);
-//			if (!obj.hasOwnProperty("commandID") || !obj.hasOwnProperty("type"))
-//				return;
 
             Log.debug(NetHttpConn, "serverToClientOne", "收到信息：\n" + ObjectUtil.toString(data));
-
-//            var type:int = obj.type;
-//            if (type != 0)
-//            {
-//                var errorID:int = obj.errorID;
-//                Facade.getInstance().sendNotification("showErrorNote", errorID);
-//                return;
-//            }
 
             //执行方法
             var callFunctionList:Vector.<Function> = Protocol.getProtocolFunctionList(commandID);
@@ -51,15 +45,20 @@ package net
                 //调用方法
                 callFun(data);
             }
+			_requestCount--;
+			if(_requestCount==0)
+				ApplicationFacade.getInstance().sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
         }
 
         public static function send(commandID:String, obj:Object = null, method:String = URLRequestMethod.POST):void
         {
+			ApplicationFacade.getInstance().sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);
+			_requestCount++;
+			
             var params:String = "";
 
             if (obj)
             {
-//                params = "data=" + JSON.stringify(obj);
                 params = "";
 
                 for (var key:String in obj)

@@ -8,18 +8,18 @@ package events.login
 		
 		public static const START_EVENT:String="start_event";
 		
-		private var _alliance:String;
+		private var _campID:int;
 		
-		public function PkEvent(type:String, alliance:String="")
+		public function PkEvent(type:String, alliance:int = 0)
 		{
 			super(type, false, false);
 			
-			_alliance=alliance;
+			_campID=alliance;
 		}
 
 		public override function clone():Event
 		{
-			return new PkEvent(type,alliance);
+			return new PkEvent(type,campID);
 		}
 		
 		public override function toString():String
@@ -27,9 +27,9 @@ package events.login
 			return formatToString("PkEvent");
 		}
 		
-		public function get alliance():String
+		public function get campID():int
 		{
-			return _alliance;
+			return _campID;
 		}
 
 	}

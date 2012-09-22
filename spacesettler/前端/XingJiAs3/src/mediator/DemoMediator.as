@@ -12,7 +12,7 @@ package mediator
 	 */
 	public class DemoMediator extends BaseMediator implements IMediator
 	{
-		public static const NAME:String="ComponentMediator";
+		public static const NAME:String="DemoMediator";
 
 		public static const SHOW_NOTE:String="show" + NAME + "Note";
 

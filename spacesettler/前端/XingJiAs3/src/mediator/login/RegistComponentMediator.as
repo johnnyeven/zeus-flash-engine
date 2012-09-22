@@ -96,9 +96,19 @@ package mediator.login
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registInfoEmpty"));
 				return;
 			}
-			else if(event.passWord.length <6)
+			else if(event.userName.length <6)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registInforError"));
+				return;
+			}
+			else if(StringUtil.isEmpty(event.passWord))
 			{
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registPasswordEmpty"));
+				return;
+			}
+			else if(event.passWord.length <6)
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registPasswordError"));
 				return;
 			}
 			else if(event.passWord != event.passAgainWord)
@@ -110,6 +120,7 @@ package mediator.login
 			var loginProxy:LoginProxy = getProxy(LoginProxy);
 			loginProxy.userName = event.userName;
 			loginProxy.passWord = event.passWord;
+			loginProxy.passAgainWord = event.passAgainWord;
 			
 			destoryCallback = function():void
 			{

@@ -2,18 +2,15 @@ package view.login
 {
 	import com.greensock.TimelineLite;
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.zn.utils.ClassUtil;
 	
 	import events.login.StartLoginEvent;
 	
-	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.net.sendToURL;
 	
 	import ui.components.Button;
 	import ui.core.Component;
+	import ui.managers.SystemManager;
 	
 	/**
 	 *开始
@@ -40,13 +37,11 @@ package view.login
 			startBtn=upDoorComp.createUI(Button,"startBtn");
 			upDoorComp.sortChildIndex();
 			
-			
 			downDoorComp=createUI(Component,"downDoor");
 			zhangHaoLogin=downDoorComp.createUI(Button,"zhangHaoLoginBtn");
 			registBtn=downDoorComp.createUI(Button,"registBtn");
 			downDoorComp.sortChildIndex();
 			
-				
 			sortChildIndex();
 			
 			startBtn.addEventListener(MouseEvent.CLICK,srartBtn_clickHandler);
@@ -89,17 +84,17 @@ package view.login
 				  mouseEnabled=mouseChildren=true;
 				  callBack();
 				}});
-			timelineLite.insert(TweenLite.to(upDoorComp,0.5,{y:-351}));
-			timelineLite.insert(TweenLite.to(downDoorComp,0.5,{y:715}));
+			timelineLite.insert(TweenLite.to(upDoorComp,0.5,{y:-upDoorComp.height}));
+			timelineLite.insert(TweenLite.to(downDoorComp,0.5,{y:SystemManager.rootStage.stageHeight}));
 		}
 		
 		public function guanMen():void
 		{
-			upDoorComp.y=-351;
-			downDoorComp.y=715;
+			upDoorComp.y=-upDoorComp.height;
+			downDoorComp.y=SystemManager.rootStage.stageHeight;
 			
 			TweenLite.to(upDoorComp,0.5,{y:0});
-			TweenLite.to(downDoorComp,0.5,{y:342});
+			TweenLite.to(downDoorComp,0.5,{y:291});
 		}
 	}
 }

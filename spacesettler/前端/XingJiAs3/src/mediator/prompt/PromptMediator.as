@@ -4,24 +4,27 @@ package mediator.prompt
     import com.greensock.easing.Linear;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-
+    
     import flash.display.MovieClip;
+    import flash.events.Event;
+    import flash.events.MouseEvent;
     import flash.geom.Point;
-
+    
     import mediator.MainMediator;
-
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.mediator.Mediator;
-
+    
     import proxy.errorProxy.ErrorProxy;
-
+    
     import ui.components.Alert;
     import ui.components.Label;
     import ui.core.Component;
+    import ui.managers.PopUpManager;
     import ui.managers.SystemManager;
     import ui.utils.UIUtil;
-
+    
     import view.prompt.PromptInfoComponent;
 
     /**
@@ -63,13 +66,15 @@ package mediator.prompt
         {
             super(NAME, viewComponent);
             _infoComp = new PromptInfoComponent();
+			_infoComp.addEventListener(Event.CLOSE,hideInfo);
+			
             _loadWaitMC = ClassUtil.getObject("res.loaderServerData"); // by rl
 
             _loginInfoComp = new Component(ClassUtil.getObject("res.LoginInfoSkin"));
             _loginInfoLabel = _loginInfoComp.createUI(Label, "label");
             var centerP:Point = UIUtil.stageCenterPoint(_loginInfoComp);
 			_loginInfoComp.x = centerP.x;
-			_loginInfoComp.y = 500;
+			_loginInfoComp.y = 470;
         }
 
         /**
@@ -197,16 +202,16 @@ package mediator.prompt
          */
         private function showInfo(infoFiled:String):void
         {
-            var str:String = MultilanguageManager.getString(infoFiled);
+            var str:String = infoFiled;
             _infoComp.text = str;
 
-            MainMediator(getMediator(MainMediator)).component.addInfo(_infoComp);
+			PopUpManager.addPopUp(_infoComp,true);
             UIUtil.centerUI(_infoComp);
         }
 
-        private function hideInfo():void
+        private function hideInfo(event:*=null):void
         {
-            MainMediator(getMediator(MainMediator)).component.removeInfo(_infoComp);
+			PopUpManager.removePopUp(_infoComp);
         }
     }
 }

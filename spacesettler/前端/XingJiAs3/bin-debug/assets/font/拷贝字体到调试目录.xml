@@ -1,0 +1,28 @@
+<project default="copy" name="拷贝字体到调试目录">
+	<!--拷贝界面资源到程序项目 -->
+
+	<!--资源输出目录 -->
+	<!--lw-->
+	<!--<property name="resOutFolder" value="E:\svn\前端\XingJiAs3"/>-->
+	
+	<!--gx-->
+	<!--<property name="resOutFolder" value="E:\joy\gx\XingJi\前端\XingJiAs3"/>-->
+	
+	<!--zn-->
+	<property name="resOutFolder" value="D:\工作文档\星际\svn\前端\XingJiAs3"/>
+
+	<property name="outSwfFolder" value="${resOutFolder}/bin-debug/font">
+	</property>
+
+	<target name="copy" depends="copyFont">
+	</target>
+
+	<target name="copyFont">
+		<copy todir="${outSwfFolder}" overwrite="true">
+			<fileset dir="">
+				<include name="*.swf" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

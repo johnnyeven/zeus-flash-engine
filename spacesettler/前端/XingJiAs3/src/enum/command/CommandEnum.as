@@ -22,7 +22,7 @@ package enum.command
 		 */
 		public static function get login():String
 		{
-			return "http://"+LoginProxy.selectedServerVO.server_ip + "/login";
+			return "http://"+LoginProxy.selectedServerVO.server_ip + "/web_login";
 		}
 
 		/**
@@ -31,6 +31,64 @@ package enum.command
 		public static function get regist():String
 		{
 			return "http://"+LoginProxy.selectedServerVO.server_ip + "/register";
+		}
+		
+		/**
+		 *总览
+		 */
+		public static function get allView():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip + "/get_base_info";
+		}
+		
+		/**
+		 *请求新手任务
+		 * @return 
+		 * 
+		 */
+		public static function get getFreshmanTask():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_quest_reward";
+		}
+		
+		/**
+		 *获取常量信息 
+		 * @return 
+		 * 
+		 */
+		public static function get getContentInfo():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/update_const";
+		}
+		
+		/**
+		 *建造建筑
+		 * @return 
+		 * 
+		 */
+		public static function get buildBuild():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/create_building";
+		}
+		
+		/**
+		 *升级建筑
+		 * @return 
+		 * 
+		 */
+		public static function get upBuild():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/upgrade_building";
+		}
+		
+		/**
+		 *加快升级建筑
+		 * @return 
+		 * 
+		 */
+		public static function get speedUpBuild():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/upgrade_building_speed_up";
 		}
     }
 }

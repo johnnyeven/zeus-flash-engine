@@ -6,6 +6,8 @@ package view.mainView
 	import flash.display.DisplayObjectContainer;
 	import flash.events.TimerEvent;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	import flash.utils.Timer;
 	
 	import proxy.userInfo.UserInfoProxy;
@@ -17,7 +19,7 @@ package view.mainView
 	
 	import vo.BuildInfoVo;
 	import vo.userInfo.UserInfoVO;
-	
+
 	public class BuildUpLoaderViewComponent extends Component
 	{
 		public var timeText:TextField;
@@ -41,13 +43,23 @@ package view.mainView
 		 * 建筑升级从开始事件到当前还剩多少时间 (S)
 		 */
 		private var endNum:int;
-		
-		public function BuildUpLoaderViewComponent()
+		private var _textFormat:TextFormat;
+		private var _buildComp:BuildComponent;
+		public function BuildUpLoaderViewComponent(obj:BuildComponent=null)
 		{
 			super(ClassUtil.getObject("view.mainView.BuildUpLoaderViewComponentSkin"));
+			
+			_buildComp=obj;
+			
 			timeText=getSkin("time_tf");
 			loader=createUI(ProgressBar,"loader_mc");	
-			
+			timeText.x=loader.x;
+			timeText.width=loader.width;
+			_textFormat=new TextFormat();
+			_textFormat.color=0xffffff;
+			_textFormat.size=12;
+			_textFormat.align=TextFormatAlign.CENTER;
+			timeText.defaultTextFormat=_textFormat;
 			sortChildIndex();
 		}
 				
@@ -57,8 +69,8 @@ package view.mainView
 			
 			numSum=_buildInfoVo.finish_time-_buildInfoVo.start_time;
 			starNum=_buildInfoVo.current_time-_buildInfoVo.start_time;
-			
-			_timer=new Timer(1000);
+			endNum=numSum-starNum;
+			_timer=new Timer(1000,endNum);
 			_timer.addEventListener(TimerEvent.TIMER,timerStart);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			_timer.start();
@@ -66,10 +78,14 @@ package view.mainView
 		
 		protected function timerComplete(event:TimerEvent):void
 		{
+			
 			_timer.stop()
 			_timer.reset();
 			timeText.text="";
-			(this.parent as BuildComponent).buildInfoVo.eventID=0;
+			
+			_buildComp.buildInfoVo.eventID=0;
+			_buildComp.buildInfoVo.level+=1;
+			
 			_timer.removeEventListener(TimerEvent.TIMER,timerStart);
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			
@@ -81,8 +97,8 @@ package view.mainView
 		protected function timerStart(event:TimerEvent):void
 		{
 			endNum=numSum-starNum;
-			loader.percent=starNum/numSum;
-			timeText.text=DateFormatter.formatterTimeAll(endNum);
+			loader.percent=starNum/numSum;			
+			timeText.text=DateFormatter.formatterTime(endNum);
 			starNum++;
 			/*	min=int(endNum/60%60);
 			hour=int(endNum/60/60);
