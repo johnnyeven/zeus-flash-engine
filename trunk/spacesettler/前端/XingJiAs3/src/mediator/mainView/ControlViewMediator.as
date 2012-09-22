@@ -1,11 +1,22 @@
 package mediator.mainView
 {
+	import events.allView.AllViewEvent;
+	import events.buildingView.ZhuJiDiEvent;
+	import events.talk.TalkEvent;
+	
 	import mediator.BaseMediator;
+	import mediator.allView.AllViewComponentMediator;
+	import mediator.allView.RongYuComponentMediator;
 	
 	import mx.core.UIComponent;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
+	
+	import proxy.allView.AllViewProxy;
+	import proxy.userInfo.UserInfoProxy;
+	
+	import view.mainView.ControlViewComponent;
 	
 	public class ControlViewMediator extends BaseMediator implements IMediator
 	{
@@ -15,9 +26,19 @@ package mediator.mainView
 		
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 		
-		public function ControlViewMediator(name:String, viewComponent:Object=null)
+		private var allViewProxy:AllViewProxy;
+		private var userInforProxy:UserInfoProxy;
+		private var id:String;
+		
+		public function ControlViewMediator()
 		{
-			super(name, viewComponent);
+			super(NAME,new ControlViewComponent());
+			
+			allViewProxy = getProxy(AllViewProxy);
+			userInforProxy = getProxy(UserInfoProxy);
+			id = userInforProxy.userInfoVO.id;
+			comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT,rongYuHandler);
+			comp.addEventListener(ZhuJiDiEvent.ALLVIEW_EVENT,zhongLanHandler);
 		}
 		
 		/**
@@ -58,9 +79,21 @@ package mediator.mainView
 		 * @return
 		 *
 		 */
-		protected function get comp():UIComponent
+		protected function get comp():ControlViewComponent
 		{
-			return viewComponent as UIComponent;
+			return viewComponent as ControlViewComponent;
+		}
+		
+		private function rongYuHandler(event:ZhuJiDiEvent):void
+		{
+			allViewProxy.allView(id);
+			sendNotification(RongYuComponentMediator.SHOW_NOTE);
+		}
+		
+		private function zhongLanHandler(event:ZhuJiDiEvent):void
+		{
+			allViewProxy.allView(id);
+			sendNotification(AllViewComponentMediator.SHOW_NOTE);
 		}
 	}
 }

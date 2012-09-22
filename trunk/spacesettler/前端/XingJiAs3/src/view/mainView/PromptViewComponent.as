@@ -23,7 +23,10 @@ package view.mainView
 			job=getSkin("renwu_mc");
 			mail=getSkin("youjian_mc");
 			
+			mail.visible=false;
 			sortChildIndex();
 		}
+		
+		
 	}
 }

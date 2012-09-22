@@ -1,11 +1,18 @@
 package mediator.mainView
 {
+	import events.buildingView.ZhuJiDiEvent;
+	
 	import mediator.BaseMediator;
 	import mediator.MainMediator;
+	import mediator.allView.AllViewComponentMediator;
+	import mediator.allView.RongYuComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.facade.Facade;
+	
+	import proxy.allView.AllViewProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.mainView.MainViewComponent;
 
@@ -22,6 +29,10 @@ package mediator.mainView
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		private var allViewProxy:AllViewProxy;
+		private var userInforProxy:UserInfoProxy;
+		private var id:String;
+		
 		public function MainViewMediator()
 		{
 			super(NAME, new MainViewComponent());
@@ -29,6 +40,11 @@ package mediator.mainView
 			_popUp=false;
 			
 
+			allViewProxy = getProxy(AllViewProxy);
+			userInforProxy = getProxy(UserInfoProxy);
+			id = userInforProxy.userInfoVO.id;
+			comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT,rongYuHandler);
+			comp.addEventListener(ZhuJiDiEvent.ALLVIEW_EVENT,zhongLanHandler);
 		}
 
 		/**
@@ -78,5 +94,16 @@ package mediator.mainView
 			MainMediator(getMediator(MainMediator)).component.addView(uiComp);
 		}
 
+		private function rongYuHandler(event:ZhuJiDiEvent):void
+		{
+			allViewProxy.allView(id);
+			sendNotification(RongYuComponentMediator.SHOW_NOTE);
+		}
+		
+		private function zhongLanHandler(event:ZhuJiDiEvent):void
+		{
+			allViewProxy.allView(id);
+			sendNotification(AllViewComponentMediator.SHOW_NOTE);
+		}
 	}
 }

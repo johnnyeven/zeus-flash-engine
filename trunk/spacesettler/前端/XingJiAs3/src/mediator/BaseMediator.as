@@ -83,28 +83,34 @@ package mediator
 
         public function destroy():void
         {
-            if (_popUp)
-            {
-                TweenLite.to(uiComp, 0.4, { y: SystemManager.rootStage.stageHeight, ease: Linear.easeNone, onComplete: function():void
-                {
-                    PopUpManager.removePopUp(uiComp);
-
-                    if (uiComp is Component)
-                        (uiComp as Component).dispose();
-                    viewComponent = null;
-
-                    callDestoryCallBack();
-                }});
-            }
-            else
-            {
-                if (uiComp is Component)
-                    (uiComp as Component).dispose();
-                viewComponent = null;
-
-                callDestoryCallBack();
-            }
-
+			if(viewComponent)
+			{
+	            if (_popUp)
+	            {
+	                TweenLite.to(uiComp, 0.4, { y: SystemManager.rootStage.stageHeight, ease: Linear.easeNone, onComplete: function():void
+	                {
+	                    PopUpManager.removePopUp(uiComp);
+	
+	                    if (uiComp is Component)
+	                        (uiComp as Component).dispose();
+	                    viewComponent = null;
+	
+	                    callDestoryCallBack();
+	                }});
+	            }
+	            else
+	            {
+	                if (uiComp is Component)
+	                    (uiComp as Component).dispose();
+	                viewComponent = null;
+	
+	                callDestoryCallBack();
+	            }
+			}
+			else
+			{
+				callDestoryCallBack();
+			}
             removeCWList();
 
             while (childMedList.length > 0)

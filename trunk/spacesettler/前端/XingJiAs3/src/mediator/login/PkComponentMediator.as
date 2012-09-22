@@ -84,16 +84,15 @@ package mediator.login
 			sendNotification(DESTROY_NOTE);
 		}
 
-		private function startHandler(evnet:PkEvent):void
+		private function startHandler(event:PkEvent):void
 		{
-			
-			loginProxy.camp=comp.campID;
-			
 			var loginProxy:LoginProxy = getProxy(LoginProxy);
-			loginProxy.regist(function():void
-			{
-				sendNotification(DESTROY_NOTE);
-			});
+			loginProxy.camp=comp.campID;
+				
+			   loginProxy.regist(function():void
+			   {
+				   sendNotification(DESTROY_NOTE);
+			   });			
 		}
 	}
 }

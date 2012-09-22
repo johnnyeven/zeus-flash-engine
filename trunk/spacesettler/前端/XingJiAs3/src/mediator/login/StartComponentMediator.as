@@ -1,4 +1,4 @@
-package mediator.login
+ package mediator.login
 {
 	
 	import com.zn.utils.ClassUtil;
@@ -17,6 +17,8 @@ package mediator.login
 	
 	import proxy.login.LoginProxy;
 	
+	import ui.components.Window;
+	
 	import view.login.StartComponent;
 
 	/**
@@ -34,18 +36,22 @@ package mediator.login
 
 		public static var bgSp:Sprite;
 		
+		private var loginProxy:LoginProxy;
+		
 		public function StartComponentMediator()
 		{
-			bgSp=ClassUtil.getObject("view.login.LoginBG");
 			addBG();
 			
 			super(NAME, new StartComponent());
 			
+			
+			loginProxy= getProxy(LoginProxy);
 			//是否为弹出框
 			_popUp=false;
 			comp.addEventListener(StartLoginEvent.START_LIGIN_EVENT,startLoginHandler);
 			comp.addEventListener(StartLoginEvent.ACCOUNT_EVENT,accountHandler);
 			comp.addEventListener(StartLoginEvent.REGIST_EVENT,registHandler);
+			
 		}
 		
 		/**
@@ -85,9 +91,11 @@ package mediator.login
 		{
 			return viewComponent as StartComponent;
 		}
-
+		
 		public static function addBG():void
 		{
+			if(bgSp==null)
+				bgSp=ClassUtil.getObject("view.login.LoginBG");
 			MainMediator(ApplicationFacade.getInstance().getMediator(MainMediator)).addChild(bgSp);
 		}
 		
@@ -98,15 +106,14 @@ package mediator.login
 		
 		private function startLoginHandler(event:StartLoginEvent):void
 		{
-			//TODO：lw ok 请求快速开始数据时应该有回调方法，数据返回后应该销毁这个界面
-			var loginProxy:LoginProxy = getProxy(LoginProxy);
-			loginProxy.startLogin();
-			sendNotification(DESTROY_NOTE);
+			loginProxy.startLogin(function():void
+			{
+				sendNotification(DESTROY_NOTE);
+			});
 		}
 		
 		private function accountHandler(event:StartLoginEvent):void
 		{
-			
 			destoryCallback = function():void
 			{
 				sendNotification(LoginMediator.SHOW_NOTE);
@@ -116,7 +123,11 @@ package mediator.login
 		
 		private function registHandler(event:StartLoginEvent):void
 		{
-			
+			loginProxy.userName = "";
+			loginProxy.passWord = "";
+			loginProxy.passAgainWord = "";
+			loginProxy.name = "";
+			loginProxy.email = "";
 			destoryCallback = function():void
 			{
 				sendNotification(RegistComponentMediator.SHOW_NOTE);

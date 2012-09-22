@@ -30,42 +30,47 @@ package proxy.userInfo
         public function UserInfoProxy(data:Object = null)
         {
             super(NAME, data);
-			
 			var loginProxy:LoginProxy=getProxy(LoginProxy);
-			getUserInfoResult(loginProxy.serverData);
+			updateServerData(loginProxy.serverData);
         }
 
         public function getUserInfoResult(data:Object):void
         {
-			userInfoVO=new UserInfoVO();
-			userInfoVO.id=data.id;
-			userInfoVO.player_id=data.player_id;
+			if(!userInfoVO)
+			{
+				userInfoVO=new UserInfoVO();
+			}			
+			userInfoVO.id=data.base.id;
+			userInfoVO.player_id=data.base.player_id;
 			userInfoVO.nickname=data.nickname;
-			userInfoVO.current_power_consume=data.current_power_consume;
-			userInfoVO.crystal=data.crystal;
-			userInfoVO.broken_crysta=data.broken_crysta;
-			userInfoVO.current_power_supply=data.current_power_supply;
+			userInfoVO.crystal=data.base.crystal;
+			userInfoVO.broken_crysta=data.base.broken_crystal;
+			userInfoVO.current_power_consume=data.base.current_power_consume;
+			userInfoVO.current_power_supply=data.base.current_power_supply;
 			userInfoVO.dark_crystal=data.dark_crystal;
-			userInfoVO.level=data.level;
+			userInfoVO.level=data.base.level;
 			userInfoVO.prestige=data.prestige;
-			userInfoVO.tritium=data.tritium;
-			userInfoVO.userName=data.name;
-			
+			userInfoVO.tritium=data.base.tritium;
+			userInfoVO.userName=data.base.name;
 			userInfoVO.camp=data.camp_id+1;
-		
 			
             if (_getUserInfoCallBack != null)
                 _getUserInfoCallBack();
             _getUserInfoCallBack = null;
         }
-		
-		
 
     /***********************************************************
      *
      * 功能方法
      *
      * ****************************************************/
-
+		public function updateServerData(data:*):void
+		{
+			var loginProxy:LoginProxy=getProxy(LoginProxy);
+			loginProxy.serverData=data;
+			
+			getUserInfoResult(loginProxy.serverData);
+			
+		}
     }
 }

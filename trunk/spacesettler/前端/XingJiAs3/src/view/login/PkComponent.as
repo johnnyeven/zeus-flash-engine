@@ -6,6 +6,7 @@ package view.login
 	import events.login.PkEvent;
 	
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
@@ -18,17 +19,15 @@ package view.login
 	 */
     public class PkComponent extends Component
     {
-		public var allianceBtn:Button;
+		public var alliance:MovieClip;
 		
-		public var haiDaoBtn:Button;
+		public var haiDao:MovieClip;
 		
 		public var returnBtn:Button;
 		
 		public var beginBtn:Button;
 		
-		private var alliance:String;
-		
-		private var _currentSelectedCamp:DisplayObject;
+		private var _currentSelectedCamp:MovieClip;
 
 		public var campID:int=0;
 		
@@ -36,24 +35,31 @@ package view.login
         {
             super(ClassUtil.getObject("view.login.PkSkin"));
 			
-			allianceBtn=createUI(Button,"allianceBtn");
-			haiDaoBtn=createUI(Button,"haiDaoBtn");
+			alliance = getSkin("allianceMC") as MovieClip;
+			alliance.buttonMode = true;
+			
+			haiDao = getSkin("haiDaoMC") as MovieClip;
+			haiDao.buttonMode = true;
+			haiDao.mouseEnabled=alliance.mouseEnabled=true;
+			
+			
 			returnBtn=createUI(Button,"returnBtn");
 			beginBtn=createUI(Button,"beginBtn");
 			
 			sortChildIndex();
 			
-			allianceBtn.addEventListener(MouseEvent.CLICK,allianceBtn_clickHandler);
-			haiDaoBtn.addEventListener(MouseEvent.CLICK,haiDaoBtn_clickHandler);
+			alliance.addEventListener(MouseEvent.CLICK,allianceBtn_clickHandler);
+			haiDao.addEventListener(MouseEvent.CLICK,haiDaoBtn_clickHandler);
 			returnBtn.addEventListener(MouseEvent.CLICK,returnBtn_clickHandler);
 			beginBtn.addEventListener(MouseEvent.CLICK,beginBtn_clickHandler);
-			
-			currentSelectedCamp=allianceBtn;
+
+			currentSelectedCamp=alliance;
+
         }
 		
 		protected function beginBtn_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new PkEvent(PkEvent.START_EVENT,alliance));
+			dispatchEvent(new PkEvent(PkEvent.START_EVENT,campID));
 		}
 		
 		protected function returnBtn_clickHandler(event:MouseEvent):void
@@ -63,34 +69,38 @@ package view.login
 		
 		protected function haiDaoBtn_clickHandler(event:MouseEvent):void
 		{
-			currentSelectedCamp=haiDaoBtn;
+			currentSelectedCamp=haiDao;
 		}
 		
 		protected function allianceBtn_clickHandler(event:MouseEvent):void
 		{
-			currentSelectedCamp=allianceBtn;
+
+			currentSelectedCamp=alliance;
+
 		}
 		
-		public function get currentSelectedCamp():DisplayObject
+		public function get currentSelectedCamp():MovieClip
 		{
 			return _currentSelectedCamp;
 		}
 		
-		public function set currentSelectedCamp(value:DisplayObject):void
+		public function set currentSelectedCamp(value:MovieClip):void
 		{
 			if(currentSelectedCamp)
 			{
-				currentSelectedCamp.filters=null;
-				_currentSelectedCamp=null;
+				currentSelectedCamp.gotoAndStop(1);
+//			   currentSelectedCamp.filters=null;
+//				_currentSelectedCamp=null;
 			}
 			
 			_currentSelectedCamp = value;
-			_currentSelectedCamp.filters=[ColorUtil.selectedFilter];
+			_currentSelectedCamp.gotoAndStop(2);
+//			_currentSelectedCamp.filters=[ColorUtil.selectedFilter];
 			
-			if(currentSelectedCamp==allianceBtn)
-				campID=1;
+			if(currentSelectedCamp==alliance)
+				campID=0;
 			else
-				campID=2;
+				campID=1;
 		}
 	}
 }

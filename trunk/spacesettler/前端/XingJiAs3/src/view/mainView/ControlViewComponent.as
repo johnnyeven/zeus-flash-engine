@@ -1,6 +1,11 @@
 package view.mainView
 {
+	import events.allView.AllViewEvent;
+	import events.buildingView.ZhuJiDiEvent;
+	import events.talk.TalkEvent;
+	
 	import flash.display.DisplayObjectContainer;
+	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
 	import ui.core.Component;
@@ -20,17 +25,17 @@ package view.mainView
 		/**
 		 * 军团按钮
 		 */		
-		public var junTuanBtn:Button;
+		public var armyGroupBtn:Button;
 		
 		/**
 		 * 商城按钮
 		 */		
-		public var shangChengBtn:Button;
+		public var shopBtn:Button;
 		
 		/**
 		 * 武器库按钮
 		 */		
-		public var wuQiKuBtn:Button;
+		public var arsenalBtn:Button;
 		
 		/**
 		 * 拍卖按钮
@@ -56,9 +61,9 @@ package view.mainView
 			super(skin);
 			baseBtn=createUI(Button,"jidi_btn");
 			planetBtn=createUI(Button,"xingxingdai_btn");
-			junTuanBtn=createUI(Button,"juntuan_btn");
-			shangChengBtn=createUI(Button,"shangcheng_btn");
-			wuQiKuBtn=createUI(Button,"wuqiku_btn");
+			armyGroupBtn=createUI(Button,"juntuan_btn");
+			shopBtn=createUI(Button,"shangcheng_btn");
+			arsenalBtn=createUI(Button,"wuqiku_btn");
 			auctionBtn=createUI(Button,"paimai_btn");
 			mailBtn=createUI(Button,"youjian_btn");
 			rankingBtn=createUI(Button,"paiming_btn");
@@ -66,6 +71,19 @@ package view.mainView
 			
 			sortChildIndex();
 			
+			systemBtn.addEventListener(MouseEvent.CLICK,rongYU_clickHandler);
+			rankingBtn.addEventListener(MouseEvent.CLICK,zhongLan_clickHandler);
+			
+		}
+		
+		private function rongYU_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.RONGYU_EVENT,true,true));
+		}
+		
+		private function zhongLan_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.ALLVIEW_EVENT,true,true));
 		}
 	}
 }

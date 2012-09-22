@@ -4,6 +4,8 @@ package other
     
     import flash.net.URLRequestMethod;
     
+    import mediator.prompt.PromptMediator;
+    
     import net.NetHttpConn;
 
     public class ConnDebug

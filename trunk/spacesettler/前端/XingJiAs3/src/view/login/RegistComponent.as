@@ -57,6 +57,18 @@ package view.login
 			passwordAgainInput.displayAsPassword = true;
 			
 			userNameTextInput.text = passwordTextInput.text = passwordAgainInput.text = "";
+			if(loginProxy.userName)
+			{
+			  userNameTextInput.text = loginProxy.userName;
+			}
+			if(loginProxy.passWord)
+			{
+				passwordTextInput.text = loginProxy.passWord;
+			}
+			if(loginProxy.passAgainWord)
+			{
+				passwordAgainInput.text = loginProxy.passAgainWord;
+			}
 			
 			userNameTextInput.mouseEnabled = passwordTextInput.mouseEnabled = passwordAgainInput.mouseEnabled = true;
 			

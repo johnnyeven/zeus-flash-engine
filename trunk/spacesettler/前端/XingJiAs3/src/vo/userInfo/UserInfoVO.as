@@ -48,7 +48,7 @@ package vo.userInfo
 		/**
 		 * 基地ID
 		 */	
-        public var id:int;		
+        public var id:String;		
 		
 		/**
 		 *军衔  
@@ -90,9 +90,9 @@ package vo.userInfo
 		{
 			_current_power_supply = value;
 			
-			power=(_current_power_supply-_current_power_consume)/_current_power_supply;
+			updatePower();
 		}
-		
+
 		public function get current_power_consume():int
 		{
 			return _current_power_consume;
@@ -102,10 +102,12 @@ package vo.userInfo
 		{
 			_current_power_consume = value;
 			
-			power=(_current_power_supply-_current_power_consume)/_current_power_supply;			
+			updatePower();
 		}
 		
-		
-		
+		private function updatePower():void
+		{
+			power=Math.max(0,(_current_power_supply-_current_power_consume)/_current_power_supply);
+		}
     }
 }

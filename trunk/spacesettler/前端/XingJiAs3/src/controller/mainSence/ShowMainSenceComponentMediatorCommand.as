@@ -54,7 +54,7 @@ package controller.mainSence
                 _isLoading = true;
 				
 				var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
-                ResLoader.load("mainSence"+userInfoVO.camp, MultilanguageManager.getString(""), loaderComplete);
+                ResLoader.load("mainSence"+userInfoVO.camp, MultilanguageManager.getString(""), loaderComplete,true);
             }
         }
 

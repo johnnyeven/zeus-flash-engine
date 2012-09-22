@@ -1,6 +1,9 @@
 package mediator
 {
 	import flash.display.DisplayObject;
+	import flash.events.MouseEvent;
+	
+	import mediator.buildingView.SelectorViewComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -17,8 +20,10 @@ package mediator
 		public function MainMediator(viewComponent:Object=null)
 		{
 			super(NAME, viewComponent);
+			
+			component.addEventListener(MouseEvent.CLICK,mainClickHandler);
 		}
-
+		
 		/**
 		 *添加要监听的消息
 		 * @return
@@ -65,6 +70,11 @@ package mediator
 		public function removeChild(skin:DisplayObject):void
 		{
 			component.removeBase(skin);
+		}
+		
+		protected function mainClickHandler(event:MouseEvent):void
+		{
+			sendNotification(SelectorViewComponentMediator.DESTROY_NOTE);			
 		}
 	}
 }

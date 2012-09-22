@@ -55,7 +55,7 @@ package controller
 			
 			loaderMax.addChildLoad(LoaderItemUtil.getLoader("mainView.swf"));
 			
-			ResLoader.load("loaderMainSence", MultilanguageManager.getString("loaderMainSence"), loaderCompleteHandler);
+			ResLoader.load("loaderMainSence", MultilanguageManager.getString("loaderMainSence"), loaderCompleteHandler,true);
         }
 
         protected function loaderCompleteHandler(event:LoaderEvent):void

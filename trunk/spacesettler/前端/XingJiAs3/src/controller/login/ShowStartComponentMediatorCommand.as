@@ -7,9 +7,12 @@ package controller.login
     
     import mediator.BaseMediator;
     import mediator.login.StartComponentMediator;
+    import mediator.prompt.PromptMediator;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.login.LoginProxy;
 
     /**
      *显示开始界面命令
@@ -18,6 +21,8 @@ package controller.login
      */
     public class ShowStartComponentMediatorCommand extends SimpleCommand
     {
+
+    	private var med:StartComponentMediator;
         public function ShowStartComponentMediatorCommand()
         {
             super();
@@ -49,11 +54,20 @@ package controller.login
          */
         protected function loaderComplete(event:LoaderEvent):void
         {
-            var med:StartComponentMediator = new StartComponentMediator();
+            med = new StartComponentMediator();
 
             //注册界面的中介
             facade.registerMediator(med);
-			med.show();
+			
+			StartComponentMediator.addBG();
+			
+			var loginProxy:LoginProxy=getProxy(LoginProxy);
+			loginProxy.getServerList(connectHandler);
         }
+		
+		private function connectHandler():void
+		{
+			med.show();
+		}
     }
 }
