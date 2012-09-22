@@ -4,7 +4,9 @@ package
 	import flash.events.Event;
 	import flash.system.Security;
 	
-	[SWF(width="1028", height="600", backgroundColor="0xFFFFFF",frameRate="30")]
+	import view.login.LoginBGComponent;
+	
+	[SWF(width="1028", height="600", backgroundColor="0x000000",frameRate="30")]
 	public class Main extends Sprite
 	{
 		public function Main()
@@ -17,7 +19,7 @@ package
 			{
 				addEventListener(Event.ADDED_TO_STAGE, init);
 			}
-			//Security.allowDomain("*");
+			Security.allowDomain("*");
 		}
 		
 		public function init(evt: Event = null): void
@@ -26,6 +28,7 @@ package
 			{
 				removeEventListener(Event.ADDED_TO_STAGE, init);
 			}
+			//LoginBGComponent.getInstance().destroy();
 			ApplicationFacade.getInstance().start(this);
 		}
 	}
