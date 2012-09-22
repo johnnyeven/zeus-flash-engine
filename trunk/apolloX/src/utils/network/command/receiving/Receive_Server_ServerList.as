@@ -10,6 +10,8 @@ package utils.network.command.receiving
 	{
 		public var ServerList: Array;
 		
+		private const MESSAGE_SERVERLIST_SUCCESS: int = 1;
+		
 		public function Receive_Server_ServerList() 
 		{
 			super(ConnectorContextConfig.CONTROLLER_SERVER, ConnectorContextConfig.ACTION_SERVERLIST);
@@ -19,7 +21,7 @@ package utils.network.command.receiving
 		{
 			super.fill(data);
 			
-			if (message == ConnectorContextConfig.ACK_CONFIRM)
+			if (message == MESSAGE_SERVERLIST_SUCCESS)
 			{
 				ServerList = data.server;
 			}

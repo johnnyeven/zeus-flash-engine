@@ -8,6 +8,7 @@ package utils.network.command
 	 */
 	public class CCommandBase extends Object implements INetPackageProtocol
 	{
+		private var _flag: uint;
 		private var _controller: String;
 		private var _action: String;
 		
@@ -32,6 +33,17 @@ package utils.network.command
 		{
 			return _controller + "/" + _action;
 		}
+
+		public function get flag():uint
+		{
+			return _flag;
+		}
+
+		public function set flag(value:uint):void
+		{
+			_flag = value;
+		}
+
 	}
 
 }
