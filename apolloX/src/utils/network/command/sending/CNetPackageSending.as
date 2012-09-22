@@ -25,6 +25,7 @@ package utils.network.command.sending
 		public function fill(): void 
 		{
 			_urlVariables = new URLVariables();
+			_urlVariables.flag = flag;
 			_urlVariables.game_id = ConnectorContextConfig.GAME_ID;
 			_urlVariables.server_section = ConnectorContextConfig.SECTION_ID;
 		}

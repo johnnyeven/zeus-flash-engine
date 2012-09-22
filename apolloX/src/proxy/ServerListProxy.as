@@ -9,6 +9,7 @@ package proxy
 	import utils.network.command.CCommandList;
 	import utils.network.command.receiving.Receive_Server_ServerList;
 	import utils.network.command.sending.Send_Server_ServerList;
+	import configuration.ConnectorContextConfig;
 	
 	public class ServerListProxy extends Proxy implements IProxy
 	{
@@ -29,7 +30,8 @@ package proxy
 			CCommandCenter.getInstance().add(SERVER_LIST, onGetServerList);
 			
 			var protocol: Send_Server_ServerList = new Send_Server_ServerList();
-			protocol.GameId = "B";
+			protocol.flag = SERVER_LIST;
+			protocol.GameId = ConnectorContextConfig.GAME_ID;
 			
 			CCommandCenter.getInstance().send(protocol);
 		}
@@ -37,7 +39,8 @@ package proxy
 		private function onGetServerList(protocol: Receive_Server_ServerList): void
 		{
 			sendNotification(PromptMediator.LOADING_HIDE_NOTE);
-			trace(protocol.ServerList);
+			
+			setData(protocol.ServerList);
 		}
 	}
 }
