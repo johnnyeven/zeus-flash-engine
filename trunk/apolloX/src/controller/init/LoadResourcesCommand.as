@@ -1,5 +1,7 @@
 package controller.init
 {
+	import controller.init.LoadServerListCommand;
+	
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -9,10 +11,11 @@ package controller.init
 	import flash.system.LoaderContext;
 	
 	import mediator.loader.ProgressBarMediator;
-	import utils.language.LanguageManager;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
+	
+	import utils.language.LanguageManager;
 	
 	public class LoadResourcesCommand extends SimpleCommand
 	{
@@ -43,6 +46,7 @@ package controller.init
 		private function onLoadComplete(evt: Event): void
 		{
 			sendNotification(ProgressBarMediator.HIDE_PROGRESSBAR_NOTE);
+			sendNotification(LoadServerListCommand.LOAD_SERVERLIST_NOTE);
 		}
 		
 		private function onLoadProgress(evt: ProgressEvent): void
