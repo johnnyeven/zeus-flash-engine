@@ -7,6 +7,11 @@ class Return_format extends CI_Model {
 	}
 	
 	public function format($parameter, $format = 'json') {
+		$flag = $this->input->get_post("flag", TRUE);
+		if($flag !== FALSE)
+		{
+			$parameter['flag'] = $flag;
+		}
 		if($format == 'json') {
 			return json_encode($parameter);
 		} elseif ($format == 'text') {
