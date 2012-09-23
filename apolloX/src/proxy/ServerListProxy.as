@@ -5,7 +5,7 @@ package proxy
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
-	import controller.init.LoadResourcesCommand;
+	import controller.login.CreateStartMediatorCommand;
 	import utils.network.CCommandCenter;
 	import utils.network.command.CCommandList;
 	import utils.network.command.receiving.Receive_Server_ServerList;
@@ -40,7 +40,7 @@ package proxy
 		private function onGetServerList(protocol: Receive_Server_ServerList): void
 		{
 			sendNotification(PromptMediator.LOADING_HIDE_NOTE);
-			sendNotification(LoadResourcesCommand.LOAD_RESOURCES_NOTE);
+			sendNotification(CreateStartMediatorCommand.CREATE_LOGIN_VIEW_NOTE);
 			
 			setData(protocol.ServerList);
 		}
