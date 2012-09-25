@@ -43,7 +43,7 @@ class Servers extends CI_Controller {
 				}
 			} else {
 				//不使用缓存
-				$this->load->model('websrv/server', 'server');
+				$this->load->model('server', 'server');
 				$parameter = array(
 					'use_cache_style'			=>	true,
 					'game_id'					=>	$gameId,
@@ -52,13 +52,13 @@ class Servers extends CI_Controller {
 				$result = $this->server->getAllResult($parameter);
 			}
 			$jsonData = Array(
-				'message'	=>	'SERVER_LIST_SUCCESS',
+				'message'	=>	1,
 				'server'	=>	$result
 			);
 			echo $this->return_format->format($jsonData, $format);
 		} else {
 			$jsonData = Array(
-				'message'	=>	'SERVER_ERROR_NO_PARAM'
+				'message'	=>	-1
 			);
 			echo $this->return_format->format($jsonData, $format);
 		}
