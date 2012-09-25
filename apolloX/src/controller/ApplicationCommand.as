@@ -9,6 +9,7 @@ package controller
 	import controller.init.*;
 	import controller.login.CreateStartMediatorCommand;
 	import proxy.ServerListProxy;
+	import proxy.LoginProxy;
 	import view.PromptComponent;
 	
 	public class ApplicationCommand extends SimpleCommand
@@ -30,6 +31,7 @@ package controller
 			facade.registerMediator(new PromptMediator());
 			
 			facade.registerProxy(new ServerListProxy());
+			facade.registerProxy(new LoginProxy());
 			
 			CONFIG::DebugMode
 			{

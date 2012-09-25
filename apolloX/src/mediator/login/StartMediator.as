@@ -1,12 +1,15 @@
 package mediator.login
 {
+	import events.LoginEvent;
+	
 	import mediator.StageMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.LoginProxy;
+	
 	import view.login.StartComponent;
-	import events.LoginEvent;
 	
 	public class StartMediator extends Mediator implements IMediator
 	{
@@ -34,7 +37,8 @@ package mediator.login
 		
 		private function startHandler(): void
 		{
-			
+			var _loginProxy: LoginProxy = facade.retrieveProxy(LoginProxy.NAME) as LoginProxy;
+			_loginProxy.quickStart();
 		}
 		
 		private function accountHandler(): void

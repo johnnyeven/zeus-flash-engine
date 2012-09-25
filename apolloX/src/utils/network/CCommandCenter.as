@@ -9,6 +9,8 @@ package utils.network
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
+	import mediator.PromptMediator;
+	
 	/**
 	 * ...
 	 * @author john

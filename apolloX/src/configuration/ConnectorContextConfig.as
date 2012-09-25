@@ -20,6 +20,7 @@ package configuration
 		public static const ACTION_SERVERLIST: String = "server_list";
 		
 		public static const CONTROLLER_INFO: String = "game/initialization";
+		public static const ACTION_QUICK_START: String = "demo";
 		public static const ACTION_LOGIN: String = "login";
 		public static const ACTION_REQUEST_CHARACTER: String = "requestCharacterList";
 		public static const ACTION_REQUEST_ACCOUNTID: String = "requestAccountId";

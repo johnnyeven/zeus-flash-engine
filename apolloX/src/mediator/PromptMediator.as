@@ -76,16 +76,18 @@ package mediator
 		private function showLoading(): void
 		{
 			var _stageMediator: StageMediator = (facade.retrieveMediator(StageMediator.NAME)) as StageMediator;
+			_loadingMovieClip.alpha = 0;
 			UIUtils.center(_loadingMovieClip);
 			_stageMediator.addChild(_loadingMovieClip);
-			TweenLite.from(_loadingMovieClip, .5, {
-				alpha: 0
+			TweenLite.to(_loadingMovieClip, .5, {
+				alpha: 1
 			});
 		}
 		
 		private function hideLoading(): void
 		{
 			var _stageMediator: StageMediator = (facade.retrieveMediator(StageMediator.NAME)) as StageMediator;
+			_loadingMovieClip.alpha = 1;
 			TweenLite.to(_loadingMovieClip, .5, {
 				alpha: 0,
 				onComplete: function(): void {
