@@ -185,7 +185,10 @@ class Building extends CI_Controller {
 			
 			if($queueId !== FALSE) {
 				$parameter = array(
-					'queue_id'		=>	$queueId
+					'queue_id'		=>	$queueId,
+					/**
+					 * TODO 更新建筑状态为：升级中
+					 */
 				);
 				$this->buildings->update($parameter, $objectId);
 				$jsonData = Array(
@@ -255,12 +258,65 @@ class Building extends CI_Controller {
 			$this->load->model('data/building_queue');
 			$result = $this->building_queue->get($queueId);
 			if($result->object_id != $objectId || $result->account_id != $accountId) {
+				$jsonData = Array(
+						'flag'			=>	0xA002,
+						'message'	=>	-1
+				);
+				echo $this->return_format->format($jsonData, $format);
 				
+				$logParameter = array(
+						'log_action'	=>	'BUILDING_CHECK_UPGRADE_ERROR_INVALID_ID',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+				exit();
 			}
-			$buildingId = intval($result->building_id);
-			$buildingLevel = $result->building_level;
-			$this->load->config('game_building_data');
-			$this->load->config('game_dependency');
+			$finishTime = intval($result->building_finished_timestamp);
+			if(time() >= $finishTime) {
+				$buildingId = intval($result->building_id);
+				$buildingLevel = $result->building_level;
+				$this->load->config('game_building_data');
+				$this->load->config('game_dependency');
+				
+				$buildingData = $this->config->item('game_building_data');
+				$buildingData = $buildingData[$buildingId];
+				$buildingLevelData = $buildingData[$buildingLevel];
+				$buildingDependency = $this->config->item('dependency_building');
+				$buildingDependency = $buildingDependency[$buildingId][$buildingLevel];
+				
+				if(empty($buildingData) || empty($buildingLevelData) || empty($buildingDependency)) {
+					$jsonData = Array(
+							'flag'			=>	0xA002,
+							'message'	=>	-2
+					);
+					echo $this->return_format->format($jsonData, $format);
+					
+					$logParameter = array(
+							'log_action'	=>	'BUILDING_CHECK_UPGRADE_ERROR_INVALID_BUILDING',
+							'account_guid'	=>	'',
+							'account_name'	=>	$accountId
+					);
+					$this->logs->write($logParameter);
+					exit();
+				} else {
+					
+				}
+			} else {
+				$jsonData = Array(
+						'flag'			=>	0xA002,
+						'message'	=>	0
+				);
+				echo $this->return_format->format($jsonData, $format);
+				
+				$logParameter = array(
+						'log_action'	=>	'BUILDING_CHECK_UPGRADE_NOT_FINISHED',
+						'account_guid'	=>	'',
+						'account_name'	=>	$accountId
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
 		} else {
 			$jsonData = Array(
 					'flag'			=>	0xA002,

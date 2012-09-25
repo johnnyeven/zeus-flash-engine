@@ -14,6 +14,149 @@ class Initialization extends CI_Controller {
 		$this->authKey = $this->config->item('game_auth_key');
 	}
 	
+	public function demo($format = 'json') {
+		$gameId		=	$this->input->get_post('game_id', TRUE);
+		//$section_id	=	$this->input->get_post('server_section', TRUE);
+		//$server_id	=	$this->input->get_post('server_id', TRUE);
+	
+		$this->load->library('guid');
+		$this->load->helper('security');
+		$guid = do_hash($this->guid->toString(), 'md5');
+		$name = 'Guest' . $guid;
+		$pass = do_hash($guid, 'md5');
+	
+		//if($section_id === FALSE) {
+		//$section_id = $this->config->item('game_section_id');
+		//}
+		//if($server_id === FALSE) {
+		$this->load->model('websrv/server', 'server');
+		$parameter = array(
+				'game_id'				=>	$gameId,
+				'server_recommend'		=>	'1'
+		);
+		$result = $this->server->getAllResult($parameter);
+		if($result!=FALSE) {
+			$section_id = $result[0]->account_server_section;
+			$server_id = $result[0]->account_server_id;
+		} else {
+			$parameter = array(
+					'game_id'				=>	$gameId,
+					'order_by'				=>	'account_count'
+			);
+			$result = $this->server->getAllResult($parameter);
+			$section_id = $result[0]->account_server_section;
+			$server_id = $result[0]->account_server_id;
+		}
+		//}
+	
+		if(!empty($name) && !empty($pass) &&
+				$gameId!==FALSE &&
+				!empty($server_id) &&
+				!empty($section_id)) {
+			/*
+			 * 检测参数合法性
+			*/
+			$authToken	=	$this->authKey[$gameId]['auth_key'];
+			$check = array($gameId);
+			//$this->load->helper('security');
+			//exit(do_hash(do_hash(implode('|||', $check) . '|||' . $authToken, 'md5')));
+			if(!$this->param_check->check($check, $authToken)) {
+				$jsonData = Array(
+						'message'	=>	'PARAM_INVALID'
+				);
+				echo $this->return_format->format($jsonData, $format);
+				$logParameter = array(
+						'log_action'	=>	'PARAM_INVALID',
+						'account_guid'	=>	'',
+						'account_name'	=>	$name
+				);
+				$this->logs->write($logParameter);
+				exit();
+			}
+			/*
+			 * 检查完毕
+			*/
+			if($this->web_account->validate_duplicate($name, $pass, $gameId, $server_id, $section_id)) {
+				$parameter = array(
+						'name'		=>	$name,
+						'pass'		=>	$pass,
+						'email'		=>	'',
+						'game_id'	=>	$gameId,
+						'server_id'	=>	$server_id,
+						'server_section'=>	$section_id
+				);
+				$guid = $this->web_account->register($parameter);
+				if(!empty($guid)) {
+					$user = $this->web_account->get($guid);
+					unset($user->account_secret_key);
+					$user->account_pass = $pass;
+					$nickName = substr($user->account_name, 0, 11);
+					$accountId = $this->_registerAccountId($guid, $gameId, $server_id, $section_id, $nickName);
+	
+					$jsonData = Array(
+							'message'	=>	'ACCOUNT_DEMO_SUCCESS',
+							'user'		=>	$user,
+							'account_id'=>	$accountId,
+							'nick_name'	=>	$nickName
+					);
+					echo $this->return_format->format($jsonData, $format);
+						
+					$logParameter = array(
+							'log_action'	=>	'ACCOUNT_DEMO_SUCCESS',
+							'account_guid'	=>	$user->GUID,
+							'account_name'	=>	$user->account_name,
+							'game_id'			=>	$gameId,
+							'section_id'			=>	$section_id,
+							'server_id'			=>	$server_id
+					);
+					$this->logs->write($logParameter);
+				} else {
+					$jsonData = Array(
+							'message'	=>	'ACCOUNT_DEMO_FAIL'
+					);
+					echo $this->return_format->format($jsonData, $format);
+						
+					$logParameter = array(
+							'log_action'	=>	'ACCOUNT_DEMO_FAIL',
+							'account_guid'	=>	'',
+							'account_name'	=>	$name,
+							'game_id'			=>	$gameId,
+							'section_id'			=>	$section_id,
+							'server_id'			=>	$server_id
+					);
+					$this->logs->write($logParameter);
+				}
+			} else {
+				$jsonData = Array(
+						'message'	=>	'ACCOUNT_ERROR_DUPLICATE'
+				);
+				echo $this->return_format->format($jsonData, $format);
+	
+				$logParameter = array(
+						'log_action'	=>	'ACCOUNT_DEMO_FAIL_DUPLICATE',
+						'account_guid'	=>	'',
+						'account_name'	=>	$name,
+						'game_id'			=>	$gameId,
+						'section_id'			=>	$section_id,
+						'server_id'			=>	$server_id
+				);
+				$this->logs->write($logParameter);
+			}
+		} else {
+			$jsonData = Array(
+					'message'	=>	'ACCOUNT_ERROR_NO_PARAM'
+			);
+			echo $this->return_format->format($jsonData, $format);
+				
+			$logParameter = array(
+					'log_action'	=>	'ACCOUNT_DEMO_ERROR_NO_PARAM',
+					'account_guid'	=>	'',
+					'account_name'	=>	''
+			);
+			$this->logs->write($logParameter);
+		}
+	}
+	
 	public function login($format = 'json') {
 		$accountName  = $this->input->get_post('user_name', TRUE);
 		$accountPass  = $this->input->get_post('user_pass', TRUE);
