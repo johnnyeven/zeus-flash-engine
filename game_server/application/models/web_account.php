@@ -74,8 +74,8 @@ class Web_account extends CI_Model {
 				'account_lastname'		=>	$parameter['lastname'],
 				'account_pass_question'	=>	$parameter['question'],
 				'account_pass_answer'	=>	$parameter['answer'],
-				'game_id'				=>	$parameter['game_id'],
-				'server_id'				=>	$parameter['server_id'],
+				//'game_id'				=>	$parameter['game_id'],
+				//'server_id'				=>	$parameter['server_id'],
 				'server_section'		=>	$parameter['server_section'],
 				'account_regtime'		=>	time()
 			);
