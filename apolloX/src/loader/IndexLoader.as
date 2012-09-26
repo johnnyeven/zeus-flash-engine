@@ -28,7 +28,7 @@ package loader
 	{
 		private var _msgText: TextField;
 		private var _progressBar: LoaderProgressBarComponent;
-		private var _bgBuffer: Sprite;
+		private var _bgLoader: Loader;
 		
 		public function IndexLoader()
 		{
@@ -36,15 +36,19 @@ package loader
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			_bgBuffer = new Sprite();
-			addChild(_bgBuffer);
+			_bgLoader = new Loader();
+			_bgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
+			addChild(_bgLoader);
+			var _index: int = Math.random() * 10 + 1;
+			var _urlRequest: URLRequest = new URLRequest("resources/loader_bg/bg_" + _index + ".jpg");
+			_bgLoader.load(_urlRequest);
 			
 			_msgText = new TextField();
 			_msgText.text = "初始化Loader...";
 			_msgText.autoSize = TextFieldAutoSize.CENTER;
 			_msgText.width = 500;
 			
-			var txtFormat: TextFormat = new TextFormat(null, 14, 0x000000, true);
+			var txtFormat: TextFormat = new TextFormat(null, 14, 0xffffff, true);
 			_msgText.defaultTextFormat = txtFormat;
 			addChild(_msgText);
 			
@@ -131,8 +135,8 @@ package loader
 		
 		private function onBaseUILoaded(evt: Event): void
 		{
-			_bgBuffer.addChild(LoginBGComponent.getInstance());
-			LoginBGComponent.getInstance().show();
+			//_bgBuffer.addChild(LoginBGComponent.getInstance());
+			//LoginBGComponent.getInstance().show();
 			
 			loadMain();
 		}

@@ -40,7 +40,7 @@ package controller.init
 			_loader.load(_urlRequest, _loaderContext);
 			
 			sendNotification(ProgressBarMediator.SHOW_PROGRESSBAR_NOTE);
-			sendNotification(ProgressBarMediator.SET_PROGRESSBAR_TITLE_NOTE, LanguageManager.getInstance().lang("load_resources_ui"));
+			sendNotification(ProgressBarMediator.SET_PROGRESSBAR_TITLE_NOTE, LanguageManager.getInstance().lang("load_loagin_ui"));
 		}
 		
 		private function onLoadComplete(evt: Event): void
