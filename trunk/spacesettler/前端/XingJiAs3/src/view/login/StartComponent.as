@@ -76,7 +76,6 @@ package view.login
 		
 		private function kaiMen(callBack:Function):void
 		{
-			//TODO：lw ok 在执行动画时，让界面不响应鼠标事件；
 			mouseEnabled=mouseChildren=false;
 			
 			var timelineLite:TimelineLite=new TimelineLite({onComplete:function():void

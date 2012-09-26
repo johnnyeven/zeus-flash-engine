@@ -10,16 +10,6 @@
         <XMLLoader name="connectionConfig.xml"
             url="config/zh_CN/connectionConfig.xml"
             version="1"/>
-
-        <!-- 加载黑体 -->
-        <SWFLoader name="font_heiTi.swf"
-            url="font/font_heiTi.swf"
-            version="1"/>
-
-        <!-- 加载雅黑 -->
-        <SWFLoader name="font_yaHei.swf"
-            url="font/font_yaHei.swf"
-            version="1"/>
     </LoaderMax>
 
     <!--配置文件 -->
@@ -109,6 +99,11 @@
                 url="zh_CN/images/senceMapBuilding/sence1_timeMachine.swf"
                 version="1"/>
 
+            <!-- 采矿车 -->
+            <SWFLoader name="sence1_caiKuangChe"
+                url="zh_CN/images/senceMapEffect/sence1_caiKuangChe.swf"
+                version="1"/>
+
         </LoaderMax>
 
         <LoaderMax name="mainSence2">
@@ -148,7 +143,39 @@
                 url="zh_CN/images/senceMapBuilding/sence2_timeMachine.swf"
                 version="1"/>
 
-        </LoaderMax>
-    </LoaderMax>
+            <SWFLoader name="sence2_jianzao"
+                url="zh_CN/images/senceMapBuilding/sence2_jianzao.swf"
+                version="1"/>
 
+            <SWFLoader name="sence2_building_up"
+                url="zh_CN/images/senceMapBuilding/sence2_building_up.swf"
+                version="1"/>
+
+        </LoaderMax>
+
+        <!--总览、荣誉、小行星 -->
+        <SWFLoader name="allView.swf"
+            url="zh_CN/allView.swf"
+            version="1"/>
+        <!--查看仓库 -->
+        <SWFLoader name="cangKuPackageView.swf"
+            url="zh_CN/cangKuPackageView.swf"
+            version="1"/>
+
+        <!--商城-->
+        <SWFLoader name="ShangCheng.swf"
+            url="zh_CN/shangCheng.swf"
+            version="1"/>
+
+        <!--小行星带-->
+        <SWFLoader name="planetoid.swf"
+            url="zh_CN/planetoid.swf"
+            version="1"/>
+
+        <!--时间机器及其描述 -->
+        <SWFLoader name="timeMachine.swf"
+            url="zh_CN/timeMachine.swf"
+            version="1"/>
+
+    </LoaderMax>
 </root>

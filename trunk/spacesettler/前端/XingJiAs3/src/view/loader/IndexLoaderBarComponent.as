@@ -1,12 +1,12 @@
 package view.loader
 {
-    import com.zn.utils.ClassUtil;
-    
     import flash.display.MovieClip;
     import flash.display.Shape;
     import flash.display.Sprite;
     import flash.text.TextField;
     import flash.utils.getDefinitionByName;
+    
+    import ui.components.SimpleLabel;
 
     /**
      *Index加载界面
@@ -15,9 +15,9 @@ package view.loader
      */
     public class IndexLoaderBarComponent extends Sprite
     {
-        public var titleInfoTF:TextField;
+        public var titleInfoTF:SimpleLabel;
 
-        public var labelTF:TextField;
+        public var labelTF:SimpleLabel;
 
         public var barMC:MovieClip;
 
@@ -26,21 +26,24 @@ package view.loader
         protected var _barMask:Shape;
 
         private var _percent:Number;
-		
-		public var autoSetPercentLabel:Boolean=true;
+
+        public var autoSetPercentLabel:Boolean = true;
 
         public function IndexLoaderBarComponent()
         {
             super();
 
-			var classUI:Class=Class(getDefinitionByName("view.loader.IndexLoaderBarSkin"));
-			var skin:Sprite=new classUI();
-			addChild(skin);
-			
-			trackMC=skin.getChildByName("trackMC") as MovieClip;
-			barMC=skin.getChildByName("barMC") as MovieClip;
-			labelTF=skin.getChildByName("labelTF") as TextField;
-			titleInfoTF=skin.getChildByName("titleInfoTF") as TextField;
+            var classUI:Class = Class(getDefinitionByName("view.loader.IndexLoaderBarSkin"));
+            var skin:Sprite = new classUI();
+            addChild(skin);
+
+            trackMC = skin.getChildByName("trackMC") as MovieClip;
+            barMC = skin.getChildByName("barMC") as MovieClip;
+            labelTF = new SimpleLabel(skin.getChildByName("labelTF") as TextField);
+            titleInfoTF = new SimpleLabel(skin.getChildByName("titleInfoTF") as TextField);
+
+			addChild(labelTF);
+			addChild(titleInfoTF);
 			
             _barMask = new Shape();
             _barMask.graphics.beginFill(0, 1);
@@ -55,17 +58,17 @@ package view.loader
 
             barMC.mask = _barMask;
         }
-
+		
         public function set titleInfo(title:String):void
         {
             titleInfoTF.text = title;
         }
 
-		public function set percentInfo(str:String):void
-		{
-			labelTF.text=str;
-		}
-		
+        public function set percentInfo(str:String):void
+        {
+            labelTF.text = str;
+        }
+
         public function get percent():Number
         {
             return _percent;
@@ -81,9 +84,9 @@ package view.loader
                 _percent = 0;
 
             _barMask.width = percent * barMC.width;
-			
-			if(autoSetPercentLabel)
-				labelTF.text=int(percent*100)+" %";
+
+            if (autoSetPercentLabel)
+                labelTF.text = int(percent * 100) + " %";
         }
     }
 }

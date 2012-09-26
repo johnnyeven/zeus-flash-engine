@@ -38,13 +38,15 @@ package mediator.buildingView
         public function YeLianCreateComponentMediator()
         {
             super(NAME, new CreateViewComponent(ClassUtil.getObject("build_yeLianChang_view")));
+			comp.med=this;
+			level=1;
+			
             comp.buildType = BuildTypeEnum.KUANGCHANG;
             comp.addEventListener(AddViewEvent.CLOSE_EVENT, closeHandler);
             comp.addEventListener(BuildEvent.BUILD_EVENT, buildHandler);
             comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
         }
-		
 		
         /**
          *添加要监听的消息
@@ -102,21 +104,22 @@ package mediator.buildingView
         {
             var buildProxy:BuildProxy = getProxy(BuildProxy);
             var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.KUANGCHANG);
-
-            sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
-                                 count: buildVO.speedCount, okCallBack: function():void
-                                 {
-                                     buildProxy.speedUpBuild(BuildTypeEnum.KUANGCHANG);
-                                 }});
-        }
-		
+			if(buildVO.level<40)
+			{
+	            sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+	                                 count: buildVO.speedCount, okCallBack: function():void
+	                                 {
+	                                     buildProxy.speedUpBuild(BuildTypeEnum.KUANGCHANG);
+	                                 }});
+	        }
+		}
 		protected function infoHandler(event:Event):void
 		{
-			destoryCallback = function():void
-			{
+//			destoryCallback = function():void
+//			{
 				sendNotification(YeLianInfoComponentMediator.SHOW_NOTE);
-			};
-			sendNotification(DESTROY_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
     }
 }

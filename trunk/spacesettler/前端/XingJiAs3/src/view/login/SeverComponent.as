@@ -11,6 +11,7 @@ package view.login
 	import proxy.login.LoginProxy;
 	
 	import ui.components.Button;
+	import ui.components.Label;
 	import ui.components.TextInput;
 	import ui.core.Component;
 	
@@ -29,7 +30,7 @@ package view.login
 		 */	
 		public var serverBar:Component;
 		
-		public var barServerName:TextField;
+		public var barServerName:Label;
 		
 		/**
 		 *选择服务器列表块
@@ -76,7 +77,7 @@ package view.login
 			serverBar = createUI(Component,"serverBar");
 			sortChildIndex();
 			serverBar.buttonMode = true;
-			barServerName = serverBar.getSkin("serverName");
+			barServerName = serverBar.createUI(Label,"serverName");
 			if(LoginProxy.selectedServerVO)
 			{
 			   barServerName.text = LoginProxy.selectedServerVO.server_name+"("+LoginProxy.selectedServerVO.server_language+",ID:"+LoginProxy.selectedServerVO.account_server_id+")";
@@ -122,7 +123,6 @@ package view.login
 		
 		private function serverBar_clickHandler(event:MouseEvent):void
 		{
-			//TODO:lw ok 没有根据服务器条数动态改变服务器列表的背景大小
 			if(isShow)
 			{
 
@@ -206,7 +206,6 @@ package view.login
 		
 		private function setData(dataArr:Array):void
 		{
-			//TODO：lw ok 这个方法还需要优化
 			for(var j:int = 0;j<barList.length;j++)
 			{
 				(barList[i] as BarComponent).visible = false;

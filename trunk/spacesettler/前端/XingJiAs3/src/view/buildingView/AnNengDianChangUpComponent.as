@@ -1,18 +1,31 @@
 package view.buildingView
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
+	import com.zn.multilanguage.MultilanguageManager;
+	import com.zn.utils.DateFormatter;
+	import com.zn.utils.StringUtil;
+	
+	import enum.BuildTypeEnum;
+	
 	import events.buildingView.AddViewEvent;
+	import events.buildingView.BuildEvent;
 	
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	
+	import mx.binding.utils.BindingUtils;
 	
 	import proxy.BuildProxy;
 	import proxy.content.ContentProxy;
 	
 	import ui.components.Button;
 	import ui.components.Label;
+	import ui.components.ProgressBar;
 	import ui.core.Component;
 	
+	import vo.BuildInfoVo;
 	import vo.viewInfo.ViewInfoVO;
 	
 	/**
@@ -29,11 +42,14 @@ package view.buildingView
 		public var xiaoGuoLabel:Label;//效果
 		public var timeLabel:Label;//升级所需时间
 		
-		public var progressMC:MovieClip;//进度条
-		
 		public var upLevelButton:Button;//升级按钮
 		public var closeButton:Button;//关闭按钮
 		public var infoButton:Button;//信息按钮
+		public var speedButton:Button; //加速按钮
+		public var progressMC:ProgressBar;//进度条
+
+		private var _buildVO:BuildInfoVo;
+		private var _tweenLite:TweenLite;
 		
 		public function AnNengDianChangUpComponent(skin:DisplayObjectContainer)
 		{
@@ -46,23 +62,25 @@ package view.buildingView
 			xiaoGuoLabel=createUI(Label,"xiaoGuo_textField");
 			timeLabel=createUI(Label,"time_textField");
 			
-			progressMC=getSkin("progress_MC");
-			
 			upLevelButton=createUI(Button,"upLevel_button");
 			closeButton=createUI(Button,"close_button");
 			infoButton=createUI(Button,"info_button");
+			speedButton = createUI(Button, "speed_button");
+			speedButton.visible = false;
+			progressMC = createUI(ProgressBar, "progress_MC");
+			progressMC.percent = 0;
 			
 			sortChildIndex();
 			
 			upLevelButton.addEventListener(MouseEvent.CLICK,upLevelButton_clickHandler);
 			closeButton.addEventListener(MouseEvent.CLICK,closeButton_clickHandler);
 			infoButton.addEventListener(MouseEvent.CLICK,infoButton_clickHandler);
+			speedButton.addEventListener(MouseEvent.CLICK, speedButton_clickHandler);
 		}
 		
 		protected function upLevelButton_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
-			
+			dispatchEvent(new Event(BuildEvent.UP_EVENT));
 		}
 		
 		protected function closeButton_clickHandler(event:MouseEvent):void
@@ -72,33 +90,87 @@ package view.buildingView
 		
 		protected function infoButton_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
-			
+			dispatchEvent(new Event(BuildEvent.INFO_EVENT));			
 		}
 		
-		public function set upType(value:int):void
+		public function set buildType(value:int):void
 		{
-			//var userInfoVO:UserInfoVO=UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
-			var level:int;
-			var buildArr:Array=BuildProxy(ApplicationFacade.getProxy(BuildProxy)).buildArr;
-			var len:int=buildArr.length;
-			for(var i:int=0;i<len;i++)
-			{
-				if(buildArr[i].type==value)
-				{
-					level=buildArr[i].level;
-				}
-			}
-			var curViewInfoVO:ViewInfoVO=ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value,level);
-			var nextViewInfoVO:ViewInfoVO=ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value,level+1);
+			var buildProxy:BuildProxy=ApplicationFacade.getProxy(BuildProxy);
+			_buildVO=buildProxy.getBuild(value);
 			
-			levelLabel.text="等级"+level+"";
-			dianLiangLabel.text="电能提供："+curViewInfoVO.DianNengTG;
-			anWuZhiXHLabel.text=curViewInfoVO.anWuZhiXH+"";
-			shuiJingKuangXHLabel.text=curViewInfoVO.shuiJinXH+"";
-			chuanQingXHLabel.text=curViewInfoVO.chuanQinXH+"";
-			xiaoGuoLabel.text="电能提供："+curViewInfoVO.DianNengTG+"/h --> "+nextViewInfoVO.DianNengTG+"/h";
-			timeLabel.text=curViewInfoVO.time+"秒";
+			var curViewInfoVO:ViewInfoVO=ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value,_buildVO.level);
+			var nextViewInfoVO:ViewInfoVO=ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value,_buildVO.level+1);
+			
+			levelLabel.text=_buildVO.level+"";
+			dianLiangLabel.text=curViewInfoVO.DianNengTG+"";
+			anWuZhiXHLabel.text=nextViewInfoVO.anWuZhiXH+"";
+			shuiJingKuangXHLabel.text=nextViewInfoVO.shuiJinXH+"";
+			chuanQingXHLabel.text=nextViewInfoVO.chuanQinXH+"";
+			xiaoGuoLabel.text=curViewInfoVO.DianNengTG+"/h --> "+nextViewInfoVO.DianNengTG+"/h";
+			
+			removeCWList();
+			
+			upLevelButton.visible = speedButton.visible = false;
+			
+			stopTweenLite();
+			progressMC.percent=1;
+			
+			if (_buildVO == null || _buildVO.isNormal) //未建造
+			{
+				timeLabel.text = nextViewInfoVO.time + MultilanguageManager.getString("timeMiao");
+				upLevelButton.visible = true;
+			}
+			else if (_buildVO.isBuild || _buildVO.isUp) //建造中
+			{
+				cwList.push(BindingUtils.bindSetter(remainTimeChange, _buildVO, "current_time"));
+				cwList.push(BindingUtils.bindSetter(buildComplete, _buildVO, "eventID"));
+				
+				var totalTime:int = _buildVO.finish_time - _buildVO.start_time;
+				progressMC.percent = (_buildVO.current_time - _buildVO.start_time) / totalTime;
+				var time:int = _buildVO.remainTime;
+				
+				stopTweenLite();
+				_tweenLite = TweenLite.to(progressMC, time, { percent: 1, ease: Linear.easeNone });
+			}
+		}
+		
+		private function buildComplete(value:*):void
+		{
+			if (StringUtil.isEmpty(value))
+				buildType=BuildTypeEnum.DIANCHANG;
+		}
+		
+		private function stopTweenLite():void
+		{
+			if (_tweenLite)
+				_tweenLite.kill();
+			_tweenLite = null;
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			stopTweenLite();
+		}
+		
+		public function remainTimeChange(value:int):void
+		{
+			if (_buildVO.remainTime > 10)
+				speedButton.visible = true;
+			else
+				speedButton.visible = false;
+			
+			timeLabel.text = DateFormatter.formatterTime(_buildVO.remainTime) + MultilanguageManager.getString("timeMiao");
+		}
+		
+		/**
+		 *加速
+		 * @param event
+		 *
+		 */
+		protected function speedButton_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new Event(BuildEvent.SPEED_EVENT));
 		}
 	}
 }

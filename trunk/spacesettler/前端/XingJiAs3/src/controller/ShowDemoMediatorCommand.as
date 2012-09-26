@@ -15,11 +15,11 @@ package controller
      * @author zn
      *
      */
-    public class ShowCangKuCreateComponentMediatorCommand extends SimpleCommand
+    public class ShowDemoMediatorCommand extends SimpleCommand
     {
 		private static var _isLoading:Boolean=false;
 		
-        public function ShowCangKuCreateComponentMediatorCommand()
+        public function ShowDemoMediatorCommand()
         {
             super();
         }

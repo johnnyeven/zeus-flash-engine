@@ -169,5 +169,16 @@ package enum
 			var str:String =ResEnum.parentURL + "senceMapBuilding/sence{0}_building_up.swf";
 			return StringUtil.formatString(str, userInfoVO.camp);
 		}
+		
+		/**
+		 *建筑建造特效
+		 * @return 
+		 */
+		public static function get buildBuildURL():String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			var str:String =ResEnum.parentURL + "senceMapBuilding/sence{0}_jianzao.swf";
+			return StringUtil.formatString(str, userInfoVO.camp);
+		}
     }
 }

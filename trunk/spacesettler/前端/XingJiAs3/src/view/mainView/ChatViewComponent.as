@@ -87,7 +87,7 @@ package view.mainView
 			armyGroupBtn=createUI(Button,"juntuan_btn");
 			privateChatBtn=createUI(Button,"siliao_btn");
 			hyperlinkBtn=createUI(Button,"chaolianjie_btn");
-			chatMC=createUI(VScrollBar,"tuodong_mc");
+//			chatMC=createUI(VScrollBar,"tuodong_mc");
 			
 			upBtn=getSkin("up_btn");
 			downBtn=getSkin("down_btn");

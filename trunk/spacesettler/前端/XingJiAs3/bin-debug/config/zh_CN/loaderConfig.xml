@@ -109,6 +109,11 @@
                 url="zh_CN/images/senceMapBuilding/sence1_timeMachine.swf"
                 version="1"/>
 
+            <!-- 采矿车 -->
+            <SWFLoader name="sence1_caiKuangChe"
+                url="zh_CN/images/senceMapEffect/sence1_caiKuangChe.swf"
+                version="1"/>
+
         </LoaderMax>
 
         <LoaderMax name="mainSence2">
@@ -147,8 +152,35 @@
             <SWFLoader name="sence2_timeMachine"
                 url="zh_CN/images/senceMapBuilding/sence2_timeMachine.swf"
                 version="1"/>
+                
+            <SWFLoader name="sence2_jianzao"
+                url="zh_CN/images/senceMapBuilding/sence2_jianzao.swf"
+                version="1"/>
+                
+            <SWFLoader name="sence2_building_up"
+                url="zh_CN/images/senceMapBuilding/sence2_building_up.swf"
+                version="1"/>
 
         </LoaderMax>
+        
+          <!--查看仓库 -->
+        <SWFLoader name="cangKuPackageView.swf"
+            url="zh_CN/cangKuPackageView.swf"
+            version="1"/>
+        
+        <!--商城-->
+        <LoaderMax>
+            <SWFLoader name="ShangCheng.swf"
+                url="zh_CN/shangCheng.swf"
+                version="1"/>
+        </LoaderMax>
+
+        <!--小行星带-->
+        <SWFLoader name="planetoid.swf"
+            url="zh_CN/planetoid.swf"
+            version="1"/>
+
     </LoaderMax>
+
 
 </root>

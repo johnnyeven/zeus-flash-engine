@@ -7,6 +7,9 @@ package proxy
     import enum.BuildTypeEnum;
     import enum.command.CommandEnum;
     
+    import flash.net.URLRequestHeader;
+    import flash.net.URLRequestMethod;
+    
     import mediator.prompt.PromptMediator;
     
     import org.puremvc.as3.interfaces.IProxy;
@@ -55,6 +58,7 @@ package proxy
             Protocol.registerProtocol(CommandEnum.buildBuild, buildRrsult);
 			Protocol.registerProtocol(CommandEnum.speedUpBuild, buildRrsult);
 			Protocol.registerProtocol(CommandEnum.upBuild, buildRrsult);
+			
         }
 
         public function ceshiHandler():void
@@ -65,7 +69,7 @@ package proxy
             buildInfoVo.type = BuildTypeEnum.KUANGCHANG;
             buildInfoVo.level = 3;
             buildInfoVo.anchor = 1;
-            buildInfoVo.eventID = 1;
+            buildInfoVo.eventID = "1";
             buildInfoVo.current_time = 13000;
             buildInfoVo.finish_time = 13010;
             buildInfoVo.level_up = 2;
@@ -104,8 +108,13 @@ package proxy
 	                    buildInfoVo.start_time = buildInfoArr[i].event.start_time;
 	                    buildInfoVo.startTime();
 					}
+					else
+					{
+						buildInfoVo.eventID ="";
+						buildInfoVo.stopTime();
+					}
 					
-                    list.push(buildInfoVo);
+					list.push(buildInfoVo);
                 }
 
                 buildArr = list;
@@ -147,9 +156,9 @@ package proxy
         public function speedUpBuild(type:int):void
         {
 			var buildVO:BuildInfoVo=getBuild(type);
-			var eventID:int=buildVO.eventID;
+			var eventID:String=buildVO.eventID;
             var obj:Object = { building_event_id:eventID };
-
+			
             ConnDebug.send(CommandEnum.speedUpBuild, obj);
         }
 
@@ -164,9 +173,9 @@ package proxy
                 return;
             }
 
-            getBuildInfoResult(data);
 			var userInfoProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userInfoProxy.updateServerData(data);
+			
             if (_buildCallBack != null)
                 _buildCallBack();
             _buildCallBack = null;
@@ -193,5 +202,11 @@ package proxy
 			var obj:Object = ObjectUtil.CreateDic(buildArr, BuildInfoVo.TYPE_FIELD);
 			return  obj[type];
 		}
-    }
+		
+		public function updateBuilder():void
+		{
+			var userInfoProxy:UserInfoProxy=getProxy(UserInfoProxy);
+			userInfoProxy.updateInfo();
+		}
+	}
 }

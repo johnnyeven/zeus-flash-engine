@@ -45,7 +45,7 @@ package controller.mainView
             else
             {
                 //加载界面SWF
-                ResLoader.load("mainView.swf", MultilanguageManager.getString(""), loaderComplete);
+                ResLoader.load("mainView.swf", MultilanguageManager.getString(""), loaderComplete,true);
             }
         }
 

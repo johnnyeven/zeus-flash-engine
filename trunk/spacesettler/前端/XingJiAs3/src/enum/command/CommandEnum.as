@@ -22,7 +22,7 @@ package enum.command
 		 */
 		public static function get login():String
 		{
-			return "http://"+LoginProxy.selectedServerVO.server_ip + "/web_login";
+			return "http://"+LoginProxy.selectedServerVO.server_ip + "/login";
 		}
 
 		/**
@@ -30,15 +30,23 @@ package enum.command
 		 */
 		public static function get regist():String
 		{
-			return "http://"+LoginProxy.selectedServerVO.server_ip + "/register";
+			return "http://"+LoginProxy.selectedServerVO.server_ip + "/web_register";
 		}
 		
 		/**
-		 *总览
+		 *总览和荣誉
 		 */
 		public static function get allView():String
 		{
 			return "http://"+LoginProxy.selectedServerVO.server_ip + "/get_base_info";
+		}
+		
+		/**
+		 *行星要塞
+		 */
+		public static function get xingXing():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_my_forts_info";
 		}
 		
 		/**
@@ -48,7 +56,7 @@ package enum.command
 		 */
 		public static function get getFreshmanTask():String
 		{
-			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_quest_reward";
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/cheat";
 		}
 		
 		/**
@@ -89,6 +97,78 @@ package enum.command
 		public static function get speedUpBuild():String
 		{
 			return "http://"+LoginProxy.selectedServerVO.server_ip+"/upgrade_building_speed_up";
+		}
+		
+		/**
+		 *更新json
+		 * @return 
+		 * 
+		 */
+		public static function get updateInfo():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_base_info";
+		}
+		
+		/**
+		 *时间机器信息
+		 * @return 
+		 * 
+		 */
+		public static function get timeMachine():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_base_info";
+		}
+		
+		
+		/**
+		 *全部加速
+		 * @return 
+		 * 
+		 */
+		public static function get allSpeed():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/speed_up_all";
+		}
+		
+		
+		/**
+		 *购买资源
+		 * @return 
+		 * 
+		 */
+		public static function get buyResources():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/buy_resource";
+		}
+		
+		/**
+		 *购买暗能水晶
+		 * @return 
+		 * 
+		 */
+		public static function get buyCrystal():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/buy_dark_crystal";
+		}
+		
+		/**
+		 *购买图纸
+		 * @return 
+		 * 
+		 */
+		public static function get buyItem():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/buy_item";
+		}
+		
+		/**
+		 *获取小行星带
+		 * @return 
+		 * 
+		 */
+		public static function get getPlantioidList():String
+		{
+			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_world_map_info";
 		}
     }
 }

@@ -34,8 +34,6 @@ package proxy.task
 			super(NAME, data);
 			
 			Protocol.registerProtocol(CommandEnum.getFreshmanTask,getFreshmanTaskResult);
-			
-			getFreshmanTask();
 		}
 		
 		/**
@@ -45,9 +43,10 @@ package proxy.task
 		public function getFreshmanTask():void
 		{
 //			player_id=28587920797857447&force=1
+//			var obj:Object={player_id:userInfoVO.id,force:1};
 			var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
-			var obj:Object={player_id:userInfoVO.id,force:1};
-			ConnDebug.send(CommandEnum.getFreshmanTask, obj, ConnDebug.HTTP,URLRequestMethod.GET);
+			var obj:Object={player_id:userInfoVO.player_id};
+			ConnDebug.send(CommandEnum.getFreshmanTask, obj, ConnDebug.HTTP);
 		}
 		
 		private function getFreshmanTaskResult(data:Object):void

@@ -1,17 +1,26 @@
 package mediator.buildingView
 {
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
 	
 	import enum.BuildTypeEnum;
 	
 	import events.buildingView.AddViewEvent;
+	import events.buildingView.BuildEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.prompt.MoneyAlertComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import proxy.BuildProxy;
+	
 	import view.buildingView.KeJiUpComponent;
+	
+	import vo.BuildInfoVo;
 	
 	/**
 	 *科技中心升级
@@ -29,13 +38,13 @@ package mediator.buildingView
 		public function KeJiUpComponentMediator()
 		{
 			super(NAME, new KeJiUpComponent(ClassUtil.getObject("up_keJi_view")));
-			comp.upType=BuildTypeEnum.KEJI;
-			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
-		}
-		
-		protected function closeHandler(event:AddViewEvent):void
-		{
-			sendNotification(DESTROY_NOTE);
+			comp.med=this;
+			level=1;
+			comp.buildType = BuildTypeEnum.KEJI;
+			comp.addEventListener(AddViewEvent.CLOSE_EVENT, closeHandler);
+			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
+			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
+			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 		}
 		
 		/**
@@ -74,6 +83,43 @@ package mediator.buildingView
 		protected function get comp():KeJiUpComponent
 		{
 			return viewComponent as KeJiUpComponent;
+		}
+		
+		protected function closeHandler(event:AddViewEvent):void
+		{
+			sendNotification(DESTROY_NOTE);
+		}
+		
+		protected function upHandler(event:Event):void
+		{
+			var buildProxy:BuildProxy = getProxy(BuildProxy);
+			buildProxy.upBuild(BuildTypeEnum.KEJI, function():void
+			{
+				comp.buildType = BuildTypeEnum.KEJI;
+			});
+		}
+		
+		protected function speedHandler(event:Event):void
+		{
+			var buildProxy:BuildProxy = getProxy(BuildProxy);
+			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.KEJI);
+			if(buildVO.level<40)
+			{
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+					count: buildVO.speedCount, okCallBack: function():void
+					{
+						buildProxy.speedUpBuild(BuildTypeEnum.KEJI);
+					}});
+			}
+		}
+		
+		protected function infoHandler(event:Event):void
+		{
+//			destoryCallback = function():void
+//			{
+				sendNotification(KeJiInfoComponentMediator.SHOW_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

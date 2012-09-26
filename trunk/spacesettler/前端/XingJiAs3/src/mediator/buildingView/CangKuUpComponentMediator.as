@@ -38,7 +38,9 @@ package mediator.buildingView
 		public function CangKuUpComponentMediator()
 		{
 			super(NAME, new CangKuUpComponent(ClassUtil.getObject("up_cangKu_view")));
-			comp.upType=BuildTypeEnum.CANGKU;
+			comp.med=this;
+			level=1;
+			comp.buildType=BuildTypeEnum.CANGKU;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
@@ -93,7 +95,7 @@ package mediator.buildingView
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			buildProxy.upBuild(BuildTypeEnum.CANGKU, function():void
 			{
-				comp.upType = BuildTypeEnum.CANGKU;
+				comp.buildType = BuildTypeEnum.CANGKU;
 			});
 		}
 		
@@ -101,21 +103,23 @@ package mediator.buildingView
 		{
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.KUANGCHANG);
-			
-			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
-				count: buildVO.speedCount, okCallBack: function():void
-				{
-					buildProxy.speedUpBuild(BuildTypeEnum.CANGKU);
-				}});
+			if(buildVO.level<40)
+			{
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+					count: buildVO.speedCount, okCallBack: function():void
+					{
+						buildProxy.speedUpBuild(BuildTypeEnum.CANGKU);
+					}});
+			}
 		}
 		
 		protected function infoHandler(event:Event):void
 		{
-			destoryCallback = function():void
-			{
+//			destoryCallback = function():void
+//			{
 				sendNotification(CangKuInfoComponentMediator.SHOW_NOTE);
-			};
-			sendNotification(DESTROY_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

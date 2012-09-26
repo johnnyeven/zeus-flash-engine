@@ -45,7 +45,7 @@ package controller
             {
                 //加载界面SWF
 				_isLoading=true;
-                ResLoader.load("{2}", MultilanguageManager.getString(""), loaderComplete);
+                ResLoader.load("{2}", MultilanguageManager.getString(""), loaderComplete,true);
             }
         }
 

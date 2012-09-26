@@ -38,7 +38,7 @@ package controller.login
             else
             {
                 //加载界面SWF
-                ResLoader.load("login.swf", MultilanguageManager.getString("loaderLogin"), loaderComplete);
+                ResLoader.load("login.swf", MultilanguageManager.getString("loaderLogin"), loaderComplete,true);
             }
         }
 

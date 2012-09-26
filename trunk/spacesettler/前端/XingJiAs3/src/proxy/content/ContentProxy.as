@@ -68,7 +68,7 @@ package proxy.content
 			var buildObj:Object=buildLevelDic[1];
 			
 			viewInfoVO.time=buildObj.cost.time;
-			viewInfoVO.anWuZhiXH=buildObj.cost.borken_crystal;
+			viewInfoVO.anWuZhiXH=buildObj.cost.broken_crystal;
 			viewInfoVO.chuanQinXH=buildObj.cost.tritium;
 			viewInfoVO.shuiJinXH=buildObj.cost.crystal;
 			
@@ -85,13 +85,13 @@ package proxy.content
 			
 			viewInfoVO.limit=buildObj.conditions.academy_level;
 			viewInfoVO.time=buildObj.cost.time;
-			viewInfoVO.anWuZhiXH=buildObj.cost.borken_crystal;
-			viewInfoVO.anWuZhiCL=buildObj.cost.borken_crystal_output;
+			viewInfoVO.anWuZhiXH=buildObj.cost.broken_crystal;
+			viewInfoVO.anWuZhiCL=buildObj.cost.broken_crystal_output;
 			viewInfoVO.chuanQinXH=buildObj.cost.tritium;
 			viewInfoVO.shuiJinXH=buildObj.cost.crystal;
 			viewInfoVO.shuiJinCL=buildObj.property.crystal_output;
-			viewInfoVO.DianNengXH=buildObj.property.prower_consume;
-			viewInfoVO.DianNengTG=buildObj.property.prower_output;
+			viewInfoVO.DianNengXH=buildObj.property.power_consume;
+			viewInfoVO.DianNengTG=buildObj.property.power_supply;
 			viewInfoVO.shuiJinRL=buildObj.property.crystal_volume;
 			viewInfoVO.chuanQinRL=buildObj.property.tritium_volume;
 			viewInfoVO.chuanQinCL=buildObj.property.tritium_output;

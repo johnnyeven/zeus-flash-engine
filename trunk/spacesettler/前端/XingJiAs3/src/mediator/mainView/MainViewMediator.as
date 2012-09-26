@@ -1,11 +1,19 @@
 package mediator.mainView
 {
+	import controller.plantioid.ShowPlantioidComponentMediatorCommand;
+	
 	import events.buildingView.ZhuJiDiEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.BaseMediator;
 	import mediator.MainMediator;
 	import mediator.allView.AllViewComponentMediator;
 	import mediator.allView.RongYuComponentMediator;
+	import mediator.allView.ShangChengComponentMediator;
+	import mediator.cangKu.CangkuPackageViewComponentMediator;
+	import mediator.mainSence.MainSenceComponentMediator;
+	import mediator.plantioid.PlantioidComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -45,8 +53,16 @@ package mediator.mainView
 			id = userInforProxy.userInfoVO.id;
 			comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT,rongYuHandler);
 			comp.addEventListener(ZhuJiDiEvent.ALLVIEW_EVENT,zhongLanHandler);
+			comp.addEventListener(ZhuJiDiEvent.SHOP_EVENT,shopHandler);
+			comp.addEventListener(ZhuJiDiEvent.PLANET_EVENT,planetHandler);
+			comp.addEventListener(ZhuJiDiEvent.CANGKU_EVENT,cangKuHandler);
 		}
-
+		
+		protected function cangKuHandler(event:Event):void
+		{
+			sendNotification(CangkuPackageViewComponentMediator.SHOW_NOTE);
+		}
+		
 		/**
 		 *添加要监听的消息
 		 * @return
@@ -105,5 +121,19 @@ package mediator.mainView
 			allViewProxy.allView(id);
 			sendNotification(AllViewComponentMediator.SHOW_NOTE);
 		}
+		protected function shopHandler(event:Event):void
+		{
+			sendNotification(ShangChengComponentMediator.SHOW_NOTE);
+		}
+		
+		protected function planetHandler(event:Event):void
+		{
+			ShowPlantioidComponentMediatorCommand.loadCompleteCallBack=function(med:PlantioidComponentMediator):void
+			{
+				med.show();
+				sendNotification(MainSenceComponentMediator.DESTROY_NOTE);
+			}
+			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+		}	
 	}
 }

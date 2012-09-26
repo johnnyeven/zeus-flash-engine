@@ -4,14 +4,14 @@ package controller.login
     import com.zn.loading.LoaderEvent;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-    
+
     import mediator.BaseMediator;
     import mediator.login.StartComponentMediator;
     import mediator.prompt.PromptMediator;
-    
+
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
-    
+
     import proxy.login.LoginProxy;
 
     /**
@@ -22,7 +22,8 @@ package controller.login
     public class ShowStartComponentMediatorCommand extends SimpleCommand
     {
 
-    	private var med:StartComponentMediator;
+        private var med:StartComponentMediator;
+
         public function ShowStartComponentMediatorCommand()
         {
             super();
@@ -38,12 +39,12 @@ package controller.login
             var med:StartComponentMediator = getMediator(StartComponentMediator);
             if (med)
             {
-				med.show();
+                med.show();
             }
             else
             {
                 //加载界面SWF
-                ResLoader.load("login.swf", MultilanguageManager.getString("loaderLogin"), loaderComplete);
+                ResLoader.load("login.swf", MultilanguageManager.getString("loaderLogin"), loaderComplete, true);
             }
         }
 
@@ -58,16 +59,16 @@ package controller.login
 
             //注册界面的中介
             facade.registerMediator(med);
-			
-			StartComponentMediator.addBG();
-			
-			var loginProxy:LoginProxy=getProxy(LoginProxy);
-			loginProxy.getServerList(connectHandler);
+
+            StartComponentMediator.addBG();
+
+            var loginProxy:LoginProxy = getProxy(LoginProxy);
+            loginProxy.getServerList(connectHandler);
         }
-		
-		private function connectHandler():void
-		{
-			med.show();
-		}
+
+        private function connectHandler():void
+        {
+            med.show();
+        }
     }
 }

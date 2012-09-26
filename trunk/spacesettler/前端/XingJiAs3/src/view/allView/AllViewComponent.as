@@ -93,7 +93,11 @@ package view.allView
 				
 				keJiShiDaiTxt.text = allViewProxy.allViewVO.keJiShiDaiTxt+"";
 				
-				junTuanTxt.text = allViewProxy.allViewVO.junTuanTxt;
+				if(allViewProxy.allViewVO.junTuanTxt)
+				{
+					junTuanTxt.text = allViewProxy.allViewVO.junTuanTxt;
+				}
+				
 				
 				startCountTxt.text = allViewProxy.allViewVO.startCountTxt+"";
 				

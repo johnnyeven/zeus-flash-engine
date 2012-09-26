@@ -1,8 +1,10 @@
 package view.buildingView
 {
     import com.greensock.TweenLite;
+    import com.greensock.easing.Linear;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.DateFormatter;
+    import com.zn.utils.StringUtil;
     
     import events.buildingView.AddViewEvent;
     import events.buildingView.BuildEvent;
@@ -52,6 +54,8 @@ package view.buildingView
         public var infoButton:Button; //信息按钮
 
         private var _buildVO:BuildInfoVo;
+		
+		private var _tweenLite:TweenLite;
 
         public function CreateViewComponent(skin:DisplayObjectContainer)
         {
@@ -77,6 +81,12 @@ package view.buildingView
             infoButton.addEventListener(MouseEvent.CLICK, infoButton_clickHandler);
             speedButton.addEventListener(MouseEvent.CLICK, speedButton_clickHandler);
         }
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			stopTweenLite();
+		}
 
         protected function createButton_clickHandler(event:MouseEvent):void
         {
@@ -105,7 +115,6 @@ package view.buildingView
             _buildVO = buildProxy.getBuild(value);
 
             removeCWList();
-            cwList.push(BindingUtils.bindSetter(startTimeCompleteChange, _buildVO, "startTimeComplete"));
 
             createButton.visible = speedButton.visible = false;
 
@@ -117,13 +126,30 @@ package view.buildingView
             else if (_buildVO.isBuild || _buildVO.isUp) //建造中
             {
                 cwList.push(BindingUtils.bindSetter(remainTimeChange, _buildVO, "current_time"));
+				cwList.push(BindingUtils.bindSetter(buildComplete, _buildVO, "eventID"));
+				
+				var totalTime:int = _buildVO.finish_time - _buildVO.start_time;
+				progressMC.percent = (_buildVO.current_time - _buildVO.start_time) / totalTime;
+				var time:int = _buildVO.remainTime;
+				
+				stopTweenLite();
+				_tweenLite = TweenLite.to(progressMC, time, { percent: 1, ease: Linear.easeNone });
             }
         }
+		
+		private function stopTweenLite():void
+		{
+			if (_tweenLite)
+				_tweenLite.kill();
+			_tweenLite = null;
+		}
 
-        private function startTimeCompleteChange(value:*):void
+        private function buildComplete(value:*):void
         {
-            if (value)
+            if (StringUtil.isEmpty(value))
+			{
                 closeButton_clickHandler(null);
+			}
         }
 
         public function remainTimeChange(value:int):void
@@ -134,8 +160,6 @@ package view.buildingView
                 speedButton.visible = false;
 
             timeLabel.text = DateFormatter.formatterTime(_buildVO.remainTime) + MultilanguageManager.getString("timeMiao");
-            var totalTime:int = _buildVO.finish_time - _buildVO.start_time;
-            progressMC.percent = (_buildVO.current_time - _buildVO.start_time) / totalTime;
         }
 
         /**

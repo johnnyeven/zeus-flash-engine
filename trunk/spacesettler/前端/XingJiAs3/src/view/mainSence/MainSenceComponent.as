@@ -3,27 +3,27 @@ package view.mainSence
     import com.greensock.loading.BinaryDataLoader;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-    
+
     import enum.BuildTypeEnum;
     import enum.MainSenceEnum;
-    
+
     import events.buildEvent.BuildCompleteEvent;
     import events.buildingView.AddSelectorViewEvent;
     import events.buildingView.AddViewEvent;
-    
+
     import flash.display.Shape;
     import flash.display.Sprite;
     import flash.events.MouseEvent;
     import flash.geom.Point;
-    
+
     import mx.binding.utils.BindingUtils;
-    
+
     import proxy.BuildProxy;
     import proxy.userInfo.UserInfoProxy;
-    
+
     import ui.components.LoaderImage;
     import ui.core.Component;
-    
+
     import vo.BuildInfoVo;
 
     /**
@@ -66,18 +66,37 @@ package view.mainSence
         public var dengGuangLoaderImage:LoaderImage;
 
         public var guanDaoLoaderImage:LoaderImage;
-		
-		public var buildCompDic:Object={};
+
+        public var buildCompDic:Object = {};
 
         public function MainSenceComponent()
         {
             _userInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
             super(ClassUtil.getObject("MainSence_" + _userInfoProxy.userInfoVO.camp));
+            if (_userInfoProxy.userInfoVO.camp == 1)
+            {
+                xingQiuSp = getSkin("xingQiuSp");
+                puBuSp = getSkin("puBuSp");
+                dengGuangSp = getSkin("dengGuangSp");
+                guanDaoSp = getSkin("guanDaoSp");
 
-            xingQiuSp = getSkin("xingQiuSp");
-            puBuSp = getSkin("puBuSp");
-            dengGuangSp = getSkin("dengGuangSp");
-            guanDaoSp = getSkin("guanDaoSp");
+                xingQiuLoaderImage = new LoaderImage();
+                xingQiuLoaderImage.source = MainSenceEnum.xingQiuURL;
+                xingQiuSp.addChild(xingQiuLoaderImage);
+
+                puBuLoaderImage = new LoaderImage();
+                puBuLoaderImage.source = MainSenceEnum.puBuURL;
+                puBuSp.addChild(puBuLoaderImage);
+
+                dengGuangLoaderImage = new LoaderImage();
+                dengGuangLoaderImage.source = MainSenceEnum.dengGuangURL;
+                dengGuangSp.addChild(dengGuangLoaderImage);
+
+                guanDaoLoaderImage = new LoaderImage();
+                guanDaoLoaderImage.source = MainSenceEnum.guanDaoURL;
+                guanDaoSp.addChild(guanDaoLoaderImage);
+            }
+
 
             jiDiSp = getSkin("sprite_1");
             chuanQinSp = getSkin("sprite_2");
@@ -98,32 +117,18 @@ package view.mainSence
             addMouseClick(keJiSp);
             addMouseClick(junGongChangSp);
 
-            xingQiuLoaderImage = new LoaderImage();
-            xingQiuLoaderImage.source = MainSenceEnum.xingQiuURL;
-            xingQiuSp.addChild(xingQiuLoaderImage);
 
-            puBuLoaderImage = new LoaderImage();
-            puBuLoaderImage.source = MainSenceEnum.puBuURL;
-            puBuSp.addChild(puBuLoaderImage);
-
-            dengGuangLoaderImage = new LoaderImage();
-            dengGuangLoaderImage.source = MainSenceEnum.dengGuangURL;
-            dengGuangSp.addChild(dengGuangLoaderImage);
-
-            guanDaoLoaderImage = new LoaderImage();
-            guanDaoLoaderImage.source = MainSenceEnum.guanDaoURL;
-            guanDaoSp.addChild(guanDaoLoaderImage);
 
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             cwList.push(BindingUtils.bindSetter(buildListChange, buildProxy, "buildArr"));
         }
 
-		public override function dispose():void
-		{
-			super.dispose();
-			buildCompDic=null;
-		}
-		
+        public override function dispose():void
+        {
+            super.dispose();
+            buildCompDic = null;
+        }
+
         private function addMouseClick(sp:Sprite):void
         {
             sp.addEventListener(MouseEvent.CLICK, doClickHandler);
@@ -133,7 +138,9 @@ package view.mainSence
         {
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             var sp:Sprite = event.currentTarget as Sprite;
-			var clickSp:Sprite=sp.getChildByName("click_sprite") as Sprite;
+            var clickSp:Sprite = sp.getChildByName("click_sprite") as Sprite;
+            var buildVO:BuildInfoVo;
+
             switch (sp)
             {
                 case jiDiSp:
@@ -155,11 +162,13 @@ package view.mainSence
                     }
                     else
                     {
-                        dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                               MultilanguageManager.getString("buildSelectorFieldUp"),
-                                                               null,
-                                                               null,
-                                                               2, clickSp.localToGlobal(new Point()), BuildTypeEnum.CHUANQIN));
+                        buildVO = buildProxy.getBuild(BuildTypeEnum.CHUANQIN);
+                        if (!buildVO.isBuild)
+                            dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
+                                                                   MultilanguageManager.getString("buildSelectorFieldUp"),
+                                                                   null,
+                                                                   null,
+                                                                   2, clickSp.localToGlobal(new Point()), BuildTypeEnum.CHUANQIN));
                     }
                     break;
                 }
@@ -172,11 +181,13 @@ package view.mainSence
                     }
                     else
                     {
-                        dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                               MultilanguageManager.getString("buildSelectorFieldUp"),
-                                                               null,
-                                                               null,
-                                                               2, clickSp.localToGlobal(new Point()), BuildTypeEnum.DIANCHANG));
+                        buildVO = buildProxy.getBuild(BuildTypeEnum.DIANCHANG);
+                        if (!buildVO.isBuild)
+                            dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
+                                                                   MultilanguageManager.getString("buildSelectorFieldUp"),
+                                                                   null,
+                                                                   null,
+                                                                   2, clickSp.localToGlobal(new Point()), BuildTypeEnum.DIANCHANG));
                     }
                     break;
                 }
@@ -189,11 +200,13 @@ package view.mainSence
                     }
                     else
                     {
-                        dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                               MultilanguageManager.getString("buildSelectorFieldUp"),
-                                                               MultilanguageManager.getString("buildSelectorFieldChaKan"),
-                                                               null,
-                                                               3, clickSp.localToGlobal(new Point()), BuildTypeEnum.CANGKU));
+                        buildVO = buildProxy.getBuild(BuildTypeEnum.CANGKU);
+                        if (!buildVO.isBuild)
+                            dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
+                                                                   MultilanguageManager.getString("buildSelectorFieldUp"),
+                                                                   MultilanguageManager.getString("buildSelectorFieldChaKan"),
+                                                                   null,
+                                                                   3, clickSp.localToGlobal(new Point()), BuildTypeEnum.CANGKU));
                     }
                     break;
                 }
@@ -206,11 +219,13 @@ package view.mainSence
                     }
                     else
                     {
-                        dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                               MultilanguageManager.getString("buildSelectorFieldUp"),
-                                                               MultilanguageManager.getString("buildSelectorFieldRongLan"),
-                                                               null,
-                                                               3, clickSp.localToGlobal(new Point()), BuildTypeEnum.KUANGCHANG));
+                        buildVO = buildProxy.getBuild(BuildTypeEnum.KUANGCHANG);
+                        if (!buildVO.isBuild)
+                            dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
+                                                                   MultilanguageManager.getString("buildSelectorFieldUp"),
+                                                                   MultilanguageManager.getString("buildSelectorFieldRongLan"),
+                                                                   null,
+                                                                   3, clickSp.localToGlobal(new Point()), BuildTypeEnum.KUANGCHANG));
                     }
                     break;
                 }
@@ -223,11 +238,13 @@ package view.mainSence
                     }
                     else
                     {
-                        dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                               MultilanguageManager.getString("buildSelectorFieldUp"),
-                                                               MultilanguageManager.getString("buildSelectorFieldKeYan"),
-                                                               null,
-                                                               3, clickSp.localToGlobal(new Point()), BuildTypeEnum.KEJI));
+                        buildVO = buildProxy.getBuild(BuildTypeEnum.KEJI);
+                        if (!buildVO.isBuild)
+                            dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
+                                                                   MultilanguageManager.getString("buildSelectorFieldUp"),
+                                                                   MultilanguageManager.getString("buildSelectorFieldKeYan"),
+                                                                   null,
+                                                                   3, clickSp.localToGlobal(new Point()), BuildTypeEnum.KEJI));
                     }
                     break;
                 }
@@ -240,11 +257,13 @@ package view.mainSence
                     }
                     else
                     {
-                        dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                               MultilanguageManager.getString("buildSelectorFieldGaiZhang"),
-                                                               MultilanguageManager.getString("buildSelectorFieldWeiXiu"),
-                                                               MultilanguageManager.getString("buildSelectorFieldZhiZao"),
-                                                               4, clickSp.localToGlobal(new Point()), BuildTypeEnum.JUNGONGCHANG));
+                        buildVO = buildProxy.getBuild(BuildTypeEnum.JUNGONGCHANG);
+                        if (!buildVO.isBuild)
+                            dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
+                                                                   MultilanguageManager.getString("buildSelectorFieldGaiZhang"),
+                                                                   MultilanguageManager.getString("buildSelectorFieldWeiXiu"),
+                                                                   MultilanguageManager.getString("buildSelectorFieldZhiZao"),
+                                                                   4, clickSp.localToGlobal(new Point()), BuildTypeEnum.JUNGONGCHANG));
                     }
                     break;
                 }
@@ -265,35 +284,35 @@ package view.mainSence
         {
             for (var i:int; i < value.length; i++)
             {
-				var buildInfoVo:BuildInfoVo=value[i];
-				
-				var buildComp:BuildComponent=buildCompDic[buildInfoVo.type];
-				if(buildComp==null)
-				{
-					buildComp=new BuildComponent();
-					buildCompDic[buildInfoVo.type]=buildComp;
-					buildComp.buildInfoVo = buildInfoVo;
-					
-					if (buildInfoVo.type == BuildTypeEnum.CENTER)
-						jiDiSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.CHUANQIN)
-						chuanQinSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.DIANCHANG)
-						anNengDianChangSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.CANGKU)
-						cangKuSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.KUANGCHANG)
-						kuangChangSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.KEJI)
-						keJiSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.JUNGONGCHANG)
-						junGongChangSp.addChild(buildComp);
-					else if (buildInfoVo.type == BuildTypeEnum.SHIJINMAC)
-					{
-						shiJianJiQiSp.addChild(buildComp);
-						addMouseClick(shiJianJiQiSp);
-					}
-				}
+                var buildInfoVo:BuildInfoVo = value[i];
+
+                var buildComp:BuildComponent = buildCompDic[buildInfoVo.type];
+                if (buildComp == null)
+                {
+                    buildComp = new BuildComponent();
+                    buildCompDic[buildInfoVo.type] = buildComp;
+                    buildComp.buildInfoVo = buildInfoVo;
+
+                    if (buildInfoVo.type == BuildTypeEnum.CENTER)
+                        jiDiSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.CHUANQIN)
+                        chuanQinSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.DIANCHANG)
+                        anNengDianChangSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.CANGKU)
+                        cangKuSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.KUANGCHANG)
+                        kuangChangSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.KEJI)
+                        keJiSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.JUNGONGCHANG)
+                        junGongChangSp.addChild(buildComp);
+                    else if (buildInfoVo.type == BuildTypeEnum.SHIJINMAC)
+                    {
+                        shiJianJiQiSp.addChild(buildComp);
+                        addMouseClick(shiJianJiQiSp);
+                    }
+                }
             }
         }
 

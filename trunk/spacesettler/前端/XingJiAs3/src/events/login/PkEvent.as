@@ -2,6 +2,11 @@ package events.login
 {
 	import flash.events.Event;
 	
+	/**
+	 * 呢称和邮件
+	 * @author lw
+	 * 
+	 */	
 	public class PkEvent extends Event
 	{
 		public static const BACK_EVENT:String="back_event";

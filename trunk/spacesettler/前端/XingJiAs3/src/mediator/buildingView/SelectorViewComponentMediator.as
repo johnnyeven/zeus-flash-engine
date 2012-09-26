@@ -1,23 +1,27 @@
 package mediator.buildingView
 {
     import com.zn.utils.ClassUtil;
-
+    
     import enum.BuildTypeEnum;
-
+    
     import events.buildingView.AddSelectorViewEvent;
     import events.buildingView.AddViewEvent;
     import events.buildingView.UpLevelEvent;
-
+    
     import flash.events.Event;
-
+    
     import mediator.BaseMediator;
+    import mediator.allView.AllViewComponentMediator;
+    import mediator.allView.RongYuComponentMediator;
     import mediator.buildingView.YeLianChangUpComponentMediator;
-
+    import mediator.cangKu.CangkuPackageViewComponentMediator;
+    import mediator.timeMachine.TimeMachineComponentMediator;
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
-
+    
     import ui.managers.PopUpManager;
-
+    
     import view.buildingView.SelectorViewComponent;
 
     /**
@@ -34,6 +38,8 @@ package mediator.buildingView
         public static const DESTROY_NOTE:String = "destroy" + NAME + "Note";
 
         public var viewComp:SelectorViewComponent;
+		
+		private var _arr:Array=[];
 
         public function SelectorViewComponentMediator(viewComponent:Object = null)
         {
@@ -64,8 +70,10 @@ package mediator.buildingView
 //					destroy();
 
                     var event:AddSelectorViewEvent = note.getBody() as AddSelectorViewEvent;
-
+										
                     viewComp = new SelectorViewComponent(event);
+					_arr.push(viewComp);
+					
                     viewComp.buildType = event.buildType;
 
                     viewComp.x = event.point.x;
@@ -73,6 +81,8 @@ package mediator.buildingView
 					
                     viewComp.addEventListener(AddViewEvent.ADDUPVIEW_EVENT, addUpViewHandler);
                     viewComp.addEventListener(AddViewEvent.ADDINFOVIEW_EVENT, addInfoViewHandler);
+					viewComp.addEventListener(AddViewEvent.ADDOTHERVIEW_EVENT,addOtherViewHandler);
+					viewComp.addEventListener(AddViewEvent.LEFT_EVEMT,addLeftViewHAndler);
 
                     PopUpManager.addPopUp(viewComp);
 
@@ -90,11 +100,27 @@ package mediator.buildingView
 
 		public override function destroy():void
 		{
-			if (viewComp != null)
+			for(var i:int;i<_arr.length;i++)
 			{
-				viewComp.dispose();
-				viewComp = null;
+				var comp:SelectorViewComponent=_arr[i];
+				comp.closeTweenLiteCompleteCallBack=function():void
+				{
+					comp.dispose();
+					comp=null
+				}
+				comp.endClose();
 			}
+			_arr.length=0;
+			
+			/*if (viewComp != null)
+			{
+				viewComp.closeTweenLiteCompleteCallBack=function():void
+				{					
+					viewComp.dispose();
+					viewComp=null;
+				}
+				viewComp.endClose();
+			}*/
 		}
         protected function addUpViewHandler(event:AddViewEvent):void
         {
@@ -130,6 +156,11 @@ package mediator.buildingView
                     sendNotification(YeLianChangUpComponentMediator.SHOW_NOTE);
                     break;
                 }
+				case BuildTypeEnum.SHIJINMAC:
+				{
+					sendNotification(TimeMachineComponentMediator.SHOW_NOTE);
+					break;
+				}
             }
 			sendNotification(DESTROY_NOTE);
         }
@@ -165,7 +196,7 @@ package mediator.buildingView
                 }
                 case BuildTypeEnum.KUANGCHANG:
                 {
-                    sendNotification(YeLianChangUpComponentMediator.SHOW_NOTE);
+                    sendNotification(YeLianInfoComponentMediator.SHOW_NOTE);
                     break;
                 }
                 case BuildTypeEnum.JUNGONGCHANG:
@@ -181,5 +212,38 @@ package mediator.buildingView
             }
 			sendNotification(DESTROY_NOTE);
         }
+		
+		protected function addOtherViewHandler(event:AddViewEvent):void
+		{
+			switch(event.buildType)
+			{
+				case BuildTypeEnum.CANGKU:
+				{
+					sendNotification(CangkuPackageViewComponentMediator.SHOW_NOTE);
+					break;
+				}
+			    case BuildTypeEnum.CENTER:
+				{
+					sendNotification(RongYuComponentMediator.SHOW_NOTE);
+					break;
+				}
+				case BuildTypeEnum.KUANGCHANG:
+				{
+//					sendNotification(
+				}
+			}
+		}
+		
+		private function addLeftViewHAndler(event:AddViewEvent):void
+		{
+			switch(event.buildType)
+			{
+				case BuildTypeEnum.CENTER:
+				{
+					sendNotification(AllViewComponentMediator.SHOW_NOTE);
+					break;
+				}
+			}
+		}
     }
 }

@@ -44,7 +44,6 @@
 			
 			super(NAME, new StartComponent());
 			
-			
 			loginProxy= getProxy(LoginProxy);
 			//是否为弹出框
 			_popUp=false;

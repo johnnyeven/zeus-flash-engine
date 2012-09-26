@@ -13,6 +13,7 @@ package events.allView
 		public static const VIEW_RONGYU_EVENT:String = "viewRongYuEvent";
 		public static const CLOSED_EVENT:String = "closedEvent";
 		public static const CLOSED_RONGYU_EVENT:String = "closedRongYuEvent";
+		public static const CLOSED_XINGXING_EVENT:String = "closedXingXingEvent";
 		public static const ALLVIEW_EVENT:String = "allViewEvent";
 		public static const RONGYU_EVENT:String = "rongYuEvent";
 		

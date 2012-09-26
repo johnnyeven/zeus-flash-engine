@@ -24,6 +24,7 @@ package proxy.login
     import other.ConnDebug;
     
     import proxy.BuildProxy;
+    import proxy.content.ContentProxy;
     import proxy.userInfo.UserInfoProxy;
     
     import vo.GlobalData;
@@ -73,20 +74,24 @@ package proxy.login
 
         //注册的变量值
         public var userName:String;
-		public var passWord:String;
-		public var passAgainWord:String;
 
-		public var name:String;
-		public var email:String;
-		public var alliance:String;
-		
+        public var passWord:String;
+
+        public var passAgainWord:String;
+
+        public var name:String;
+
+        public var email:String;
+
+        public var alliance:String;
+
 
         public var camp:int;
 
         private var _registCallBack:Function;
 
         private var _startLoingCallBack:Function;
-		
+
         public function LoginProxy(data:Object = null)
         {
             super(NAME, data);
@@ -98,8 +103,8 @@ package proxy.login
          */
         public function startLogin(callBack:Function):void
         {
-			_startLoingCallBack=callBack;
-				
+            _startLoingCallBack = callBack;
+
             if (!Protocol.hasProtocolFunction(CommandEnum.startLogin, startLoginResult))
                 Protocol.registerProtocol(CommandEnum.startLogin, startLoginResult);
             ConnDebug.send(CommandEnum.startLogin, null, ConnDebug.HTTP, URLRequestMethod.GET);
@@ -111,10 +116,10 @@ package proxy.login
          */
         public function startLoginResult(data:*):void
         {
-			if(_startLoingCallBack!=null)
-				_startLoingCallBack();
-			_startLoingCallBack=null;
-			
+            if (_startLoingCallBack != null)
+                _startLoingCallBack();
+            _startLoingCallBack = null;
+
             serverData = data;
             enterGame();
         }
@@ -125,8 +130,8 @@ package proxy.login
          */
         public function login(userName:String, password:String):void
         {
-			this.userName=userName;
-			this.passWord=password;
+            this.userName = userName;
+            this.passWord = password;
             if (!Protocol.hasProtocolFunction(CommandEnum.login, loginResult))
                 Protocol.registerProtocol(CommandEnum.login, loginResult);
 
@@ -141,41 +146,40 @@ package proxy.login
          */
         private function loginResult(data:Object):void
         {
+            serverData = data;
             if (data.errors == "")
-			{
-				sendNotification(LoginMediator.DESTROY_NOTE);
-				var loginMeditor:LoginMediator = getMediator(LoginMediator);
-				loginMeditor.destoryCallback = function():void
-				{
-				   sendNotification(NameInforComponentMediator.SHOW_NOTE);
-				};
-				
-				return ;
-			}
-			else if(data.hasOwnProperty("errors"))
-			{
-				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
-				return ;
-			}
-			
-			
-			enterGame();
+            {
+                sendNotification(LoginMediator.DESTROY_NOTE);
+                var loginMeditor:LoginMediator = getMediator(LoginMediator);
+                loginMeditor.destoryCallback = function():void
+                {
+                    sendNotification(NameInforComponentMediator.SHOW_NOTE);
+                };
+
+                return;
+            }
+            else if (data.hasOwnProperty("errors"))
+            {
+                sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString(data.errors));
+                return;
+            }
+
+            enterGame();
         }
 
         private function enterGame():void
         {
-            sendNotification(SUCCESS_NOTE);
-            sendNotification(StartComponentMediator.DESTROY_NOTE);
-            sendNotification(LoginMediator.DESTROY_NOTE);
-            sendNotification(NameInforComponentMediator.DESTROY_NOTE);
-            sendNotification(PkComponentMediator.DESTROY_NOTE);
-            sendNotification(RegistComponentMediator.DESTROY_NOTE);
-
-            StartComponentMediator.removeBG();
-            //加载进入游戏的资源
-            sendNotification(LoaderResCommand.LOAD_RES_NOTE);
+			sendNotification(SUCCESS_NOTE);
+			sendNotification(StartComponentMediator.DESTROY_NOTE);
+			sendNotification(LoginMediator.DESTROY_NOTE);
+			sendNotification(NameInforComponentMediator.DESTROY_NOTE);
+			sendNotification(PkComponentMediator.DESTROY_NOTE);
+			sendNotification(RegistComponentMediator.DESTROY_NOTE);
+			StartComponentMediator.removeBG();
+			
+			//加载进入游戏的资源
+			sendNotification(LoaderResCommand.LOAD_RES_NOTE);
         }
-
 
         /**
          *获取服务器列表
@@ -230,36 +234,40 @@ package proxy.login
 
             _getServerListCallBack = null;
         }
-		
-		/**
-		 *注册
-		 *
-		 */
-		public function regist(callBack:Function):void
-		{
-			if (!Protocol.hasProtocolFunction(CommandEnum.regist, registResult))
-				Protocol.registerProtocol(CommandEnum.regist, registResult);
-			
-			_registCallBack = callBack;
-			var obj:Object = { username: userName, password: passWord, nickname: name, email: email,camp_id:camp };
-			ConnDebug.send(CommandEnum.regist, obj);
-		}
-		
-		private function registResult(data:Object):void
-		{
-			if (data.hasOwnProperty("errors"))
-			{
-				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
-				return;
-			}
-			
-			if (_registCallBack != null)
-				_registCallBack();
-			_registCallBack = null;
-		}
-		
-		/*****************************************
-		 * 功能方法
-		 * ****************************************/
+
+        /**
+         *注册
+         *
+         */
+        public function regist(callBack:Function):void
+        {
+
+            if (!Protocol.hasProtocolFunction(CommandEnum.regist, registResult))
+                Protocol.registerProtocol(CommandEnum.regist, registResult);
+
+            _registCallBack = callBack;
+            var obj:Object = { username: userName, password: passWord, nickname: name, email: email, camp_id: camp };
+            ConnDebug.send(CommandEnum.regist, obj);
+        }
+
+        private function registResult(data:Object):void
+        {
+            serverData = data;
+            if (data.hasOwnProperty("errors"))
+            {
+                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
+                return;
+            }
+
+            if (_registCallBack != null)
+                _registCallBack();
+            _registCallBack = null;
+
+            enterGame();
+        }
+
+    /*****************************************
+     * 功能方法
+     * ****************************************/
     }
 }

@@ -3,13 +3,13 @@ package net
     import com.zn.log.Log;
     import com.zn.net.Protocol;
     import com.zn.net.http.HttpRequest;
-    
+
     import flash.net.URLRequestMethod;
-    
+
     import mediator.prompt.PromptMediator;
-    
+
     import mx.utils.ObjectUtil;
-    
+
     import org.puremvc.as3.patterns.facade.Facade;
 
     public class NetHttpConn
@@ -18,7 +18,9 @@ package net
 
         public static var sendURL:String = "";
 
-        private static var _requestCount:int=0;
+        private static var _requestCount:int = 0;
+
+        public static var showLoadServerData:Boolean = true;
 
         public static function getInstance():NetHttpConn
         {
@@ -36,7 +38,8 @@ package net
         {
             data = JSON.parse(data);
 
-            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：\n" + ObjectUtil.toString(data));
+            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
+//			Log.debug(NetHttpConn, "serverToClientOne", "收到信息："+commandID);
 
             //执行方法
             var callFunctionList:Vector.<Function> = Protocol.getProtocolFunctionList(commandID);
@@ -45,16 +48,17 @@ package net
                 //调用方法
                 callFun(data);
             }
-			_requestCount--;
-			if(_requestCount==0)
-				ApplicationFacade.getInstance().sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
+            _requestCount--;
+            if (_requestCount == 0)
+                ApplicationFacade.getInstance().sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
         }
 
         public static function send(commandID:String, obj:Object = null, method:String = URLRequestMethod.POST):void
         {
-			ApplicationFacade.getInstance().sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);
-			_requestCount++;
-			
+            if (showLoadServerData)
+                ApplicationFacade.getInstance().sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);
+            _requestCount++;
+
             var params:String = "";
 
             if (obj)
@@ -74,7 +78,9 @@ package net
             {
                 NetHttpConn.getInstance().serverToClientOne(commandID, data);
             });
-            httpRequest.load(params,method);
+            httpRequest.load(params, method);
+
+            Log.debug(NetHttpConn, "send", "发送消息：" + commandID + "/n " + ObjectUtil.toString(obj));
         }
 
     }

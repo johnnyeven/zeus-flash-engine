@@ -1,11 +1,17 @@
 package mediator.prompt
 {
+    import enum.BuildTypeEnum;
+    
     import flash.events.Event;
     
     import mediator.BaseMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
+    
+    import proxy.BuildProxy;
+    
+    import ui.managers.PopUpManager;
     
     import view.prompt.MoneyAlertComponent;
 
@@ -22,18 +28,22 @@ package mediator.prompt
 
         public static const DESTROY_NOTE:String = "destroy" + NAME + "Note";
 
-		public var okCallBack:Function;
-		
+        public var okCallBack:Function;
+
         public function MoneyAlertComponentMediator()
         {
             super(NAME, new MoneyAlertComponent());
             _popUp = true;
             mode = true;
-		
-			comp.addEventListener(MoneyAlertComponent.OK_EVENT,okHandler);
-			comp.addEventListener(MoneyAlertComponent.OK_EVENT,noHandler);
+			popUpEffect=CENTER;
+
+			comp.med=this;
+			level=0;
+			
+            comp.addEventListener(MoneyAlertComponent.OK_EVENT, okHandler);
+            comp.addEventListener(MoneyAlertComponent.NO_EVENT, noHandler);
         }
-		
+
         /**
          *添加要监听的消息
          * @return
@@ -61,10 +71,10 @@ package mediator.prompt
                 }
                 case SHOW_NOTE:
                 {
-					var obj:Object=note.getBody();
-					comp.infoTF.text=obj.info;
-					comp.countTF.text="x"+obj.count;
-					okCallBack=obj.okCallBack;
+                    var obj:Object = note.getBody();
+                    comp.infoTF.text = obj.info;
+                    comp.countTF.text = "x" + obj.count;
+                    okCallBack = obj.okCallBack;
                     show();
                     break;
                 }
@@ -80,19 +90,26 @@ package mediator.prompt
         {
             return viewComponent as MoneyAlertComponent;
         }
-
-		protected function noHandler(event:Event):void
-		{
-			sendNotification(DESTROY_NOTE);
-		}
 		
-		protected function okHandler(event:Event):void
+		
+		public override function destroy():void
 		{
-			if(okCallBack!=null)
-				okCallBack();
-			okCallBack=null;
-			
-			sendNotification(DESTROY_NOTE);
+			PopUpManager.removePopUp(comp);
 		}
+
+
+        protected function noHandler(event:Event):void
+        {
+            sendNotification(DESTROY_NOTE);
+        }
+
+        protected function okHandler(event:Event):void
+        {
+            if (okCallBack != null)
+                okCallBack();
+            okCallBack = null;
+
+            sendNotification(DESTROY_NOTE);
+        }
     }
 }

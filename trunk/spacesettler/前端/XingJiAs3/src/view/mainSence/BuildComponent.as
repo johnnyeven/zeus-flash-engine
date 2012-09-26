@@ -1,15 +1,20 @@
 package view.mainSence
 {
     import com.greensock.TweenLite;
+    import com.greensock.easing.Linear;
     import com.zn.utils.ClassUtil;
     import com.zn.utils.StringUtil;
     
     import enum.BuildTypeEnum;
     import enum.MainSenceEnum;
     
+    import events.buildEvent.CaiKuangCheEffectEvent;
+    
     import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
+    import flash.display.MovieClip;
     import flash.display.Sprite;
+    import flash.events.Event;
     
     import mx.binding.utils.BindingUtils;
     
@@ -27,8 +32,6 @@ package view.mainSence
     {
         private var _buildInfoVo:BuildInfoVo;
 
-        private var buildUp:BuildUpLoaderViewComponent;
-
         public var userInfoVO:UserInfoVO;
 
         private var buildSp:Sprite;
@@ -38,6 +41,10 @@ package view.mainSence
         private var spriteUp:Sprite;
 
         private var spriteBuild:Sprite;
+
+        private var oldObj:DisplayObject;
+
+        private var caiKuangCheEffectComp:CaiKuangCheEffectComponent;
 
         public function BuildComponent()
         {
@@ -53,25 +60,31 @@ package view.mainSence
             spriteUp = Sprite((obj as DisplayObjectContainer).getChildByName("sprite1"));
             spriteBuild = Sprite((obj as DisplayObjectContainer).getChildByName("sprite2"));
 
-            if (buildSp.numChildren > 0)
+            if (oldObj)
             {
-                var oldObj:DisplayObject = buildSp.getChildAt(0);
                 TweenLite.to(oldObj, 1, { alpha: 0, onComplete: function():void
                 {
                     DisposeUtil.dispose(oldObj);
+                    oldObj = obj;
+
+                    if (_buildInfoVo.type == BuildTypeEnum.KUANGCHANG)
+                    {
+                        var mc:MovieClip = (oldObj as DisplayObjectContainer).getChildByName("dengMC") as MovieClip;
+                        if (mc)
+                            mc.gotoAndStop("close");
+                    }
                 }});
-				
-				buildSp.addChild(obj);
-				obj.alpha = 0;
+
+                buildSp.addChild(obj);
+                obj.alpha = 0;
                 TweenLite.to(obj, 1, { alpha: 1 });
             }
             else
             {
+                oldObj = obj;
                 buildSp.addChild(obj);
                 buildSp.alpha = 1;
             }
-			
-			addChild(buildSp);
         }
 
         private function formatStr(str:String):String
@@ -86,7 +99,7 @@ package view.mainSence
 
         private function newBuildUp():void
         {
-            buildUp = new BuildUpLoaderViewComponent(this);
+            var buildUp:BuildUpLoaderViewComponent = new BuildUpLoaderViewComponent(this);
             buildUp.buildInfoVo = _buildInfoVo;
             buildUp.x = -(buildUp.width * 0.5);
             spriteLoader.addChild(buildUp);
@@ -99,13 +112,13 @@ package view.mainSence
                 var mc:Sprite = Sprite(obj.getChildByName("mc_" + String(i)));
                 mc.visible = false;
 
-                if (_buildInfoVo.type == 6)
+                if (_buildInfoVo.type == BuildTypeEnum.KEJI)
                 { //科学院
                     var count:int = int((_buildInfoVo.level - 1) / 10) + 1;
                     if (i <= count)
                         mc.visible = true;
                 }
-                else if (_buildInfoVo.type == 1)
+                else if (_buildInfoVo.type == BuildTypeEnum.ANCHOR_CENTER)
                 { //主基地
                     var count1:int = _buildInfoVo.level;
                     if (i <= count1)
@@ -133,8 +146,8 @@ package view.mainSence
             switch (_buildInfoVo.type)
             {
                 case BuildTypeEnum.CENTER:
-                { //主基地 需要确认建筑等级
-                    if (_buildInfoVo.eventID == 0)
+                { //1主基地 需要确认建筑等级
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.centerBuildingURL, formatStr("sence{0}_centerBuilding_normal"), function(obj:DisplayObject):void
                         {
@@ -153,9 +166,9 @@ package view.mainSence
 
                     break;
                 }
-                case  BuildTypeEnum.CHUANQIN:
-                { //氚气
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.CHUANQIN:
+                { //2氚气
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, formatStr("sence{0}_chuanQingCang_normal"), function(obj:DisplayObject):void
                         {
@@ -168,15 +181,23 @@ package view.mainSence
                         {
                             addBuildSp(obj);
                             newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+
+                            if (_buildInfoVo.level != 0)
+                            {
+                                spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            } else
+                            {
+                                spriteBuild.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildBuildURL, "tongyong_build"));
+                            }
+
                         });
                     }
 
                     break;
                 }
-                case  BuildTypeEnum.DIANCHANG:
-                { //暗能电厂
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.DIANCHANG:
+                { //3暗能电厂
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.anNengDianChangURL, formatStr("sence{0}_anNengDianChang_normal"), function(obj:DisplayObject):void
                         {
@@ -189,15 +210,22 @@ package view.mainSence
                         {
                             addBuildSp(obj);
                             newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            if (_buildInfoVo.level != 0)
+                            {
+                                spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            } else
+                            {
+                                spriteBuild.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildBuildURL, "tongyong_build"));
+                            }
+
                         });
                     }
 
                     break;
                 }
-                case  BuildTypeEnum.CANGKU:
-                { //仓库
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.CANGKU:
+                { //4仓库
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.cangKuURL, formatStr("sence{0}_cangKu_normal"), function(obj:DisplayObject):void
                         {
@@ -210,19 +238,27 @@ package view.mainSence
                         {
                             addBuildSp(obj);
                             newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "cangku_up"));
+                            if (_buildInfoVo.level != 0)
+                            {
+                                spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "cangku_up"));
+                            } else
+                            {
+                                spriteBuild.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildBuildURL, "tongyong_build"));
+                            }
+
                         });
                     }
 
                     break;
                 }
-                case  BuildTypeEnum.KUANGCHANG:
-                { //矿场
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.KUANGCHANG:
+                { //5矿场
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.kuangChangURL, formatStr("sence{0}_kuangChang_normal"), function(obj:DisplayObject):void
-                        {45
+                        {
                             addBuildSp(obj);
+                            addCaiKuangEffect();
                         });
                     }
                     else
@@ -231,16 +267,22 @@ package view.mainSence
                         {
                             addBuildSp(obj);
                             newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
-                            //spriteBuild.removeChildAt(0);
+                            if (_buildInfoVo.level != 0)
+                            {
+                                spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            } else
+                            {
+                                spriteBuild.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildBuildURL, "tongyong_build"));
+                            }
+
                         });
                     }
 
                     break;
                 }
-                case  BuildTypeEnum.KEJI:
-                { //科学院  需要确认建筑等级
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.KEJI:
+                { //6科学院  需要确认建筑等级
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.keXueYuanURL, formatStr("sence{0}_keXueYuan_normal"), function(obj:DisplayObject):void
                         {
@@ -253,15 +295,22 @@ package view.mainSence
                         {
                             addBuild(obj as DisplayObjectContainer);
                             newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            if (_buildInfoVo.level != 0)
+                            {
+                                spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            } else
+                            {
+                                spriteBuild.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildBuildURL, "keji_build"));
+                            }
+
                         }));
                     }
 
                     break;
                 }
-                case  BuildTypeEnum.JUNGONGCHANG:
-                { //军工厂
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.JUNGONGCHANG:
+                { //7军工厂
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.junGongCangURL, formatStr("sence{0}_junGongCang_normal"), function(obj:DisplayObject):void
                         {
@@ -274,35 +323,68 @@ package view.mainSence
                         {
                             addBuildSp(obj);
                             newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            if (_buildInfoVo.level != 0)
+                            {
+                                spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, "tongyong_up"));
+                            } else
+                            {
+                                spriteBuild.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildBuildURL, "tongyong_build"));
+                            }
+
                         });
                     }
 
                     break;
                 }
-                case  BuildTypeEnum.SHIJINMAC:
-                {
-                    if (_buildInfoVo.eventID == 0)
+                case BuildTypeEnum.SHIJINMAC:
+                { //8时间机器
+                    if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.timeMachineURL, formatStr("sence{0}_timeMachine_normal"), function(obj:DisplayObject):void
                         {
-                            addBuildSp(obj);
+							spriteLoader = Sprite((obj as DisplayObjectContainer).getChildByName("sprite"));
+							spriteUp = Sprite((obj as DisplayObjectContainer).getChildByName("sprite1"));
+							spriteBuild = Sprite((obj as DisplayObjectContainer).getChildByName("sprite2"));
+							
+							oldObj = obj;
+							buildSp.addChild(obj);
+							buildSp.alpha = 1;
+							
+							obj.y = -200;
+							TweenLite.to(obj, 2, { y: 0, ease: Linear.easeNone });
                         });
                     }
-                    else
-                    {
-                        ClassUtil.getDisplayObjectByLoad(MainSenceEnum.timeMachineURL, formatStr("sence{0}_timeMachine_up"), function(obj:DisplayObject):void
-                        {
-                            addBuildSp(obj);
-                            newBuildUp();
-                            spriteUp.addChild(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.buildUpURL, formatStr("sence{0}_building_up")));
-                        });
-                    }
-
                     break;
                 }
             }
         }
 
+        private function addCaiKuangEffect():void
+        {
+            if (caiKuangCheEffectComp == null)
+            {
+                caiKuangCheEffectComp = new CaiKuangCheEffectComponent();
+                addChild(caiKuangCheEffectComp);
+                caiKuangCheEffectComp.init();
+                caiKuangCheEffectComp.addEventListener(CaiKuangCheEffectEvent.OUT_EVENT, caiKuangEffectEvent);
+                caiKuangCheEffectComp.addEventListener(CaiKuangCheEffectEvent.BACK_EVENT, caiKuangEffectEvent);
+            }
+        }
+
+        private function caiKuangEffectEvent(event:Event):void
+        {
+            var mc:MovieClip;
+            if (oldObj)
+            {
+                mc = (oldObj as DisplayObjectContainer).getChildByName("dengMC") as MovieClip;
+                if (mc == null)
+                    return;
+
+                if (caiKuangCheEffectComp.backCount > 0)
+                    mc.gotoAndStop("open");
+                else
+                    mc.gotoAndStop("close");
+            }
+        }
     }
 }

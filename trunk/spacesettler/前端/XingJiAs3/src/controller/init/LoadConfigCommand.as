@@ -86,18 +86,9 @@ package controller.init
         {
             ResLoader.load("preLoader", MultilanguageManager.getString("loaderPre"), function(value:*):void
             {
-				//注册字体
-                var heiTiClass:Class = ClassUtil.getClass("Font_HeiTi");
-                if (heiTiClass)
-                    Font.registerFont(heiTiClass);
-				
-				var yaHeiClass:Class = ClassUtil.getClass("Font_YaHei");
-				if (yaHeiClass)
-					Font.registerFont(yaHeiClass);
-
                 //解析链接信息
                 sendNotification(ParseConnectParmsCommand.PARSE_CONNECT_PARMS_NOTE);
-            });
+            },true);
         }
 
 

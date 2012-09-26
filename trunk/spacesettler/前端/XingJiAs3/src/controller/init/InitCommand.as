@@ -1,8 +1,15 @@
 package controller.init
 {
+    import com.zn.ResLoader;
+    import com.zn.loading.LoaderEvent;
+    import com.zn.multilanguage.MultilanguageManager;
+    
     import controller.EnterMainSenceViewCommand;
     import controller.allView.ShowAllViewComponentMediatorCommand;
     import controller.allView.ShowRongYuComponentMediatorCommand;
+    import controller.allView.ShowShangChengComponentMediatorCommand;
+    import controller.allView.ShowXingXingComponentMediatorCommand;
+    import controller.allView.shangChengView.ShowfriendGiveComponentMediatorCommand;
     import controller.buildingView.ShowCangKuCreateComponentMediatorCommand;
     import controller.buildingView.ShowCangKuInfoComponentMediatorCommand;
     import controller.buildingView.ShowCangKuUpComponentMediatorCommand;
@@ -18,15 +25,24 @@ package controller.init
     import controller.buildingView.ShowJunGongInfoComponentMediatorCommand;
     import controller.buildingView.ShowKeJiCreateComponentMediatorCommand;
     import controller.buildingView.ShowKeJiInfoComponentMediatorCommand;
+    import controller.buildingView.ShowKeJiUpComponentMediatorCommand;
     import controller.buildingView.ShowShiJianInfoComponentMediatorCommand;
     import controller.buildingView.ShowYeLianChangUpComponentMediatorCommand;
     import controller.buildingView.ShowYeLianCreateComponentMediatorCommand;
     import controller.buildingView.ShowYeLianInfoComponentMediatorCommand;
+    import controller.cangKu.ShowCangkuPackageViewComponentMediatorCommand;
+    import controller.cangKu.ShowDonateViewComponentMediatorCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.mainView.ShowMainViewMediatorCommand;
+    import controller.plantioid.ShowPlantioidComponentMediatorCommand;
+    import controller.timeMachine.ShowTimeMachineComponentMediatorCommand;
+    import controller.timeMachine.ShowTimeMachineInforComponentMediatorCommand;
     
     import mediator.allView.AllViewComponentMediator;
     import mediator.allView.RongYuComponentMediator;
+    import mediator.allView.ShangChengComponentMediator;
+    import mediator.allView.XingXingComponentMediator;
+    import mediator.allView.shangChengView.FriendGiveComponentMediator;
     import mediator.buildingView.CangKuCreateComponentMediator;
     import mediator.buildingView.CangKuInfoComponentMediator;
     import mediator.buildingView.CangKuUpComponentMediator;
@@ -48,17 +64,28 @@ package controller.init
     import mediator.buildingView.YeLianChangUpComponentMediator;
     import mediator.buildingView.YeLianCreateComponentMediator;
     import mediator.buildingView.YeLianInfoComponentMediator;
+    import mediator.cangKu.CangkuPackageViewComponentMediator;
+    import mediator.cangKu.DonateViewComponentMediator;
+    import mediator.cangKu.WuPingChaKanMenuViewComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.mainView.MainViewMediator;
+    import mediator.plantioid.PlantioidComponentMediator;
     import mediator.prompt.MoneyAlertComponentMediator;
+    import mediator.timeMachine.TimeMachineComponentMediator;
+    import mediator.timeMachine.TimeMachineInforComponentMediator;
+    
+    import net.NetHttpConn;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
     
     import proxy.BuildProxy;
     import proxy.allView.AllViewProxy;
+    import proxy.allView.ShopProxy;
     import proxy.content.ContentProxy;
+    import proxy.plantioid.PlantioidProxy;
     import proxy.task.TaskProxy;
+    import proxy.timeMachine.TimeMachineProxy;
     import proxy.userInfo.UserInfoProxy;
 
     /**
@@ -89,12 +116,6 @@ package controller.init
             registerMediator();
             registerCommand();
             init();
-
-			var contentProxy:ContentProxy=getProxy(ContentProxy);
-			contentProxy.getContentInfo(function():void
-			{
-				sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
-			});
         }
 		
 		/**
@@ -114,7 +135,24 @@ package controller.init
          */
         public function init():void
         {
-
+			NetHttpConn.showLoadServerData=false;
+			
+			sendNotification(ResLoader.SET_LOADER_BAR_TITLE_NOTE, MultilanguageManager.getString("loadingServer"));
+			sendNotification(ResLoader.SHOW_LOADER_BAR_NOTE);
+			sendNotification(ResLoader.SET_LOADER_BAR_PROGRESS_NOTE,new LoaderEvent(LoaderEvent.PROGRESS,null,1,1));
+			
+			var userInfoProxy:UserInfoProxy =ApplicationFacade.getProxy(UserInfoProxy);
+			userInfoProxy.updateServerData();
+			var taskProxy:TaskProxy=getProxy(TaskProxy);
+			taskProxy.getFreshmanTask();
+			
+			var contentProxy:ContentProxy=getProxy(ContentProxy);
+			contentProxy.getContentInfo(function():void
+			{
+				NetHttpConn.showLoadServerData=true;
+				sendNotification(ResLoader.HIDE_LOADER_BAR_NOTE);
+				sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
+			});
         }
 
         /**
@@ -129,6 +167,12 @@ package controller.init
 			facade.registerProxy(new TaskProxy());
 			//总览
 			facade.registerProxy(new AllViewProxy());
+			//时间机器
+			facade.registerProxy(new TimeMachineProxy());
+			//商城
+			facade.registerProxy(new ShopProxy());
+			//小行星带
+			facade.registerProxy(new PlantioidProxy());
         }
 
         /**
@@ -139,6 +183,7 @@ package controller.init
         {
 			facade.registerMediator(new MoneyAlertComponentMediator());
 			facade.registerMediator(new SelectorViewComponentMediator());
+			facade.registerMediator(new WuPingChaKanMenuViewComponentMediator());
         }
 
         /**
@@ -158,6 +203,16 @@ package controller.init
 			facade.registerCommand(AllViewComponentMediator.SHOW_NOTE,ShowAllViewComponentMediatorCommand);
 			//荣誉功能
 			facade.registerCommand(RongYuComponentMediator.SHOW_NOTE,ShowRongYuComponentMediatorCommand);
+			//行星要塞
+			facade.registerCommand(XingXingComponentMediator.SHOW_NOTE,ShowXingXingComponentMediatorCommand);
+			//时间机器
+			facade.registerCommand(TimeMachineComponentMediator.SHOW_NOTE,ShowTimeMachineComponentMediatorCommand);
+			//时间机器描述
+			facade.registerCommand(TimeMachineInforComponentMediator.SHOW_NOTE,ShowTimeMachineInforComponentMediatorCommand);
+			//查看仓库
+			facade.registerCommand(CangkuPackageViewComponentMediator.SHOW_NOTE,ShowCangkuPackageViewComponentMediatorCommand);
+			//捐献
+			facade.registerCommand(DonateViewComponentMediator.SHOW_NOTE,ShowDonateViewComponentMediatorCommand);
 			
 			//氚氢厂建造
 			facade.registerCommand(ChuanQinCreateComponentMediator.SHOW_NOTE, ShowChuanQinCreateComponentMediatorCommand);
@@ -187,7 +242,7 @@ package controller.init
 			facade.registerCommand(CangKuUpComponentMediator.SHOW_NOTE,ShowCangKuUpComponentMediatorCommand);
 			
 			//科技升级
-			facade.registerCommand(KeJiUpComponentMediator.SHOW_NOTE,ShowKeJiCreateComponentMediatorCommand);
+			facade.registerCommand(KeJiUpComponentMediator.SHOW_NOTE,ShowKeJiUpComponentMediatorCommand);
 			
 			//冶炼厂升级
 			facade.registerCommand(YeLianChangUpComponentMediator.SHOW_NOTE,ShowYeLianChangUpComponentMediatorCommand);
@@ -218,6 +273,14 @@ package controller.init
 
 			//冶炼厂信息
 			facade.registerCommand(YeLianInfoComponentMediator.SHOW_NOTE,ShowYeLianInfoComponentMediatorCommand);
+			
+			//商城信息
+			facade.registerCommand(ShangChengComponentMediator.SHOW_NOTE,ShowShangChengComponentMediatorCommand);
+			
+			//小行星带
+			facade.registerCommand(PlantioidComponentMediator.SHOW_NOTE,ShowPlantioidComponentMediatorCommand);
+			//赠送弹出好友列表
+			facade.registerCommand(FriendGiveComponentMediator.SHOW_NOTE,ShowfriendGiveComponentMediatorCommand);
         }
     }
 }
