@@ -38,7 +38,9 @@ package mediator.buildingView
 		public function ChuanQinUpComponentMediator()
 		{
 			super(NAME, new ChuanQingUpComponent(ClassUtil.getObject("up_chuanQingChang_view")));
-			comp.upType=BuildTypeEnum.CHUANQIN;
+			comp.med=this;
+			level=1;
+			comp.buildType=BuildTypeEnum.CHUANQIN;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
@@ -93,7 +95,7 @@ package mediator.buildingView
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			buildProxy.upBuild(BuildTypeEnum.CHUANQIN, function():void
 			{
-				comp.upType = BuildTypeEnum.CHUANQIN;
+				comp.buildType = BuildTypeEnum.CHUANQIN;
 			});
 		}
 		
@@ -101,21 +103,23 @@ package mediator.buildingView
 		{
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.CHUANQIN);
-			
-			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
-				count: buildVO.speedCount, okCallBack: function():void
-				{
-					buildProxy.speedUpBuild(BuildTypeEnum.CHUANQIN);
-				}});
+			if(buildVO.level<40)
+			{
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+					count: buildVO.speedCount, okCallBack: function():void
+					{
+						buildProxy.speedUpBuild(BuildTypeEnum.CHUANQIN);
+					}});
+			}
 		}
 		
 		protected function infoHandler(event:Event):void
 		{
-			destoryCallback = function():void
-			{
+//			destoryCallback = function():void
+//			{
 				sendNotification(ChuanQinInfoComponentMediator.SHOW_NOTE);
-			};
-			sendNotification(DESTROY_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

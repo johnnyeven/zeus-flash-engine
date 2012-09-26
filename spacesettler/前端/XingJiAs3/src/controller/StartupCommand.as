@@ -71,7 +71,6 @@ package controller
 			facade.registerMediator(new PromptMediator());
 			
 			facade.registerProxy(new LoginProxy());
-
 			
             // 解析URL地址参数
             sendNotification(GetURLParmsCommand.GET_URL_PARMS_COMMAND);

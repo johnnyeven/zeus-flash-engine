@@ -21,6 +21,7 @@ package view.buildingView
     
     import ui.components.Button;
     import ui.core.Component;
+    import ui.managers.PopUpManager;
 
     public class SelectorViewComponent extends Component
     {
@@ -38,6 +39,8 @@ package view.buildingView
 		public var buildType:int;
 
 		private var timeLine:TimelineLite;
+		
+		public var closeTweenLiteCompleteCallBack:Function;
 
         public function SelectorViewComponent(event:AddSelectorViewEvent)
         {
@@ -106,6 +109,7 @@ package view.buildingView
 			
 			if(timeLine)
 				timeLine.kill();
+			
 		}
 		
         public function start():void
@@ -113,39 +117,42 @@ package view.buildingView
 			if(timeLine)
 				timeLine.kill();
 			
+			mouseChildren = mouseEnabled = false;
             timeLine = new TimelineLite({ onComplete: function():void
             {
                 mouseChildren = mouseEnabled = true;
             }});
 
             if (upButton)
-                timeLine.insert(TweenLite.to(upButton, 0.5, { y: -111 }));
+                timeLine.insert(TweenLite.to(upButton, 0.5, { y: -100 }));
             if (downButton)
-                timeLine.insert(TweenLite.to(downButton, 0.5, { y: 41 }));
+                timeLine.insert(TweenLite.to(downButton, 0.5, { y: 44 }));
             if (rightButton)
-                timeLine.insert(TweenLite.to(rightButton, 0.5, { x: 62 }));
+                timeLine.insert(TweenLite.to(rightButton, 0.5, { x: 54 }));
             if (leftButton)
-                timeLine.insert(TweenLite.to(leftButton, 0.5, { x: -224 }));
+                timeLine.insert(TweenLite.to(leftButton, 0.5, { x: -216 }));
         }
 		
 		public function endClose():void
 		{
 			if(timeLine)
 				timeLine.kill();
-			
+			mouseChildren = mouseEnabled = false;
 			timeLine = new TimelineLite({ onComplete: function():void
 			{
-				mouseChildren = mouseEnabled = false;
+				if(closeTweenLiteCompleteCallBack!=null)
+					closeTweenLiteCompleteCallBack();
+				closeTweenLiteCompleteCallBack=null;
 			}});
 			
 			if (upButton)
-				timeLine.insert(TweenLite.to(upButton, 0.5, { y: 0 }));
+				timeLine.insert(TweenLite.to(upButton, 0.5, { y:-28 }));
 			if (downButton)
-				timeLine.insert(TweenLite.to(downButton, 0.5, { y: 0 }));
+				timeLine.insert(TweenLite.to(downButton, 0.5, { y: -28}));
 			if (rightButton)
-				timeLine.insert(TweenLite.to(rightButton, 0.5, { x: 0 }));
+				timeLine.insert(TweenLite.to(rightButton, 0.5, { x: -81 }));
 			if (leftButton)
-				timeLine.insert(TweenLite.to(leftButton, 0.5, { x: 0 }));
+				timeLine.insert(TweenLite.to(leftButton, 0.5, { x: -81 }));
 		}
 
         protected function upButton_clickHandler(event:MouseEvent):void
@@ -160,14 +167,12 @@ package view.buildingView
 
         protected function leftButton_clickHandler(event:MouseEvent):void
         {
-            // TODO Auto-generated method stub
-
+            dispatchEvent(new AddViewEvent(AddViewEvent.LEFT_EVEMT,buildType));
         }
 
         protected function rightButton_clickHandler(event:MouseEvent):void
         {
-            // TODO Auto-generated method stub
-
+            dispatchEvent(new AddViewEvent(AddViewEvent.ADDOTHERVIEW_EVENT,buildType));
         }
     }
 }

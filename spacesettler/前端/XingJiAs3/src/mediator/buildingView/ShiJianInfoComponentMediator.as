@@ -2,6 +2,10 @@ package mediator.buildingView
 {
 	import com.zn.utils.ClassUtil;
 	
+	import events.buildingView.BuildEvent;
+	
+	import flash.events.Event;
+	
 	import mediator.BaseMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -25,6 +29,10 @@ package mediator.buildingView
 		public function ShiJianInfoComponentMediator()
 		{
 			super(NAME, new InfoViewComponent(ClassUtil.getObject("info_timeMac_view")));
+			comp.med=this;
+			level=2;
+			
+			comp.addEventListener(BuildEvent.BACK_EVENT, backHandler);
 		}
 		
 		/**
@@ -63,6 +71,19 @@ package mediator.buildingView
 		protected function get comp():InfoViewComponent
 		{
 			return viewComponent as InfoViewComponent;
+		}
+		
+		protected function backHandler(event:Event):void
+		{
+			/*destoryCallback = function():void
+			{
+			var buildVO:BuildInfoVo = BuildProxy(getProxy(BuildProxy)).getBuild(BuildTypeEnum.KEJI);
+			if (buildVO && buildVO.level>0)
+			sendNotification(YeLianChangUpComponentMediator.SHOW_NOTE);
+			else
+			sendNotification(YeLianCreateComponentMediator.SHOW_NOTE);
+			};*/
+			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

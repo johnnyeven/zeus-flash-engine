@@ -9,6 +9,7 @@ package events.buildingView
 		public static const INFO_EVENT:String = "infoEvent";
 		public static var SPEED_EVENT:String="speedEvent";
 		public static var BACK_EVENT:String="backEvent";
+		public static var COMPLETE_EVENT:String="completeEvent";
 
 		public function BuildEvent(type:String)
 		{

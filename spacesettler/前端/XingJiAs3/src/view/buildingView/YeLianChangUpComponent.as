@@ -1,7 +1,12 @@
 package view.buildingView
 {	
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.DateFormatter;
+	import com.zn.utils.StringUtil;
+	
+	import enum.BuildTypeEnum;
 	
 	import events.buildingView.AddViewEvent;
 	import events.buildingView.BuildEvent;
@@ -40,14 +45,14 @@ package view.buildingView
 		public var xiaoGuo2Label:Label;//效果2
 		public var timeLabel:Label;//升级所需时间
 		
-		public var progressMC:ProgressBar;//进度条
-		
 		public var upLevelButton:Button;//升级按钮
 		public var closeButton:Button;//关闭按钮
 		public var infoButton:Button;//信息按钮
 		public var speedButton:Button; //加速按钮
-
+		public var progressMC:ProgressBar;//进度条
+		
 		private var _buildVO:BuildInfoVo;
+		private var _tweenLite:Object;
 		
 		public function YeLianChangUpComponent(skin:DisplayObjectContainer)
 		{
@@ -61,14 +66,13 @@ package view.buildingView
 			xiaoGuo2Label=createUI(Label,"xiaoGuo2_textField");
 			timeLabel=createUI(Label,"time_textField");
 			
-			progressMC = createUI(ProgressBar, "progress_MC");
-			progressMC.percent = 0;
-			
 			upLevelButton=createUI(Button,"upLevel_button");
 			closeButton=createUI(Button,"close_button");
 			infoButton=createUI(Button,"info_button");
 			speedButton = createUI(Button, "speed_button");
 			speedButton.visible = false;
+			progressMC = createUI(ProgressBar, "progress_MC");
+			progressMC.percent = 0;
 			
 			sortChildIndex();
 			
@@ -110,9 +114,10 @@ package view.buildingView
 			xiaoGuo2Label.text=curViewInfoVO.shuiJinCL+"/h --> "+nextViewInfoVO.shuiJinCL+"/h";
 			
 			removeCWList();
-			cwList.push(BindingUtils.bindSetter(startTimeCompleteChange, _buildVO, "startTimeComplete"));
-			
 			upLevelButton.visible = speedButton.visible = false;
+			
+			stopTweenLite();
+			progressMC.percent=1;
 			
 			if (_buildVO == null || _buildVO.isNormal) //未建造
 			{
@@ -122,13 +127,34 @@ package view.buildingView
 			else if (_buildVO.isBuild || _buildVO.isUp) //建造中
 			{
 				cwList.push(BindingUtils.bindSetter(remainTimeChange, _buildVO, "current_time"));
+				cwList.push(BindingUtils.bindSetter(buildComplete, _buildVO, "eventID"));
+		
+				var totalTime:int = _buildVO.finish_time - _buildVO.start_time;
+				progressMC.percent = (_buildVO.current_time - _buildVO.start_time) / totalTime;
+				var time:int = _buildVO.remainTime;
+				
+				stopTweenLite();
+				_tweenLite = TweenLite.to(progressMC, time, { percent: 1, ease: Linear.easeNone });
 			}
 		}
 		
-		private function startTimeCompleteChange(value:*):void
+		private function buildComplete(value:*):void
 		{
-			if (value)
-				closeButton_clickHandler(null);
+			if (StringUtil.isEmpty(value))
+				buildType=BuildTypeEnum.KUANGCHANG;
+		}
+		
+		private function stopTweenLite():void
+		{
+			if (_tweenLite)
+				_tweenLite.kill();
+			_tweenLite = null;
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			stopTweenLite();
 		}
 		
 		public function remainTimeChange(value:int):void
@@ -139,8 +165,6 @@ package view.buildingView
 				speedButton.visible = false;
 			
 			timeLabel.text = DateFormatter.formatterTime(_buildVO.remainTime) + MultilanguageManager.getString("timeMiao");
-			var totalTime:int = _buildVO.finish_time - _buildVO.start_time;
-			progressMC.percent = (_buildVO.current_time - _buildVO.start_time) / totalTime;
 		}
 		
 		/**

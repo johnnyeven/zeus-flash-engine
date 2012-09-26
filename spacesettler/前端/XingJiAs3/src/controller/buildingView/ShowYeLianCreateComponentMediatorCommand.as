@@ -8,6 +8,7 @@ package controller.buildingView
     import enum.ResEnum;
     
     import mediator.BaseMediator;
+    import mediator.buildingView.CangKuCreateComponentMediator;
     import mediator.buildingView.YeLianCreateComponentMediator;
     
     import org.puremvc.as3.interfaces.INotification;

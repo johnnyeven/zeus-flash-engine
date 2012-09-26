@@ -4,9 +4,13 @@ package mediator.mainView
 	import events.buildingView.ZhuJiDiEvent;
 	import events.talk.TalkEvent;
 	
+	import flash.events.Event;
+	
 	import mediator.BaseMediator;
 	import mediator.allView.AllViewComponentMediator;
 	import mediator.allView.RongYuComponentMediator;
+	import mediator.allView.ShangChengComponentMediator;
+	import mediator.cangKu.CangkuPackageViewComponentMediator;
 	
 	import mx.core.UIComponent;
 	
@@ -14,6 +18,7 @@ package mediator.mainView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.allView.AllViewProxy;
+	import proxy.allView.ShopProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
 	import view.mainView.ControlViewComponent;
@@ -36,10 +41,14 @@ package mediator.mainView
 			
 			allViewProxy = getProxy(AllViewProxy);
 			userInforProxy = getProxy(UserInfoProxy);
+			
 			id = userInforProxy.userInfoVO.id;
 			comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT,rongYuHandler);
 			comp.addEventListener(ZhuJiDiEvent.ALLVIEW_EVENT,zhongLanHandler);
+			comp.addEventListener(ZhuJiDiEvent.CANGKU_EVENT,cangKuHandler);
+			comp.addEventListener(ZhuJiDiEvent.SHOP_EVENT,shopHandler);
 		}
+				
 		
 		/**
 		 *添加要监听的消息
@@ -84,6 +93,12 @@ package mediator.mainView
 			return viewComponent as ControlViewComponent;
 		}
 		
+		private function shopHandler(event:ZhuJiDiEvent):void
+		{
+			
+			sendNotification(ShangChengComponentMediator.SHOW_NOTE);
+		}
+		
 		private function rongYuHandler(event:ZhuJiDiEvent):void
 		{
 			allViewProxy.allView(id);
@@ -94,6 +109,11 @@ package mediator.mainView
 		{
 			allViewProxy.allView(id);
 			sendNotification(AllViewComponentMediator.SHOW_NOTE);
+		}
+		
+		private function cangKuHandler(event:ZhuJiDiEvent):void
+		{
+			sendNotification(CangkuPackageViewComponentMediator.SHOW_NOTE);
 		}
 	}
 }

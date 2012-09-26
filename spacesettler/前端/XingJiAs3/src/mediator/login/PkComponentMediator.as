@@ -31,7 +31,7 @@ package mediator.login
 		public function PkComponentMediator()
 		{
 			super(NAME, new PkComponent());
-			
+			popUpEffect=UP;
 			comp.addEventListener(PkEvent.BACK_EVENT,backHandler);
 			comp.addEventListener(PkEvent.START_EVENT,startHandler);
 		}

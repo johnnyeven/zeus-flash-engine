@@ -3,6 +3,7 @@ package view.login
 	import flash.display.DisplayObjectContainer;
 	import flash.text.TextField;
 	
+	import ui.components.Label;
 	import ui.components.TextInput;
 	import ui.core.Component;
 	
@@ -15,15 +16,15 @@ package view.login
 	 */	
 	public class BarComponent extends Component
 	{
-		private var _severNameTxt:TextField;
-		private var _otherInforTxt:TextField;
+		private var _severNameTxt:Label;
+		private var _otherInforTxt:Label;
 		private var _data:ServerItemVO;
 		public function BarComponent(skin:DisplayObjectContainer)
 		{
 			super(skin);
 			
-			_severNameTxt = getSkin("severName");
-			_otherInforTxt = getSkin("otherInfor");
+			_severNameTxt = createUI(Label,"severName");
+			_otherInforTxt = createUI(Label,"otherInfor");
 			sortChildIndex();
 		}
 		

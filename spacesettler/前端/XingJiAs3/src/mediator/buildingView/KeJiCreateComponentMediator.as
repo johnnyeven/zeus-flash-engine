@@ -1,5 +1,6 @@
 package mediator.buildingView
 {
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
 	
 	import enum.BuildTypeEnum;
@@ -10,6 +11,7 @@ package mediator.buildingView
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.prompt.MoneyAlertComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -17,6 +19,8 @@ package mediator.buildingView
 	import proxy.BuildProxy;
 	
 	import view.buildingView.CreateViewComponent;
+	
+	import vo.BuildInfoVo;
 	
 	/**
 	 *科技建造
@@ -34,9 +38,13 @@ package mediator.buildingView
 		public function KeJiCreateComponentMediator()
 		{
 			super(NAME,new CreateViewComponent(ClassUtil.getObject("build_keJi_view")));
+			comp.med=this;
+			level=1;
 			comp.buildType=BuildTypeEnum.KEJI;
-			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
-			comp.addEventListener(BuildEvent.BUILD_EVENT,buildHandler);
+			comp.addEventListener(AddViewEvent.CLOSE_EVENT, closeHandler);
+			comp.addEventListener(BuildEvent.BUILD_EVENT, buildHandler);
+			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
+			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 		}
 		
 		/**
@@ -84,8 +92,34 @@ package mediator.buildingView
 		
 		protected function buildHandler(event:Event):void
 		{
-			var buildProxy:BuildProxy=getProxy(BuildProxy);
-			buildProxy.buildBuild(BuildTypeEnum.KEJI);
+			var buildProxy:BuildProxy = getProxy(BuildProxy);
+			buildProxy.buildBuild(BuildTypeEnum.KEJI, function():void
+			{
+				comp.buildType = BuildTypeEnum.KEJI;
+			});
+		}
+		
+		protected function speedHandler(event:Event):void
+		{
+			var buildProxy:BuildProxy = getProxy(BuildProxy);
+			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.KEJI);
+			if(buildVO.level<40)
+			{
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+					count: buildVO.speedCount, okCallBack: function():void
+					{
+						buildProxy.speedUpBuild(BuildTypeEnum.KEJI);
+					}});
+			}
+		}
+		
+		protected function infoHandler(event:Event):void
+		{
+//			destoryCallback = function():void
+//			{
+				sendNotification(KeJiInfoComponentMediator.SHOW_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

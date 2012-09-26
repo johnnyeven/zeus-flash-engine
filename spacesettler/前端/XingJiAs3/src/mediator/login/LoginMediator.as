@@ -36,7 +36,7 @@ package mediator.login
 			StartComponentMediator.addBG();
 			
             super(NAME, new LoginComponent());
-
+			popUpEffect=UP;
             comp.addEventListener(LoginEvent.LOGIN_EVENT, loginHandler);
 			comp.addEventListener(LoginEvent.BACK_EVENT,backHandler);
         }

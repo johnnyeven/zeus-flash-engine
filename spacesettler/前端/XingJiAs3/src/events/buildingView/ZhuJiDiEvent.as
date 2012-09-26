@@ -11,6 +11,9 @@ package events.buildingView
 	{
 		public static const ALLVIEW_EVENT:String = "allViewEvent";
 		public static const RONGYU_EVENT:String = "rongYuEvent";
+		public static const CANGKU_EVENT:String = "cangKuEvent";
+		public static var PLANET_EVENT:String="PLANET_EVENT";
+		public static var SHOP_EVENT:String="SHOP_EVENT";
 		
 		public function ZhuJiDiEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

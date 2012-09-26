@@ -20,6 +20,8 @@ package events.buildingView
 		public static const ADDINFOVIEW_EVENT:String="addInfoViewEvent";
 		public static const ADDSPEEDVIEW_EVENT:String="addSpeedViewEvent";
 		
+		public static const ADDOTHERVIEW_EVENT:String="addOtherViewEvent";
+		public static const LEFT_EVEMT:String = "leftEvent";
 		public static const CLOSE_EVENT:String = "CloseEvent";
 
 		private var _buildType:int;

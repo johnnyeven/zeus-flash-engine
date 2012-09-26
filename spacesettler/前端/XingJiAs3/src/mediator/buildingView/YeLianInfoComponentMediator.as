@@ -35,6 +35,10 @@ package mediator.buildingView
         public function YeLianInfoComponentMediator(viewComponent:Object = null)
         {
             super(NAME, new InfoViewComponent(ClassUtil.getObject("info_yeLianChang_view")));
+			
+			comp.med=this;
+			level=2;
+			
             comp.addEventListener(BuildEvent.BACK_EVENT, backHandler);
         }
 
@@ -78,15 +82,14 @@ package mediator.buildingView
 
         protected function backHandler(event:Event):void
         {
-            destoryCallback = function():void
+            /*destoryCallback = function():void
             {
                 var buildVO:BuildInfoVo = BuildProxy(getProxy(BuildProxy)).getBuild(BuildTypeEnum.KUANGCHANG);
-				trace(buildVO.level);
                 if (buildVO && buildVO.level>0)
                     sendNotification(YeLianChangUpComponentMediator.SHOW_NOTE);
                 else
                     sendNotification(YeLianCreateComponentMediator.SHOW_NOTE);
-            };
+            };*/
             sendNotification(DESTROY_NOTE);
         }
     }

@@ -17,12 +17,14 @@ package mediator.buildingView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.BuildProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.managers.PopUpManager;
 	
 	import view.buildingView.CenterUpComponent;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	
 	/**
 	 *基地中心升级
@@ -42,7 +44,9 @@ package mediator.buildingView
 		public function CenterUpComponentMediator()
 		{
 			super(NAME, new CenterUpComponent(ClassUtil.getObject("up_center_view")));
-			comp.upType=BuildTypeEnum.CENTER;
+			comp.med=this;
+			level=1;
+			comp.buildType=BuildTypeEnum.CENTER;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
@@ -97,7 +101,7 @@ package mediator.buildingView
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			buildProxy.upBuild(BuildTypeEnum.CENTER, function():void
 			{
-				comp.upType = BuildTypeEnum.CENTER;
+				comp.buildType = BuildTypeEnum.CENTER;
 			});
 		}
 		
@@ -105,21 +109,25 @@ package mediator.buildingView
 		{
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.CENTER);
-			
-			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			if(userInfoVO.level<4)
+			{
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
 				count: buildVO.speedCount, okCallBack: function():void
 				{
 					buildProxy.speedUpBuild(BuildTypeEnum.CENTER);
 				}});
+			}
+			
 		}
 		
 		protected function infoHandler(event:Event):void
 		{
-			destoryCallback = function():void
-			{
+//			destoryCallback = function():void
+//			{
 				sendNotification(CenterInfoComponentMediator.SHOW_NOTE);
-			};
-			sendNotification(DESTROY_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

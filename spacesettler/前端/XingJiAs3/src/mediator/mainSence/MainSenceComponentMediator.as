@@ -1,5 +1,7 @@
 package mediator.mainSence
 {
+	import enum.BuildTypeEnum;
+	
 	import events.buildEvent.BuildCompleteEvent;
 	import events.buildingView.AddSelectorViewEvent;
 	import events.buildingView.AddViewEvent;
@@ -18,6 +20,8 @@ package mediator.mainSence
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
+	
+	import proxy.BuildProxy;
 	
 	import view.mainSence.MainSenceComponent;
 
@@ -90,6 +94,7 @@ package mediator.mainSence
 		
 		protected function addSelectorViewHandler(event:AddSelectorViewEvent):void
 		{
+			sendNotification(SelectorViewComponentMediator.DESTROY_NOTE);
 			setTimeout(function():void
 			{
 				sendNotification(SelectorViewComponentMediator.SHOW_NOTE, event);

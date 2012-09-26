@@ -33,14 +33,14 @@ package controller.init
         {
             facade.removeCommand(LOAD_RES_NOTE);
 
-            ResLoader.load("configList.zip", MultilanguageManager.getString("loaderConfigList"), loaderXMLCompleteHandler);
+            ResLoader.load("configList.zip", MultilanguageManager.getString("loaderConfigList"), loaderXMLCompleteHandler,true);
         }
 
         private function loaderXMLCompleteHandler(event:LoaderEvent):void
         {
             XMLUtil.zipLoaderList.push(LoaderItemUtil.getLoader("configList.zip"));
 
-            ResLoader.load("needRes", MultilanguageManager.getString("loaderNeedResRes"), loaderCompleteHandler);
+            ResLoader.load("needRes", MultilanguageManager.getString("loaderNeedResRes"), loaderCompleteHandler,true);
         }
 
         private function loaderCompleteHandler(event:LoaderEvent):void

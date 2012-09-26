@@ -10,10 +10,16 @@
 	<createFail>创建失败</createFail>
 	<tips>提示</tips> 
 	<loginUserNameEmpty>用户名不能为空</loginUserNameEmpty>
+	<loginNaneWrong>用户名长度至少为6位</loginNaneWrong>
 	<loginPasswordEmpty>密码不能为空</loginPasswordEmpty>
+	<loginPasswordWrong>密码长度至少为6位</loginPasswordWrong>
 	<registInfoEmpty>用户名不能为空</registInfoEmpty>
-	<registPasswordEmpty>密码长度至少为6位</registPasswordEmpty>
+	<registInforError>用户名长度至少为6位</registInforError>
+	<registPasswordEmpty>密码不能为空</registPasswordEmpty>
+	<registPasswordError>密码长度至少为6位</registPasswordError>
 	<registAgainEmpty>请核对您的密码</registAgainEmpty>
+	<registNameEmpty>昵称不能为空</registNameEmpty>
+	<registNameError>昵称长度至少为6位</registNameError>
 	<registEmailError>邮件格式不正确</registEmailError>
 	<loaderConfig>正在加载配置文件</loaderConfig>
 	<loaderPre>正在加载基础文件</loaderPre>
@@ -22,6 +28,8 @@
 	<loaderLogin>正在加载登录界面</loaderLogin>
 	<loaderMainSence>正在加载主场景</loaderMainSence>
 	<loadingServer>正在请求服务器数据</loadingServer>	
+	<loaderAllView>正在加载总览界面</loaderAllView>
+	<loaderRongYu>正在加载荣誉界面</loaderRongYu>
 	<NOT_ENOUGH_POWER>电能不足</NOT_ENOUGH_POWER>
 	<INSUFFICIENT_RESOURCES>资源不足</INSUFFICIENT_RESOURCES>
 	<NOT_REACHED_BUILDING_UPGRADE_CONDITIONS>没有达到升级条件，无法进行升级</NOT_REACHED_BUILDING_UPGRADE_CONDITIONS>
@@ -81,4 +89,7 @@
 	
 	<timeMiao>秒</timeMiao>
 	<speedTimeInfo>使用时间机器完成本任务需花费</speedTimeInfo>
+	
+	<loadFont>正在加载字体</loadFont>
+	<loadFontError>加载字体错误</loadFontError>
 </root>

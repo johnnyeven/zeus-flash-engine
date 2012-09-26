@@ -1,19 +1,26 @@
 package mediator.buildingView
 {
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
 	
 	import enum.BuildTypeEnum;
 	
 	import events.buildingView.AddViewEvent;
+	import events.buildingView.BuildEvent;
 	
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.prompt.MoneyAlertComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import proxy.BuildProxy;
+	
 	import view.buildingView.AnNengDianChangUpComponent;
+	
+	import vo.BuildInfoVo;
 	
 	/**
 	 *暗能电厂升级
@@ -31,13 +38,13 @@ package mediator.buildingView
 		public function DianChangUpComponentMediator()
 		{
 			super(NAME, new AnNengDianChangUpComponent(ClassUtil.getObject("up_anNengDianChang_view")));
-			comp.upType=BuildTypeEnum.DIANCHANG;
-			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
-		}
-		
-		protected function closeHandler(event:AddViewEvent):void
-		{
-			sendNotification(DESTROY_NOTE);
+			comp.med=this;
+			level=1;
+			comp.buildType = BuildTypeEnum.DIANCHANG;
+			comp.addEventListener(AddViewEvent.CLOSE_EVENT, closeHandler);
+			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
+			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
+			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 		}
 		
 		/**
@@ -76,6 +83,43 @@ package mediator.buildingView
 		protected function get comp():AnNengDianChangUpComponent
 		{
 			return viewComponent as AnNengDianChangUpComponent;
+		}
+		
+		protected function closeHandler(event:AddViewEvent):void
+		{
+			sendNotification(DESTROY_NOTE);
+		}
+		
+		protected function upHandler(event:Event):void
+		{
+			var buildProxy:BuildProxy = getProxy(BuildProxy);
+			buildProxy.upBuild(BuildTypeEnum.DIANCHANG, function():void
+			{
+				comp.buildType = BuildTypeEnum.DIANCHANG;
+			});
+		}
+		
+		protected function speedHandler(event:Event):void
+		{
+			var buildProxy:BuildProxy = getProxy(BuildProxy);
+			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.DIANCHANG);
+			if(buildVO.level<40)
+			{
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+					count: buildVO.speedCount, okCallBack: function():void
+					{
+						buildProxy.speedUpBuild(BuildTypeEnum.DIANCHANG);
+					}});
+			}
+		}
+		
+		protected function infoHandler(event:Event):void
+		{
+//			destoryCallback = function():void
+//			{
+				sendNotification(DianChangInfoComponentMediator.SHOW_NOTE);
+//			};
+//			sendNotification(DESTROY_NOTE);
 		}
 	}
 }

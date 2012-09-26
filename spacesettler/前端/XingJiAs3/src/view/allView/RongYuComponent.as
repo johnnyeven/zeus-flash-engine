@@ -23,7 +23,7 @@ package view.allView
             super(ClassUtil.getObject("view.allView.RongYuSkin"));
 			
 			closedBtn = createUI(Component,"closedBtn");
-			
+			sortChildIndex();
 			closedBtn.addEventListener(MouseEvent.CLICK,closedBtn_clickHandler);
         }
 		

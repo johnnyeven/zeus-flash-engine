@@ -50,6 +50,14 @@ package vo.viewInfo
 		 */		
 		public var chuanQinRL:int;
 		/**
+		 *暗物质容量
+		 */		
+		public var anWuZhiRL:int;
+		/**
+		 *暗能水晶容量
+		 */		
+		public var anNengShuiJinRL:int;
+		/**
 		 *升级限制
 		 */		
 		public var limit:int;

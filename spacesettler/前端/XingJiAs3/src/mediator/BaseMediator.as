@@ -2,13 +2,13 @@ package mediator
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Linear;
-
+    
     import flash.display.DisplayObject;
     import flash.geom.Point;
-
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.patterns.mediator.Mediator;
-
+    
     import ui.core.Component;
     import ui.managers.PopUpManager;
     import ui.managers.SystemManager;
@@ -21,6 +21,10 @@ package mediator
      */
     public class BaseMediator extends Mediator implements IMediator
     {
+		public static const CENTER:int=0;
+		public static const UP:int=1;
+		public static const RIGHT:int=2;
+		
         protected var _popUp:Boolean = true;
 
         public var mode:Boolean = false;
@@ -31,6 +35,10 @@ package mediator
 
         public var showCallBack:Function = null;
 
+        public var popUpEffect:int =RIGHT;
+
+		public var level:int=1;		
+		
         public function BaseMediator(name:String, viewComponent:Object = null)
         {
             super(name, viewComponent);
@@ -57,14 +65,42 @@ package mediator
         {
             if (_popUp)
             {
-                uiComp.y = SystemManager.rootStage.stageHeight;
-
+				
+				PopUpManager.closeAll(level);
+				
                 PopUpManager.addPopUp(uiComp, mode);
 
                 var centerPoint:Point = UIUtil.stageCenterPoint(uiComp);
-                uiComp.x = centerPoint.x;
+                if (popUpEffect==UP)
+                {
+                    //toUp
+                    uiComp.y = SystemManager.rootStage.stageHeight;
+                    uiComp.x = centerPoint.x;
 
-                TweenLite.to(uiComp, 0.4, {  y: centerPoint.y , onComplete: showComplete });
+                    TweenLite.to(uiComp, 0.4, { y: centerPoint.y, onComplete: showComplete });
+                }
+                else if(popUpEffect==RIGHT)
+                {
+                    //toLeft
+                    uiComp.x = SystemManager.rootStage.stageWidth;
+                    uiComp.y = 31;
+                    var endX:Number = uiComp.x - uiComp.width;
+                    TweenLite.to(uiComp, 0.4, { x: endX, onComplete: showComplete });
+                }
+				else
+				{
+					if (uiComp.scaleX == 1)
+					{
+						uiComp.scaleX = uiComp.scaleY = 0.6;
+						uiComp.alpha = 0.5;
+					}
+					
+					PopUpManager.addPopUp(uiComp,mode);
+					UIUtil.centerUI(uiComp);
+					
+					TweenLite.to(uiComp, 0.4, { transformAroundCenter: { scaleX: 1, scaleY: 1, alpha: 1 }, ease: Linear.easeNone, onComplete: showComplete });
+				}
+
             }
             else
             {
@@ -83,34 +119,47 @@ package mediator
 
         public function destroy():void
         {
-			if(viewComponent)
-			{
-	            if (_popUp)
-	            {
-	                TweenLite.to(uiComp, 0.4, { y: SystemManager.rootStage.stageHeight, ease: Linear.easeNone, onComplete: function():void
-	                {
-	                    PopUpManager.removePopUp(uiComp);
-	
-	                    if (uiComp is Component)
-	                        (uiComp as Component).dispose();
-	                    viewComponent = null;
-	
-	                    callDestoryCallBack();
-	                }});
-	            }
-	            else
-	            {
-	                if (uiComp is Component)
-	                    (uiComp as Component).dispose();
-	                viewComponent = null;
-	
-	                callDestoryCallBack();
-	            }
-			}
-			else
-			{
-				callDestoryCallBack();
-			}
+            if (viewComponent)
+            {
+                if (_popUp)
+                {
+                    if (popUpEffect==UP)
+                    {
+                        //toDown
+                        TweenLite.to(uiComp, 0.4, { y: SystemManager.rootStage.stageHeight, ease: Linear.easeNone, onComplete: removeTweenLiteComplete });
+                    }
+                    else if(popUpEffect==RIGHT)
+                    {
+                        //toRight
+                        TweenLite.to(uiComp, 0.4, { x: SystemManager.rootStage.stageWidth, ease: Linear.easeNone, onComplete: removeTweenLiteComplete });
+                    }
+					else
+					{
+						TweenLite.to(uiComp, 0.4, { transformAroundCenter: { scaleX: 0.6, scaleY: 0.6, alpha: 0.5 }, ease: Linear.easeNone, onComplete: function():void
+						{
+							PopUpManager.removePopUp(uiComp);
+							
+							if (uiComp is Component)
+								(uiComp as Component).dispose();
+							viewComponent = null;
+							
+							callDestoryCallBack();
+						}});
+					}
+                }
+                else
+                {
+                    if (uiComp is Component)
+                        (uiComp as Component).dispose();
+                    viewComponent = null;
+
+                    callDestoryCallBack();
+                }
+            }
+            else
+            {
+                callDestoryCallBack();
+            }
             removeCWList();
 
             while (childMedList.length > 0)
@@ -119,6 +168,17 @@ package mediator
             childMedList = null;
 
             facade.removeMediator(getMediatorName());
+        }
+
+        private function removeTweenLiteComplete():void
+        {
+            PopUpManager.removePopUp(uiComp);
+
+            if (uiComp is Component)
+                (uiComp as Component).dispose();
+            viewComponent = null;
+
+            callDestoryCallBack();
         }
 
         public function get isShow():Boolean

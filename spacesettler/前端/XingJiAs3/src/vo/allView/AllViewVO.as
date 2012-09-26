@@ -13,7 +13,7 @@ package vo.allView
 		/**
 		 * 玩家名称
 		 */	
-		public var playerNameTxt:String;
+		public var playerNameTxt:String = "";
 		/**
 		 * 荣誉
 		 */		
@@ -25,7 +25,7 @@ package vo.allView
 		/**
 		 * 军团：
 		 */	
-		public var junTuanTxt:String;
+		public var junTuanTxt:String = "";
 		/**
 		 * 拥有小行星数：
 		 */	
@@ -33,7 +33,7 @@ package vo.allView
 		/**
 		 * 军衔
 		 */	
-		public var junXianTxt:String;
+		public var junXianTxt:String = "";
 		/**
 		 * 军衔级别
 		 */	

@@ -33,7 +33,7 @@ package mediator.login
 		public function NameInforComponentMediator()
 		{
 			super(NAME, new NameInforComponent());
-			
+			popUpEffect=UP;
 			comp.addEventListener(NameInforEvent.BACK_EVENT,backHandler);
 			comp.addEventListener(NameInforEvent.NEXT_EVENT,nextHandler);
 		}
@@ -79,7 +79,6 @@ package mediator.login
 
 		private function backHandler(event:NameInforEvent):void
 		{
-			//TODO:lw ok 应该销毁完成后再显示下个界面
 			destoryCallback = function():void
 			{
 				sendNotification(RegistComponentMediator.SHOW_NOTE);

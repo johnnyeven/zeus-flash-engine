@@ -46,7 +46,7 @@ package controller.allView
             {
                 //加载界面SWF
 				_isLoading=true;
-                ResLoader.load("allView.swf", MultilanguageManager.getString("loaderAllView"), loaderComplete);
+                ResLoader.load("allView.swf", MultilanguageManager.getString("loaderAllView"), loaderComplete,true);
             }
         }
 
