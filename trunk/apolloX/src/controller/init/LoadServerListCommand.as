@@ -7,7 +7,7 @@ package controller.init
 	
 	public class LoadServerListCommand extends SimpleCommand
 	{
-		public static const LOAD_SERVERLIST_NOTE: String = "LoadServerListCommand.loadServerListNote";
+		public static const LOAD_SERVERLIST_NOTE: String = "LoadServerListCommand";
 		
 		public function LoadServerListCommand()
 		{
