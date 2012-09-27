@@ -47,14 +47,34 @@ package controller.scene
 		
 		private function onLoadComplete(evt: Event): void
 		{
-			//facade.registerMediator(new Scene1BackgroundMediator());
-			//sendNotification(ProgressBarMediator.HIDE_RANDOM_BG);
-			//sendNotification(ProgressBarMediator.HIDE_PROGRESSBAR_NOTE);
 			var _startMediator: StartMediator = facade.retrieveMediator(StartMediator.NAME) as StartMediator;
 			_startMediator.removeBg();
 			
-			//var _backgroundMediator: Scene1BackgroundMediator = facade.retrieveMediator(Scene1BackgroundMediator.NAME) as Scene1BackgroundMediator;
-			//_backgroundMediator.show();
+			facade.registerMediator(new Scene1BackgroundMediator());
+			
+			loadControlPanel();
+		}
+		
+		private function loadControlPanel(): void
+		{
+			var _loader: Loader = new Loader();
+			var _urlRequest: URLRequest = new URLRequest("resources/ui/scene/scene_control_ui.swf");
+			var _loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onControlPanelLoaded);
+			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
+			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
+			_loader.load(_urlRequest, _loaderContext);
+			
+			sendNotification(ProgressBarMediator.SET_PROGRESSBAR_TITLE_NOTE, LanguageManager.getInstance().lang("load_control_panel_ui"));
+		}
+		
+		private function onControlPanelLoaded(evt: Event): void
+		{
+			sendNotification(ProgressBarMediator.HIDE_RANDOM_BG);
+			sendNotification(ProgressBarMediator.HIDE_PROGRESSBAR_NOTE);
+			
+			var _backgroundMediator: Scene1BackgroundMediator = facade.retrieveMediator(Scene1BackgroundMediator.NAME) as Scene1BackgroundMediator;
+			_backgroundMediator.show();
 		}
 		
 		private function onLoadProgress(evt: ProgressEvent): void

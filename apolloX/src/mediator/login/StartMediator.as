@@ -5,16 +5,19 @@ package mediator.login
 	import mediator.StageMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
+	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import proxy.LoginProxy;
 	
-	import view.login.StartComponent;
 	import view.login.LoginBGComponent;
+	import view.login.StartComponent;
 	
 	public class StartMediator extends Mediator implements IMediator
 	{
 		public static const NAME: String = "LoginMediator";
+		
+		public static const DESTROY_NOTE: String = "Destroy" + NAME;
 		
 		public function StartMediator(viewComponent:Object=null)
 		{
@@ -22,6 +25,21 @@ package mediator.login
 			
 			component.addEventListener(LoginEvent.START_EVENT, onLoginStart);
 			component.addEventListener(LoginEvent.ACCOUNT_EVENT, onLoginAccount);
+		}
+		
+		override public function listNotificationInterests():Array
+		{
+			return [DESTROY_NOTE];
+		}
+		
+		override public function handleNotification(notification:INotification):void
+		{
+			switch(notification.getName())
+			{
+				case DESTROY_NOTE:
+					destroy();
+					break;
+			}
 		}
 		
 		public function addBg(): void
@@ -54,6 +72,7 @@ package mediator.login
 		{
 			var _loginProxy: LoginProxy = facade.retrieveProxy(LoginProxy.NAME) as LoginProxy;
 			_loginProxy.quickStart();
+			destroy();
 		}
 		
 		private function accountHandler(): void
@@ -76,6 +95,11 @@ package mediator.login
 			stage.addChild(component);
 			component.switchDoorStatus(true);
 			component.closeDoor();
+		}
+		
+		public function destroy(): void
+		{
+			stage.removeChild(component);
 		}
 	}
 }
