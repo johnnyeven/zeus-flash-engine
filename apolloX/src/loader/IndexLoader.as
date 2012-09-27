@@ -28,20 +28,12 @@ package loader
 	{
 		private var _msgText: TextField;
 		private var _progressBar: LoaderProgressBarComponent;
-		private var _bgLoader: Loader;
 		
 		public function IndexLoader()
 		{
 			LanguageManager.language = Capabilities.language;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
-			
-			_bgLoader = new Loader();
-			_bgLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
-			addChild(_bgLoader);
-			var _index: int = Math.random() * 10 + 1;
-			var _urlRequest: URLRequest = new URLRequest("resources/loader_bg/bg_" + _index + ".jpg");
-			_bgLoader.load(_urlRequest);
 			
 			_msgText = new TextField();
 			_msgText.text = "初始化Loader...";
@@ -57,7 +49,7 @@ package loader
 		
 		private function loadVersion(): void
 		{
-			loaderMessage = "loading version xml...";
+			loaderMessage = "加载版本信息...";
 			
 			var urlLoader: URLLoader = new URLLoader();
 			var urlRequest: URLRequest = new URLRequest("config/" + LanguageManager.language + "/version.xml");
@@ -74,7 +66,7 @@ package loader
 		
 		private function loadLanguage(): void
 		{
-			loaderMessage = "loading language...";
+			loaderMessage = "加载语言包...";
 			
 			var urlLoader: URLLoader = new URLLoader();
 			var urlRequest: URLRequest = new URLRequest("config/" + LanguageManager.language + "/language.xml");
@@ -135,9 +127,6 @@ package loader
 		
 		private function onBaseUILoaded(evt: Event): void
 		{
-			//_bgBuffer.addChild(LoginBGComponent.getInstance());
-			//LoginBGComponent.getInstance().show();
-			
 			loadMain();
 		}
 		
@@ -168,8 +157,7 @@ package loader
 		
 		private function onLoadProgress(evt: ProgressEvent): void
 		{
-			var _percent: Number = Math.floor((evt.bytesLoaded / evt.bytesTotal) * 100);
-			_progressBar.percentage = _percent;
+			_progressBar.percentage = evt.bytesLoaded / evt.bytesTotal;
 		}
 		
 		private function onLoadIOError(evt: IOErrorEvent): void

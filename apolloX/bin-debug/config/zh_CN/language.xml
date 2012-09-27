@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-	<load_loader_progress_ui>正在加载进度条UI...</load_loader_progress_ui>
-	<load_main>正在加载主场景...</load_main>
-	<load_base_ui>正在加载基础UI...</load_base_ui>
+	<load_loader_progress_ui>正在加载进度条UI</load_loader_progress_ui>
+	<load_main>正在加载主程序</load_main>
+	<load_base_ui>正在加载基础UI</load_base_ui>
 	<load_base_ui_error>加载UI错误，请联系游戏管理员</load_base_ui_error>
 	<load_loagin_ui>正在加载登录UI</load_loagin_ui>
+	<load_scene_ui>正在加载基础场景UI</load_scene_ui>
 </root>

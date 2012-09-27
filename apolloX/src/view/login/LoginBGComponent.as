@@ -37,17 +37,19 @@ package view.login
 			return _instance;
 		}
 		
-		public function show(): void
+		public function show(callback: Function = null): void
 		{
 			TweenLite.from(this, 1, {
-				alpha: 0
+				alpha: 0,
+				onComplete: callback
 			});
 		}
 		
-		public function hide(): void
+		public function hide(callback: Function = null): void
 		{
 			TweenLite.to(this, 1, {
-				alpha: 0
+				alpha: 0,
+				onComplete: callback
 			});
 		}
 		

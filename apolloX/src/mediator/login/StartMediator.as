@@ -10,6 +10,7 @@ package mediator.login
 	import proxy.LoginProxy;
 	
 	import view.login.StartComponent;
+	import view.login.LoginBGComponent;
 	
 	public class StartMediator extends Mediator implements IMediator
 	{
@@ -21,6 +22,20 @@ package mediator.login
 			
 			component.addEventListener(LoginEvent.START_EVENT, onLoginStart);
 			component.addEventListener(LoginEvent.ACCOUNT_EVENT, onLoginAccount);
+		}
+		
+		public function addBg(): void
+		{
+			stage.addChild(LoginBGComponent.getInstance());
+			LoginBGComponent.getInstance().show();
+		}
+		
+		public function removeBg(): void
+		{
+			LoginBGComponent.getInstance().hide(function(): void
+			{
+				stage.removeChild(LoginBGComponent.getInstance());
+			});
 		}
 		
 		private function onLoginStart(evt: LoginEvent): void
