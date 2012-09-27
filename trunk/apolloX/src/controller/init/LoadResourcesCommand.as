@@ -39,6 +39,7 @@ package controller.init
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
 			_loader.load(_urlRequest, _loaderContext);
 			
+			sendNotification(ProgressBarMediator.SHOW_RANDOM_BG);
 			sendNotification(ProgressBarMediator.SHOW_PROGRESSBAR_NOTE);
 			sendNotification(ProgressBarMediator.SET_PROGRESSBAR_TITLE_NOTE, LanguageManager.getInstance().lang("load_loagin_ui"));
 		}
@@ -51,8 +52,7 @@ package controller.init
 		
 		private function onLoadProgress(evt: ProgressEvent): void
 		{
-			var _percent: Number = Math.floor((evt.bytesLoaded / evt.bytesTotal) * 100);
-			sendNotification(ProgressBarMediator.SET_PROGRESSBAR_PERCENT_NOTE, _percent);
+			sendNotification(ProgressBarMediator.SET_PROGRESSBAR_PERCENT_NOTE, evt.bytesLoaded / evt.bytesTotal);
 		}
 		
 		private function onLoadIOError(evt: IOErrorEvent): void

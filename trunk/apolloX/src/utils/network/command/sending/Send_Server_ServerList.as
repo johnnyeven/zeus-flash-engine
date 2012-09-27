@@ -1,6 +1,8 @@
 package utils.network.command.sending 
 {
 	import configuration.ConnectorContextConfig;
+	import proxy.ServerListProxy;
+	
 	/**
 	 * ...
 	 * @author johnnyeven
@@ -12,6 +14,7 @@ package utils.network.command.sending
 		public function Send_Server_ServerList() 
 		{
 			super(ConnectorContextConfig.CONTROLLER_SERVER, ConnectorContextConfig.ACTION_SERVERLIST);
+			flag = ServerListProxy.SERVER_LIST;
 		}
 		
 		override public function fill():void 

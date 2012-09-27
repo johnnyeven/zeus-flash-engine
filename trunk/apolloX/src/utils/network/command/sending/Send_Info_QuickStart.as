@@ -1,6 +1,8 @@
 package utils.network.command.sending 
 {
 	import configuration.ConnectorContextConfig;
+	import proxy.LoginProxy;
+	
 	/**
 	 * ...
 	 * @author johnnyeven
@@ -12,6 +14,7 @@ package utils.network.command.sending
 		public function Send_Info_QuickStart() 
 		{
 			super(ConnectorContextConfig.CONTROLLER_INFO, ConnectorContextConfig.ACTION_QUICK_START);
+			flag = LoginProxy.QUICK_START;
 		}
 		
 		override public function fill():void 

@@ -3,6 +3,7 @@ package proxy
 	import configuration.ConnectorContextConfig;
 	
 	import mediator.PromptMediator;
+	import controller.scene.LoadSceneResourcesCommand;
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
@@ -37,7 +38,9 @@ package proxy
 		
 		private function onQuickStart(protocol: Receive_Info_QuickStart): void
 		{
-			
+			setData(protocol);
+			sendNotification(PromptMediator.LOADING_HIDE_NOTE);
+			sendNotification(LoadSceneResourcesCommand.LOAD_RESOURCES_NOTE);
 		}
 	}
 }

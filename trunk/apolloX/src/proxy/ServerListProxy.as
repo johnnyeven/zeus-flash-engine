@@ -1,6 +1,7 @@
 package proxy
 {
 	import mediator.PromptMediator;
+	import mediator.loader.ProgressBarMediator;
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
@@ -31,7 +32,6 @@ package proxy
 			CCommandCenter.getInstance().add(SERVER_LIST, onGetServerList);
 			
 			var protocol: Send_Server_ServerList = new Send_Server_ServerList();
-			protocol.flag = SERVER_LIST;
 			protocol.GameId = ConnectorContextConfig.GAME_ID;
 			
 			CCommandCenter.getInstance().send(protocol);
