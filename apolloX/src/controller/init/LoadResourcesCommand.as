@@ -19,7 +19,7 @@ package controller.init
 	
 	public class LoadResourcesCommand extends SimpleCommand
 	{
-		public static const LOAD_RESOURCES_NOTE: String = "LoadResourcesCommand.LoadResourcesNote";
+		public static const LOAD_RESOURCES_NOTE: String = "LoadResourcesCommand";
 		
 		public function LoadResourcesCommand()
 		{

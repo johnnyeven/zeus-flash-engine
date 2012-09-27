@@ -7,7 +7,7 @@ package controller.login
 	
 	public class CreateStartMediatorCommand extends SimpleCommand
 	{
-		public static const CREATE_LOGIN_VIEW_NOTE: String = "CreateLoginViewCommand.crateLoginViewNote";
+		public static const CREATE_LOGIN_VIEW_NOTE: String = "CreateLoginViewCommand";
 		
 		public function CreateStartMediatorCommand()
 		{

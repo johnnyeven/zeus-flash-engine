@@ -21,7 +21,7 @@ package controller.scene
 	
 	public class LoadSceneResourcesCommand extends SimpleCommand
 	{
-		public static const LOAD_RESOURCES_NOTE: String = "LoadSceneResourcesCommand.LoadResourcesNote";
+		public static const LOAD_RESOURCES_NOTE: String = "LoadSceneResourcesCommand";
 		
 		public function LoadSceneResourcesCommand()
 		{
@@ -31,10 +31,9 @@ package controller.scene
 		override public function execute(notification:INotification):void
 		{
 			facade.removeCommand(LOAD_RESOURCES_NOTE);
-			facade.registerMediator(new Scene1BackgroundMediator());
 			
 			var _loader: Loader = new Loader();
-			var _urlRequest: URLRequest = new URLRequest("resources/ui/scene1_base_ui.swf");
+			var _urlRequest: URLRequest = new URLRequest("resources/ui/scene/scene1_base_ui.swf");
 			var _loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
 			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
@@ -48,13 +47,14 @@ package controller.scene
 		
 		private function onLoadComplete(evt: Event): void
 		{
+			//facade.registerMediator(new Scene1BackgroundMediator());
 			//sendNotification(ProgressBarMediator.HIDE_RANDOM_BG);
 			//sendNotification(ProgressBarMediator.HIDE_PROGRESSBAR_NOTE);
 			var _startMediator: StartMediator = facade.retrieveMediator(StartMediator.NAME) as StartMediator;
 			_startMediator.removeBg();
 			
-		//	var _backgroundMediator: Scene1BackgroundMediator = facade.retrieveMediator(Scene1BackgroundMediator.NAME) as Scene1BackgroundMediator;
-		//	_backgroundMediator.show();
+			//var _backgroundMediator: Scene1BackgroundMediator = facade.retrieveMediator(Scene1BackgroundMediator.NAME) as Scene1BackgroundMediator;
+			//_backgroundMediator.show();
 		}
 		
 		private function onLoadProgress(evt: ProgressEvent): void
