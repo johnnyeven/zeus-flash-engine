@@ -100,6 +100,7 @@ package mediator.login
 		public function destroy(): void
 		{
 			stage.removeChild(component);
+			component.dispose();
 		}
 	}
 }

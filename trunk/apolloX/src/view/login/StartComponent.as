@@ -9,7 +9,9 @@ package view.login
 	import flash.events.MouseEvent;
 	import flash.utils.getDefinitionByName;
 	
-	public class StartComponent extends Sprite
+	import utils.liteui.core.Component
+	
+	public class StartComponent extends Component
 	{
 		private var _topDoorMC: MovieClip;
 		private var _bottomDoorMC: MovieClip;
@@ -32,14 +34,11 @@ package view.login
 		
 		public function StartComponent()
 		{
-			super();
-			
 			var _class: Class = getDefinitionByName("ui.login.StartWindowSkin") as Class;
 			var _skin: MovieClip = new _class() as MovieClip;
+			super(_skin);
 			
-			addChild(_skin);
-			
-			_topDoorMC = _skin.getChildByName("topDoorMC") as MovieClip;
+			_topDoorMC = getUI(Component, "topDoorMC") as MovieClip;
 			_bottomDoorMC = _skin.getChildByName("bottomDoorMC") as MovieClip;
 			
 			_buttonStart = _topDoorMC.getChildByName("btnStart") as MovieClip;
