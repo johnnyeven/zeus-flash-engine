@@ -14,6 +14,7 @@ package loader
 	import flash.system.ApplicationDomain;
 	import flash.system.Capabilities;
 	import flash.system.LoaderContext;
+	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -127,6 +128,28 @@ package loader
 		
 		private function onBaseUILoaded(evt: Event): void
 		{
+			loadFont();
+		}
+		
+		private function loadFont(): void
+		{
+			_progressBar.title = LanguageManager.getInstance().lang("load_font");
+			_progressBar.percentage = 0;
+			
+			var _loader: Loader = new Loader();
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onFontLoaded);
+			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
+			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
+			
+			var urlRequest: URLRequest = new URLRequest("resources/font/font.swf");
+			var loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			_loader.load(urlRequest, loaderContext);
+		}
+		
+		private function onFontLoaded(evt: Event): void
+		{
+			var MSYH: Class = ApplicationDomain.currentDomain.getDefinition("font.MSYH") as Class;
+			Font.registerFont(MSYH);
 			loadMain();
 		}
 		
