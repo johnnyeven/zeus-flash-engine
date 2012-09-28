@@ -64,6 +64,16 @@ package mediator.login
 					sendNotification(PromptMediator.HIDE_LOGIN_INFO_NOTE);
 					break;
 				}
+				case SHOW_NOTE:
+				{
+					var obj:Object = note.getBody();
+					if(obj.errors == "")
+					{
+						comp.returnSprie.visible = true;
+						comp.returnSprie.mouseChildren = comp.returnSprie.mouseEnabled = false;
+					}
+					break;
+				}
 			}
 		}
 

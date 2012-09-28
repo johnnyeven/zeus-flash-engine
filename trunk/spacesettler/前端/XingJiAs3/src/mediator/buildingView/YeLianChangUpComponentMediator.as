@@ -2,25 +2,28 @@ package mediator.buildingView
 {
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-
+    import com.zn.utils.StringUtil;
+    
     import enum.BuildTypeEnum;
-
+    
     import events.buildingView.AddViewEvent;
     import events.buildingView.BuildEvent;
-
+    
     import flash.events.Event;
-
+    
     import mediator.BaseMediator;
     import mediator.prompt.MoneyAlertComponentMediator;
-
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
-
+    
     import proxy.BuildProxy;
-
+    import proxy.userInfo.UserInfoProxy;
+    
     import view.buildingView.YeLianChangUpComponent;
-
+    
     import vo.BuildInfoVo;
+    import vo.userInfo.UserInfoVO;
 
     /**
      *模板
@@ -37,7 +40,7 @@ package mediator.buildingView
 
         public function YeLianChangUpComponentMediator()
         {
-            super(NAME, new YeLianChangUpComponent(ClassUtil.getObject("up_yeLianChang_view")));
+            super(NAME, new YeLianChangUpComponent(ClassUtil.getObject(formatStr("up_yeLianChang_view_{0}"))));
 			comp.med=this;
 			level=1;
             comp.buildType = BuildTypeEnum.KUANGCHANG;
@@ -46,6 +49,12 @@ package mediator.buildingView
             comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
             comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
         }
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
+		}
 
         /**
          *添加要监听的消息

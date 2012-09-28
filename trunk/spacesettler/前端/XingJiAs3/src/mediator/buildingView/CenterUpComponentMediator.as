@@ -2,6 +2,7 @@ package mediator.buildingView
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	
@@ -43,7 +44,7 @@ package mediator.buildingView
 		
 		public function CenterUpComponentMediator()
 		{
-			super(NAME, new CenterUpComponent(ClassUtil.getObject("up_center_view")));
+			super(NAME, new CenterUpComponent(ClassUtil.getObject(formatStr("up_center_view_{0}"))));
 			comp.med=this;
 			level=1;
 			comp.buildType=BuildTypeEnum.CENTER;
@@ -58,6 +59,11 @@ package mediator.buildingView
 			sendNotification(DESTROY_NOTE);
 		}
 		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
+		}
 		/**
 		 *添加要监听的消息
 		 * @return

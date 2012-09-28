@@ -54,8 +54,8 @@ package view.login
 //			passwordTextInput.restrict = "^[a-zA-Z0-9_-]{6,16}$";
 			
 			passwordTextInput.displayAsPassword=true;
-			passwordTextInput.mouseEnabled=userNameTextInput.mouseEnabled=true;
 			passwordTextInput.text=userNameTextInput.text="";
+			passwordTextInput.mouseEnabled=userNameTextInput.mouseEnabled=true;
 			
 			submitButton = createUI(Button,"loginBtn");
 			backBtn = createUI(Button,"backBtn");
@@ -64,6 +64,7 @@ package view.login
 			
 			sortChildIndex();
 			
+//			userNameTextInput.addEventListener(MouseEvent.CLICK,userNameTextInput_clickHandler);
 			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler);
 			backBtn.addEventListener(MouseEvent.CLICK,backBtn_clickHandler);
         }
@@ -77,5 +78,11 @@ package view.login
         {
             dispatchEvent(new LoginEvent(LoginEvent.LOGIN_EVENT,userNameTextInput.text,passwordTextInput.text));
         }
+		
+		private function userNameTextInput_clickHandler(event:MouseEvent):void
+		{
+			submitButton.mouseChildren = submitButton.mouseEnabled = false;
+			backBtn.mouseChildren = backBtn.mouseEnabled = false;
+		}
     }
 }

@@ -1,23 +1,26 @@
 package mediator.buildingView
 {
     import com.zn.utils.ClassUtil;
-
+    import com.zn.utils.StringUtil;
+    
     import enum.BuildTypeEnum;
-
+    
     import events.buildingView.BuildEvent;
-
+    
     import flash.events.Event;
-
+    
     import mediator.BaseMediator;
-
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
-
+    
     import proxy.BuildProxy;
-
+    import proxy.userInfo.UserInfoProxy;
+    
     import view.buildingView.InfoViewComponent;
-
+    
     import vo.BuildInfoVo;
+    import vo.userInfo.UserInfoVO;
 
     /**
      *冶炼厂信息
@@ -34,13 +37,19 @@ package mediator.buildingView
 
         public function YeLianInfoComponentMediator(viewComponent:Object = null)
         {
-            super(NAME, new InfoViewComponent(ClassUtil.getObject("info_yeLianChang_view")));
+            super(NAME, new InfoViewComponent(ClassUtil.getObject(formatStr("info_yeLianChang_view_{0}"))));
 			
 			comp.med=this;
 			level=2;
 			
             comp.addEventListener(BuildEvent.BACK_EVENT, backHandler);
         }
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
+		}
 
         /**
          *添加要监听的消息

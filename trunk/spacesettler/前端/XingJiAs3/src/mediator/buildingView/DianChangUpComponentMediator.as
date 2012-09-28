@@ -2,6 +2,7 @@ package mediator.buildingView
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	
@@ -17,10 +18,12 @@ package mediator.buildingView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.BuildProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.buildingView.AnNengDianChangUpComponent;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	
 	/**
 	 *暗能电厂升级
@@ -37,7 +40,7 @@ package mediator.buildingView
 		
 		public function DianChangUpComponentMediator()
 		{
-			super(NAME, new AnNengDianChangUpComponent(ClassUtil.getObject("up_anNengDianChang_view")));
+			super(NAME, new AnNengDianChangUpComponent(ClassUtil.getObject(formatStr("up_anNengDianChang_view_{0}"))));
 			comp.med=this;
 			level=1;
 			comp.buildType = BuildTypeEnum.DIANCHANG;
@@ -47,6 +50,11 @@ package mediator.buildingView
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 		}
 		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
+		}
 		/**
 		 *添加要监听的消息
 		 * @return

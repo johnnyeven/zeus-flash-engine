@@ -6,6 +6,7 @@ package view.allView
 	import events.allView.AllViewEvent;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import proxy.allView.AllViewProxy;
@@ -63,6 +64,7 @@ package view.allView
 		
 		public var shangSprite:Sprite;
 		public var xiaSprite:Sprite;
+		public var maskSprite:Sprite;
 		//当前选中元件
 		private var _currentSelected:BoxComponent;
 		private var currentCount:int = 0;
@@ -91,6 +93,8 @@ package view.allView
 			for(var i:int = 0;i<boxComponentList.length;i++)
 			{
 				(boxComponentList[i]  as BoxComponent).visible = false;
+				(boxComponentList[i]  as BoxComponent).topSprite.visible = false;
+				(boxComponentList[i]  as BoxComponent).buttonSprite.visible = false;
 				(boxComponentList[i]  as BoxComponent).buttonMode = true;
 				(boxComponentList[i]  as BoxComponent).dyData=i;
 				(boxComponentList[i]  as BoxComponent).addEventListener(MouseEvent.CLICK,boxComponent_clickHandler);
@@ -104,6 +108,7 @@ package view.allView
 			
 			shangSprite = getSkin("shangSprite");
 			xiaSprite = getSkin("xiaSprite");
+			maskSprite = getSkin("maskSprite");
 			shangSprite.visible = false;
 			xiaSprite.visible = false;
 			
@@ -112,6 +117,13 @@ package view.allView
 			data(allViewProxy.myFortsList);
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closedBtn_clickHandler);
+			//销毁sprite
+			shangSprite.addEventListener(MouseEvent.CLICK,shangSprite_clickHandler);
+			xiaSprite.addEventListener(MouseEvent.CLICK,xiaSprite_clickHandler);
+			shangSprite.buttonMode = true;
+			xiaSprite.buttonMode = true;
+			
+			
         }
 		
 		private function boxComponent_clickHandler(event:MouseEvent):void
@@ -122,6 +134,9 @@ package view.allView
 		
 		private function data(arr:Array):void
 		{
+			maxPage();
+			startIndex();
+			endIndex();
 			//翻页处理
 			buttonShow();
 			//数据改变
@@ -155,18 +170,18 @@ package view.allView
 		private function turnRightBtn_clickHandler(event:MouseEvent):void
 		{
 			_currentPageIndex++;
-			dataChange(allViewProxy.myFortsList);
+			data(allViewProxy.myFortsList);
 		}
 		
 		private function turnLeftBtn_clickHandler(event:MouseEvent):void
 		{
 			_currentPageIndex--;
-			dataChange(allViewProxy.myFortsList);
+			data(allViewProxy.myFortsList);
 		}
 		
 		private function dataChange(data:Array):void
 		{
-			_dataArray = data.slice(startIndex,endIndex);
+			_dataArray = data.slice(_startIndex,_endIndex);
 			//数据处理
 			setData(_dataArray);
 		}
@@ -175,9 +190,11 @@ package view.allView
 		{
 			for(var j:int = 0;j<boxComponentList.length;j++)
 			{
-				(boxComponentList[i] as BoxComponent).visible = false;
-				(boxComponentList[i] as BoxComponent).buttonMode = true;
-				(boxComponentList[i] as BoxComponent).addEventListener(MouseEvent.CLICK,boxComponent_clickHandler);
+				(boxComponentList[j] as BoxComponent).visible = false;
+				(boxComponentList[j] as BoxComponent).topSprite.visible = false;
+				(boxComponentList[j] as BoxComponent).buttonSprite.visible = false;
+				(boxComponentList[j] as BoxComponent).buttonMode = true;
+				(boxComponentList[j] as BoxComponent).addEventListener(MouseEvent.CLICK,boxComponent_clickHandler);
 			}
 					
 			for(var i:int = 0;i<dataArr.length;i++)
@@ -197,26 +214,26 @@ package view.allView
 		/**
 		 *最大页数 
 		 */
-		public function get maxPage():int
+		private function maxPage():int
 		{
 			_maxPage = Math.ceil(allViewProxy.myFortsList.length/_pageCount);
 			_maxPage = Math.max(1,_maxPage);
 			return _maxPage;
 		}
 		
-		public function get startIndex():int
+		private function startIndex():int
 		{
 			_startIndex = Math.max(0,(_currentPageIndex-1)*_pageCount);
 			return _startIndex;
 		}
 		
-		public function get endIndex():int
+		
+		private function endIndex():int
 		{
 			_endIndex = Math.min(_currentPageIndex*_pageCount,allViewProxy.myFortsList.length);
 			return _endIndex;
 		}
 
-		
 		private function closedBtn_clickHandler(event:MouseEvent):void
 		{
 			dispatchEvent(new AllViewEvent(AllViewEvent.CLOSED_XINGXING_EVENT));
@@ -233,7 +250,7 @@ package view.allView
 			{
 				currentSelected.topSprite.visible = false;
 				currentSelected.buttonSprite.visible = false;
-				TweenLite.to(shangSprite,0.5,{x:0,y:-320});
+				TweenLite.to(shangSprite,0.5,{x:0,y:-330});
 				TweenLite.to(xiaSprite,0.5,{x:0,y:500});
 				shangSprite.visible = false;
 				xiaSprite.visible = false;
@@ -243,13 +260,35 @@ package view.allView
 			{
 				currentSelected.buttonSprite.visible = true;
 				xiaSprite.visible = true;
+				xiaSprite.mask = maskSprite;
 				TweenLite.to(xiaSprite,0.5,{x:0,y:currentSelected.y+currentSelected.height});
 			}
 			else
 			{
 				currentSelected.topSprite.visible = true;
 				shangSprite.visible = true;
-				TweenLite.to(shangSprite,0.5,{x:0,y:currentSelected.y});
+				shangSprite.mask = maskSprite;
+				TweenLite.to(shangSprite,0.5,{x:0,y:currentSelected.y-330});
+			}
+		}
+		
+		private function shangSprite_clickHandler(event:MouseEvent):void
+		{
+			if(shangSprite.visible == true)
+			{
+				_currentSelected.buttonSprite.visible = false;
+				_currentSelected.topSprite.visible = false;
+				dispatchEvent(new Event("destoryshangSprite"));
+			}
+		}
+		
+		private function xiaSprite_clickHandler(event:MouseEvent):void
+		{
+			if( xiaSprite.visible == true)
+			{
+				_currentSelected.buttonSprite.visible = false;
+				_currentSelected.topSprite.visible = false;
+				dispatchEvent(new Event("destoryxiaSprite"));
 			}
 		}
 

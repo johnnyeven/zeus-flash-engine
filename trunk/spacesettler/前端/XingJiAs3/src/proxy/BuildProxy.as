@@ -20,6 +20,8 @@ package proxy
     import proxy.login.LoginProxy;
     import proxy.userInfo.UserInfoProxy;
     
+    import ui.components.Alert;
+    
     import vo.BuildInfoVo;
 
     public class BuildProxy extends Proxy implements IProxy
@@ -44,6 +46,9 @@ package proxy
         private var _buildCallBack:Function;
 
         private var _upCallBack:Function;
+		
+		[Bindable]
+		public  var isBuild:Boolean;
 
         public function BuildProxy(data:Object = null)
         {
@@ -81,6 +86,7 @@ package proxy
 
         public function getBuildInfoResult(data:Object):void
         {
+			
             if (data.base.buildings)
             {
                 var hasBuildDic:Object = ObjectUtil.CreateDic(buildArr, BuildInfoVo.TYPE_FIELD);
@@ -172,7 +178,8 @@ package proxy
 				
                 return;
             }
-
+			
+			isBuild=true;
 			var userInfoProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userInfoProxy.updateServerData(data);
 			

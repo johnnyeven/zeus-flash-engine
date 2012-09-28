@@ -7,6 +7,8 @@ package mediator.login
     
     import flash.events.Event;
     
+    import flashx.textLayout.operations.CopyOperation;
+    
     import mediator.BaseMediator;
     import mediator.prompt.PromptMediator;
     
@@ -105,6 +107,8 @@ package mediator.login
 				return;
 			}
 			
+			mouseEnabled=false;
+			
 			var myProxy:LoginProxy = getProxy(LoginProxy);
 			myProxy.login(event.userName, event.password);
         }
@@ -116,6 +120,11 @@ package mediator.login
 				sendNotification(StartComponentMediator.SHOW_NOTE);
 			};
 			sendNotification(DESTROY_NOTE);
+		}
+		
+		public function set mouseEnabled(value:Boolean):void
+		{
+			comp.mouseChildren=comp.mouseEnabled=value;
 		}
     }
 }

@@ -8,8 +8,10 @@ package view.allView
 	import flash.text.TextField;
 	
 	import proxy.allView.AllViewProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.components.Button;
+	import ui.components.Label;
 	import ui.components.Window;
 	import ui.core.Component;
 	
@@ -20,29 +22,29 @@ package view.allView
 	 */	
     public class AllViewComponent extends Window
     {
-		public var playerNameTxt:TextField;
+		public var playerNameTxt:Label;
 		
-		public var rongYuTxt:TextField;
+		public var rongYuTxt:Label;
 		
-		public var keJiShiDaiTxt:TextField;
+		public var keJiShiDaiTxt:Label;
 		
-		public var junTuanTxt:TextField;
+		public var junTuanTxt:Label;
 		
-		public var startCountTxt:TextField;
+		public var startCountTxt:Label;
 		
-		public var junXianTxt:TextField;
+		public var junXianTxt:Label;
 		
-		public var junXianLvTxt:TextField;
+		public var junXianLvTxt:Label;
 		
-		public var jinJingCountTxt:TextField;
+		public var jinJingCountTxt:Label;
 		
-		public var chuanQiCountTxt:TextField;
+		public var chuanQiCountTxt:Label;
 		
-		public var anWuZhiCountTxt:TextField;
+		public var anWuZhiCountTxt:Label;
 		
-		public var powerCountTxt:TextField;
+		public var powerCountTxt:Label;
 		
-		public var usePowerCountTxt:TextField;
+		public var usePowerCountTxt:Label;
 		
 		public var viewStartBtn:Button;
 		
@@ -55,30 +57,31 @@ package view.allView
             super(ClassUtil.getObject("view.allView.AllViewSkin"));
 			
 			var allViewProxy:AllViewProxy = ApplicationFacade.getProxy(AllViewProxy);
+			var userInforProxy:UserInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
 			
-			playerNameTxt = getSkin("playerNameTxt");
+			playerNameTxt = createUI(Label,"playerNameTxt");
 			
-			rongYuTxt = getSkin("rongYuTxt");
+			rongYuTxt = createUI(Label,"rongYuTxt");
 			
-			keJiShiDaiTxt = getSkin("keJiShiDaiTxt");
+			keJiShiDaiTxt = createUI(Label,"keJiShiDaiTxt");
 			
-			junTuanTxt = getSkin("junTuanTxt");
+			junTuanTxt = createUI(Label,"junTuanTxt");
 			
-			startCountTxt = getSkin("startCountTxt");
+			startCountTxt = createUI(Label,"startCountTxt");
 			
-			junXianTxt = getSkin("junXianTxt");
+			junXianTxt = createUI(Label,"junXianTxt");
 			
-			junXianLvTxt = getSkin("junXianLvTxt");
+			junXianLvTxt = createUI(Label,"junXianLvTxt");
 			
-			jinJingCountTxt = getSkin("jinJingCountTxt");
+			jinJingCountTxt = createUI(Label,"jinJingCountTxt");
 			
-			chuanQiCountTxt = getSkin("chuanQiCountTxt");
+			chuanQiCountTxt = createUI(Label,"chuanQiCountTxt");
 			
-			anWuZhiCountTxt = getSkin("anWuZhiCountTxt");
+			anWuZhiCountTxt = createUI(Label,"anWuZhiCountTxt");
 			
-			powerCountTxt = getSkin("powerCountTxt");
+			powerCountTxt = createUI(Label,"powerCountTxt");
 			
-			usePowerCountTxt = getSkin("usePowerCountTxt");
+			usePowerCountTxt = createUI(Label,"usePowerCountTxt");
 			
 			sortChildIndex();
 			
@@ -99,21 +102,21 @@ package view.allView
 				}
 				
 				
-				startCountTxt.text = allViewProxy.allViewVO.startCountTxt+"";
+				startCountTxt.text = allViewProxy.allViewVO.startCountTxt+"个";
 				
 				junXianTxt.text = allViewProxy.allViewVO.junXianTxt;
 				
 				junXianLvTxt.text = allViewProxy.allViewVO.junXianLvTxt+"";
 				
-				jinJingCountTxt.text = allViewProxy.allViewVO.jinJingCountTxt+"";
+				jinJingCountTxt.text = allViewProxy.allViewVO.jinJingCountTxt+"/h";
 				
-				chuanQiCountTxt.text = allViewProxy.allViewVO.chuanQiCountTxt+"";
+				chuanQiCountTxt.text = allViewProxy.allViewVO.chuanQiCountTxt+"/h";
 				
-				anWuZhiCountTxt.text = allViewProxy.allViewVO.anWuZhiCountTxt+"";
+				anWuZhiCountTxt.text = allViewProxy.allViewVO.anWuZhiCountTxt+"/h";
 				
-				powerCountTxt.text = allViewProxy.allViewVO.powerCountTxt+"";
+				powerCountTxt.text = allViewProxy.allViewVO.powerCountTxt+"/h";
 				
-				usePowerCountTxt.text = allViewProxy.allViewVO.usePowerCountTxt+"";
+				usePowerCountTxt.text = allViewProxy.allViewVO.usePowerCountTxt+"/h";
 			}
 			viewStartBtn = createUI(Button,"viewStartBtn");
 			viewRongYuBtn = createUI(Button,"viewRongYuBtn");

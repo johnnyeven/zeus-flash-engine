@@ -46,7 +46,7 @@ package controller.buildingView
             {
                 //加载界面SWF
 				_isLoading=true;
-                ResLoader.load(ResEnum.parentURL+"senceBuildingView/shiJianJiQi_info_view.swf", MultilanguageManager.getString(""), loaderComplete, true);
+                ResLoader.load("shiJianJiQi_info_view", MultilanguageManager.getString(""), loaderComplete, true);
             }
         }
 

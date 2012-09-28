@@ -10,6 +10,8 @@ package controller.timeMachine
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.timeMachine.TimeMachineProxy;
 
     /**
      *时间机器
@@ -37,17 +39,23 @@ package controller.timeMachine
 			if(_isLoading)
 				return ;
 			
-            var med:TimeMachineComponentMediator = getMediator(TimeMachineComponentMediator);
-            if (med)
-            {
-				callShow(med);
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("timeMachine.swf", MultilanguageManager.getString(""), loaderComplete,true);
-            }
+			var timeMachineProxy:TimeMachineProxy = getProxy(TimeMachineProxy);
+			timeMachineProxy.timeMachine(function():void
+			{
+			    var med:TimeMachineComponentMediator = getMediator(TimeMachineComponentMediator);
+	            if (med)
+	            {
+					callShow(med);
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("timeMachine.swf", MultilanguageManager.getString(""), loaderComplete,true);
+	            }
+			});
+			
+            
         }
 
         /**

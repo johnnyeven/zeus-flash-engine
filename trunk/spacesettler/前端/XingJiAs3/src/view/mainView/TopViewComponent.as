@@ -34,15 +34,15 @@ package view.mainView
 		/**
 		 * 军衔显示
 		 */		
-		public var militaryRankText:TextField;
+		public var militaryRankText:Label;
 		/**
 		 * 军功声望显示
 		 */		
-		public var militaryExploitText:TextField;
+		public var militaryExploitText:Label;
 		/**
 		 * 用户名显示
 		 */		
-		public var userNameText:TextField;
+		public var userNameText:Label;
 		/**
 		 * 电量loader条
 		 */		
@@ -69,9 +69,9 @@ package view.mainView
 			tritiumGasText=createUI(Label,"chuanqi_tf");
 			darkText=createUI(Label,"anneng_tf");
 			moneyText=createUI(Label,"jinqian_tf");
-			militaryRankText=getSkin("junxian_tf");
-			militaryExploitText=getSkin("shengwang_tf");
-			userNameText=getSkin("uesrname_tf");
+			militaryRankText=createUI(Label,"junxian_tf");
+			militaryExploitText=createUI(Label,"shengwang_tf");
+			userNameText=createUI(Label,"uesrname_tf");
 			
 			militaryRankText.text="新兵";//*****************************************
 			electricBar=createUI(ProgressBar,"dianliang_loader_bar");
@@ -86,7 +86,7 @@ package view.mainView
 			cwList.push(BindingUtils.bindProperty(userNameText,"text",_userInfoProxy,["userInfoVO","nickname"]));
 //			cwList.push(BindingUtils.bindProperty(pebbleText,"text",userInfoProxy,["userInfoVO","crystal"]));
 //			cwList.push(BindingUtils.bindProperty(tritiumGasText,"text",_userInfoProxy,["userInfoVO","tritium"]));
-			cwList.push(BindingUtils.bindProperty(darkText,"text",_userInfoProxy,["userInfoVO","broken_crysta"]));
+//			cwList.push(BindingUtils.bindProperty(darkText,"text",_userInfoProxy,["userInfoVO","broken_crysta"]));
 			cwList.push(BindingUtils.bindProperty(moneyText,"text",_userInfoProxy,["userInfoVO","dark_crystal"]));
 			cwList.push(BindingUtils.bindProperty(militaryExploitText,"text",_userInfoProxy,["userInfoVO","prestige"]));
 			//cwList.push(BindingUtils.bindProperty(militaryRankText,"text",userInfoProxy,["userInfoVO","militaryRrank"]));
@@ -94,6 +94,12 @@ package view.mainView
 			
 			cwList.push(BindingUtils.bindSetter(crystalChange,_userInfoProxy,["userInfoVO","crystal"]));
 			cwList.push(BindingUtils.bindSetter(tritiumChange,_userInfoProxy,["userInfoVO","tritium"]));
+			cwList.push(BindingUtils.bindSetter(darkChange,_userInfoProxy,["userInfoVO","broken_crysta"]));
+		}
+		
+		private function darkChange(value:*):void
+		{
+			darkText.text=value;
 		}
 		
 		private function crystalChange(value:*):void

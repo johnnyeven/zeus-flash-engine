@@ -139,6 +139,9 @@ package view.login
 		
 		private function data(arr:Array):void
 		{
+			maxPage();
+			startIndex();
+			endIndex();
 			//翻页处理
 			buttonShow();
 			//数据改变
@@ -188,18 +191,18 @@ package view.login
 		private function turnRightBtn_clickHandler(event:MouseEvent):void
 		{
 			_currentPageIndex++;
-			dataChange(loginProxy.serverVOList);
+			data(loginProxy.serverVOList);
 		}
 		
 		private function turnLeftBtn_clickHandler(event:MouseEvent):void
 		{
 			_currentPageIndex--;
-			dataChange(loginProxy.serverVOList);
+			data(loginProxy.serverVOList);
 		}
 		
 		private function dataChange(data:Array):void
 		{
-			_dataArray = data.slice(startIndex,endIndex);
+			_dataArray = data.slice(_startIndex,_endIndex);
 			//数据处理
 			setData(_dataArray);
 		}
@@ -208,9 +211,9 @@ package view.login
 		{
 			for(var j:int = 0;j<barList.length;j++)
 			{
-				(barList[i] as BarComponent).visible = false;
-				(barList[i] as BarComponent).buttonMode = true;
-				(barList[i] as BarComponent).addEventListener(MouseEvent.CLICK,barComponent_clickHandler);
+				(barList[j] as BarComponent).visible = false;
+				(barList[j] as BarComponent).buttonMode = true;
+				(barList[j] as BarComponent).addEventListener(MouseEvent.CLICK,barComponent_clickHandler);
 			}
 			
 			if(dataArr.length < 4)
@@ -234,20 +237,20 @@ package view.login
 		/**
 		 *最大页数 
 		 */
-		public function get maxPage():int
+		private function maxPage():int
 		{
 			_maxPage = Math.ceil(loginProxy.serverVOList.length/_pageCount);
 			_maxPage = Math.max(1,_maxPage);
 			return _maxPage;
 		}
 
-		public function get startIndex():int
+		private function startIndex():int
 		{
 			_startIndex = Math.max(0,(_currentPageIndex-1)*_pageCount);
 			return _startIndex;
 		}
 
-		public function get endIndex():int
+		private function endIndex():int
 		{
 			_endIndex = Math.min(_currentPageIndex*_pageCount,loginProxy.serverVOList.length);
 			return _endIndex;

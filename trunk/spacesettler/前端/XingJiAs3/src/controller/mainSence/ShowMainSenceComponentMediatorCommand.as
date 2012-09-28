@@ -6,6 +6,7 @@ package controller.mainSence
     import com.zn.utils.ClassUtil;
     
     import enum.MainSenceEnum;
+    import enum.SenceTypeEnum;
     
     import mediator.BaseMediator;
     import mediator.mainSence.MainSenceComponentMediator;
@@ -15,6 +16,7 @@ package controller.mainSence
     
     import proxy.userInfo.UserInfoProxy;
     
+    import vo.GlobalData;
     import vo.userInfo.UserInfoVO;
 
     /**
@@ -86,6 +88,8 @@ package controller.mainSence
             {
                 med.show();
             }
+			
+			GlobalData.currentSence=SenceTypeEnum.MAIN;
         }
     }
 }

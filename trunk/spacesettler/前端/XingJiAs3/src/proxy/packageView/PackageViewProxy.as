@@ -1,4 +1,4 @@
-package proxy
+package proxy.packageView
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;

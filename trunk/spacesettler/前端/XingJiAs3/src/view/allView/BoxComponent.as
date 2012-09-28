@@ -4,6 +4,7 @@ package view.allView
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	
+	import ui.components.Label;
 	import ui.core.Component;
 	
 	import vo.plantioid.FortsInforVO;
@@ -14,9 +15,9 @@ package view.allView
 		
 		public var buttonSprite:Sprite;
 		
-		public var pointXText:TextField;
+		public var pointXText:Label;
 		
-		public var pointYText:TextField;
+		public var pointYText:Label;
 		
 		private var _data:FortsInforVO;
 		
@@ -26,8 +27,8 @@ package view.allView
 			
 			topSprite = getSkin("topSprite");
 			buttonSprite = getSkin("buttonSprite");
-			pointXText = getSkin("pointXText");
-			pointYText = getSkin("pointYText");
+			pointXText = createUI(Label,"pointXText");
+			pointYText = createUI(Label,"pointYText");
 			
 			sortChildIndex();
 			
@@ -37,8 +38,8 @@ package view.allView
 		public function set data(myFortsInforVO:FortsInforVO):void
 		{
 			_data = myFortsInforVO;
-			pointXText.text =  "X:"+myFortsInforVO.x;
-			pointYText.text = "Y:"+myFortsInforVO.y;
+			pointXText.text =  "X:"+myFortsInforVO.x +"";
+			pointYText.text = "Y:"+myFortsInforVO.y +"";
 		}
 		
 		public function get data():FortsInforVO

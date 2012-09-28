@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>manufactureInfo</key>
+	<dict>
+		<key>Title</key>
+		<string>制造工厂</string>
+		<key>DetailInfo</key>
+		<string>对战车、武器、挂件进行制造的工厂。根据获得的图纸制造不同的战车和挂件.</string>
+	</dict>
+	<key>AssemblyInfo</key>
+	<dict>
+		<key>Title</key>
+		<string>改装工厂</string>
+		<key>DetailInfo</key>
+		<string>对战车进行改装的工厂. 可以给战车配置各种不同的武器, 护甲, 能量防护罩等挂件.
+强化: 可对战车耐久, 火力, 速度等进行强化以提高单项性能.</string>
+	</dict>
+	<key>RepaireInfo</key>
+	<dict>
+		<key>Title</key>
+		<string>维修工厂</string>
+		<key>DetailInfo</key>
+		<string>对战车进行维修的工厂. 战车破损或者损坏后需要在这里维修.</string>
+	</dict>
+</dict>
+</plist>

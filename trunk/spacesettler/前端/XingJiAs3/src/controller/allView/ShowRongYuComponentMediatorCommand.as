@@ -10,6 +10,8 @@ package controller.allView
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.allView.AllViewProxy;
 
     /**
      *荣誉
@@ -37,6 +39,8 @@ package controller.allView
 			if(_isLoading)
 				return ;
 			
+			var allViewProxy:AllViewProxy = getProxy(AllViewProxy);
+//			allViewProxy.
             var med:RongYuComponentMediator = getMediator(RongYuComponentMediator);
             if (med)
             {

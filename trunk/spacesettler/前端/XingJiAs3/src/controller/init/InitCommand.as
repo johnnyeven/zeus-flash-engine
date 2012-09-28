@@ -32,9 +32,14 @@ package controller.init
     import controller.buildingView.ShowYeLianInfoComponentMediatorCommand;
     import controller.cangKu.ShowCangkuPackageViewComponentMediatorCommand;
     import controller.cangKu.ShowDonateViewComponentMediatorCommand;
+    import controller.crystalMelter.ShowCrystalSmelterFunctionComponentMediatorCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.mainView.ShowMainViewMediatorCommand;
     import controller.plantioid.ShowPlantioidComponentMediatorCommand;
+    import controller.systemView.ShowAccountNumberBoundaryComponentMediatorCommand;
+    import controller.systemView.ShowHelpBoundaryComponentMediatorCommand;
+    import controller.systemView.ShowOptionBoundaryComponentMediatorCommand;
+    import controller.systemView.ShowsystemComponentMediatorCommand;
     import controller.timeMachine.ShowTimeMachineComponentMediatorCommand;
     import controller.timeMachine.ShowTimeMachineInforComponentMediatorCommand;
     
@@ -67,10 +72,15 @@ package controller.init
     import mediator.cangKu.CangkuPackageViewComponentMediator;
     import mediator.cangKu.DonateViewComponentMediator;
     import mediator.cangKu.WuPingChaKanMenuViewComponentMediator;
+    import mediator.crystalSmelter.CrystalSmelterFunctionComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.mainView.MainViewMediator;
     import mediator.plantioid.PlantioidComponentMediator;
     import mediator.prompt.MoneyAlertComponentMediator;
+    import mediator.systemView.AccountNumberBoundaryComponentMediator;
+    import mediator.systemView.HelpBoundaryComponentMediator;
+    import mediator.systemView.OptionBoundaryComponentMediator;
+    import mediator.systemView.SystemComponentMediator;
     import mediator.timeMachine.TimeMachineComponentMediator;
     import mediator.timeMachine.TimeMachineInforComponentMediator;
     
@@ -82,7 +92,10 @@ package controller.init
     import proxy.BuildProxy;
     import proxy.allView.AllViewProxy;
     import proxy.allView.ShopProxy;
+    import proxy.chat.ChatProxy;
     import proxy.content.ContentProxy;
+    import proxy.friend.FriendProxy;
+    import proxy.packageView.PackageViewProxy;
     import proxy.plantioid.PlantioidProxy;
     import proxy.task.TaskProxy;
     import proxy.timeMachine.TimeMachineProxy;
@@ -146,13 +159,16 @@ package controller.init
 			var taskProxy:TaskProxy=getProxy(TaskProxy);
 			taskProxy.getFreshmanTask();
 			
-			var contentProxy:ContentProxy=getProxy(ContentProxy);
-			contentProxy.getContentInfo(function():void
-			{
-				NetHttpConn.showLoadServerData=true;
-				sendNotification(ResLoader.HIDE_LOADER_BAR_NOTE);
-				sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
-			});
+			var chatProxy:ChatProxy=getProxy(ChatProxy);
+			chatProxy.connect();
+			
+//			var contentProxy:ContentProxy=getProxy(ContentProxy);
+//			contentProxy.getContentInfo(function():void
+//			{
+//				NetHttpConn.showLoadServerData=true;
+//				sendNotification(ResLoader.HIDE_LOADER_BAR_NOTE);
+//				sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
+//			});
         }
 
         /**
@@ -167,12 +183,18 @@ package controller.init
 			facade.registerProxy(new TaskProxy());
 			//总览
 			facade.registerProxy(new AllViewProxy());
+			//仓库
+			facade.registerProxy(new PackageViewProxy());
 			//时间机器
 			facade.registerProxy(new TimeMachineProxy());
 			//商城
 			facade.registerProxy(new ShopProxy());
 			//小行星带
 			facade.registerProxy(new PlantioidProxy());
+			//聊天
+			facade.registerProxy(new ChatProxy());
+			//好友
+			facade.registerProxy(new FriendProxy());
         }
 
         /**
@@ -209,8 +231,11 @@ package controller.init
 			facade.registerCommand(TimeMachineComponentMediator.SHOW_NOTE,ShowTimeMachineComponentMediatorCommand);
 			//时间机器描述
 			facade.registerCommand(TimeMachineInforComponentMediator.SHOW_NOTE,ShowTimeMachineInforComponentMediatorCommand);
+			//熔炼功能
+			facade.registerCommand(CrystalSmelterFunctionComponentMediator.SHOW_NOTE,ShowCrystalSmelterFunctionComponentMediatorCommand);
 			//查看仓库
 			facade.registerCommand(CangkuPackageViewComponentMediator.SHOW_NOTE,ShowCangkuPackageViewComponentMediatorCommand);
+			
 			//捐献
 			facade.registerCommand(DonateViewComponentMediator.SHOW_NOTE,ShowDonateViewComponentMediatorCommand);
 			
@@ -281,6 +306,14 @@ package controller.init
 			facade.registerCommand(PlantioidComponentMediator.SHOW_NOTE,ShowPlantioidComponentMediatorCommand);
 			//赠送弹出好友列表
 			facade.registerCommand(FriendGiveComponentMediator.SHOW_NOTE,ShowfriendGiveComponentMediatorCommand);
+			//系统菜单
+			facade.registerCommand(SystemComponentMediator.SHOW_NOTE,ShowsystemComponentMediatorCommand);
+			//系统选项菜单
+			facade.registerCommand(OptionBoundaryComponentMediator.SHOW_NOTE,ShowOptionBoundaryComponentMediatorCommand);
+			//系统帮助菜单
+			facade.registerCommand(HelpBoundaryComponentMediator.SHOW_NOTE,ShowHelpBoundaryComponentMediatorCommand);
+			//系统我的账户菜单
+			facade.registerCommand(AccountNumberBoundaryComponentMediator.SHOW_NOTE,ShowAccountNumberBoundaryComponentMediatorCommand);
         }
     }
 }

@@ -4,6 +4,7 @@ package mediator.timeMachine
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.prompt.MoneyAlertComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -78,9 +79,15 @@ package mediator.timeMachine
 
 		private function allSpeedHandler(event:TimeMachineEvent):void
 		{
-			var timeMachineProxy:TimeMachineProxy = getProxy(TimeMachineProxy);
-			var userInforProxy:UserInfoProxy = getProxy(UserInfoProxy);
-			timeMachineProxy.allSpeed(userInforProxy.userInfoVO.id);
+			var obj:Object = {info:"使用时间机器完成本任务需花费",count:event.count,okCallBack:function():void
+			{
+	        	var timeMachineProxy:TimeMachineProxy = getProxy(TimeMachineProxy);
+				var userInforProxy:UserInfoProxy = getProxy(UserInfoProxy);
+				timeMachineProxy.allSpeed(userInforProxy.userInfoVO.id);
+			}};
+			
+			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE,obj);
+			
 		}
 		
 		private function showInforComponetHandler(event:TimeMachineEvent):void
@@ -90,8 +97,13 @@ package mediator.timeMachine
 		
 		private function speedHandler(event:TimeMachineEvent):void
 		{
-			var builderProxy:BuildProxy = getProxy(BuildProxy);
-			builderProxy.speedUpBuild(event.idType);
+			var obj:Object = {info:"使用时间机器完成本任务需花费",count:event.count,okCallBack:function():void
+			{
+				var builderProxy:BuildProxy = getProxy(BuildProxy);
+				builderProxy.speedUpBuild(event.idType);
+			}};
+			
+			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE,obj);
 		}
 	}
 }

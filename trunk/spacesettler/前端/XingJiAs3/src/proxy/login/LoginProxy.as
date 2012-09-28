@@ -9,6 +9,7 @@ package proxy.login
     import enum.command.CommandEnum;
     import enum.command.CommandResultTypeEnum;
     
+    import flash.events.Event;
     import flash.net.URLRequestMethod;
     
     import mediator.login.LoginMediator;
@@ -17,6 +18,8 @@ package proxy.login
     import mediator.login.RegistComponentMediator;
     import mediator.login.StartComponentMediator;
     import mediator.prompt.PromptMediator;
+    
+    import net.chat.ChatSocket;
     
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;
@@ -85,7 +88,6 @@ package proxy.login
 
         public var alliance:String;
 
-
         public var camp:int;
 
         private var _registCallBack:Function;
@@ -109,7 +111,7 @@ package proxy.login
                 Protocol.registerProtocol(CommandEnum.startLogin, startLoginResult);
             ConnDebug.send(CommandEnum.startLogin, null, ConnDebug.HTTP, URLRequestMethod.GET);
         }
-
+		
         /**
          *快速登录返回
          *
@@ -145,22 +147,25 @@ package proxy.login
          *
          */
         private function loginResult(data:Object):void
-        {
+        { 
+			
+			var loginMeditor:LoginMediator = getMediator(LoginMediator);
+			
             serverData = data;
             if (data.errors == "")
             {
                 sendNotification(LoginMediator.DESTROY_NOTE);
-                var loginMeditor:LoginMediator = getMediator(LoginMediator);
+         
                 loginMeditor.destoryCallback = function():void
                 {
-                    sendNotification(NameInforComponentMediator.SHOW_NOTE);
+                    sendNotification(NameInforComponentMediator.SHOW_NOTE,data);
                 };
-
                 return;
             }
             else if (data.hasOwnProperty("errors"))
             {
                 sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString(data.errors));
+				loginMeditor.mouseEnabled=true;
                 return;
             }
 
@@ -169,16 +174,16 @@ package proxy.login
 
         private function enterGame():void
         {
-			sendNotification(SUCCESS_NOTE);
-			sendNotification(StartComponentMediator.DESTROY_NOTE);
-			sendNotification(LoginMediator.DESTROY_NOTE);
-			sendNotification(NameInforComponentMediator.DESTROY_NOTE);
-			sendNotification(PkComponentMediator.DESTROY_NOTE);
-			sendNotification(RegistComponentMediator.DESTROY_NOTE);
-			StartComponentMediator.removeBG();
-			
-			//加载进入游戏的资源
-			sendNotification(LoaderResCommand.LOAD_RES_NOTE);
+            sendNotification(SUCCESS_NOTE);
+            sendNotification(StartComponentMediator.DESTROY_NOTE);
+            sendNotification(LoginMediator.DESTROY_NOTE);
+            sendNotification(NameInforComponentMediator.DESTROY_NOTE);
+            sendNotification(PkComponentMediator.DESTROY_NOTE);
+            sendNotification(RegistComponentMediator.DESTROY_NOTE);
+            StartComponentMediator.removeBG();
+
+            //加载进入游戏的资源
+            sendNotification(LoaderResCommand.LOAD_RES_NOTE);
         }
 
         /**
@@ -216,7 +221,11 @@ package proxy.login
                         serverVO.account_count = objList[i].account_count;
                         serverVO.server_language = objList[i].server_language;
                         serverVO.server_recommend = objList[i].server_recommend;
-                        serverVO.server_message_ip = objList[i].server_message_ip;
+                        serverVO.server_message_ip = objList[i].server_message_ip.split(":")[0];
+						serverVO.server_message_port=objList[i].server_message_ip.split(":")[1];
+                        serverVO.server_game_id = objList[i].server_game_id;
+                        serverVO.server_game_port = objList[i].server_game_port;
+
                         list.push(serverVO);
 
                         if (serverVO.server_recommend == ServerItemEnum.recommend)
@@ -241,7 +250,6 @@ package proxy.login
          */
         public function regist(callBack:Function):void
         {
-
             if (!Protocol.hasProtocolFunction(CommandEnum.regist, registResult))
                 Protocol.registerProtocol(CommandEnum.regist, registResult);
 
@@ -252,10 +260,13 @@ package proxy.login
 
         private function registResult(data:Object):void
         {
+			var pkComponentMeditor:PkComponentMediator = getMediator(PkComponentMediator);
+			
             serverData = data;
             if (data.hasOwnProperty("errors"))
             {
                 sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				pkComponentMeditor.mouseEnabled = true;
                 return;
             }
 

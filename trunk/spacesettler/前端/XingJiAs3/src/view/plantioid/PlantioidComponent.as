@@ -1,11 +1,18 @@
 package view.plantioid
 {
+    import com.greensock.TimelineLite;
+    import com.greensock.TweenLite;
+    import com.greensock.easing.Linear;
+    import com.zn.utils.BitmapUtil;
     import com.zn.utils.ClassUtil;
     
+    import flash.display.Bitmap;
+    import flash.display.BitmapData;
     import flash.display.DisplayObject;
     import flash.display.Sprite;
     import flash.display.Stage;
     import flash.errors.InvalidSWFError;
+    import flash.events.Event;
     import flash.events.MouseEvent;
     import flash.geom.Point;
     import flash.geom.Rectangle;
@@ -16,6 +23,7 @@ package view.plantioid
     
     import ui.core.Component;
     import ui.managers.SystemManager;
+    import ui.utils.DisposeUtil;
     
     import view.login.NameInforComponent;
     import view.plantioid.plantioidInfo.InfoComponent;
@@ -30,191 +38,173 @@ package view.plantioid
      */
     public class PlantioidComponent extends Component
     {
-        public const OUT_RANG_SIZE:Number = 600;
-
         public var topInfoComp:TopInfoComponent;
 
-        public var xingQiu2:Sprite;
+        public var xingQiuSp:Sprite;
 
-        public var xingQiu1:Sprite;
+        public var bgSp:Sprite;
 
-        public var xingxingEffect:Sprite;
-
-		public var bgSp:Sprite;
-		
         public var infoComp:InfoComponent;
 
-        private var plantCompList:Array = [];
-
-        private var _plantioidProxy:PlantioidProxy;
-
-        public var rangeRect:Rectangle;
-
-        private var _downMovePoint:Point;
-
-        private var _rangePoint:Point;
-
         private var _selectedPlantioidComp:PlantioidXingQiuComponent;
+
+        private var _currentPlantSenceComp:PlantSenceComponent;
+
+        private var _plantProxy:PlantioidProxy;
+
+        private var _newPlantComp:PlantSenceComponent;
 
         public function PlantioidComponent()
         {
             super(ClassUtil.getObject("plantioid.PlantioidSkin"));
 
-            xingxingEffect = getSkin("xingxingEffect");
-
-            xingQiu1 = getSkin("xingQiu1");
-            xingQiu2 = getSkin("xingQiu2");
             topInfoComp = createUI(TopInfoComponent, "topInfoComp");
 
             infoComp = createUI(InfoComponent, "infoComp");
             infoComp.visible = false;
 
-			bgSp=getSkin("bgSp");
-			bgSp.mouseEnabled=true;
-			bgSp.addEventListener(MouseEvent.CLICK,bgSp_clickHandler);
+            bgSp = getSkin("bgSp");
+            bgSp.mouseEnabled = true;
+            bgSp.addEventListener(MouseEvent.CLICK, bgSp_clickHandler);
+			
+			xingQiuSp=getSkin("xingQiuSp");
+				
             sortChildIndex();
 
-            xingxingEffect.addChild(new BGEffectComponent());
-
-            scrollRect = new Rectangle(0, 0, SystemManager.rootStage.stageWidth, SystemManager.rootStage.stageHeight);
-
-            var stage:Stage = SystemManager.rootStage;
-            var w:Number = stage.stageWidth * 0.75;
-            var h:Number = stage.stageHeight * 0.75;
-            rangeRect = new Rectangle(-stage.stageWidth * 0.25, -stage.stageHeight * 0.25, w * 2, h * 2);
-
-            _rangePoint = new Point();
-            _rangePoint.x -= xingxingEffect.x = xingQiu1.x = xingQiu2.x = rangeRect.x;
-            _rangePoint.y -= xingxingEffect.y = xingQiu1.y = xingQiu2.y = rangeRect.y;
-
-            _plantioidProxy = ApplicationFacade.getProxy(PlantioidProxy);
-            cwList.push(BindingUtils.bindSetter(plantioidListChange, _plantioidProxy, "plantioidList"));
-
-            SystemManager.rootStage.addEventListener(MouseEvent.MOUSE_MOVE, stageMouseMoveHandler);
-        }
-		
-        public override function dispose():void
-        {
-            super.dispose();
-            plantCompList = null;
-            SystemManager.rootStage.removeEventListener(MouseEvent.MOUSE_MOVE, stageMouseMoveHandler);
+			scrollRect = new Rectangle(0, 0, SystemManager.rootStage.stageWidth, SystemManager.rootStage.stageHeight);
+			
+			_plantProxy = ApplicationFacade.getProxy(PlantioidProxy);
+			switchPlantSence();
         }
 
-        private function plantioidListChange(value:*):void
+        public function switchPlantSence():void
         {
-            var plantInfoComp:PlantioidXingQiuComponent;
-            for (var i:int = 0; i < plantCompList.length; i++)
+            selectedPlantioidComp = null;
+			var list:Array=_plantProxy.plantioidList;
+				
+            if (!_currentPlantSenceComp)
             {
-                plantInfoComp = plantCompList[i];
-                plantInfoComp.dispose();
-            }
-
-            plantCompList = [];
-
-            var rangIndex:int;
-            var x:Number;
-            var y:Number;
-
-            for (var j:int = 0; j < _plantioidProxy.plantioidList.length; j++)
-            {
-                plantInfoComp = new PlantioidXingQiuComponent();
-                plantInfoComp.platioidVO = _plantioidProxy.plantioidList[j];
-
-                do
-                {
-                    plantInfoComp.x = Math.random() * rangeRect.width + rangeRect.x;
-                    plantInfoComp.y = Math.random() * rangeRect.height + rangeRect.y;
-                } while (hasCollide(plantInfoComp));
-
-                rangIndex = Math.random() * 2 + 1;
-                if (rangIndex == 1)
-                    xingQiu1.addChild(plantInfoComp);
-                else
-                    xingQiu2.addChild(plantInfoComp);
-
-                plantInfoComp.addEventListener(MouseEvent.CLICK, plantInfoComp_clickHandler);
-
-                plantCompList.push(plantInfoComp);
-            }
-        }
-
-        private function hasCollide(obj:DisplayObject):Boolean
-        {
-            var obj1:DisplayObject;
-            for (var i:int = 0; i < plantCompList.length; i++)
-            {
-                obj1 = plantCompList[i];
-                if (obj.hitTestObject(obj1))
-                    return true;
-            }
-            return false;
-        }
-
-        protected function stageMouseMoveHandler(event:MouseEvent):void
-        {
-            if (event.buttonDown)
-            {
-                if (_downMovePoint == null)
-                    _downMovePoint = new Point(event.stageX, event.stageY);
-
-                var newP:Point = new Point(event.stageX, event.stageY);
-                var disP:Point = newP.subtract(_downMovePoint);
-
-                xingxingEffect.x += disP.x * 0.1;
-                xingxingEffect.y += disP.y * 0.1;
-
-                xingQiu1.x += disP.x * 0.3;
-                xingQiu1.y += disP.y * 0.3;
-
-                xingQiu2.x += disP.x * 0.5;
-                xingQiu2.y += disP.y * 0.5;
-
-                _rangePoint.x -= disP.x * 0.3;
-                _rangePoint.y -= disP.y * 0.3;
-
-                _downMovePoint = newP;
-				updateInfoPoint();
+                _currentPlantSenceComp = createNewPlantSenceComp();
+                _currentPlantSenceComp.setPlantList(list);
             }
             else
             {
-                _downMovePoint = null;
+                _newPlantComp = createNewPlantSenceComp();
+                _newPlantComp.setPlantList(list);
+
+				_newPlantComp.removeScrollRect();
+				_currentPlantSenceComp.removeScrollRect();
+				
+				var newPlantBitmap:Bitmap=BitmapUtil.getBitmap(_newPlantComp.xingQiuEffect);
+				var currentPlantBitmap:Bitmap=BitmapUtil.getBitmap(_currentPlantSenceComp.xingQiuEffect);
+		
+				var rect:Rectangle=_currentPlantSenceComp.xingQiuEffect.getRect(_currentPlantSenceComp.xingQiuEffect);
+				currentPlantBitmap.x=rect.x;
+				currentPlantBitmap.y=rect.y;
+				
+				rect=_newPlantComp.xingQiuEffect.getRect(_newPlantComp.xingQiuEffect);
+				newPlantBitmap.x=rect.x;
+				newPlantBitmap.y=rect.y;
+				
+				xingQiuSp.addChild(currentPlantBitmap);
+				xingQiuSp.addChild(newPlantBitmap);
+				
+				_currentPlantSenceComp.visible=false;
+				_newPlantComp.visible=false;
+				
+				var switchPlantSenceTweentime:TimelineLite = new TimelineLite({onComplete:switchComplete,onCompleteParams:[currentPlantBitmap,newPlantBitmap]});
+				
+				var rang:Number=PlantSenceComponent.OUT_RANG_SIZE*2;
+				var time:Number=2;
+                if (_currentPlantSenceComp.plantY < _newPlantComp.plantY)
+                {
+					newPlantBitmap.y = _currentPlantSenceComp.height+rang;
+                    switchPlantSenceTweentime.insert(TweenLite.to(currentPlantBitmap, time, { y: -newPlantBitmap.y }));
+                    switchPlantSenceTweentime.insert(TweenLite.to(newPlantBitmap, time, { y: rect.y }));
+                }
+				else if (_currentPlantSenceComp.plantY > _newPlantComp.plantY)
+				{
+					newPlantBitmap.y = -rang-_newPlantComp.height;
+					switchPlantSenceTweentime.insert(TweenLite.to(currentPlantBitmap, time, { y: -newPlantBitmap.y }));
+					switchPlantSenceTweentime.insert(TweenLite.to(newPlantBitmap, time, { y: rect.y }));
+				}
+				else if (_currentPlantSenceComp.plantX < _newPlantComp.plantX)
+				{
+					newPlantBitmap.x = _currentPlantSenceComp.width+rang;
+					switchPlantSenceTweentime.insert(TweenLite.to(currentPlantBitmap, time, { x: -newPlantBitmap.x }));
+					switchPlantSenceTweentime.insert(TweenLite.to(newPlantBitmap, time, { x: rect.x}));
+				}
+				else if (_currentPlantSenceComp.plantX > _newPlantComp.plantX)
+				{
+					newPlantBitmap.x = -rang-_newPlantComp.width;
+					switchPlantSenceTweentime.insert(TweenLite.to(currentPlantBitmap, time, { x: -newPlantBitmap.x }));
+					switchPlantSenceTweentime.insert(TweenLite.to(newPlantBitmap, time, { x: rect.x }));
+				}
+            }
+        }
+		
+		private function switchComplete(currentPlantBitmap:Bitmap,newPlantBitmap:Bitmap):void
+		{
+			_newPlantComp.visible=true;
+			_newPlantComp.addScrollRect();
+			_currentPlantSenceComp.dispose();
+			_currentPlantSenceComp=_newPlantComp;
+			_newPlantComp=null;
+			
+			DisposeUtil.dispose(currentPlantBitmap);
+			DisposeUtil.dispose(newPlantBitmap);
+		}
+
+        private function createNewPlantSenceComp():PlantSenceComponent
+        {
+            var comp:PlantSenceComponent = new PlantSenceComponent();
+            comp.addEventListener(PlantSenceComponent.SELECTED_XING_QIU_CHANGE_EVENT, selectedPlantXingQiuChangeHandler);
+            comp.addEventListener(PlantSenceComponent.UPDATE_SELECTED_XING_QIU_POINT_EVENT, updateSelectedXingQiuPointHandler);
+            xingQiuSp.addChild(comp);
+            comp.plantX = _plantProxy.currentX;
+            comp.plantY = _plantProxy.currentY;
+
+            return comp;
+        }
+
+        protected function selectedPlantXingQiuChangeHandler(event:Event):void
+        {
+            selectedPlantioidComp = _currentPlantSenceComp.selectedPlantXingQiuComp;
+        }
+
+        public function set selectedPlantioidComp(value:PlantioidXingQiuComponent):void
+        {
+            _selectedPlantioidComp = value;
+
+            if (value)
+            {
+                infoComp.plantVO = _selectedPlantioidComp.platioidVO;
+                infoComp.selectedEffectMC.gotoAndPlay(1);
+                _selectedPlantioidComp.setSize(infoComp.selectedEffectMC, 30);
+
+                updateSelectedXingQiuPointHandler(null);
+                infoComp.visible = true;
+            }
+            else
+            {
+                infoComp.plantVO = null;
+                infoComp.visible = false;
             }
         }
 
-        private function get isMoveOut():Boolean
+        protected function updateSelectedXingQiuPointHandler(event:Event):void
         {
-            var w:Number = SystemManager.rootStage.stageWidth;
-            var h:Number = SystemManager.rootStage.stageHeight;
-
-            if (_rangePoint.x < -OUT_RANG_SIZE ||
-                _rangePoint.y < -OUT_RANG_SIZE ||
-                (_rangePoint.x + w) > (rangeRect.width + OUT_RANG_SIZE) ||
-                (_rangePoint.y + h) > (rangeRect.height + OUT_RANG_SIZE))
-                return true;
-            return false;
+            if (_selectedPlantioidComp)
+            {
+                var p:Point = _selectedPlantioidComp.localToGlobal(new Point());
+                infoComp.x = p.x;
+                infoComp.y = p.y;
+            }
         }
 
-        protected function plantInfoComp_clickHandler(event:MouseEvent):void
+        protected function bgSp_clickHandler(event:MouseEvent):void
         {
-            _selectedPlantioidComp = event.currentTarget as PlantioidXingQiuComponent;
-			updateInfoPoint();
-            infoComp.visible = true;
+            selectedPlantioidComp = null;
         }
-
-		private function updateInfoPoint():void
-		{
-			if(_selectedPlantioidComp)
-			{
-				var p:Point = _selectedPlantioidComp.localToGlobal(new Point());
-				infoComp.x = p.x;
-				infoComp.y = p.y;
-			}
-		}
-		
-		protected function bgSp_clickHandler(event:MouseEvent):void
-		{
-			_selectedPlantioidComp=null;
-			infoComp.visible = false;
-		}
     }
 }

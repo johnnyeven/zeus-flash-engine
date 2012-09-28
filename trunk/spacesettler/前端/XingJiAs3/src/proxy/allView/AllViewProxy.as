@@ -14,6 +14,8 @@ package proxy.allView
 	
 	import other.ConnDebug;
 	
+	import proxy.userInfo.UserInfoProxy;
+	
 	import vo.allView.AllViewVO;
 	import vo.plantioid.FortsInforVO;
 
@@ -25,6 +27,8 @@ package proxy.allView
 	public class AllViewProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = "AllViewProxy";
+		private var _allViewCallBack:Function;
+		private var _viewXingXingCallBack:Function;
 		
 		[Bindable]
 		public var allViewVO:AllViewVO;
@@ -32,9 +36,15 @@ package proxy.allView
 		[Bindable]
 		public var myFortsList:Array = [];
 		
+		private var userInforProxy:UserInfoProxy;
+		
 		public function AllViewProxy(data:Object = null)
 		{
 			super(NAME,data);
+			
+			userInforProxy = getProxy(UserInfoProxy);
+			Protocol.registerProtocol(CommandEnum.allView, allViewResult);
+			Protocol.registerProtocol(CommandEnum.xingXing,viewXingXingResult);
 		}
 		
 		/**
@@ -42,10 +52,11 @@ package proxy.allView
 		 * @param id
 		 * 
 		 */		
-		public function allView(id:String):void
+		public function allView(callBack:Function=null):void
 		{
-			if (!Protocol.hasProtocolFunction(CommandEnum.allView, allViewResult))
-				Protocol.registerProtocol(CommandEnum.allView, allViewResult);
+			//基地ID
+			  var id:String = userInforProxy.userInfoVO.id;
+			_allViewCallBack=callBack;
 			var obj:Object = {id:id};
 			ConnDebug.send(CommandEnum.allView,obj,ConnDebug.HTTP,URLRequestMethod.GET);
 		}
@@ -55,30 +66,35 @@ package proxy.allView
 			if(data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				_allViewCallBack=null;
 				return ;
 			}
 			
 			var allViewVO:AllViewVO = new AllViewVO();
 			allViewVO.playerNameTxt = data.nickname;
 			allViewVO.rongYuTxt = data.prestige;
-			allViewVO.keJiShiDaiTxt = data.level;
+			allViewVO.keJiShiDaiTxt = data.age_level;
 			allViewVO.junTuanTxt = data.name
 			allViewVO.startCountTxt = data.fort_count;
 //			allViewVO.junXianTxt = data.
 			allViewVO.junXianLvTxt = data.military_rank;
-			allViewVO.jinJingCountTxt = data.crystal_output;
-			allViewVO.chuanQiCountTxt = data.tritium_output;
-			allViewVO.anWuZhiCountTxt = data.broken_crystal_output;
-			allViewVO.powerCountTxt = data.current_power_supply;
-			allViewVO.usePowerCountTxt = data.current_power_consume;
+			allViewVO.jinJingCountTxt = data.base.crystal_output;
+			allViewVO.chuanQiCountTxt = data.base.tritium_output;
+			allViewVO.anWuZhiCountTxt = data.base.broken_crystal_output;
+			allViewVO.powerCountTxt = data.base.current_power_supply;
+			allViewVO.usePowerCountTxt = data.base.current_power_consume;
 			
 			this.allViewVO = allViewVO;
+			
+			if(_allViewCallBack!=null)
+				_allViewCallBack();
+			_allViewCallBack=null;
 		}
 		
-		public function viewXingXing(playID:String):void
+		public function viewXingXing(callBack:Function = null):void
 		{
-			if(!Protocol.hasProtocolFunction(CommandEnum.xingXing,viewXingXingResult))
-				Protocol.registerProtocol(CommandEnum.xingXing,viewXingXingResult);
+			_viewXingXingCallBack = callBack;
+			var playID:String = userInforProxy.userInfoVO.player_id;
 			var obj:Object = {player_id:playID};
 			ConnDebug.send(CommandEnum.xingXing,obj,ConnDebug.HTTP,URLRequestMethod.GET);
 		}
@@ -88,11 +104,12 @@ package proxy.allView
 			if(data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				_viewXingXingCallBack = null;
 				return ;
 			}
 			var fortsList:Array = [];
 			var arr:Array = [];
-			fortsList = data.fonts;
+			fortsList = data.forts;
 			var myFortsInforVO:FortsInforVO;
 			for(var i:int = 0;i<fortsList.length;i++)
 			{
@@ -112,6 +129,10 @@ package proxy.allView
 			}
 			
 			myFortsList = arr;
+			
+			if(_viewXingXingCallBack!=null)
+				_viewXingXingCallBack();
+			_viewXingXingCallBack=null;
 		}
 	}
 }

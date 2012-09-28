@@ -78,7 +78,7 @@ package view.mainView
 
         public function remainTimeChange(value:int):void
         {
-            timeText.text = DateFormatter.formatterTime(_buildInfoVo.remainTime);
+            timeText.text = DateFormatter.formatterTimeSFM(_buildInfoVo.remainTime);
         }
     }
 }

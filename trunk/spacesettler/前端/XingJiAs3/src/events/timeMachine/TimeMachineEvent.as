@@ -37,15 +37,18 @@ package events.timeMachine
 		
 		private var _idType:int;
 		
-		public function TimeMachineEvent(type:String,idType:int, bubbles:Boolean=false, cancelable:Boolean=false)
+		private var _count:int;
+		
+		public function TimeMachineEvent(type:String,idType:int,count:int, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			_idType = idType;
+			_count = count;
 			super(type,bubbles, cancelable);
 		}
 		
 		public override function clone():Event
 		{
-			return new TimeMachineEvent(type,idType,bubbles,cancelable);
+			return new TimeMachineEvent(type,idType,count,bubbles,cancelable);
 		}
 		
 		public override function toString():String
@@ -62,6 +65,17 @@ package events.timeMachine
 		{
 			_idType = value;
 		}
+
+		public function get count():int
+		{
+			return _count;
+		}
+
+		public function set count(value:int):void
+		{
+			_count = value;
+		}
+
 
 	}
 }

@@ -170,5 +170,20 @@ package enum.command
 		{
 			return "http://"+LoginProxy.selectedServerVO.server_ip+"/get_world_map_info";
 		}
+		
+		/*********************************************************************************
+		 * 聊天
+		 **********************************************************************************/
+		
+		/**
+		 *聊天登陆 
+		 */		
+		public static const chat_login:int=0;
+		
+		/**
+		 *聊天登陆返回 
+		 */		
+		public static const chat_login_result:int=1000;
+		
     }
 }

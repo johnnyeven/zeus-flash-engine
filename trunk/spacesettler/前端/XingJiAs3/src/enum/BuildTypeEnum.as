@@ -4,8 +4,14 @@ package enum
 	
 	import vo.userInfo.UserInfoVO;
 
+	/**
+	 * 建造类型及与之有关的方法
+	 * @author lw
+	 * 
+	 */	
     public class BuildTypeEnum
     {
+		
 		/**
 		 * 基地中心
 		 */		
@@ -42,21 +48,21 @@ package enum
 
         //坑位
 
-        public static const ANCHOR_CENTER:int = 1;
+        public static const ANCHOR_CENTER:int = 8;
 
-        public static const ANCHOR_CHUANQI:int = 2;
+        public static const ANCHOR_CHUANQI:int = 9;
 
         public static const ANCHOR_DIANNENG:int = 3;
 
-        public static const ANCHOR_CANGKU:int = 4;
+        public static const ANCHOR_CANGKU:int = 1;
 
-        public static const ANCHOR_KUANGCHANG:int = 5;
+        public static const ANCHOR_KUANGCHANG:int = 2;
 
-        public static const ANCHOR_KEJI:int = 6;
+        public static const ANCHOR_KEJI:int = 4;
 
         public static const ANCHOR_JUNGONGCHANG:int = 7;
 
-        public static const ANCHOR_SHIJIANMAC:int = 8;
+        public static const ANCHOR_SHIJIANMAC:int = 5;
 
         public static function getAnchorByType(type:int):int
         {
@@ -161,6 +167,132 @@ package enum
 		}
 		
 		/**
+		 * 根据研究类型获取 科技名称
+		 */	
+		public static function getResearchNameByResearchType(type:int):String
+		{
+			var researchName:String = "";
+			switch(type)
+			{
+				case 1:
+				{
+					researchName = "能源科技";
+					break;
+				}
+				case 2:
+				{
+					researchName = "机械科技";
+					break;
+				}
+				case 3:
+				{
+					researchName = "采集科技";
+					break;
+				}
+				case 4:
+				{
+					researchName = "激光科技";
+					break;
+				}
+				case 5:
+				{
+					researchName = "星际探索科技";
+					break;
+				}
+				case 6:
+				{
+					researchName = "星域通讯科技";
+					break;
+				}
+				case 7:
+				{
+					researchName = "电磁科技";
+					break;
+				}
+				case 8:
+				{
+					researchName = "曲率引擎科技";
+					break;
+				}
+				case 9:
+				{
+					researchName = "纳米工程科技";
+					break;
+				}
+				case 10:
+				{
+					researchName = "暗能科技";
+					break;
+				}
+				case 11:
+				{
+					researchName = "重力引导科技";
+					break;
+				}
+				case 12:
+				{
+					researchName = "空间射击科技";
+					break;
+				}
+					
+			}
+			return researchName
+		}
+		
+		/**
+		 *  根据制造类型获取 物品名称
+		 */	
+		public static function getProduceNameByProduceType(type:int):String
+		{
+			var produceName:String = "";
+			switch(type)
+			{
+				case 1:
+				{
+					produceName = "基地中心";
+					break;
+				}
+				case 2:
+				{
+					produceName = "军工厂";
+					break;
+				}
+				case 3:
+				{
+					produceName = "科技中心";
+					break;
+				}
+				case 4:
+				{
+					produceName = "暗能电厂";
+					break;
+				}
+				case 5:
+				{
+					produceName = "物质仓库";
+					break;
+				}
+				case 6:
+				{
+					produceName = "晶体冶炼厂";
+					break;
+				}
+				case 7:
+				{
+					produceName = "氚氢分离厂";
+					break;
+				}
+				case 8:
+				{
+					produceName = "时间机器";
+					break;
+				}
+					
+			}
+			return produceName
+		}
+		
+		/**
 		 * 根据建筑类型获取 建筑图标
 		 */	
 		public static function getBuildIconURLByBuildType(type:int):String
@@ -168,6 +300,26 @@ package enum
 			var buildIconURL:String = "";
 			buildIconURL = ResEnum.parentURL+"buildIcon/"+type+".swf";
 			return buildIconURL
+		}
+		
+		/**
+		 * 根据研究类型获取 科技图标
+		 */	
+		public static function getResearchIconURLByResearchType(type:int):String
+		{
+			var researchIconURL:String = "";
+			researchIconURL = ResEnum.parentURL+"scienceIcon/"+type+".swf";
+			return researchIconURL
+		}
+		
+		/**
+		 * 根据制造类型获取 物品图标
+		 */	
+		public static function getProduceIconURLByProduceType(type:int):String
+		{
+			var produceIconURL:String = "";
+			produceIconURL = ResEnum.parentURL+"buildIcon/"+type+".swf";
+			return produceIconURL
 		}
 		
 		/**

@@ -47,7 +47,7 @@ package controller.buildingView
             {
                 //加载界面SWF
 				_isLoading=true;
-                ResLoader.load(ResEnum.parentURL+"senceBuildingView/yeLianChang_view.swf", MultilanguageManager.getString(""), loaderComplete, true);
+                ResLoader.load("yeLianChang_view", MultilanguageManager.getString(""), loaderComplete, true);
             }
         }
 

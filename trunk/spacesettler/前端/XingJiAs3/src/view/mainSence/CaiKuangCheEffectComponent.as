@@ -55,7 +55,7 @@ package view.mainSence
 
         public var che_1_back_point:Point;
 		
-		public var time1:int=2;
+		public var time1:int=3;
 		
 		public var che_2_old_point:Point;
 		
@@ -63,21 +63,21 @@ package view.mainSence
 		
 		public var che_2_back_point:Point;
 		
-		public var time2:int=2.5;
+		public var time2:int=4;
 
 		public var che_3_old_point:Point;
 		
 		public var che_3_cai_point:Point;
 		
 		public var che_3_back_point:Point;
-		public var time3:int=4;
+		public var time3:int=5;
 		
 		public var che_4_old_point:Point;
 		
 		public var che_4_cai_point:Point;
 		
 		public var che_4_back_point:Point;
-		public var time4:int=3.5;
+		public var time4:int=4.5;
 		
 		public var che_5_old_point:Point;
 		
@@ -95,9 +95,9 @@ package view.mainSence
 
         public function init():void
         {
-            che_1_old_point = globalToLocal(new Point(314, 483));
-            che_1_cai_point = globalToLocal(new Point(290, 541));
-            che_1_back_point = globalToLocal(new Point(309, 496));
+            che_1_old_point = globalToLocal(new Point(315, 498));
+            che_1_cai_point = globalToLocal(new Point(315, 562));
+            che_1_back_point = globalToLocal(new Point(315, 498));
 
 			che_2_old_point = globalToLocal(new Point(300, 466));
 			che_2_cai_point = globalToLocal(new Point(237, 551));
