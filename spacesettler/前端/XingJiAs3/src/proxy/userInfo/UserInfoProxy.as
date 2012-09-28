@@ -34,8 +34,7 @@ package proxy.userInfo
         [Bindable]
         public var userInfoVO:UserInfoVO;
 		
-		[Bindable]
-		public var friendArr:Array=[];
+		
         public function UserInfoProxy(data:Object = null)
         {
             super(NAME, data);
@@ -88,24 +87,12 @@ package proxy.userInfo
             userInfoVO.prestige = data.prestige;
             userInfoVO.tritium = data.base.tritium;
             userInfoVO.userName = data.base.name;
+			
+			userInfoVO.legion_id = data.legion_id;
+			
             userInfoVO.camp = data.camp_id + 1;
-
-			//TODO:gx 好友列表改到好友Proxy			
-			var list:Array=[];
-			if(data.friends_list)
-			{
-				for(var i:int;i<data.friends_list.length;i++)
-				{
-					var friendVo:FriendInfoVo=new FriendInfoVo();
-					friendVo.id=data.friends_list[i].id;
-					friendVo.nickname=data.friends_list[i].nickname;
-					friendVo.officer_id=data.friends_list[i].officer_id;
-					friendVo.vip_level=data.friends_list[i].vip_level;
-					
-					list.push(friendVo);
-				}
-				friendArr=list;
-			}
+//			userInfoVO.camp=2;
+				
 			
 			userInfoVO.start();
 
@@ -135,7 +122,7 @@ package proxy.userInfo
 
             var buildProxy:BuildProxy = getProxy(BuildProxy);
             buildProxy.getBuildInfoResult(loginProxy.serverData);
-
+			
 
         }
     }

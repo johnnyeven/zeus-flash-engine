@@ -38,7 +38,7 @@ package net
         {
             data = JSON.parse(data);
 
-            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
+//            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
 //			Log.debug(NetHttpConn, "serverToClientOne", "收到信息："+commandID);
 
             //执行方法

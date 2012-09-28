@@ -86,6 +86,7 @@ package mediator.login
 
 		private function startHandler(event:PkEvent):void
 		{
+			mouseEnabled = false;
 			var loginProxy:LoginProxy = getProxy(LoginProxy);
 			loginProxy.camp=comp.campID;
 				
@@ -93,6 +94,11 @@ package mediator.login
 			   {
 				   sendNotification(DESTROY_NOTE);
 			   });			
+		}
+		
+		public function set mouseEnabled(value:Boolean):void
+		{
+			comp.mouseChildren=comp.mouseEnabled=value;
 		}
 	}
 }

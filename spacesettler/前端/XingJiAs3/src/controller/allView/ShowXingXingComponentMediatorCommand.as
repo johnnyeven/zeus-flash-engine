@@ -10,6 +10,8 @@ package controller.allView
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.allView.AllViewProxy;
 
     /**
      *行星要塞
@@ -37,17 +39,23 @@ package controller.allView
 			if(_isLoading)
 				return ;
 			
-            var med:XingXingComponentMediator = getMediator(XingXingComponentMediator);
-            if (med)
-            {
-				callShow(med);
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("allView.swf", MultilanguageManager.getString(""), loaderComplete,true);
-            }
+			var allViewProxy:AllViewProxy = getProxy(AllViewProxy);
+			allViewProxy.viewXingXing(function():void
+			{
+				 var med:XingXingComponentMediator = getMediator(XingXingComponentMediator);
+	            if (med)
+	            {
+					callShow(med);
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("allView.swf", MultilanguageManager.getString(""), loaderComplete,true);
+	            }
+			});
+			
+           
         }
 
         /**

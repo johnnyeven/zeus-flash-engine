@@ -10,7 +10,7 @@ package view.allView
 	import flash.events.MouseEvent;
 	
 	import proxy.allView.ShopProxy;
-	import proxy.userInfo.UserInfoProxy;
+	import proxy.friend.FriendProxy;
 	
 	import ui.components.Button;
 	import ui.components.Container;
@@ -85,12 +85,12 @@ package view.allView
 		
 		private var _currentSelcetedBtn:Button;
 		private var shopProxy:ShopProxy;
-		private var userProxy:UserInfoProxy;
+		private var friendProxy:FriendProxy;
         public function ShangChengComponent()
         {
             super(ClassUtil.getObject("view.allView.ShangChengSkin"));
 			shopProxy=ApplicationFacade.getProxy(ShopProxy);
-			userProxy=ApplicationFacade.getProxy(UserInfoProxy);
+			friendProxy=ApplicationFacade.getProxy(FriendProxy);
 			
 			anNengShuiJingBtn=createUI(Button,"anneng_btn");
 			ziYuanDuiHuanBtn=createUI(Button,"ziyuan_btn");
@@ -138,7 +138,8 @@ package view.allView
 			daoJuBtn.addEventListener(MouseEvent.CLICK,daoJu_ClickHandler);
 			anNengShuiJingBtn.addEventListener(MouseEvent.CLICK,shuiJing_ClickHandler);
 			closeBtn.addEventListener(MouseEvent.CLICK,close_clickHandler);
-			
+			vsBar.addEventListener(MouseEvent.ROLL_OUT,mouseOutHandler);
+			vsBar.addEventListener(MouseEvent.ROLL_OVER,mouseOverHandler);
         }
 		
 		private function addContainer():void
@@ -184,7 +185,19 @@ package view.allView
 			}
 			
 			container.layout.update();
+			container.addEventListener(MouseEvent.ROLL_OVER,mouseOverHandler);
+			container.addEventListener(MouseEvent.ROLL_OUT,mouseOutHandler);
 
+		}
+		
+		protected function mouseOutHandler(event:MouseEvent):void
+		{
+			vsBar.alpahaTweenlite(0);
+		}
+		
+		protected function mouseOverHandler(event:MouseEvent):void
+		{
+			vsBar.alpahaTweenlite(1);
 		}
 		
 		private function addExchangeMouseEvent(mc:Button):void
@@ -220,7 +233,7 @@ package view.allView
 				if(tuzhiComp.giveBtn==event.currentTarget as Button)
 				{
 					
-					dispatchEvent(new FriendGiveEvent(FriendGiveEvent.SHOW_FRIENDGIVE,userProxy.friendArr,tuzhiComp.moneyText.text,i+1,tuzhiComp.titleText.text));
+					dispatchEvent(new FriendGiveEvent(FriendGiveEvent.SHOW_FRIENDGIVE,friendProxy.friendArr,tuzhiComp.moneyText.text,i+1,tuzhiComp.titleText.text));
 				}
 			}				
 					

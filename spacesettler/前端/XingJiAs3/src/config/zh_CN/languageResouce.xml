@@ -92,4 +92,14 @@
 	
 	<loadFont>正在加载字体</loadFont>
 	<loadFontError>加载字体错误</loadFontError>
+	
+	<!--———————————————————————小行星 ——————————————————————-->
+	<plantStateNormalStr>正常</plantStateNormalStr>
+	<plantStateBaoFuStr>不可攻击</plantStateBaoFuStr>
+	<plantStateBaoFuZhong>保护中</plantStateBaoFuZhong>
+	<plantStateKeGongJi>可攻击</plantStateKeGongJi>
+	<plantStateKeZhanLing>可占领</plantStateKeZhanLing>
+	
+	
+	<timeXiaoShi>小时</timeXiaoShi>
 </root>

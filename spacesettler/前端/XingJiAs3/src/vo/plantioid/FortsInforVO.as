@@ -1,8 +1,15 @@
 package vo.plantioid
 {
-    import flash.geom.Point;
-    
+    import com.zn.utils.DateFormatter;
+    import com.zn.utils.StringUtil;
+
+    import enum.plantioid.PlantioidTypeEnum;
+
+    import proxy.userInfo.UserInfoProxy;
+
     import ui.vo.ValueObject;
+
+    import vo.userInfo.UserInfoVO;
 
     /**
      * 行星要塞
@@ -34,15 +41,22 @@ package vo.plantioid
         /**
          *攻击保护时间
          */
-        public var protected_until:int;
+        public var protected_until:Number;
+
+        public var protectedEndTime:Number;
+
+        public function get protectedRemainTime():Number
+        {
+            return Math.max(0, protectedEndTime - DateFormatter.currentTime);
+        }
 
         /**
          *要塞类型
          *
          * 要塞类型
-			具体类型参考策划文档
-			1-10为普通小行星，目前取值只有1、2、3，分别对应三张小行星图片
-			10以上为NPC行星，分别对应四张NPC行星图片
+            具体类型参考策划文档
+            1-10为普通小行星，目前取值只有1、2、3，分别对应三张小行星图片
+            10以上为NPC行星，分别对应四张NPC行星图片
      */
         public var fort_type:int;
 
@@ -74,13 +88,17 @@ package vo.plantioid
         public var age_level:int;
 
         public var z:int;
-		
-		public var type:int;
+
+        /**
+         *星球类型
+         */
+        public var type:int;
+
+        public var campID:int;
 
         public function FortsInforVO()
         {
         }
-
 
         /**
          *产出水晶矿
@@ -109,10 +127,20 @@ package vo.plantioid
             return _broken_crystal_output;
         }
 
-		public function updateType():void
-		{
-			
-		}
-		
+        public function updateType():void
+        {
+            var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+            if (userInfoVO.player_id == player_id)
+                type = PlantioidTypeEnum.OWN;
+            else if (fort_type > 10)
+                type = PlantioidTypeEnum.NPC;
+            else if (player_id == "0")
+                type = PlantioidTypeEnum.NO_OWN;
+            else if (campID == userInfoVO.camp)
+                type = PlantioidTypeEnum.CAMP;
+            else if (campID != userInfoVO.camp ||
+                (!StringUtil.isEmpty(player_id) && userInfoVO.player_id != player_id))
+                type = PlantioidTypeEnum.ENEMY;
+        }
     }
 }

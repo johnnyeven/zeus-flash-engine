@@ -3,14 +3,18 @@ package controller.plantioid
     import com.zn.ResLoader;
     import com.zn.loading.LoaderEvent;
     import com.zn.multilanguage.MultilanguageManager;
-
+    
+    import enum.SenceTypeEnum;
+    
     import mediator.BaseMediator;
     import mediator.plantioid.PlantioidComponentMediator;
-
+    
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
-
+    
     import proxy.plantioid.PlantioidProxy;
+    
+    import vo.GlobalData;
 
     /**
      *小星星带
@@ -83,6 +87,8 @@ package controller.plantioid
             {
                 med.show();
             }
+			
+			GlobalData.currentSence=SenceTypeEnum.PLANT;
         }
     }
 }

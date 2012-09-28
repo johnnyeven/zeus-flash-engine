@@ -15,6 +15,7 @@ package proxy.task
 	import other.ConnDebug;
 	
 	import proxy.BuildProxy;
+	import proxy.friend.FriendProxy;
 	import proxy.login.LoginProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -62,6 +63,9 @@ package proxy.task
 			
 			var userInfoProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userInfoProxy.getUserInfoResult(data);
+			
+			var friendInfoProxy:FriendProxy=getProxy(FriendProxy);
+			friendInfoProxy.getFriendInfoResult(data);
 			
 			var builderProxy:BuildProxy=getProxy(BuildProxy);
 			builderProxy.getBuildInfoResult(data);

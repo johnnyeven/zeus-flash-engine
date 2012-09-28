@@ -52,8 +52,11 @@ package controller
 			
 			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			loaderMax.addChildLoad(LoaderItemUtil.getLoader("mainSence"+userInfoVO.camp));
-			
 			loaderMax.addChildLoad(LoaderItemUtil.getLoader("mainView.swf"));
+			
+			loaderMax.addChildLoad(LoaderItemUtil.getLoader("up_build_view"));
+			
+			loaderMax.addChildLoad(LoaderItemUtil.getLoader("function_module"));
 			
 			ResLoader.load("loaderMainSence", MultilanguageManager.getString("loaderMainSence"), loaderCompleteHandler,true);
         }

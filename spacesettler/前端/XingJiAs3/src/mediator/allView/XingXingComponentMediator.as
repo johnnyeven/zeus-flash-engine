@@ -1,6 +1,10 @@
 package mediator.allView
 {
+	import com.greensock.TweenLite;
+	
 	import events.allView.AllViewEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.WindowMediator;
 	
@@ -27,6 +31,8 @@ package mediator.allView
 		{
 			super(NAME, new XingXingComponent());
 			comp.addEventListener(AllViewEvent.CLOSED_XINGXING_EVENT,closeHandler);
+			comp.addEventListener("destoryshangSprite",destoryshangSpriteHandler);
+			comp.addEventListener("destoryxiaSprite",destoryxiaSpriteHandler);
 		}
 		
 		/**
@@ -67,5 +73,16 @@ package mediator.allView
 			return viewComponent as XingXingComponent;
 		}
 
+		private function destoryshangSpriteHandler(event:Event):void
+		{
+		  comp.shangSprite.visible = false;
+		  TweenLite.to(comp.shangSprite,0.5,{x:0,y:-330});
+		}
+		
+		private function destoryxiaSpriteHandler(event:Event):void
+		{
+			comp.xiaSprite.visible = false;
+			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
+		}
 	}
 }

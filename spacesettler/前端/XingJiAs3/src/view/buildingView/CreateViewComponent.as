@@ -120,7 +120,7 @@ package view.buildingView
 
             if (_buildVO == null || _buildVO.isNormal) //未建造
             {
-                timeLabel.text = viewInfoVO.time + MultilanguageManager.getString("timeMiao");
+                timeLabel.text = DateFormatter.formatterTimeSFM(viewInfoVO.time);
                 createButton.visible = true;
             }
             else if (_buildVO.isBuild || _buildVO.isUp) //建造中
@@ -159,7 +159,7 @@ package view.buildingView
             else
                 speedButton.visible = false;
 
-            timeLabel.text = DateFormatter.formatterTime(_buildVO.remainTime) + MultilanguageManager.getString("timeMiao");
+            timeLabel.text =DateFormatter.formatterTimeSFM(_buildVO.remainTime);
         }
 
         /**

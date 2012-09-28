@@ -113,11 +113,11 @@ package view.buildingView
 			upLevelButton.visible = speedButton.visible = false;
 			
 			stopTweenLite();
-			progressMC.percent=1;
+			progressMC.percent=0;
 			
 			if (_buildVO == null || _buildVO.isNormal) //未建造
 			{
-				timeLabel.text = nextViewInfoVO.time + MultilanguageManager.getString("timeMiao");
+				timeLabel.text = DateFormatter.formatterTimeSFM(nextViewInfoVO.time);
 				upLevelButton.visible = true;
 			}
 			else if (_buildVO.isBuild || _buildVO.isUp) //建造中
@@ -160,7 +160,7 @@ package view.buildingView
 			else
 				speedButton.visible = false;
 			
-			timeLabel.text = DateFormatter.formatterTime(_buildVO.remainTime) + MultilanguageManager.getString("timeMiao");
+			timeLabel.text = DateFormatter.formatterTimeSFM(_buildVO.remainTime);
 		}
 		
 		/**

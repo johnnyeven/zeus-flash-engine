@@ -23,9 +23,30 @@ package view.plantioid.topInfo
             yTF = getSkin("yTF");
             xTF = getSkin("xTF");
 
-            yTF.restrict = xTF.restrict = "0-9";
-			
             sortChildIndex();
+			
+			yTF.restrict = xTF.restrict = "0-9";
+			yTF.mouseEnabled=xTF.mouseEnabled=true;
         }
+
+		public function get enterX():int
+		{
+			return int(xTF.text);
+		}
+
+		public function set enterX(value:int):void
+		{
+			xTF.text=value+"";
+		}
+
+		public function get enterY():int
+		{
+			return int(yTF.text);
+		}
+
+		public function set enterY(value:int):void
+		{
+			yTF.text=value+"";
+		}
     }
 }

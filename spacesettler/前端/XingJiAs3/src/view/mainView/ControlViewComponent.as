@@ -89,7 +89,10 @@ package view.mainView
 			auctionBtn.addEventListener(MouseEvent.CLICK,auction_clickHandler);
 			armyGroupBtn.addEventListener(MouseEvent.CLICK,armyGroup_clickHandler);
 			mailBtn.addEventListener(MouseEvent.CLICK,mail_clickHandler);
-			systemBtn.addEventListener(MouseEvent.CLICK,rongYU_clickHandler);
+//			systemBtn.addEventListener(MouseEvent.CLICK,rongYU_clickHandler);
+//			rankingBtn.addEventListener(MouseEvent.CLICK,zhongLan_clickHandler);
+//			mailBtn.addEventListener(MouseEvent.CLICK,timeMachine_clickHandler);
+			systemBtn.addEventListener(MouseEvent.CLICK,system_clickHandler);
 			rankingBtn.addEventListener(MouseEvent.CLICK,zhongLan_clickHandler);
 			mailBtn.addEventListener(MouseEvent.CLICK,timeMachine_clickHandler);
 			
@@ -100,6 +103,7 @@ package view.mainView
 		
 		protected function base_clickHandler(event:MouseEvent):void
 		{
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.MAIN_SENCE_EVENT,true,true));
 			currentSelcetedBtn=baseBtn;
 		}
 		
@@ -124,9 +128,9 @@ package view.mainView
 			currentSelcetedBtn=shopBtn;
 		}
 		
-		private function rongYU_clickHandler(event:MouseEvent):void
+		private function system_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.RONGYU_EVENT,true,true));
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.SYSTEM_EVENT,true,true));
 			currentSelcetedBtn=systemBtn;
 		}
 		
@@ -137,7 +141,7 @@ package view.mainView
 		}
 		private function timeMachine_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SHOW_COMPONENT_EVENT,0,true,true));
+			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SHOW_COMPONENT_EVENT,0,0,true,true));
 		}
 		
 		private function cangKu_clickHandler(Event:MouseEvent):void

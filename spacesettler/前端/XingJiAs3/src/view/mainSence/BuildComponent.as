@@ -2,6 +2,7 @@ package view.mainSence
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Linear;
+    import com.greensock.loading.BinaryDataLoader;
     import com.zn.utils.ClassUtil;
     import com.zn.utils.StringUtil;
     
@@ -18,8 +19,10 @@ package view.mainSence
     
     import mx.binding.utils.BindingUtils;
     
+    import proxy.BuildProxy;
     import proxy.userInfo.UserInfoProxy;
     
+    import ui.components.Alert;
     import ui.core.Component;
     import ui.utils.DisposeUtil;
     
@@ -45,13 +48,19 @@ package view.mainSence
         private var oldObj:DisplayObject;
 
         private var caiKuangCheEffectComp:CaiKuangCheEffectComponent;
-
+		
+		private var _buildProxy:BuildProxy;
+		
+		public var isShiJian:Boolean;
+		
         public function BuildComponent()
         {
             super(null);
             userInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
             buildSp = new Sprite();
             addChild(buildSp);
+			
+			buttonMode=mouseEnabled=true;
         }
 
         public function addBuildSp(obj:DisplayObject):void
@@ -118,9 +127,9 @@ package view.mainSence
                     if (i <= count)
                         mc.visible = true;
                 }
-                else if (_buildInfoVo.type == BuildTypeEnum.ANCHOR_CENTER)
+                else if (_buildInfoVo.type == BuildTypeEnum.CENTER)
                 { //主基地
-                    var count1:int = _buildInfoVo.level;
+                    var count1:int = userInfoVO.level;
                     if (i <= count1)
                         mc.visible = true;
                 }
@@ -338,6 +347,8 @@ package view.mainSence
                 }
                 case BuildTypeEnum.SHIJINMAC:
                 { //8时间机器
+					_buildProxy=ApplicationFacade.getProxy(BuildProxy);
+					isShiJian=_buildProxy.isBuild;
                     if (StringUtil.isEmpty(_buildInfoVo.eventID))
                     {
                         ClassUtil.getDisplayObjectByLoad(MainSenceEnum.timeMachineURL, formatStr("sence{0}_timeMachine_normal"), function(obj:DisplayObject):void
@@ -349,9 +360,13 @@ package view.mainSence
 							oldObj = obj;
 							buildSp.addChild(obj);
 							buildSp.alpha = 1;
-							
-							obj.y = -200;
-							TweenLite.to(obj, 2, { y: 0, ease: Linear.easeNone });
+							if(isShiJian)
+							{
+								obj.y = -200;
+								TweenLite.to(obj, 2, { y: 0, ease: Linear.easeNone });
+							}
+								
+								
                         });
                     }
                     break;

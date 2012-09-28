@@ -84,6 +84,8 @@ package view.cangKu
 			container.y=137.5;
 			addChild(container);
 			
+			container.addEventListener(MouseEvent.ROLL_OVER,mouseOverHandler);
+			container.addEventListener(MouseEvent.ROLL_OUT,mouseOutHandler);
 			//getPackage(total);
 			
 			for(var i:int=0;i<total;i++)
@@ -101,6 +103,9 @@ package view.cangKu
 			
 			vScrollBar=createUI(VScrollBar,"vScrollBar");
 			vScrollBar.viewport=container;
+			vScrollBar.addEventListener(MouseEvent.ROLL_OVER,mouseOverHandler);
+			vScrollBar.addEventListener(MouseEvent.ROLL_OUT,mouseOutHandler);
+			vScrollBar.alpahaTweenlite(0);
 			
 			sortChildIndex();
 			
@@ -109,6 +114,16 @@ package view.cangKu
 			buyBtn.addEventListener(MouseEvent.CLICK,buyBtn_clickHandler);
 			closeBtn.addEventListener(MouseEvent.CLICK,closeBtn_clickHandler);
 			
+		}
+		
+		protected function mouseOutHandler(event:MouseEvent):void
+		{
+			vScrollBar.alpahaTweenlite(0);
+		}
+		
+		protected function mouseOverHandler(event:MouseEvent):void
+		{
+			vScrollBar.alpahaTweenlite(1);
 		}
 		
 		//购买仓位 消耗暗能水晶

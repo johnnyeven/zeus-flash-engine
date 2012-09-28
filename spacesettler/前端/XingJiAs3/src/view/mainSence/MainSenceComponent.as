@@ -73,31 +73,7 @@ package view.mainSence
         {
             _userInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
             super(ClassUtil.getObject("MainSence_" + _userInfoProxy.userInfoVO.camp));
-            if (_userInfoProxy.userInfoVO.camp == 1)
-            {
-                xingQiuSp = getSkin("xingQiuSp");
-                puBuSp = getSkin("puBuSp");
-                dengGuangSp = getSkin("dengGuangSp");
-                guanDaoSp = getSkin("guanDaoSp");
-
-                xingQiuLoaderImage = new LoaderImage();
-                xingQiuLoaderImage.source = MainSenceEnum.xingQiuURL;
-                xingQiuSp.addChild(xingQiuLoaderImage);
-
-                puBuLoaderImage = new LoaderImage();
-                puBuLoaderImage.source = MainSenceEnum.puBuURL;
-                puBuSp.addChild(puBuLoaderImage);
-
-                dengGuangLoaderImage = new LoaderImage();
-                dengGuangLoaderImage.source = MainSenceEnum.dengGuangURL;
-                dengGuangSp.addChild(dengGuangLoaderImage);
-
-                guanDaoLoaderImage = new LoaderImage();
-                guanDaoLoaderImage.source = MainSenceEnum.guanDaoURL;
-                guanDaoSp.addChild(guanDaoLoaderImage);
-            }
-
-
+			
             jiDiSp = getSkin("sprite_1");
             chuanQinSp = getSkin("sprite_2");
             anNengDianChangSp = getSkin("sprite_3");
@@ -163,6 +139,8 @@ package view.mainSence
                     else
                     {
                         buildVO = buildProxy.getBuild(BuildTypeEnum.CHUANQIN);
+						if(buildVO.isBuild)
+							dispatchEvent(new AddViewEvent(AddViewEvent.ADDCHUANQINCREATEVIEW_EVENT, BuildTypeEnum.CHUANQIN));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
                                                                    MultilanguageManager.getString("buildSelectorFieldUp"),
@@ -182,6 +160,8 @@ package view.mainSence
                     else
                     {
                         buildVO = buildProxy.getBuild(BuildTypeEnum.DIANCHANG);
+						if(buildVO.isBuild)
+							dispatchEvent(new AddViewEvent(AddViewEvent.ADDDIANCHANGCREATEVIEW_EVENT, BuildTypeEnum.DIANCHANG));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
                                                                    MultilanguageManager.getString("buildSelectorFieldUp"),
@@ -201,6 +181,8 @@ package view.mainSence
                     else
                     {
                         buildVO = buildProxy.getBuild(BuildTypeEnum.CANGKU);
+						if(buildVO.isBuild)
+							dispatchEvent(new AddViewEvent(AddViewEvent.ADDCANGKUCREATEVIEW_EVENT, BuildTypeEnum.CANGKU));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
                                                                    MultilanguageManager.getString("buildSelectorFieldUp"),
@@ -220,6 +202,8 @@ package view.mainSence
                     else
                     {
                         buildVO = buildProxy.getBuild(BuildTypeEnum.KUANGCHANG);
+						if(buildVO.isBuild)
+							dispatchEvent(new AddViewEvent(AddViewEvent.ADDYELIANCREATEVIEW_EVENT, BuildTypeEnum.KUANGCHANG));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
                                                                    MultilanguageManager.getString("buildSelectorFieldUp"),
@@ -239,6 +223,8 @@ package view.mainSence
                     else
                     {
                         buildVO = buildProxy.getBuild(BuildTypeEnum.KEJI);
+						if(buildVO.isBuild)
+							dispatchEvent(new AddViewEvent(AddViewEvent.ADDKEJICREATEVIEW_EVENT, BuildTypeEnum.KEJI));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
                                                                    MultilanguageManager.getString("buildSelectorFieldUp"),
@@ -258,6 +244,8 @@ package view.mainSence
                     else
                     {
                         buildVO = buildProxy.getBuild(BuildTypeEnum.JUNGONGCHANG);
+						if(buildVO.isBuild)
+							dispatchEvent(new AddViewEvent(AddViewEvent.ADDJUNGONGCREATEVIEW_EVENT, BuildTypeEnum.JUNGONGCHANG));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
                                                                    MultilanguageManager.getString("buildSelectorFieldGaiZhang"),

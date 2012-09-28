@@ -31,7 +31,7 @@ package view.timeMachine
 		
 		private function closeBtn_clickHAndler(event:MouseEvent):void
 		{
-			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.CLOSE_INFOR_COMPONENT_EVENT,0));
+			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.CLOSE_INFOR_COMPONENT_EVENT,0,0));
 		}
     }
 }

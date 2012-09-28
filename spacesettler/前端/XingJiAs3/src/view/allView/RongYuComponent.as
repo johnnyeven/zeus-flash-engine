@@ -6,6 +6,7 @@ package view.allView
 	
 	import flash.events.MouseEvent;
 	
+	import ui.components.Button;
 	import ui.components.Window;
 	import ui.core.Component;
 	
@@ -16,13 +17,13 @@ package view.allView
 	 */	
     public class RongYuComponent extends Window
     {
-		public var closedBtn:Component;
+		public var closedBtn:Button;
 		
         public function RongYuComponent()
         {
             super(ClassUtil.getObject("view.allView.RongYuSkin"));
 			
-			closedBtn = createUI(Component,"closedBtn");
+			closedBtn = createUI(Button,"closedBtn");
 			sortChildIndex();
 			closedBtn.addEventListener(MouseEvent.CLICK,closedBtn_clickHandler);
         }

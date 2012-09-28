@@ -10,6 +10,8 @@ package controller.allView
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.allView.AllViewProxy;
 
     /**
      *总览
@@ -37,17 +39,22 @@ package controller.allView
 			if(_isLoading)
 				return ;
 			
-            var med:AllViewComponentMediator = getMediator(AllViewComponentMediator);
-            if (med)
-            {
-				callShow(med);
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("allView.swf", MultilanguageManager.getString("loaderAllView"), loaderComplete,true);
-            }
+			var allViewProxy:AllViewProxy=getProxy(AllViewProxy);
+			//回调函数保证  有数据后才显示界面
+			allViewProxy.allView(function():void
+			{
+				var med:AllViewComponentMediator = getMediator(AllViewComponentMediator);
+				if (med)
+				{
+					callShow(med);
+				}
+				else
+				{
+					//加载界面SWF
+					_isLoading=true;
+					ResLoader.load("allView.swf", MultilanguageManager.getString("loaderAllView"), loaderComplete,true);
+				}
+			});
         }
 
         /**

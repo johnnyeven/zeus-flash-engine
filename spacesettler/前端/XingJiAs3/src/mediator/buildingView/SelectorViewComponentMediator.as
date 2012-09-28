@@ -20,6 +20,10 @@ package mediator.buildingView
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
     
+    import proxy.allView.AllViewProxy;
+    import proxy.timeMachine.TimeMachineProxy;
+    import proxy.userInfo.UserInfoProxy;
+    
     import ui.managers.PopUpManager;
     
     import view.buildingView.SelectorViewComponent;
@@ -40,10 +44,17 @@ package mediator.buildingView
         public var viewComp:SelectorViewComponent;
 		
 		private var _arr:Array=[];
+		
+		private var allViewProxy:AllViewProxy;
+		
+		private var userInforProxy:UserInfoProxy;
 
         public function SelectorViewComponentMediator(viewComponent:Object = null)
         {
             super(NAME, viewComponent);
+			
+			allViewProxy = getProxy(AllViewProxy);
+			userInforProxy = getProxy(UserInfoProxy);
         }
 
         /**

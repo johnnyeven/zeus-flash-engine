@@ -10,16 +10,6 @@
         <XMLLoader name="connectionConfig.xml"
             url="config/zh_CN/connectionConfig.xml"
             version="1"/>
-
-        <!-- 加载黑体 -->
-        <SWFLoader name="font_heiTi.swf"
-            url="font/font_heiTi.swf"
-            version="1"/>
-
-        <!-- 加载雅黑 -->
-        <SWFLoader name="font_yaHei.swf"
-            url="font/font_yaHei.swf"
-            version="1"/>
     </LoaderMax>
 
     <!--配置文件 -->
@@ -51,22 +41,6 @@
         <LoaderMax name="mainSence1">
             <SWFLoader name="mainSence_1"
                 url="zh_CN/images/senceMap/mainSence_1.swf"
-                version="1"/>
-
-            <SWFLoader name="sence1_dengguang"
-                url="zh_CN/images/senceMapEffect/sence1_dengguang.swf"
-                version="1"/>
-
-            <SWFLoader name="sence1_guandao"
-                url="zh_CN/images/senceMapEffect/sence1_guandao.swf"
-                version="1"/>
-
-            <SWFLoader name="sence1_puBu"
-                url="zh_CN/images/senceMapEffect/sence1_puBu.swf"
-                version="1"/>
-
-            <SWFLoader name="sence1_xingQiu"
-                url="zh_CN/images/senceMapEffect/sence1_xingQiu.swf"
                 version="1"/>
 
             <SWFLoader name="sence1_anNengDianChang"
@@ -152,35 +126,94 @@
             <SWFLoader name="sence2_timeMachine"
                 url="zh_CN/images/senceMapBuilding/sence2_timeMachine.swf"
                 version="1"/>
-                
+
             <SWFLoader name="sence2_jianzao"
                 url="zh_CN/images/senceMapBuilding/sence2_jianzao.swf"
                 version="1"/>
-                
+
             <SWFLoader name="sence2_building_up"
                 url="zh_CN/images/senceMapBuilding/sence2_building_up.swf"
                 version="1"/>
 
         </LoaderMax>
         
-          <!--查看仓库 -->
-        <SWFLoader name="cangKuPackageView.swf"
-            url="zh_CN/cangKuPackageView.swf"
-            version="1"/>
-        
-        <!--商城-->
-        <LoaderMax>
-            <SWFLoader name="ShangCheng.swf"
-                url="zh_CN/shangCheng.swf"
+        <LoaderMax name="up_build_view">
+        	<SWFLoader name="annengdianchang_view"
+                url="zh_CN/images/senceBuildingView/annengdianchang_view.swf"
                 version="1"/>
+                
+        	<SWFLoader name="cangKu_view"
+                url="zh_CN/images/senceBuildingView/cangKu_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="center_view"
+                url="zh_CN/images/senceBuildingView/center_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="chuanQingChang_view"
+                url="zh_CN/images/senceBuildingView/chuanQingChang_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="junGongChang_view"
+                url="zh_CN/images/senceBuildingView/junGongChang_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="keJi_view"
+                url="zh_CN/images/senceBuildingView/keJi_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="shiJianJiQi_info_view"
+                url="zh_CN/images/senceBuildingView/shiJianJiQi_info_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="speed_view"
+                url="zh_CN/images/senceBuildingView/speed_view.swf"
+                version="1"/>
+                
+        	<SWFLoader name="yeLianChang_view"
+                url="zh_CN/images/senceBuildingView/yeLianChang_view.swf"
+                version="1"/>
+                
+        </LoaderMax>
+        
+        <!-- 功能模块-->
+        <LoaderMax name="function_module">
+        
+	        <!--总览、荣誉、小行星 -->
+	        <SWFLoader name="allView.swf"
+	            url="zh_CN/allView.swf"
+	            version="1"/>
+	        <!--查看仓库 -->
+	        <SWFLoader name="cangKuPackageView.swf"
+	            url="zh_CN/cangKuPackageView.swf"
+	            version="1"/>
+	
+	        <!--商城-->
+	        <SWFLoader name="ShangCheng.swf"
+	            url="zh_CN/shangCheng.swf"
+	            version="1"/>
+	            
+	        <!--系统-->
+	        <SWFLoader name="system.swf"
+	            url="zh_CN/system.swf"
+	            version="1"/>
+	
+	        <!--小行星带-->
+	        <SWFLoader name="planetoid.swf"
+	            url="zh_CN/planetoid.swf"
+	            version="1"/>
+	
+	        <!--时间机器及其描述 -->
+	        <SWFLoader name="timeMachine.swf"
+	            url="zh_CN/timeMachine.swf"
+	            version="1"/>
+	            
+	        <!-- 熔炼（晶体冶炼厂） -->
+			<SWFLoader name="crystalSmelter.swf"
+			   url="zh_CN/crystalSmelter.swf"
+			   version="1"/>
         </LoaderMax>
 
-        <!--小行星带-->
-        <SWFLoader name="planetoid.swf"
-            url="zh_CN/planetoid.swf"
-            version="1"/>
 
     </LoaderMax>
-
-
 </root>

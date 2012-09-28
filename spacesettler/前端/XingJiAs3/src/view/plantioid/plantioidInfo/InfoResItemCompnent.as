@@ -1,5 +1,8 @@
 package view.plantioid.plantioidInfo
 {
+    import com.zn.multilanguage.MultilanguageManager;
+    import com.zn.utils.StringUtil;
+    
     import flash.display.DisplayObjectContainer;
     
     import ui.components.Label;
@@ -25,7 +28,12 @@ package view.plantioid.plantioidInfo
 			image=createUI(LoaderImage,"image");
 			
 			sortChildIndex();
-			
         }
+		
+		public function setItemVO(url:String,num:int):void
+		{
+			image.source=url;
+			canLangLabel.text=StringUtil.formatString("{0}/{1}",num,MultilanguageManager.getString("timeXiaoShi"));
+		}
     }
 }

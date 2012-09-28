@@ -1,6 +1,7 @@
 package mediator.buildingView
 {
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	
@@ -14,10 +15,12 @@ package mediator.buildingView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.BuildProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.buildingView.InfoViewComponent;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	
 	/**
 	 *氚氢厂信息 
@@ -34,10 +37,16 @@ package mediator.buildingView
 		
 		public function ChuanQinInfoComponentMediator()
 		{
-			super(NAME, new InfoViewComponent(ClassUtil.getObject("info_chuanQingChang_view")));
+			super(NAME, new InfoViewComponent(ClassUtil.getObject(formatStr("info_chuanQingChang_view_{0}"))));
 			comp.med=this;
 			level=2;
 			comp.addEventListener(BuildEvent.BACK_EVENT, backHandler);
+		}
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
 		}
 		
 		/**

@@ -1,5 +1,7 @@
 package vo.timeMachine
 {
+	import com.zn.utils.DateFormatter;
+	
 	import enum.BuildTypeEnum;
 	
 	import ui.vo.ValueObject;
@@ -9,8 +11,17 @@ package vo.timeMachine
 	 * @author lw
 	 * 
 	 */	
+	[Bindable]
 	public class TimeMachineVO extends ValueObject
 	{
+		/**
+		 * 事件ID
+		 */
+		public var eventID:String = "";
+		/**
+		 * 事件类型   建筑、科技、制造
+		 */	
+		public var type:String = "";
 		/**
 		 * 建筑类型
 		 */		
@@ -20,6 +31,11 @@ package vo.timeMachine
 		 * 建筑等级
 		 */	
 		public var level:int;
+		
+		/**
+		 * 本机事件结束时间
+		 */	
+		public var finishTime:Number;
 		
 		/**
 		 * 事件开始时间
@@ -40,7 +56,16 @@ package vo.timeMachine
 		private var _upTotalTome:Number;
 		private var _remainingTime:Number;
 		
-		private var _crystalCount:int;
+		/**
+		 * 建筑升级     本机剩余时间
+		 */
+		public function get remainTime():Number
+		{
+			return Math.max(0, finishTime - DateFormatter.currentTime);
+		}
+
+		
+		public var crystalCount:int;
 		/**
 		 * 消耗暗能水晶总数
 		 */
@@ -48,7 +73,6 @@ package vo.timeMachine
 		
 		public function TimeMachineVO()
 		{
-			totalCrystal = _crystalCount;
 		}
 
 		/**
@@ -64,7 +88,6 @@ package vo.timeMachine
 		 */
 		public function set upTotalTome(value:Number):void
 		{
-			upTotalTome = finish_time - start_time;
 			_upTotalTome = value;
 		}
 
@@ -81,17 +104,7 @@ package vo.timeMachine
 		 */
 		public function set remainingTime(value:Number):void
 		{
-			remainingTime = upTotalTome - (current_time - start_time);
 			_remainingTime = value;
-		}
-
-		/**
-		 * 消耗暗能水晶
-		 */
-		public function get crystalCount():int
-		{
-			_crystalCount = BuildTypeEnum.getCrystalCountByBuildLevel(level);
-			return _crystalCount
 		}
 	}
 }

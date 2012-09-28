@@ -27,6 +27,8 @@ package view.login
 		
 		public var returnBtn:Button;
 		
+		public var returnSprie:Button;
+		
 		public var nextBtn:Button;
 		
         public function NameInforComponent()
@@ -53,6 +55,8 @@ package view.login
 				emailTextInput.text = loginProxy.email;
 			}
 			returnBtn=createUI(Button,"returnBtn");
+			returnSprie = createUI(Button,"returnSprie");
+			returnSprie.visible = false;
 			nextBtn=createUI(Button,"nextBtn");
 			
 			sortChildIndex();

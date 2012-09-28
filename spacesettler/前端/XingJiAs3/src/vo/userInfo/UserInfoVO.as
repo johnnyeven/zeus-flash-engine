@@ -2,7 +2,7 @@ package vo.userInfo
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Linear;
-
+    
     import ui.vo.ValueObject;
 
     [Bindable]
@@ -54,11 +54,11 @@ package vo.userInfo
          *（氚氢产出）
          */
         public var tritium_output:int;
-
-        /**
-         * 暗物质数量 取值为正整数；
-         */
-        private var _broken_crysta:int;
+		
+		/**
+		 * 暗物质数量 取值为正整数；
+		 */
+       private var _broken_crysta:int;
 
         /**
          *（暗物质产出）
@@ -109,6 +109,11 @@ package vo.userInfo
          *当前能量损耗
          */
         private var _current_power_consume:int;
+		
+		/**
+		 *军团ID 
+		 */		
+		public var legion_id:String;
 
         public function get current_power_supply():int
         {
@@ -135,18 +140,19 @@ package vo.userInfo
             updatePower();
         }
 
-        private function updatePower():void
+        public function updatePower():Number
         {
             power = Math.max(0, (_current_power_supply - _current_power_consume) / _current_power_supply);
+			return power;
         }
 
         public function start():void
         {
             var endCrystal:int = crystal + crystal_output;
             var endTritium:int = tritium + tritium_output;
-            var endBroken:int = broken_crysta + broken_crystal_output;
-            _tweenLite = TweenLite.to(this, 3600, { crystal: endCrystal, tritium: endTritium, broken_crysta: endBroken,
-                                          ease: Linear.easeNone, onComplete: start });
+//            var endBroken:int = broken_crysta + broken_crystal_output;
+//            _tweenLite = TweenLite.to(this, 3600, { crystal: endCrystal, tritium: endTritium, broken_crysta: endBroken,
+//                                          ease: Linear.easeNone, onComplete: start });
         }
 
 
@@ -170,17 +176,21 @@ package vo.userInfo
         {
 			_tritium=value;
             _tritium = Math.max(value, tritium_volume);
-        }
+        }       
 
-        public function get broken_crysta():int
-        {
-            return _broken_crysta;
-        }
+	  
+	   public function get broken_crysta():int
+	   {
+		   return _broken_crysta;
+	   }
 
-        public function set broken_crysta(value:int):void
-        {
-            _broken_crysta = value;
+	   /**
+	    * @private
+	    */
+	   public function set broken_crysta(value:int):void
+	   {
+		   _broken_crysta = value;
+	   }
 
-        }
     }
 }

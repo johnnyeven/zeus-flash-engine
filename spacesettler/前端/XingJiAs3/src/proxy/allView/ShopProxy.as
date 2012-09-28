@@ -133,7 +133,7 @@ package proxy.allView
 		}	
 		
 		private function buyItemRrsult(data:*):void
-		{//*********************************************返回最开始的用户Json,此处需要从新赋值;
+		{
 			if (data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));				

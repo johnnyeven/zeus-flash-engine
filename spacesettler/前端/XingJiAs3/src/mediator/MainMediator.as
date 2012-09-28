@@ -75,6 +75,7 @@ package mediator
 		protected function mainClickHandler(event:MouseEvent):void
 		{
 			sendNotification(SelectorViewComponentMediator.DESTROY_NOTE);			
+			
 		}
 	}
 }

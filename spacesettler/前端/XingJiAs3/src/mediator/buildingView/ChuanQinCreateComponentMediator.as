@@ -2,6 +2,7 @@ package mediator.buildingView
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	
@@ -20,12 +21,14 @@ package mediator.buildingView
 	
 	import proxy.BuildProxy;
 	import proxy.content.ContentProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.managers.PopUpManager;
 	
 	import view.buildingView.CreateViewComponent;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	import vo.viewInfo.ViewInfoVO;
 	
 	/**
@@ -45,7 +48,7 @@ package mediator.buildingView
 		
 		public function ChuanQinCreateComponentMediator()
 		{
-			super(NAME, new CreateViewComponent(ClassUtil.getObject("build_chuanQingChang_view")));
+			super(NAME, new CreateViewComponent(ClassUtil.getObject(formatStr("build_chuanQingChang_view_{0}"))));
 			comp.med=this;
 			level=1;
 			comp.buildType=BuildTypeEnum.CHUANQIN;
@@ -53,6 +56,12 @@ package mediator.buildingView
 			comp.addEventListener(BuildEvent.BUILD_EVENT,buildHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
+		}
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
 		}
 		
 		/**

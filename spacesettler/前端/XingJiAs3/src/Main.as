@@ -3,6 +3,9 @@ package
     import com.zn.ResLoader;
     import com.zn.utils.BitmapUtil;
     import com.zn.utils.ClassUtil;
+    import com.zn.utils.ColorUtil;
+    
+    import fl.motion.Color;
     
     import flash.display.BitmapData;
     import flash.display.DisplayObject;

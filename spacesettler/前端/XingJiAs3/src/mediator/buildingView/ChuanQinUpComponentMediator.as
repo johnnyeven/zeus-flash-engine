@@ -2,6 +2,7 @@ package mediator.buildingView
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	
@@ -17,10 +18,12 @@ package mediator.buildingView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.BuildProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.buildingView.ChuanQingUpComponent;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	
 	/**
 	 *氚氢厂升级
@@ -37,7 +40,7 @@ package mediator.buildingView
 		
 		public function ChuanQinUpComponentMediator()
 		{
-			super(NAME, new ChuanQingUpComponent(ClassUtil.getObject("up_chuanQingChang_view")));
+			super(NAME, new ChuanQingUpComponent(ClassUtil.getObject(formatStr("up_chuanQingChang_view_{0}"))));
 			comp.med=this;
 			level=1;
 			comp.buildType=BuildTypeEnum.CHUANQIN;
@@ -45,6 +48,12 @@ package mediator.buildingView
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
+		}
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
 		}
 		
 		protected function closeHandler(event:AddViewEvent):void

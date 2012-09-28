@@ -2,6 +2,7 @@ package mediator.buildingView
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	
@@ -17,10 +18,12 @@ package mediator.buildingView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.BuildProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.buildingView.CangKuUpComponent;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	
 	/**
 	 *物资仓库升级
@@ -37,7 +40,7 @@ package mediator.buildingView
 		
 		public function CangKuUpComponentMediator()
 		{
-			super(NAME, new CangKuUpComponent(ClassUtil.getObject("up_cangKu_view")));
+			super(NAME, new CangKuUpComponent(ClassUtil.getObject(formatStr("up_cangKu_view_{0}"))));
 			comp.med=this;
 			level=1;
 			comp.buildType=BuildTypeEnum.CANGKU;
@@ -50,6 +53,12 @@ package mediator.buildingView
 		protected function closeHandler(event:AddViewEvent):void
 		{
 			sendNotification(DESTROY_NOTE);
+		}
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
 		}
 		
 		/**

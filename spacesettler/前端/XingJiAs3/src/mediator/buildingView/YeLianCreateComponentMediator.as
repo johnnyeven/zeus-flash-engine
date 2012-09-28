@@ -2,6 +2,7 @@ package mediator.buildingView
 {
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
+    import com.zn.utils.StringUtil;
     
     import enum.BuildTypeEnum;
     
@@ -17,10 +18,12 @@ package mediator.buildingView
     import org.puremvc.as3.interfaces.INotification;
     
     import proxy.BuildProxy;
+    import proxy.userInfo.UserInfoProxy;
     
     import view.buildingView.CreateViewComponent;
     
     import vo.BuildInfoVo;
+    import vo.userInfo.UserInfoVO;
 
     /**
      *冶炼厂建造
@@ -37,7 +40,7 @@ package mediator.buildingView
 
         public function YeLianCreateComponentMediator()
         {
-            super(NAME, new CreateViewComponent(ClassUtil.getObject("build_yeLianChang_view")));
+            super(NAME, new CreateViewComponent(ClassUtil.getObject(formatStr("build_yeLianChang_view_{0}"))));
 			comp.med=this;
 			level=1;
 			
@@ -47,6 +50,12 @@ package mediator.buildingView
             comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
         }
+		
+		private function formatStr(str:String):String
+		{
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);
+		}
 		
         /**
          *添加要监听的消息
