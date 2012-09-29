@@ -9,28 +9,17 @@ package view.login
 	import flash.events.MouseEvent;
 	import flash.utils.getDefinitionByName;
 	
-	import utils.liteui.core.Component
+	import utils.liteui.component.Button;
+	import utils.liteui.core.Component;
 	
 	public class StartComponent extends Component
 	{
-		private var _topDoorMC: MovieClip;
-		private var _bottomDoorMC: MovieClip;
+		private var _topDoorMC: Component;
+		private var _bottomDoorMC: Component;
 		
-		private var _buttonStart: MovieClip;
-		private var _buttonLogin: MovieClip;
-		private var _buttonRegister: MovieClip;
-		
-		private var _btnStartNormal: MovieClip;
-		private var _btnStartOver: MovieClip;
-		private var _btnStartPress: MovieClip;
-		
-		private var _btnLoginNormal: MovieClip;
-		private var _btnLoginOver: MovieClip;
-		private var _btnLoginPress: MovieClip;
-		
-		private var _btnRegisterNormal: MovieClip;
-		private var _btnRegisterOver: MovieClip;
-		private var _btnRegisterPress: MovieClip;
+		private var _buttonStart: Button;
+		private var _buttonLogin: Button;
+		private var _buttonRegister: Button;
 		
 		public function StartComponent()
 		{
@@ -38,151 +27,32 @@ package view.login
 			var _skin: MovieClip = new _class() as MovieClip;
 			super(_skin);
 			
-			_topDoorMC = getUI(Component, "topDoorMC") as MovieClip;
-			_bottomDoorMC = _skin.getChildByName("bottomDoorMC") as MovieClip;
+			_topDoorMC = getUI(Component, "topDoorMC") as Component;
+			_bottomDoorMC = getUI(Component, "bottomDoorMC") as Component;
 			
-			_buttonStart = _topDoorMC.getChildByName("btnStart") as MovieClip;
-			_buttonLogin = _bottomDoorMC.getChildByName("btnLogin") as MovieClip;
-			_buttonRegister = _bottomDoorMC.getChildByName("btnRegister") as MovieClip;
+			_buttonStart = _topDoorMC.getUI(Button, "btnStart") as Button;
+			_buttonLogin = _bottomDoorMC.getUI(Button, "btnLogin") as Button;
+			_buttonRegister = _bottomDoorMC.getUI(Button, "btnRegister") as Button;
 			
-			_btnStartNormal = _buttonStart.getChildByName("buttonNormal") as MovieClip;
-			_btnStartOver = _buttonStart.getChildByName("buttonOver") as MovieClip;
-			_btnStartPress = _buttonStart.getChildByName("buttonPress") as MovieClip;
-			
-			_btnLoginNormal = _buttonLogin.getChildByName("buttonNormal") as MovieClip;
-			_btnLoginOver = _buttonLogin.getChildByName("buttonOver") as MovieClip;
-			_btnLoginPress = _buttonLogin.getChildByName("buttonPress") as MovieClip;
-			
-			_btnRegisterNormal = _buttonRegister.getChildByName("buttonNormal") as MovieClip;
-			_btnRegisterOver = _buttonRegister.getChildByName("buttonOver") as MovieClip;
-			_btnRegisterPress = _buttonRegister.getChildByName("buttonPress") as MovieClip;
-			
-			_btnStartNormal.visible = true;
-			_btnStartOver.visible = false;
-			_btnStartPress.visible = false;
-			
-			_btnLoginNormal.visible = true;
-			_btnLoginOver.visible = false;
-			_btnLoginPress.visible = false;
-			
-			_btnRegisterNormal.visible = true;
-			_btnRegisterOver.visible = false;
-			_btnRegisterPress.visible = false;
-			
-			_buttonStart.addEventListener(MouseEvent.ROLL_OVER, onButtonStartOver);
-			_buttonStart.addEventListener(MouseEvent.ROLL_OUT, onButtonStartOut);
-			_buttonStart.addEventListener(MouseEvent.MOUSE_DOWN, onButtonStartDown);
-			_buttonStart.addEventListener(MouseEvent.MOUSE_UP, onButtonStartUp);
-			
-			_buttonLogin.addEventListener(MouseEvent.ROLL_OVER, onButtonLoginOver);
-			_buttonLogin.addEventListener(MouseEvent.ROLL_OUT, onButtonLoginOut);
-			_buttonLogin.addEventListener(MouseEvent.MOUSE_DOWN, onButtonLoginDown);
-			_buttonLogin.addEventListener(MouseEvent.MOUSE_UP, onButtonLoginUp);
-			
-			_buttonRegister.addEventListener(MouseEvent.ROLL_OVER, onButtonRegisterOver);
-			_buttonRegister.addEventListener(MouseEvent.ROLL_OUT, onButtonRegisterOut);
-			_buttonRegister.addEventListener(MouseEvent.MOUSE_DOWN, onButtonRegisterDown);
-			_buttonRegister.addEventListener(MouseEvent.MOUSE_UP, onButtonRegisterUp);
+			_buttonStart.addEventListener(MouseEvent.CLICK, onButtonStartClick);
+			_buttonLogin.addEventListener(MouseEvent.CLICK, onButtonLoginClick);
+			_buttonRegister.addEventListener(MouseEvent.CLICK, onButtonRegisterClick);
 		}
 		
-		private function hideButtonStartStatus(): void
+		private function onButtonStartClick(evt: MouseEvent): void
 		{
-			_btnStartNormal.visible = false;
-			_btnStartOver.visible = false;
-			_btnStartPress.visible = false;
-		}
-		
-		private function hideButtonLoginStatus(): void
-		{
-			_btnLoginNormal.visible = false;
-			_btnLoginOver.visible = false;
-			_btnLoginPress.visible = false;
-		}
-		
-		private function hideButtonRegisterStatus(): void
-		{
-			_btnRegisterNormal.visible = false;
-			_btnRegisterOver.visible = false;
-			_btnRegisterPress.visible = false;
-		}
-		
-		private function onButtonStartOver(evt: MouseEvent): void
-		{
-			hideButtonStartStatus();
-			_btnStartOver.visible = true;
-		}
-		
-		private function onButtonStartOut(evt: MouseEvent): void
-		{
-			hideButtonStartStatus();
-			_btnStartNormal.visible = true;
-		}
-		
-		private function onButtonStartDown(evt: MouseEvent): void
-		{
-			hideButtonStartStatus();
-			_btnStartPress.visible = true;
-		}
-		
-		private function onButtonStartUp(evt: MouseEvent): void
-		{
-			hideButtonStartStatus();
-			_btnStartNormal.visible = true;
-			
 			var _evt: LoginEvent = new LoginEvent(LoginEvent.START_EVENT);
 			dispatchEvent(_evt);
 		}
 		
-		private function onButtonLoginOver(evt: MouseEvent): void
+		private function onButtonLoginClick(evt: MouseEvent): void
 		{
-			hideButtonLoginStatus();
-			_btnLoginOver.visible = true;
-		}
-		
-		private function onButtonLoginOut(evt: MouseEvent): void
-		{
-			hideButtonLoginStatus();
-			_btnLoginNormal.visible = true;
-		}
-		
-		private function onButtonLoginDown(evt: MouseEvent): void
-		{
-			hideButtonLoginStatus();
-			_btnLoginPress.visible = true;
-		}
-		
-		private function onButtonLoginUp(evt: MouseEvent): void
-		{
-			hideButtonLoginStatus();
-			_btnLoginNormal.visible = true;
-			
 			var _evt: LoginEvent = new LoginEvent(LoginEvent.ACCOUNT_EVENT);
 			dispatchEvent(_evt);
 		}
 		
-		private function onButtonRegisterOver(evt: MouseEvent): void
+		private function onButtonRegisterClick(evt: MouseEvent): void
 		{
-			hideButtonRegisterStatus();
-			_btnRegisterOver.visible = true;
-		}
-		
-		private function onButtonRegisterOut(evt: MouseEvent): void
-		{
-			hideButtonRegisterStatus();
-			_btnRegisterNormal.visible = true;
-		}
-		
-		private function onButtonRegisterDown(evt: MouseEvent): void
-		{
-			hideButtonRegisterStatus();
-			_btnRegisterPress.visible = true;
-		}
-		
-		private function onButtonRegisterUp(evt: MouseEvent): void
-		{
-			hideButtonRegisterStatus();
-			_btnRegisterNormal.visible = true;
-			
 			var _evt: LoginEvent = new LoginEvent(LoginEvent.ACCOUNT_EVENT);
 			dispatchEvent(_evt);
 		}
