@@ -12,6 +12,8 @@ package utils.liteui.core
 		private var _isDispose: Boolean;
 		private var _eventListener: Dictionary;
 		private var _skin: DisplayObjectContainer;
+		protected var _filterColor: Number = 0x000000;
+		protected var _filterEnabled: Boolean = true;
 		
 		public function Component(_skin: DisplayObjectContainer = null)
 		{
@@ -50,6 +52,10 @@ package utils.liteui.core
 		protected function onMouseOut(evt: MouseEvent): void
 		{
 			
+		}
+		
+		protected function setFilter(): void
+		{
 		}
 		
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
@@ -127,5 +133,29 @@ package utils.liteui.core
 				removeEventListener(type, _listener[i]);
 			}
 		}
+
+		public function get filterColor():Number
+		{
+			return _filterColor;
+		}
+
+		public function set filterColor(value:Number):void
+		{
+			_filterColor = value;
+			setFilter();
+		}
+
+		public function get filterEnabled():Boolean
+		{
+			return _filterEnabled;
+		}
+
+		public function set filterEnabled(value:Boolean):void
+		{
+			_filterEnabled = value;
+			setFilter();
+		}
+
+
 	}
 }
