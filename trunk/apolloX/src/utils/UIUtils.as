@@ -12,6 +12,14 @@ package utils
 		{
 		}
 		
+		public static function remove(child: DisplayObject): void
+		{
+			if(child.parent != null)
+			{
+				child.parent.removeChild(child);
+			}
+		}
+		
 		public static function center(target: DisplayObject): void
 		{
 			var _stageCenter: Point = stageCenter;
