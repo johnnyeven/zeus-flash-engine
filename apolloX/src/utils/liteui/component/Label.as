@@ -7,10 +7,12 @@ package utils.liteui.component
 	import flash.text.TextFormatAlign;
 	import flash.text.engine.TextBaseline;
 	import flash.text.engine.TextBlock;
+	import flash.text.engine.TextLine;
 	
+	import utils.UIUtils;
 	import utils.liteui.core.Component;
-	import utils.liteui.core.ftengine.FTEngine;
 	import utils.liteui.core.ftengine.FTEFormater;
+	import utils.liteui.core.ftengine.FTEngine;
 	
 	public class Label extends Component
 	{
@@ -65,6 +67,8 @@ package utils.liteui.component
 				
 				lock = false;
 				updateText();
+				
+				UIUtils.remove(_skin);
 			}
 		}
 		
@@ -79,6 +83,16 @@ package utils.liteui.component
 		public function updateText(): void
 		{
 			
+		}
+		
+		private function createLine(): void
+		{
+			var _textWidth: Number = this._textWidth;
+			if(_autoSize)
+			{
+				_textWidth = 100000;
+			}
+			var _textLine:TextLine = _textBlock.createTextLine(null, _textWidth);
 		}
 
 		public function get text():String
