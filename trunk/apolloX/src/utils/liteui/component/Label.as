@@ -85,7 +85,7 @@ package utils.liteui.component
 			
 		}
 		
-		private function createLine(): void
+		private function createTextLine(): void
 		{
 			var _textWidth: Number = this._textWidth;
 			if(_autoSize)
@@ -93,6 +93,50 @@ package utils.liteui.component
 				_textWidth = 100000;
 			}
 			var _textLine:TextLine = _textBlock.createTextLine(null, _textWidth);
+			var _textLineHeight: Number = 0;
+			
+			while(_textLine != null)
+			{
+				if(_autoSize)
+				{
+					_textBuffer.addChild(_textLine);
+					break;
+				}
+				if(_align == TextFormatAlign.RIGHT)
+				{
+					_textLine.x = this._textWidth - _textLine.width;
+				}
+				if(_align == TextFormatAlign.CENTER)
+				{
+					if(_textBuffer.numChildren >= 1)
+					{
+						_textBuffer.getChildAt(0).x = 0;
+					}
+					else
+					{
+						_textLine.x = (this._textWidth - _textLine.width) * .5;
+					}
+				}
+				if(_wordWrap)
+				{
+					_textLine.y = _textLineHeight;
+					_textLineHeight += (_textLine.height + _vGap);
+				}
+				else
+				{
+					_textLine.y = (_textHeight - _textLine.height) * .5;
+				}
+				if(_textLineHeight > _textHeight)
+				{
+					break;
+				}
+				_textBuffer.addChild(_textLine);
+				_textLine = _textBlock.createTextLine(_textLine, _textWidth);
+				if(!_wordWrap)
+				{
+					break;
+				}
+			}
 		}
 
 		public function get text():String
