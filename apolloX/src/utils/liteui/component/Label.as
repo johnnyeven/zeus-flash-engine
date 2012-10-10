@@ -9,6 +9,7 @@ package utils.liteui.component
 	import flash.text.engine.TextBlock;
 	import flash.text.engine.TextLine;
 	
+	import utils.StringUtils;
 	import utils.UIUtils;
 	import utils.liteui.core.Component;
 	import utils.liteui.core.ftengine.FTEFormater;
@@ -38,6 +39,8 @@ package utils.liteui.component
 			super(_skin);
 			mouseEnabled = false;
 			mouseChildren = false;
+			
+			_ftengine = new FTEngine();
 			
 			_textBlock = new TextBlock();
 			_textBlock.baselineZero = TextBaseline.IDEOGRAPHIC_TOP;
@@ -82,7 +85,12 @@ package utils.liteui.component
 		
 		public function updateText(): void
 		{
-			
+			if(!lock)
+			{
+				cleanTextLine();
+				_textBlock.content = _ftengine.createElement(_text);
+				createTextLine();
+			}
 		}
 		
 		private function createTextLine(): void
@@ -138,6 +146,14 @@ package utils.liteui.component
 				}
 			}
 		}
+		
+		private function cleanTextLine(): void
+		{
+			while(_textBuffer.numChildren > 0)
+			{
+				_textBuffer.removeChildAt(0);
+			}
+		}
 
 		public function get text():String
 		{
@@ -146,7 +162,8 @@ package utils.liteui.component
 
 		public function set text(value:String):void
 		{
-			_text = value;
+			_text = StringUtils.empty(value) ? "" : value;
+			updateText();
 		}
 
 		public function get align():String
@@ -157,6 +174,7 @@ package utils.liteui.component
 		public function set align(value:String):void
 		{
 			_align = value;
+			updateText();
 		}
 
 		public function get color():Number
@@ -167,6 +185,7 @@ package utils.liteui.component
 		public function set color(value:Number):void
 		{
 			_color = value;
+			updateText();
 		}
 
 		public function get size():uint
@@ -177,6 +196,7 @@ package utils.liteui.component
 		public function set size(value:uint):void
 		{
 			_size = value;
+			updateText();
 		}
 
 		public function get wordWrap():Boolean
@@ -187,6 +207,7 @@ package utils.liteui.component
 		public function set wordWrap(value:Boolean):void
 		{
 			_wordWrap = value;
+			updateText();
 		}
 
 		public function get autoSize():Boolean
@@ -197,6 +218,7 @@ package utils.liteui.component
 		public function set autoSize(value:Boolean):void
 		{
 			_autoSize = value;
+			updateText();
 		}
 
 		public function get bold():Boolean
@@ -207,6 +229,7 @@ package utils.liteui.component
 		public function set bold(value:Boolean):void
 		{
 			_bold = value;
+			updateText();
 		}
 
 		public function get hGap():Number
@@ -217,6 +240,7 @@ package utils.liteui.component
 		public function set hGap(value:Number):void
 		{
 			_hGap = value;
+			updateText();
 		}
 
 		public function get vGap():Number
@@ -227,6 +251,7 @@ package utils.liteui.component
 		public function set vGap(value:Number):void
 		{
 			_vGap = value;
+			updateText();
 		}
 
 		public function get fontName():String
@@ -236,7 +261,19 @@ package utils.liteui.component
 
 		public function set fontName(value:String):void
 		{
-			_fontName = value;
+			switch(value)
+			{
+				case "SimHei":
+					_fontName = "黑体";
+					break;
+				case "Microsoft YaHei":
+					_fontName = "微软雅黑";
+					break;
+				default:
+					_fontName = value;
+					break;
+			}
+			updateText();
 		}
 		
 		public function get textWidth(): Number
