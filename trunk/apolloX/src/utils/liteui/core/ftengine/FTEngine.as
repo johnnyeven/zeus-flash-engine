@@ -6,6 +6,15 @@ package utils.liteui.core.ftengine
 
 	public class FTEngine extends EventDispatcher
 	{
+		public var defaultFontName: String = "黑体";
+		public var defaultFontSize: Number = 12;
+		public var defaultFontColor: uint = 0x000000;
+		public var defaultBold: Boolean = false;
+		public var defaultHGap: Number = 0;
+		
+		protected var _fontName: String;
+		protected var _fontSize: Number = 0;
+		
 		public function FTEngine()
 		{
 		}
