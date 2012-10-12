@@ -14,16 +14,22 @@ package mediator.mainView
     import mediator.MainMediator;
     import mediator.allView.AllViewComponentMediator;
     import mediator.allView.RongYuComponentMediator;
-    import mediator.allView.ShangChengComponentMediator;
+    import mediator.shangCheng.ShangChengComponentMediator;
+    import mediator.battle.BattleMediator;
     import mediator.cangKu.CangkuPackageViewComponentMediator;
+    import mediator.group.GroupComponentMediator;
+    import mediator.group.NotJoinGroupComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.plantioid.PlantioidComponentMediator;
+    import mediator.ranking.RankingComponentMediator;
     import mediator.systemView.SystemComponentMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
     
+    import proxy.BuildProxy;
     import proxy.allView.AllViewProxy;
+    import proxy.group.GroupProxy;
     import proxy.userInfo.UserInfoProxy;
     
     import view.mainView.MainViewComponent;
@@ -53,16 +59,20 @@ package mediator.mainView
         private var userInforProxy:UserInfoProxy;
 
         private var id:String;
-
+		
+		private var buildProxy:BuildProxy;
+  		private var groupProxy:GroupProxy;
         public function MainViewMediator()
         {
             super(NAME, new MainViewComponent());
 
             _popUp = false;
-
-
+			
+			
+			groupProxy=getProxy(GroupProxy);
             allViewProxy = getProxy(AllViewProxy);
             userInforProxy = getProxy(UserInfoProxy);
+			buildProxy = getProxy(BuildProxy);
             id = userInforProxy.userInfoVO.id;
 
             comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT, rongYuHandler);
@@ -72,8 +82,11 @@ package mediator.mainView
             comp.addEventListener(ZhuJiDiEvent.PLANET_EVENT, planetHandler);
             comp.addEventListener(ZhuJiDiEvent.CANGKU_EVENT, cangKuHandler);
             comp.addEventListener(ZhuJiDiEvent.MAIN_SENCE_EVENT, mainSenceHandler);
+			
+			comp.addEventListener(ZhuJiDiEvent.RANKING_EVENT,rankingHandler);
+			comp.addEventListener(ZhuJiDiEvent.GROUP_EVENT,groupHandler);
         }
-
+		
         /**
          *添加要监听的消息
          * @return
@@ -118,7 +131,7 @@ package mediator.mainView
          * @return
          *
          */
-        protected function get comp():MainViewComponent
+        public function get comp():MainViewComponent
         {
             return viewComponent as MainViewComponent;
         }
@@ -127,6 +140,13 @@ package mediator.mainView
          *显示界面
          *
          */
+		
+		protected function rankingHandler(event:Event):void
+		{
+//			sendNotification(RankingComponentMediator.SHOW_NOTE);
+			sendNotification(BattleMediator.SHOW_NOTE);
+		}
+		
         public override function show():void
         {
             MainMediator(getMediator(MainMediator)).component.addView(uiComp);
@@ -139,6 +159,7 @@ package mediator.mainView
 
         private function zhongLanHandler(event:ZhuJiDiEvent):void
         {
+			//TODO:zn 暂用
 //            allViewProxy.allView(id);
             sendNotification(AllViewComponentMediator.SHOW_NOTE);
         }
@@ -154,6 +175,7 @@ package mediator.mainView
                 return;
 
             sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			buildProxy.isBuild=false;
         }
 
         protected function cangKuHandler(event:Event):void
@@ -173,5 +195,27 @@ package mediator.mainView
                 return;
             sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
         }
+		
+		protected function groupHandler(event:Event):void
+		{
+			if(userInforProxy.userInfoVO.legion_id!=null)
+			{
+				groupProxy.refreshGroup(userInforProxy.userInfoVO.player_id,function():void
+				{
+					sendNotification(GroupComponentMediator.SHOW_NOTE);
+					
+				});
+			}else
+			{
+				groupProxy.searchGroup("",function():void
+				{
+					sendNotification(NotJoinGroupComponentMediator.SHOW_NOTE);
+					
+				});
+				
+			}
+			
+		}		
+		
     }
 }

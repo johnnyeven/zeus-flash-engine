@@ -6,6 +6,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代企业号战车的学习图纸，学习该图纸后将可制造企业号战车。</des>
 	</recipes>
 	<recipes>
 		<name>发现号图纸</name>
@@ -13,6 +14,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代发现号战车的学习图纸，学习该图纸后将可制造发现号战车。</des>
 	</recipes>
 	<recipes>
 		<name>勇气号图纸</name>
@@ -20,6 +22,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代勇气号战车的学习图纸，学习该图纸后将可制造勇气号战车。</des>
 	</recipes>
 	<recipes>
 		<name>奋进号图纸</name>
@@ -27,6 +30,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代奋进号战车的学习图纸，学习该图纸后将可制造奋进号战车。</des>
 	</recipes>
 	<recipes>
 		<name>思索者号图纸</name>
@@ -34,6 +38,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代思索者号战车的学习图纸，学习该图纸后将可制造思索者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>引导者号图纸</name>
@@ -41,6 +46,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代引导者号战车的学习图纸，学习该图纸后将可制造引导者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>先驱者号图纸</name>
@@ -48,6 +54,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代先驱者号战车的学习图纸，学习该图纸后将可制造先驱者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>探索者号图纸</name>
@@ -55,6 +62,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代探索者号战车的学习图纸，学习该图纸后将可制造探索者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>挑战者号图纸</name>
@@ -62,6 +70,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代挑战号战车的学习图纸，学习该图纸后将可制造挑战者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>曙光号图纸</name>
@@ -69,6 +78,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代曙光号战车的学习图纸，学习该图纸后将可制造曙光号战车。</des>
 	</recipes>
 	<recipes>
 		<name>进化号图纸</name>
@@ -76,6 +86,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代进化号战车的学习图纸，学习该图纸后将可制造进化号战车。</des>
 	</recipes>
 	<recipes>
 		<name>辉煌号图纸</name>
@@ -83,6 +94,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代辉煌号战车的学习图纸，学习该图纸后将可制造辉煌号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级企业号图纸</name>
@@ -90,6 +102,7 @@
 		<category>1</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代高级企业号战车的学习图纸，学习该图纸后将可制造高级企业号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级发现号图纸</name>
@@ -97,6 +110,7 @@
 		<category>2</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代高级发现号战车的学习图纸，学习该图纸后将可制造高级发现号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级勇气号图纸</name>
@@ -104,6 +118,7 @@
 		<category>3</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代高级勇气号战车的学习图纸，学习该图纸后将可制造高级勇气号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级奋进号图纸</name>
@@ -111,6 +126,7 @@
 		<category>4</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级奋进号战车的学习图纸，学习该图纸后将可制造高级奋进号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级思索者号图纸</name>
@@ -118,6 +134,7 @@
 		<category>5</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级思索者号战车的学习图纸，学习该图纸后将可制高级造思索者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级引导者号图纸</name>
@@ -125,6 +142,7 @@
 		<category>6</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级引导者号战车的学习图纸，学习该图纸后将可制高级造引导者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级先驱者号图纸</name>
@@ -132,6 +150,7 @@
 		<category>7</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级先驱者号战车的学习图纸，学习该图纸后将可制高级造先驱者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级探索者号图纸</name>
@@ -139,6 +158,7 @@
 		<category>8</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级探索者号战车的学习图纸，学习该图纸后将可制高级造探索者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级挑战者号图纸</name>
@@ -146,6 +166,7 @@
 		<category>9</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级挑战号战车的学习图纸，学习该图纸后将可制造高级挑战者号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级曙光号图纸</name>
@@ -153,6 +174,7 @@
 		<category>10</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级曙光号战车的学习图纸，学习该图纸后将可制造高级曙光号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级进化号图纸</name>
@@ -160,6 +182,7 @@
 		<category>11</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级进化号战车的学习图纸，学习该图纸后将可制造高级进化号战车。</des>
 	</recipes>
 	<recipes>
 		<name>高级辉煌号图纸</name>
@@ -167,6 +190,7 @@
 		<category>12</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代高级辉煌号战车的学习图纸，学习该图纸后将可制造高级辉煌号战车。</des>
 	</recipes>
 	<recipes>
 		<name>重型战舰炮1型图纸</name>
@@ -174,6 +198,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代重型战舰炮1型武器挂件的学习图纸，学习该图纸后将可制造重型战舰炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型战舰炮2型图纸</name>
@@ -181,6 +206,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代重型战舰炮2型武器挂件的学习图纸，学习该图纸后将可制造重型战舰炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型战舰炮3型图纸</name>
@@ -188,6 +214,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代重型战舰炮3型武器挂件的学习图纸，学习该图纸后将可制造重型战舰炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型战舰炮4型图纸</name>
@@ -195,6 +222,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代重型战舰炮4型武器挂件的学习图纸，学习该图纸后将可制造重型战舰炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型战舰炮5型图纸</name>
@@ -202,6 +230,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代重型战舰炮5型武器挂件的学习图纸，学习该图纸后将可制造重型战舰炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型战舰炮6型图纸</name>
@@ -209,6 +238,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代重型战舰炮6型武器挂件的学习图纸，学习该图纸后将可制造重型战舰炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型战舰炮1型图纸</name>
@@ -216,6 +246,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代大型战舰炮1型武器挂件的学习图纸，学习该图纸后将可制造大型战舰炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型战舰炮2型图纸</name>
@@ -223,6 +254,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代大型战舰炮2型武器挂件的学习图纸，学习该图纸后将可制造大型战舰炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型战舰炮3型图纸</name>
@@ -230,6 +262,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代大型战舰炮3型武器挂件的学习图纸，学习该图纸后将可制造大型战舰炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型战舰炮4型图纸</name>
@@ -237,6 +270,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代大型战舰炮4型武器挂件的学习图纸，学习该图纸后将可制造大型战舰炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型战舰炮5型图纸</name>
@@ -244,6 +278,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代大型战舰炮5型武器挂件的学习图纸，学习该图纸后将可制造大型战舰炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型战舰炮6型图纸</name>
@@ -251,6 +286,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代大型战舰炮6型武器挂件的学习图纸，学习该图纸后将可制造大型战舰炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射战舰炮1型图纸</name>
@@ -258,6 +294,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代速射战舰炮1型武器挂件的学习图纸，学习该图纸后将可制造速射战舰炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射战舰炮2型图纸</name>
@@ -265,6 +302,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代速射战舰炮2型武器挂件的学习图纸，学习该图纸后将可制造速射战舰炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射战舰炮3型图纸</name>
@@ -272,6 +310,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代速射战舰炮3型武器挂件的学习图纸，学习该图纸后将可制造速射战舰炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射战舰炮4型图纸</name>
@@ -279,6 +318,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代速射战舰炮4型武器挂件的学习图纸，学习该图纸后将可制造速射战舰炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射战舰炮5型图纸</name>
@@ -286,6 +326,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代速射战舰炮5型武器挂件的学习图纸，学习该图纸后将可制造速射战舰炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射战舰炮6型图纸</name>
@@ -293,6 +334,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代速射战舰炮6型武器挂件的学习图纸，学习该图纸后将可制造速射战舰炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型激光炮1型图纸</name>
@@ -300,6 +342,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代重型激光炮1型武器挂件的学习图纸，学习该图纸后将可制造重型激光炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型激光炮2型图纸</name>
@@ -307,6 +350,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造激光时代重型激光炮2型武器挂件的学习图纸，学习该图纸后将可制造重型激光炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型激光炮3型图纸</name>
@@ -314,6 +358,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造激光时代重型激光炮3型武器挂件的学习图纸，学习该图纸后将可制造重型激光炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型激光炮4型图纸</name>
@@ -321,6 +366,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造激光时代重型激光炮4型武器挂件的学习图纸，学习该图纸后将可制造重型激光炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型激光炮5型图纸</name>
@@ -328,6 +374,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造激光时代重型激光炮5型武器挂件的学习图纸，学习该图纸后将可制造重型激光炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型激光炮6型图纸</name>
@@ -335,6 +382,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造激光时代重型激光炮6型武器挂件的学习图纸，学习该图纸后将可制造重型激光炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型激光炮1型图纸</name>
@@ -342,6 +390,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代大型激光炮1型武器挂件的学习图纸，学习该图纸后将可制造大型激光炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型激光炮2型图纸</name>
@@ -349,6 +398,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造激光时代大型激光炮2型武器挂件的学习图纸，学习该图纸后将可制造大型激光炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型激光炮3型图纸</name>
@@ -356,6 +406,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造激光时代大型激光炮3型武器挂件的学习图纸，学习该图纸后将可制造大型激光炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型激光炮4型图纸</name>
@@ -363,6 +414,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造激光时代大型激光炮4型武器挂件的学习图纸，学习该图纸后将可制造大型激光炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型激光炮5型图纸</name>
@@ -370,6 +422,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造激光时代大型激光炮5型武器挂件的学习图纸，学习该图纸后将可制造大型激光炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型激光炮6型图纸</name>
@@ -377,6 +430,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造激光时代大型激光炮6型武器挂件的学习图纸，学习该图纸后将可制造大型激光炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射激光炮1型图纸</name>
@@ -384,6 +438,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代速射激光炮1型武器挂件的学习图纸，学习该图纸后将可制造速射激光炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射激光炮2型图纸</name>
@@ -391,6 +446,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造激光时代速射激光炮2型武器挂件的学习图纸，学习该图纸后将可制造速射激光炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射激光炮3型图纸</name>
@@ -398,6 +454,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造激光时代速射激光炮3型武器挂件的学习图纸，学习该图纸后将可制造速射激光炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射激光炮4型图纸</name>
@@ -405,6 +462,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造激光时代速射激光炮4型武器挂件的学习图纸，学习该图纸后将可制造速射激光炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射激光炮5型图纸</name>
@@ -412,6 +470,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造激光时代速射激光炮5型武器挂件的学习图纸，学习该图纸后将可制造速射激光炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射激光炮6型图纸</name>
@@ -419,6 +478,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造激光时代速射激光炮6型武器挂件的学习图纸，学习该图纸后将可制造速射激光炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型电磁炮1型图纸</name>
@@ -426,6 +486,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代重型电磁炮1型武器挂件的学习图纸，学习该图纸后将可制造重型电磁炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型电磁炮2型图纸</name>
@@ -433,6 +494,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造电磁时代重型电磁炮2型武器挂件的学习图纸，学习该图纸后将可制造重型电磁炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型电磁炮3型图纸</name>
@@ -440,6 +502,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造电磁时代重型电磁炮3型武器挂件的学习图纸，学习该图纸后将可制造重型电磁炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型电磁炮4型图纸</name>
@@ -447,6 +510,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造电磁时代重型电磁炮4型武器挂件的学习图纸，学习该图纸后将可制造重型电磁炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型电磁炮5型图纸</name>
@@ -454,6 +518,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造电磁时代重型电磁炮5型武器挂件的学习图纸，学习该图纸后将可制造重型电磁炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型电磁炮6型图纸</name>
@@ -461,6 +526,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造电磁时代重型电磁炮6型武器挂件的学习图纸，学习该图纸后将可制造重型电磁炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型电磁炮1型图纸</name>
@@ -468,6 +534,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代大型电磁炮1型武器挂件的学习图纸，学习该图纸后将可制造大型电磁炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型电磁炮2型图纸</name>
@@ -475,6 +542,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造电磁时代大型电磁炮2型武器挂件的学习图纸，学习该图纸后将可制造大型电磁炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型电磁炮3型图纸</name>
@@ -482,6 +550,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造电磁时代大型电磁炮3型武器挂件的学习图纸，学习该图纸后将可制造大型电磁炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型电磁炮4型图纸</name>
@@ -489,6 +558,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造电磁时代大型电磁炮4型武器挂件的学习图纸，学习该图纸后将可制造大型电磁炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型电磁炮5型图纸</name>
@@ -496,6 +566,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造电磁时代大型电磁炮5型武器挂件的学习图纸，学习该图纸后将可制造大型电磁炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型电磁炮6型图纸</name>
@@ -503,6 +574,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造电磁时代大型电磁炮6型武器挂件的学习图纸，学习该图纸后将可制造大型电磁炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射电磁炮1型图纸</name>
@@ -510,6 +582,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代速射电磁炮1型武器挂件的学习图纸，学习该图纸后将可制造速射电磁炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射电磁炮2型图纸</name>
@@ -517,6 +590,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造电磁时代速射电磁炮2型武器挂件的学习图纸，学习该图纸后将可制造速射电磁炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射电磁炮3型图纸</name>
@@ -524,6 +598,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造电磁时代速射电磁炮3型武器挂件的学习图纸，学习该图纸后将可制造速射电磁炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射电磁炮4型图纸</name>
@@ -531,6 +606,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造电磁时代速射电磁炮4型武器挂件的学习图纸，学习该图纸后将可制造速射电磁炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射电磁炮5型图纸</name>
@@ -538,6 +614,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造电磁时代速射电磁炮5型武器挂件的学习图纸，学习该图纸后将可制造速射电磁炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射电磁炮6型图纸</name>
@@ -545,6 +622,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造电磁时代速射电磁炮6型武器挂件的学习图纸，学习该图纸后将可制造速射电磁炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型暗能炮1型图纸</name>
@@ -552,6 +630,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代重型暗能炮1型武器挂件的学习图纸，学习该图纸后将可制造重型暗能炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型暗能炮2型图纸</name>
@@ -559,6 +638,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造暗能时代重型暗能炮2型武器挂件的学习图纸，学习该图纸后将可制造重型暗能炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型暗能炮3型图纸</name>
@@ -566,6 +646,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造暗能时代重型暗能炮3型武器挂件的学习图纸，学习该图纸后将可制造重型暗能炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型暗能炮4型图纸</name>
@@ -573,6 +654,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造暗能时代重型暗能炮4型武器挂件的学习图纸，学习该图纸后将可制造重型暗能炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型暗能炮5型图纸</name>
@@ -580,6 +662,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造暗能时代重型暗能炮5型武器挂件的学习图纸，学习该图纸后将可制造重型暗能炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>重型暗能炮6型图纸</name>
@@ -587,6 +670,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造暗能时代重型暗能炮6型武器挂件的学习图纸，学习该图纸后将可制造重型暗能炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型暗能炮1型图纸</name>
@@ -594,6 +678,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代大型暗能炮1型武器挂件的学习图纸，学习该图纸后将可制造大型暗能炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型暗能炮2型图纸</name>
@@ -601,6 +686,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造暗能时代大型暗能炮2型武器挂件的学习图纸，学习该图纸后将可制造大型暗能炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型暗能炮3型图纸</name>
@@ -608,6 +694,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造暗能时代大型暗能炮3型武器挂件的学习图纸，学习该图纸后将可制造大型暗能炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型暗能炮4型图纸</name>
@@ -615,6 +702,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造暗能时代大型暗能炮4型武器挂件的学习图纸，学习该图纸后将可制造大型暗能炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型暗能炮5型图纸</name>
@@ -622,6 +710,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造暗能时代大型暗能炮5型武器挂件的学习图纸，学习该图纸后将可制造大型暗能炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>大型暗能炮6型图纸</name>
@@ -629,6 +718,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造暗能时代大型暗能炮6型武器挂件的学习图纸，学习该图纸后将可制造大型暗能炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射暗能炮1型图纸</name>
@@ -636,6 +726,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代速射暗能炮1型武器挂件的学习图纸，学习该图纸后将可制造速射暗能炮1型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射暗能炮2型图纸</name>
@@ -643,6 +734,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造暗能时代速射暗能炮2型武器挂件的学习图纸，学习该图纸后将可制造速射暗能炮2型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射暗能炮3型图纸</name>
@@ -650,6 +742,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造暗能时代速射暗能炮3型武器挂件的学习图纸，学习该图纸后将可制造速射暗能炮3型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射暗能炮4型图纸</name>
@@ -657,6 +750,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造暗能时代速射暗能炮4型武器挂件的学习图纸，学习该图纸后将可制造速射暗能炮4型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射暗能炮5型图纸</name>
@@ -664,6 +758,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造暗能时代速射暗能炮5型武器挂件的学习图纸，学习该图纸后将可制造速射暗能炮5型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>速射暗能炮6型图纸</name>
@@ -671,6 +766,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造暗能时代速射暗能炮6型武器挂件的学习图纸，学习该图纸后将可制造速射暗能炮6型武器挂件。</des>
 	</recipes>
 	<recipes>
 		<name>复合装甲1型图纸</name>
@@ -678,6 +774,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代复合装甲1型护甲挂件的学习图纸，学习该图纸后将可制造复合装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>复合装甲2型图纸</name>
@@ -685,6 +782,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代复合装甲2型护甲挂件的学习图纸，学习该图纸后将可制造复合装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>复合装甲3型图纸</name>
@@ -692,6 +790,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代复合装甲3型护甲挂件的学习图纸，学习该图纸后将可制造复合装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>复合装甲4型图纸</name>
@@ -699,6 +798,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代复合装甲4型护甲挂件的学习图纸，学习该图纸后将可制造复合装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>复合装甲5型图纸</name>
@@ -706,6 +806,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代复合装甲5型护甲挂件的学习图纸，学习该图纸后将可制造复合装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>复合装甲6型图纸</name>
@@ -713,6 +814,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代复合装甲6型护甲挂件的学习图纸，学习该图纸后将可制造复合装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反应装甲1型图纸</name>
@@ -720,6 +822,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代反应装甲1型护甲挂件的学习图纸，学习该图纸后将可制造反应装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反应装甲2型图纸</name>
@@ -727,6 +830,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代反应装甲2型护甲挂件的学习图纸，学习该图纸后将可制造反应装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反应装甲3型图纸</name>
@@ -734,6 +838,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代反应装甲3型护甲挂件的学习图纸，学习该图纸后将可制造反应装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反应装甲4型图纸</name>
@@ -741,6 +846,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代反应装甲4型护甲挂件的学习图纸，学习该图纸后将可制造反应装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反应装甲5型图纸</name>
@@ -748,6 +854,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代反应装甲5型护甲挂件的学习图纸，学习该图纸后将可制造反应装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反应装甲6型图纸</name>
@@ -755,6 +862,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代反应装甲6型护甲挂件的学习图纸，学习该图纸后将可制造反应装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反射装甲1型图纸</name>
@@ -762,6 +870,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代反射装甲1型护甲挂件的学习图纸，学习该图纸后将可制造反射装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反射装甲2型图纸</name>
@@ -769,6 +878,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造激光时代反射装甲2型护甲挂件的学习图纸，学习该图纸后将可制造反射装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反射装甲3型图纸</name>
@@ -776,6 +886,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造激光时代反射装甲3型护甲挂件的学习图纸，学习该图纸后将可制造反射装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反射装甲4型图纸</name>
@@ -783,6 +894,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造激光时代反射装甲4型护甲挂件的学习图纸，学习该图纸后将可制造反射装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反射装甲5型图纸</name>
@@ -790,6 +902,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造激光时代反射装甲5型护甲挂件的学习图纸，学习该图纸后将可制造反射装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反射装甲6型图纸</name>
@@ -797,6 +910,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造激光时代反射装甲6型护甲挂件的学习图纸，学习该图纸后将可制造反射装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>衍射装甲1型图纸</name>
@@ -804,6 +918,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造激光时代衍射装甲1型护甲挂件的学习图纸，学习该图纸后将可制造衍射装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>衍射装甲2型图纸</name>
@@ -811,6 +926,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造激光时代衍射装甲2型护甲挂件的学习图纸，学习该图纸后将可制造衍射装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>衍射装甲3型图纸</name>
@@ -818,6 +934,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造激光时代衍射装甲3型护甲挂件的学习图纸，学习该图纸后将可制造衍射装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>衍射装甲4型图纸</name>
@@ -825,6 +942,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造激光时代衍射装甲4型护甲挂件的学习图纸，学习该图纸后将可制造衍射装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>衍射装甲5型图纸</name>
@@ -832,6 +950,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造激光时代衍射装甲5型护甲挂件的学习图纸，学习该图纸后将可制造衍射装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>衍射装甲6型图纸</name>
@@ -839,6 +958,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造激光时代衍射装甲6型护甲挂件的学习图纸，学习该图纸后将可制造衍射装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>屏蔽装甲1型图纸</name>
@@ -846,6 +966,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代屏蔽装甲1型护甲挂件的学习图纸，学习该图纸后将可制造屏蔽装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>屏蔽装甲2型图纸</name>
@@ -853,6 +974,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造电磁时代屏蔽装甲2型护甲挂件的学习图纸，学习该图纸后将可制造屏蔽装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>屏蔽装甲3型图纸</name>
@@ -860,6 +982,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造电磁时代屏蔽装甲3型护甲挂件的学习图纸，学习该图纸后将可制造屏蔽装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>屏蔽装甲4型图纸</name>
@@ -867,6 +990,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造电磁时代屏蔽装甲4型护甲挂件的学习图纸，学习该图纸后将可制造屏蔽装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>屏蔽装甲5型图纸</name>
@@ -874,6 +998,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造电磁时代屏蔽装甲5型护甲挂件的学习图纸，学习该图纸后将可制造屏蔽装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>屏蔽装甲6型图纸</name>
@@ -881,6 +1006,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造电磁时代屏蔽装甲6型护甲挂件的学习图纸，学习该图纸后将可制造屏蔽装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>干扰装甲1型图纸</name>
@@ -888,6 +1014,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造电磁时代干扰装甲1型护甲挂件的学习图纸，学习该图纸后将可制造干扰装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>干扰装甲2型图纸</name>
@@ -895,6 +1022,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造电磁时代干扰装甲2型护甲挂件的学习图纸，学习该图纸后将可制造干扰装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>干扰装甲3型图纸</name>
@@ -902,6 +1030,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造电磁时代干扰装甲3型护甲挂件的学习图纸，学习该图纸后将可制造干扰装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>干扰装甲4型图纸</name>
@@ -909,6 +1038,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造电磁时代干扰装甲4型护甲挂件的学习图纸，学习该图纸后将可制造干扰装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>干扰装甲5型图纸</name>
@@ -916,6 +1046,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造电磁时代干扰装甲5型护甲挂件的学习图纸，学习该图纸后将可制造干扰装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>干扰装甲6型图纸</name>
@@ -923,6 +1054,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造电磁时代干扰装甲6型护甲挂件的学习图纸，学习该图纸后将可制造干扰装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反物质装甲1型图纸</name>
@@ -930,6 +1062,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代反物质装甲1型护甲挂件的学习图纸，学习该图纸后将可制造反物质装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反物质装甲2型图纸</name>
@@ -937,6 +1070,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造暗能时代反物质装甲2型护甲挂件的学习图纸，学习该图纸后将可制造反物质装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反物质装甲3型图纸</name>
@@ -944,6 +1078,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造暗能时代反物质装甲3型护甲挂件的学习图纸，学习该图纸后将可制造反物质装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反物质装甲4型图纸</name>
@@ -951,6 +1086,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造暗能时代反物质装甲4型护甲挂件的学习图纸，学习该图纸后将可制造反物质装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反物质装甲5型图纸</name>
@@ -958,6 +1094,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造暗能时代反物质装甲5型护甲挂件的学习图纸，学习该图纸后将可制造反物质装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反物质装甲6型图纸</name>
@@ -965,6 +1102,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造暗能时代反物质装甲6型护甲挂件的学习图纸，学习该图纸后将可制造反物质装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反引力装甲1型图纸</name>
@@ -972,6 +1110,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造暗能时代反引力装甲1型护甲挂件的学习图纸，学习该图纸后将可制造反引力装甲1型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反引力装甲2型图纸</name>
@@ -979,6 +1118,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造暗能时代反引力装甲2型护甲挂件的学习图纸，学习该图纸后将可制造反引力装甲2型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反引力装甲3型图纸</name>
@@ -986,6 +1126,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造暗能时代反引力装甲3型护甲挂件的学习图纸，学习该图纸后将可制造反引力装甲3型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反引力装甲4型图纸</name>
@@ -993,6 +1134,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造暗能时代反引力装甲4型护甲挂件的学习图纸，学习该图纸后将可制造反引力装甲4型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反引力装甲5型图纸</name>
@@ -1000,6 +1142,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造暗能时代反引力装甲5型护甲挂件的学习图纸，学习该图纸后将可制造反引力装甲5型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>反引力装甲6型图纸</name>
@@ -1007,6 +1150,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造暗能时代反引力装甲6型护甲挂件的学习图纸，学习该图纸后将可制造反引力装甲6型护甲挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高效能量发生器1型图纸</name>
@@ -1014,6 +1158,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代高效能量发生器1型能量挂件的学习图纸，学习该图纸后将可制造高效能量发生器1型能量挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高效能量发生器2型图纸</name>
@@ -1021,6 +1166,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代高效能量发生器2型能量挂件的学习图纸，学习该图纸后将可制造高效能量发生器2型能量挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高效能量发生器3型图纸</name>
@@ -1028,6 +1174,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代高效能量发生器3型能量挂件的学习图纸，学习该图纸后将可制造高效能量发生器3型能量挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高效能量发生器4型图纸</name>
@@ -1035,6 +1182,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代高效能量发生器4型能量挂件的学习图纸，学习该图纸后将可制造高效能量发生器4型能量挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高效能量发生器5型图纸</name>
@@ -1042,6 +1190,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代高效能量发生器5型能量挂件的学习图纸，学习该图纸后将可制造高效能量发生器5型能量挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高效能量发生器6型图纸</name>
@@ -1049,6 +1198,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代高效能量发生器6型能量挂件的学习图纸，学习该图纸后将可制造高效能量发生器6型能量挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高能引擎1型图纸</name>
@@ -1056,6 +1206,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代高能引擎1型加速挂件的学习图纸，学习该图纸后将可制造高能引擎1型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高能引擎2型图纸</name>
@@ -1063,6 +1214,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代高能引擎2型加速挂件的学习图纸，学习该图纸后将可制造高能引擎2型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高能引擎3型图纸</name>
@@ -1070,6 +1222,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代高能引擎3型加速挂件的学习图纸，学习该图纸后将可制造高能引擎3型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高能引擎4型图纸</name>
@@ -1077,6 +1230,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代高能引擎4型加速挂件的学习图纸，学习该图纸后将可制造高能引擎4型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高能引擎5型图纸</name>
@@ -1084,6 +1238,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代高能引擎5型加速挂件的学习图纸，学习该图纸后将可制造高能引擎5型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>高能引擎6型图纸</name>
@@ -1091,6 +1246,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代高能引擎6型加速挂件的学习图纸，学习该图纸后将可制造高能引擎6型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>能量护盾1型图纸</name>
@@ -1098,6 +1254,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代能源护盾1型护盾挂件的学习图纸，学习该图纸后将可制造能源护盾1型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>能量护盾2型图纸</name>
@@ -1105,6 +1262,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代能源护盾2型护盾挂件的学习图纸，学习该图纸后将可制造能源护盾2型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>能量护盾3型图纸</name>
@@ -1112,6 +1270,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代能源护盾3型护盾挂件的学习图纸，学习该图纸后将可制造能源护盾3型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>能量护盾4型图纸</name>
@@ -1119,6 +1278,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代能源护盾4型护盾挂件的学习图纸，学习该图纸后将可制造能源护盾4型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>能量护盾5型图纸</name>
@@ -1126,6 +1286,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代能源护盾5型护盾挂件的学习图纸，学习该图纸后将可制造能源护盾5型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>能量护盾6型图纸</name>
@@ -1133,6 +1294,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代能源护盾6型护盾挂件的学习图纸，学习该图纸后将可制造能源护盾6型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>转换增速仪1型图纸</name>
@@ -1140,6 +1302,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代转换增速仪1型加速挂件的学习图纸，学习该图纸后将可制造转换增速仪1型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>转换增速仪2型图纸</name>
@@ -1147,6 +1310,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代转换增速仪2型加速挂件的学习图纸，学习该图纸后将可制造转换增速仪2型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>转换增速仪3型图纸</name>
@@ -1154,6 +1318,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代转换增速仪3型加速挂件的学习图纸，学习该图纸后将可制造转换增速仪3型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>转换增速仪4型图纸</name>
@@ -1161,6 +1326,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代转换增速仪4型加速挂件的学习图纸，学习该图纸后将可制造转换增速仪4型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>转换增速仪5型图纸</name>
@@ -1168,6 +1334,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代转换增速仪5型加速挂件的学习图纸，学习该图纸后将可制造转换增速仪5型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>转换增速仪6型图纸</name>
@@ -1175,6 +1342,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代转换增速仪6型加速挂件的学习图纸，学习该图纸后将可制造转换增速仪6型加速挂件。</des>
 	</recipes>
 	<recipes>
 		<name>智能战斗雷达1型图纸</name>
@@ -1182,6 +1350,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代智能战斗雷达1型雷达挂件的学习图纸，学习该图纸后将可制造智能战斗雷达1型雷达挂件。</des>
 	</recipes>
 	<recipes>
 		<name>智能战斗雷达2型图纸</name>
@@ -1189,6 +1358,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代智能战斗雷达2型雷达挂件的学习图纸，学习该图纸后将可制造智能战斗雷达2型雷达挂件。</des>
 	</recipes>
 	<recipes>
 		<name>智能战斗雷达3型图纸</name>
@@ -1196,6 +1366,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代智能战斗雷达3型雷达挂件的学习图纸，学习该图纸后将可制造智能战斗雷达3型雷达挂件。</des>
 	</recipes>
 	<recipes>
 		<name>智能战斗雷达4型图纸</name>
@@ -1203,6 +1374,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代智能战斗雷达4型雷达挂件的学习图纸，学习该图纸后将可制造智能战斗雷达4型雷达挂件。</des>
 	</recipes>
 	<recipes>
 		<name>智能战斗雷达5型图纸</name>
@@ -1210,6 +1382,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代智能战斗雷达5型雷达挂件的学习图纸，学习该图纸后将可制造智能战斗雷达5型雷达挂件。</des>
 	</recipes>
 	<recipes>
 		<name>智能战斗雷达6型图纸</name>
@@ -1217,6 +1390,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代智能战斗雷达6型雷达挂件的学习图纸，学习该图纸后将可制造智能战斗雷达6型雷达挂件。</des>
 	</recipes>
 	<recipes>
 		<name>自爆装置1型图纸</name>
@@ -1224,6 +1398,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>该图纸为制造机械时代自爆装置1型自爆挂件的学习图纸，学习该图纸后将可制造自爆装置1型自爆挂件。</des>
 	</recipes>
 	<recipes>
 		<name>自爆装置2型图纸</name>
@@ -1231,6 +1406,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>该图纸为制造机械时代自爆装置2型自爆挂件的学习图纸，学习该图纸后将可制造自爆装置2型自爆挂件。</des>
 	</recipes>
 	<recipes>
 		<name>自爆装置3型图纸</name>
@@ -1238,6 +1414,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>该图纸为制造机械时代自爆装置3型自爆挂件的学习图纸，学习该图纸后将可制造自爆装置3型自爆挂件。</des>
 	</recipes>
 	<recipes>
 		<name>自爆装置4型图纸</name>
@@ -1245,6 +1422,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>该图纸为制造机械时代自爆装置4型自爆挂件的学习图纸，学习该图纸后将可制造自爆装置4型自爆挂件。</des>
 	</recipes>
 	<recipes>
 		<name>自爆装置5型图纸</name>
@@ -1252,6 +1430,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>该图纸为制造机械时代自爆装置5型自爆挂件的学习图纸，学习该图纸后将可制造自爆装置5型自爆挂件。</des>
 	</recipes>
 	<recipes>
 		<name>自爆装置6型图纸</name>
@@ -1259,5 +1438,6 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>该图纸为制造机械时代自爆装置6型自爆挂件的学习图纸，学习该图纸后将可制造自爆装置6型自爆挂件。</des>
 	</recipes>
 </root>

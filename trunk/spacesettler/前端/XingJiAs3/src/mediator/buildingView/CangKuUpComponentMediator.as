@@ -111,7 +111,7 @@ package mediator.buildingView
 		protected function speedHandler(event:Event):void
 		{
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
-			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.KUANGCHANG);
+			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.CANGKU);
 			if(buildVO.level<40)
 			{
 				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),

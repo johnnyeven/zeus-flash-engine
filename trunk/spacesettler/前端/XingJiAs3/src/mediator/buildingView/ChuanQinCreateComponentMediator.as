@@ -62,6 +62,7 @@ package mediator.buildingView
 		{
 			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			return StringUtil.formatString(str, userInfoVO.camp);
+			
 		}
 		
 		/**

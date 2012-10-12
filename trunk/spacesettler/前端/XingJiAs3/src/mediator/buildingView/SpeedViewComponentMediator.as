@@ -29,6 +29,8 @@ package mediator.buildingView
 		public function SpeedViewComponentMediator()
 		{
 			super(NAME, new SpeedViewComponent(ClassUtil.getObject("speed_info_view")));
+			comp.med=this;
+			level=2;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closehandler);
 		}
 		

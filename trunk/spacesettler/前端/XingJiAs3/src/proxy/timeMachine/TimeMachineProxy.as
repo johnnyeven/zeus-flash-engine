@@ -40,12 +40,13 @@ package proxy.timeMachine
 		{
 			super(NAME, data);
 			userInforProxy = getProxy(UserInfoProxy);
-			Protocol.registerProtocol(CommandEnum.allView, timeMachineResult);
 			Protocol.registerProtocol(CommandEnum.allSpeed, allSpeedResult);
 		}
 		
 		public function timeMachine(callBack:Function = null):void
 		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.allView, timeMachineResult))
+			      Protocol.registerProtocol(CommandEnum.allView, timeMachineResult);
 			_timeMachineCallBackFunction = callBack;
 			var id:String = userInforProxy.userInfoVO.id;
 			var obj:Object = {id:id};
@@ -54,18 +55,41 @@ package proxy.timeMachine
 		
 		private function timeMachineResult(data:Object):void
 		{
+			Protocol.deleteProtocolFunction(CommandEnum.allView, timeMachineResult);
 			if(data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
 				_timeMachineCallBackFunction = null;
 				return ;
 			}
+			timeMachineInfor(data);
+		}
+		
+		public function allSpeed(id:String):void
+		{
+			var obj:Object = {base_id:id};
+			ConnDebug.send(CommandEnum.allSpeed,obj);
+		}
+		
+		private function allSpeedResult(data:Object):void
+		{
+			if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
+			timeMachineInfor(data);
+			userInforProxy.updateServerData(data);
+		}
+		
+		public function timeMachineInfor(data:Object):void
+		{
 			//建筑事件
 			var buildingsEventsArr:Array = data.base.building_events;
 			//科技事件
 			var researchEventsArr:Array =  data.base.research_events;
 			//制造事件
-//			var produceEventsArr:Array = data.base.produce_events;
+			//			var produceEventsArr:Array = data.base.produce_events;
 			
 			var totalEventsArr:Array = buildingsEventsArr.concat(researchEventsArr);
 			var arr:Array = [];
@@ -99,22 +123,6 @@ package proxy.timeMachine
 			if(_timeMachineCallBackFunction != null)
 				_timeMachineCallBackFunction();
 			_timeMachineCallBackFunction = null;
-		}
-		
-		public function allSpeed(id:String):void
-		{
-			var obj:Object = {id:id};
-			ConnDebug.send(CommandEnum.allSpeed,obj);
-		}
-		
-		private function allSpeedResult(data:Object):void
-		{
-			if(data.hasOwnProperty("errors"))
-			{
-				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
-				return ;
-			}
-			
 		}
 	}
 }

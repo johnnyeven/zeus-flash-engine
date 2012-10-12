@@ -1,11 +1,7 @@
 package net.chat
 {
-    import com.adobe.crypto.SHA1;
-    import com.zn.net.Protocol;
-    import com.zn.net.socket.ClientSocket;
     import com.zn.net.socket.SocketPackageOut;
     
-    import flash.net.registerClassAlias;
     import flash.utils.ByteArray;
 
     public class ChatSocketOut extends SocketPackageOut

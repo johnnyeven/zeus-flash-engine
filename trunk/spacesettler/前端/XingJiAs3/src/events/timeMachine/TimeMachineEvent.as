@@ -15,7 +15,7 @@ package events.timeMachine
 		/**
 		 * 加速
 		 */		
-		public static const SPEED_EVENT:String = "allSpeedEvent";
+		public static const SPEED_EVENT:String = "speedEvent";
 		/**
 		 * 关闭
 		 */
@@ -53,7 +53,7 @@ package events.timeMachine
 		
 		public override function toString():String
 		{
-			return formatToString("TimeMachineEvent","type","bubbles","cancelable");
+			return formatToString("TimeMachineEvent");
 		}
 
 		public function get idType():int

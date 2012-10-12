@@ -23,6 +23,10 @@ package events.buildingView
 		
 		public static const MAIN_SENCE_EVENT:String="MAIN_SENCE_EVENT";
 		
+		public static const RANKING_EVENT:String="ranking_event";
+		
+		public static const GROUP_EVENT:String="group_event";
+		
 		
 		public function ZhuJiDiEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

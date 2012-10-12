@@ -2,6 +2,11 @@ package events.talk
 {
 	import flash.events.Event;
 	
+	/**
+	 *聊天 
+	 * @author lw
+	 * 
+	 */	
 	public class TalkEvent extends Event
 	{
 		

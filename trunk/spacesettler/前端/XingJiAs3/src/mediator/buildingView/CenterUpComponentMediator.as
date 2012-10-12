@@ -42,11 +42,12 @@ package mediator.buildingView
 		
 		public var CenterUpViewComp:CenterUpComponent;
 		
+		
 		public function CenterUpComponentMediator()
 		{
 			super(NAME, new CenterUpComponent(ClassUtil.getObject(formatStr("up_center_view_{0}"))));
 			comp.med=this;
-			level=1;
+			level=1;			
 			comp.buildType=BuildTypeEnum.CENTER;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
@@ -60,9 +61,9 @@ package mediator.buildingView
 		}
 		
 		private function formatStr(str:String):String
-		{
-			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
-			return StringUtil.formatString(str, userInfoVO.camp);
+		{		
+			var userInfoVO:UserInfoVO= UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			return StringUtil.formatString(str, userInfoVO.camp);			
 		}
 		/**
 		 *添加要监听的消息

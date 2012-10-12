@@ -1,5 +1,7 @@
 package mediator.timeMachine
 {
+	import com.zn.multilanguage.MultilanguageManager;
+	
 	import events.timeMachine.TimeMachineEvent;
 	
 	import mediator.BaseMediator;
@@ -32,6 +34,8 @@ package mediator.timeMachine
 		public function TimeMachineComponentMediator()
 		{
 			super(NAME, new TimeMachineComponent());
+			comp.med=this;
+			level=1;
 			
 			comp.addEventListener(TimeMachineEvent.ALL_SPEED_EVENT,allSpeedHandler);
 			comp.addEventListener(TimeMachineEvent.CLOSE_EVENT,closeHandler);
@@ -79,7 +83,9 @@ package mediator.timeMachine
 
 		private function allSpeedHandler(event:TimeMachineEvent):void
 		{
-			var obj:Object = {info:"使用时间机器完成本任务需花费",count:event.count,okCallBack:function():void
+			event.stopImmediatePropagation();
+			var str:String = MultilanguageManager.getString("totalEvent");
+			var obj:Object = {info:str,count:event.count,okCallBack:function():void
 			{
 	        	var timeMachineProxy:TimeMachineProxy = getProxy(TimeMachineProxy);
 				var userInforProxy:UserInfoProxy = getProxy(UserInfoProxy);
@@ -92,12 +98,15 @@ package mediator.timeMachine
 		
 		private function showInforComponetHandler(event:TimeMachineEvent):void
 		{
+			event.stopImmediatePropagation();
 			sendNotification(TimeMachineInforComponentMediator.SHOW_NOTE);
 		}
 		
 		private function speedHandler(event:TimeMachineEvent):void
 		{
-			var obj:Object = {info:"使用时间机器完成本任务需花费",count:event.count,okCallBack:function():void
+			event.stopImmediatePropagation();
+			var inforString:String = MultilanguageManager.getString("thisEvent");
+			var obj:Object = {info:inforString,count:event.count,okCallBack:function():void
 			{
 				var builderProxy:BuildProxy = getProxy(BuildProxy);
 				builderProxy.speedUpBuild(event.idType);

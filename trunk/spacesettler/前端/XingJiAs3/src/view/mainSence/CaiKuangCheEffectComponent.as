@@ -15,10 +15,12 @@ package view.mainSence
     import mx.binding.utils.BindingUtils;
     
     import proxy.BuildProxy;
+    import proxy.userInfo.UserInfoProxy;
     
     import ui.core.Component;
     
     import vo.BuildInfoVo;
+    import vo.userInfo.UserInfoVO;
 
     /**
      *采矿车特效
@@ -91,7 +93,26 @@ package view.mainSence
         public function CaiKuangCheEffectComponent()
         {
             super(null);
+			
+			addEventListener(Event.ADDED_TO_STAGE,addToStageHandler);
         }
+		
+		protected function addToStageHandler(event:Event):void
+		{
+			init();			
+		}
+		
+		public override function dispose():void
+		{
+			super.dispose();
+			
+			for each (var tweenLite:TweenLite in tweenLiteDic) 
+			{
+				tweenLite.kill();
+			}
+			tweenLiteDic=null;
+		}
+
 
         public function init():void
         {
@@ -125,28 +146,30 @@ package view.mainSence
 
         private function levelChange(value:*):void
         {
-			if(value>5)
-				value=5;
+			if(value>4)
+				value=4;
+			
+			var userInfoVO:UserInfoVO=UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			
             switch (value)
             {
-				case 5:
-				{
-					if (che_5 == null)
-					{
-						che_5 = ClassUtil.getObject("sence1.caiKuangChe_5");
-						che_5.gotoAndStop(OUT);
-						che_5.x = che_5_old_point.x;
-						che_5.y = che_5_old_point.y;
-						tweenLiteDic[5] = TweenLite.to(che_5, time5, { x:che_5_cai_point.x, y: che_5_cai_point.y, ease: Linear.easeNone, onComplete: outComplete, onCompleteParams: [ che_5 ]});
-						addChild(che_5);
-					}
-				}
+//				case 5:
+//				{
+//					if (che_5 == null)
+//					{
+//						che_5 = ClassUtil.getObject("sence"+userInfoVO.camp+".caiKuangChe_5");
+//						che_5.gotoAndStop(OUT);
+//						che_5.x = che_5_old_point.x;
+//						che_5.y = che_5_old_point.y;
+//						tweenLiteDic[5] = TweenLite.to(che_5, time5, { x:che_5_cai_point.x, y: che_5_cai_point.y, ease: Linear.easeNone, onComplete: outComplete, onCompleteParams: [ che_5 ]});
+//						addChild(che_5);
+//					}
+//				}
 				case 4:
 				{
 					if (che_4 == null)
 					{
-						che_4 = ClassUtil.getObject("sence1.caiKuangChe_4");
+						che_4 = ClassUtil.getObject("sence"+userInfoVO.camp+".caiKuangChe_4");
 						che_4.gotoAndStop(OUT);
 						che_4.x = che_4_old_point.x;
 						che_4.y = che_4_old_point.y;
@@ -158,7 +181,7 @@ package view.mainSence
 				{
 					if (che_3 == null)
 					{
-						che_3 = ClassUtil.getObject("sence1.caiKuangChe_3");
+						che_3 = ClassUtil.getObject("sence"+userInfoVO.camp+".caiKuangChe_3");
 						che_3.gotoAndStop(OUT);
 						che_3.x = che_3_old_point.x;
 						che_3.y = che_3_old_point.y;
@@ -170,7 +193,7 @@ package view.mainSence
 				{
 					if (che_2 == null)
 					{
-						che_2 = ClassUtil.getObject("sence1.caiKuangChe_2");
+						che_2 = ClassUtil.getObject("sence"+userInfoVO.camp+".caiKuangChe_2");
 						che_2.gotoAndStop(OUT);
 						che_2.x = che_2_old_point.x;
 						che_2.y = che_2_old_point.y;
@@ -182,7 +205,7 @@ package view.mainSence
                 {
                     if (che_1 == null)
                     {
-                        che_1 = ClassUtil.getObject("sence1.caiKuangChe_1");
+                        che_1 = ClassUtil.getObject("sence"+userInfoVO.camp+".caiKuangChe_1");
                         che_1.gotoAndStop(OUT);
                         che_1.x = che_1_old_point.x;
                         che_1.y = che_1_old_point.y;

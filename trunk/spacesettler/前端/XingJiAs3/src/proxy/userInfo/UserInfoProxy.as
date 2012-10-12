@@ -16,6 +16,7 @@ package proxy.userInfo
     
     import proxy.BuildProxy;
     import proxy.login.LoginProxy;
+    import proxy.timeMachine.TimeMachineProxy;
     
     import vo.allView.FriendInfoVo;
     import vo.userInfo.UserInfoVO;
@@ -38,12 +39,12 @@ package proxy.userInfo
         public function UserInfoProxy(data:Object = null)
         {
             super(NAME, data);
-			
-			Protocol.registerProtocol(CommandEnum.updateInfo, updateInfoResult);
         }
 
 		public function updateInfo():void
 		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.updateInfo, updateInfoResult))
+			    Protocol.registerProtocol(CommandEnum.updateInfo, updateInfoResult);
 			var id:String=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO.id;
 			var obj:Object={id:id};
 			ConnDebug.send(CommandEnum.updateInfo, obj,ConnDebug.HTTP,URLRequestMethod.GET);
@@ -51,6 +52,7 @@ package proxy.userInfo
 		
 		public function updateInfoResult(data:*):void
 		{
+			Protocol.deleteProtocolFunction(CommandEnum.updateInfo, updateInfoResult);
 			if (data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
@@ -90,9 +92,11 @@ package proxy.userInfo
 			
 			userInfoVO.legion_id = data.legion_id;
 			
-            userInfoVO.camp = data.camp_id + 1;
+			userInfoVO.server_camp=data.camp_id;
+            userInfoVO.camp = userInfoVO.server_camp + 1;
 //			userInfoVO.camp=2;
-				
+			
+			userInfoVO.session_key=data.session_key;
 			
 			userInfoVO.start();
 
@@ -109,7 +113,7 @@ package proxy.userInfo
          *
          * ****************************************************/
         /**
-         *
+         *更新服务器数据
          * @param data
          */
         public function updateServerData(data:* = null):void
@@ -122,7 +126,8 @@ package proxy.userInfo
 
             var buildProxy:BuildProxy = getProxy(BuildProxy);
             buildProxy.getBuildInfoResult(loginProxy.serverData);
-			
+			var timeMachineProxy:TimeMachineProxy = getProxy(TimeMachineProxy);
+			timeMachineProxy.timeMachineInfor(loginProxy.serverData);
 
         }
     }

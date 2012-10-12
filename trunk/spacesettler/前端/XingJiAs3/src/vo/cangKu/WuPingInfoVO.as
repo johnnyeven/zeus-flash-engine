@@ -10,6 +10,10 @@ package vo.cangKu
 		 */		
 		public var id:int;
 		/**
+		 *物品名字
+		 */		
+		public var name:String;
+		/**
 		 *物品类型  "Chariot" "TankPart" "item" "recipes"
 		 */		
 		public var itemType:String;
@@ -41,6 +45,31 @@ package vo.cangKu
 		 *挂件是否被挂载
 		 */		
 		public var isMounted:Boolean;
+		/**
+		 *折合暗物质
+		 */		
+		public var darkMatterValue:int;
+		/**
+		 *图纸类型
+		 */		
+		public var recipeType:int;
+		/**
+		 *是否已用
+		 */		
+		public var canUse:Boolean;
+		/**
+		 *图纸挂件类型
+		 */		
+		public var tankPartType:int;
+		/**
+		 *道具
+		 */		
+		public var inUsing:Boolean;
+		/**
+		 *属性
+		 */		
+		public var property:Object;
+		
 		public function WuPingInfoVO()
 		{
 			

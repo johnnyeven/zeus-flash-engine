@@ -3,6 +3,9 @@ package mediator.cangKu
 	import com.zn.utils.ClassUtil;
 	
 	import events.buildingView.AddViewEvent;
+	import events.cangKu.DonateEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.BaseMediator;
 	
@@ -23,13 +26,19 @@ package mediator.cangKu
 		public static const SHOW_NOTE:String="show" + NAME + "Note";
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
-
+		
+		private var okCallBack:Function;
 		public function DonateViewComponentMediator()
 		{
 			super(NAME, new DonateViewComponent(ClassUtil.getObject("donate_view")));
+			comp.med=this;
+			level = 2;
+			popUpEffect=CENTER;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
+			comp.addEventListener(DonateViewComponent.OK_EVENT, okHandler);
 		}
-
+		
+		
 		/**
 		 *添加要监听的消息
 		 * @return
@@ -38,6 +47,14 @@ package mediator.cangKu
 		override public function listNotificationInterests():Array
 		{
 			return [DESTROY_NOTE];
+		}
+		
+		public function upData(data:*):void
+		{
+			var obj:Object = data;
+			comp.juanXianWuLabel.text=obj.name;
+			comp.zheHeNumLabel.text=String(obj.count);
+			okCallBack = obj.okCallBack;
 		}
 
 		/**
@@ -54,7 +71,7 @@ package mediator.cangKu
 					//销毁对象
 					destroy();
 					break;
-				}
+				}				
 			}
 		}
 
@@ -67,10 +84,20 @@ package mediator.cangKu
 		{
 			return viewComponent as DonateViewComponent;
 		}
-
+		
 		protected function closeHandler(event:AddViewEvent):void
 		{
 			sendNotification(DESTROY_NOTE);
 		}
+		
+		protected function okHandler(event:Event):void
+		{
+			if (okCallBack != null)
+				okCallBack();
+			okCallBack = null;
+			
+			sendNotification(DESTROY_NOTE);
+		}
+		
 	}
 }

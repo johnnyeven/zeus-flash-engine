@@ -19,6 +19,8 @@ package controller
     {
 		private static var _isLoading:Boolean=false;
 		
+		public static var loadCompleteCallBack:Function;
+		
         public function ShowDemoMediatorCommand()
         {
             super();
@@ -37,7 +39,7 @@ package controller
             var med:BaseMediator = getMediator(BaseMediator);
             if (med)
             {
-                med.show();
+				callShow(med);
             }
             else
             {
@@ -58,9 +60,22 @@ package controller
 
             //注册界面的中介
             facade.registerMediator(med);
-            med.show();
 			
 			_isLoading=false;
+			callShow(med);
         }
+		
+		private function callShow(med:BaseMediator):void
+		{
+			if (loadCompleteCallBack != null)
+			{
+				loadCompleteCallBack(med);
+				loadCompleteCallBack = null;
+			}
+			else
+			{
+				med.show();
+			}
+		}
     }
 }

@@ -5,11 +5,18 @@ package controller.cangKu
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
     
+    import events.cangKu.ChaKanEvent;
+    import events.cangKu.DonateEvent;
+    
     import mediator.BaseMediator;
     import mediator.cangKu.DonateViewComponentMediator;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import ui.managers.PopUpManager;
+    
+    import view.cangKu.DonateViewComponent;
 
     /**
      *显示界面命令
@@ -20,6 +27,7 @@ package controller.cangKu
     {
 		private static var _isLoading:Boolean=false;
 		
+		private var obj:Object;
         public function ShowDonateViewComponentMediatorCommand()
         {
             super();
@@ -34,10 +42,12 @@ package controller.cangKu
         {
 			if(_isLoading)
 				return ;
+			obj=notification.getBody() as Object;
 			
             var med:DonateViewComponentMediator = getMediator(DonateViewComponentMediator);
             if (med)
             {
+				//PopUpManager.addPopUp((med.getViewComponent())as DonateViewComponent,false);
                 med.show();
             }
             else
@@ -56,6 +66,9 @@ package controller.cangKu
         protected function loaderComplete(event:LoaderEvent):void
         {
             var med:DonateViewComponentMediator = new DonateViewComponentMediator();
+			med.upData(obj);
+//			var comp:DonateViewComponent=med.getViewComponent() as DonateViewComponent;
+//			comp.setValue(_event.tempInfo);
 
             //注册界面的中介
             facade.registerMediator(med);

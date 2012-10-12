@@ -6,9 +6,19 @@ package events.cangKu
 	{
 		public static const DONATE_EVENT:String="danateEvent";
 		
-		public function DonateEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public static const DESTROY_EVENT:String="destroy_event";
+		
+		public static const USE_EVENT:String="use_event";
+		
+		public static const ADDSPACE_EVENT:String="addspace_event";
+		
+		public var wuPingObj:Object
+		public var tempInfo:*;
+		public function DonateEvent(type:String,info:*=null,obj:Object=null)
 		{
-			super(type, bubbles, cancelable);
+			super(type, false, false);
+			tempInfo=info;
+			wuPingObj=obj;
 		}
 	}
 }

@@ -10,6 +10,7 @@ package proxy.chat
     import flash.utils.ByteArray;
     import flash.utils.setTimeout;
     
+    import net.chat.ChatProtocol;
     import net.chat.ChatSocket;
     import net.chat.ChatSocketIn;
     import net.chat.ChatSocketOut;
@@ -19,6 +20,8 @@ package proxy.chat
     
     import proxy.login.LoginProxy;
     import proxy.userInfo.UserInfoProxy;
+    
+    import utils.battle.SocketUtil;
     
     import vo.userInfo.UserInfoVO;
 
@@ -31,17 +34,21 @@ package proxy.chat
     {
         public static const NAME:String = "ChatProxy";
 
+		private var userInfoVO:UserInfoVO;
+		
         public function ChatProxy(data:Object = null)
         {
             super(NAME, data);
-			
-			Protocol.registerProtocol(CommandEnum.chat_login_result,chatLoginResult);
+			//登陆返回
+			ChatProtocol.registerProtocol(CommandEnum.chat_login_result,chatLoginResult);
+			//聊天显示
+//			ChatProtocol.registerProtocol(
         }
 		
         public function connect():void
         {
-//            ChatSocket.instance.addEventListener(Event.CONNECT, connectComplete);
-////            ChatSocket.instance.connectServer(LoginProxy.selectedServerVO.server_message_ip, LoginProxy.selectedServerVO.server_message_port);
+            ChatSocket.instance.addEventListener(Event.CONNECT, connectComplete);
+            ChatSocket.instance.connectServer(LoginProxy.selectedServerVO.server_message_ip, LoginProxy.selectedServerVO.server_message_port);
 //			ChatSocket.instance.connectServer("192.168.0.105", 8888);
         }
 
@@ -52,11 +59,11 @@ package proxy.chat
 
         public function loginChat():void
         {
-            var userInfoVO:UserInfoVO = UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
+			userInfoVO = UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
             var body:ByteArray = ClientSocket.getBy();
-            ChatSocket.writeIdType(userInfoVO.player_id, body);
-            ChatSocket.writeIdType(userInfoVO.legion_id, body);
-            ChatSocket.writeIdType(new Date().time.toString(), body);
+            SocketUtil.writeIdType(userInfoVO.player_id, body);
+			SocketUtil.writeIdType(userInfoVO.legion_id, body);
+			SocketUtil.writeIdType(new Date().time.toString(), body);
 			body.writeInt(1);
 			var out:ChatSocketOut=new ChatSocketOut(CommandEnum.chat_login,body,44);
 
@@ -82,8 +89,31 @@ package proxy.chat
 		
 		private function chatLoginResult(pg:ChatSocketIn):void
 		{
-			trace(pg);
+			trace(pg.body);
+			SocketUtil.readIdType(pg.body);
+			SocketUtil.readIdType(pg.body);
+			SocketUtil.readIdType(pg.body);
+			
+			var length:uint = pg.body.readUnsignedInt();
+			pg.body.readInt();
+			
+			if (length != 0)
+				pg.body.readMultiByte(length, Protocol.CHARSET);
+
 		}
+		
+		public function getChatHistory():void
+		{
+			var body:ByteArray = ClientSocket.getBy();
+			SocketUtil.writeIdType(userInfoVO.player_id, body);
+			SocketUtil.writeIdType(userInfoVO.legion_id, body);
+			SocketUtil.writeIdType(new Date().time.toString(), body);
+			
+			var out:ChatSocketOut=new ChatSocketOut(CommandEnum.chat_get_history,body);
+			ChatSocket.instance.sendMessage(out);
+		}
+		
+//		private function 
 
     /***********************************************************
      *

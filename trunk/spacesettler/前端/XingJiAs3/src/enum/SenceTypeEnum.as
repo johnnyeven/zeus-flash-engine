@@ -16,5 +16,10 @@ package enum
 		 *小行星带 
 		 */		
 		public static const PLANT:int=2;
+		
+		/**
+		 *战场 
+		 */		
+		public static const BATTLE:int=3;
 	}
 }

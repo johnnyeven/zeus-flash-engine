@@ -16,6 +16,11 @@ package vo.userInfo
         public var player_id:String;
 
         /**
+         * vip等级
+         */
+        public var vip_level:int;
+
+        /**
          * 玩家昵称
          */
         public var nickname:String;
@@ -94,7 +99,9 @@ package vo.userInfo
          *阵营
          */
         public var camp:int = 1;
+		
 
+		public var server_camp:int;
         /**
          *电量百分比
          */
@@ -110,10 +117,24 @@ package vo.userInfo
          */
         private var _current_power_consume:int;
 		
+		private var _legion_id:String;
+
 		/**
 		 *军团ID 
-		 */		
-		public var legion_id:String;
+		 */
+		public function get legion_id():String
+		{
+			return _legion_id;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set legion_id(value:String):void
+		{
+			_legion_id = value;
+		}
+
 
         public function get current_power_supply():int
         {
@@ -164,7 +185,7 @@ package vo.userInfo
         public function set crystal(value:int):void
         {
 			_crystal=value;
-            _crystal = Math.max(value, crystal_volume);
+            _crystal = Math.min(value, crystal_volume);
         }
 
         public function get tritium():int
@@ -175,7 +196,7 @@ package vo.userInfo
         public function set tritium(value:int):void
         {
 			_tritium=value;
-            _tritium = Math.max(value, tritium_volume);
+            _tritium = Math.min(value, tritium_volume);
         }       
 
 	  
@@ -191,6 +212,8 @@ package vo.userInfo
 	   {
 		   _broken_crysta = value;
 	   }
+	   
+	   public var session_key:String;
 
     }
 }

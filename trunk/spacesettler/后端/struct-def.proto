@@ -99,7 +99,9 @@ message PLAYER {
     required                    uint32                    updated_at         =     11100;    //更新日期
     required                     int32                     age_level         =     11200;    //基地等级
     required                     int32      collecting_factory_count         =     11300;    //带产量的要塞中的矿厂数量
-    optional                     bytes                      reserved         =     11400;    //
+    required                     int32                  package_size         =     11400;    //背包格子数
+    required                     int32                   package_use         =     11500;    //背包格子占用
+    optional                     bytes                      reserved         =     11600;    //
 }
 
 message TANKPART {
@@ -130,7 +132,8 @@ message TANKPART {
     required                     int32                          area         =     12400;    //,Type::Integer#提供范围
     required                    uint32                    created_at         =     12500;    //创建日期
     required                    uint32                    updated_at         =     12600;    //更新日期
-    optional                     bytes                      reserved         =     12700;    //
+    required                    uint32                       caliber         =     12700;    //??
+    optional                     bytes                      reserved         =     12800;    //
 }
 
 message CHARIOT {

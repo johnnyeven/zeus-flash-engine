@@ -44,10 +44,18 @@ package proxy.task
 		public function getFreshmanTask():void
 		{
 //			player_id=28587920797857447&force=1
-//			var obj:Object={player_id:userInfoVO.id,force:1};
 			var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
-			var obj:Object={player_id:userInfoVO.player_id};
-			ConnDebug.send(CommandEnum.getFreshmanTask, obj, ConnDebug.HTTP);
+			
+//			获取所有任务奖励
+//			var obj:Object={player_id:userInfoVO.id,force:1};
+//			for (var i:int = 0; i < 30; i++) 
+//			{
+//				ConnDebug.send(CommandEnum.getFreshmanTask, obj, ConnDebug.HTTP,URLRequestMethod.GET);
+//			}
+				
+			//获取所有东西作弊
+//			var obj:Object={player_id:userInfoVO.player_id};
+//			ConnDebug.send(CommandEnum.getCheat, obj, ConnDebug.HTTP);
 		}
 		
 		private function getFreshmanTaskResult(data:Object):void

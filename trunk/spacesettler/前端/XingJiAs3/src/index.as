@@ -12,7 +12,6 @@ package
     import flash.events.Event;
     import flash.events.IOErrorEvent;
     import flash.events.ProgressEvent;
-    import flash.geom.Point;
     import flash.net.URLLoader;
     import flash.net.URLRequest;
     import flash.system.ApplicationDomain;
@@ -22,8 +21,6 @@ package
     import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
-    
-    import ui.components.SimpleLabel;
     
     import view.loader.IndexLoaderBarComponent;
 

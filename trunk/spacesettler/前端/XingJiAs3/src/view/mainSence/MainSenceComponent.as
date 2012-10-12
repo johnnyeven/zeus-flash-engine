@@ -93,8 +93,6 @@ package view.mainSence
             addMouseClick(keJiSp);
             addMouseClick(junGongChangSp);
 
-
-
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             cwList.push(BindingUtils.bindSetter(buildListChange, buildProxy, "buildArr"));
         }
@@ -248,7 +246,7 @@ package view.mainSence
 							dispatchEvent(new AddViewEvent(AddViewEvent.ADDJUNGONGCREATEVIEW_EVENT, BuildTypeEnum.JUNGONGCHANG));
                         if (!buildVO.isBuild)
                             dispatchEvent(new AddSelectorViewEvent(AddSelectorViewEvent.ADDSELECTORVIEW_EVENT,
-                                                                   MultilanguageManager.getString("buildSelectorFieldGaiZhang"),
+                                                                   MultilanguageManager.getString("buildSelectorFieldGaiZhuang"),
                                                                    MultilanguageManager.getString("buildSelectorFieldWeiXiu"),
                                                                    MultilanguageManager.getString("buildSelectorFieldZhiZao"),
                                                                    4, clickSp.localToGlobal(new Point()), BuildTypeEnum.JUNGONGCHANG));

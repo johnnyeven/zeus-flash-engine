@@ -12,6 +12,8 @@ package controller.cangKu
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.packageView.PackageViewProxy;
 
     /**
      *显示界面命令
@@ -37,17 +39,21 @@ package controller.cangKu
 			if(_isLoading)
 				return ;
 			
-            var med:CangkuPackageViewComponentMediator = getMediator(CangkuPackageViewComponentMediator);
-            if (med)
-            {
-                med.show();
-            }
-            else
-            {
-                //加载界面SWF ResEnum.parentURL+senceBuildingView/
-				_isLoading=true;
-                ResLoader.load("cangKuPackageView.swf", MultilanguageManager.getString(""), loaderComplete, true);
-            }
+			var packageProxy:PackageViewProxy=getProxy(PackageViewProxy);
+			packageProxy.packageViewView(function():void
+			{
+	            var med:CangkuPackageViewComponentMediator = getMediator(CangkuPackageViewComponentMediator);
+	            if (med)
+	            {
+	                med.show();
+	            }
+	            else
+	            {
+	                //加载界面SWF ResEnum.parentURL+senceBuildingView/
+					_isLoading=true;
+	                ResLoader.load("cangKuPackageView.swf", MultilanguageManager.getString(""), loaderComplete, true);
+	            }
+			});
         }
 
         /**

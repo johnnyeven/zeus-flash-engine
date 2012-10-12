@@ -1,11 +1,16 @@
 package mediator.crystalSmelter
 {
+	import events.crystalSmelter.CrystalSmelterEvent;
+	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.buildingView.YeLianInfoComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	
+	import proxy.crystalSmelter.CrystalSmelterProxy;
 	
 	import view.cryStalSmelter.CrystalSmelterFunctionComponent;
 
@@ -25,6 +30,10 @@ package mediator.crystalSmelter
 		public function CrystalSmelterFunctionComponentMediator()
 		{
 			super(NAME, new CrystalSmelterFunctionComponent());
+			
+			comp.addEventListener(CrystalSmelterEvent.INFOR_EVENT,inforHandler);
+			comp.addEventListener(CrystalSmelterEvent.CLOSE_EVENT,closeHandler);
+			comp.addEventListener(CrystalSmelterEvent.SMELTER_EVENT,smelterHandler);
 		}
 		
 		/**
@@ -65,5 +74,15 @@ package mediator.crystalSmelter
 			return viewComponent as CrystalSmelterFunctionComponent;
 		}
 
+		private function inforHandler(event:CrystalSmelterEvent):void
+		{
+			sendNotification(YeLianInfoComponentMediator.SHOW_NOTE);
+		}
+		
+		private function smelterHandler(event:CrystalSmelterEvent):void
+		{
+			var crystalSmelteProxy:CrystalSmelterProxy = getProxy(CrystalSmelterProxy);
+			crystalSmelteProxy.smelte();
+		}
 	}
 }
