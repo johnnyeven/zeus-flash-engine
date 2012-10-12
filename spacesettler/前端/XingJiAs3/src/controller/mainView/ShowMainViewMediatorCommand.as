@@ -8,6 +8,7 @@ package controller.mainView
     import com.zn.utils.ClassUtil;
     
     import mediator.BaseMediator;
+    import mediator.mainView.ChatViewMediator;
     import mediator.mainView.MainViewMediator;
     
     import org.puremvc.as3.interfaces.INotification;
@@ -20,9 +21,10 @@ package controller.mainView
      */
     public class ShowMainViewMediatorCommand extends SimpleCommand
     {
-		private static var _isLoading:Boolean = false;
-		
-		public static var loadCompleteCallBack:Function;
+        private static var _isLoading:Boolean = false;
+
+        public static var loadCompleteCallBack:Function;
+
         public function ShowMainViewMediatorCommand()
         {
             super();
@@ -35,17 +37,19 @@ package controller.mainView
          */
         public override function execute(notification:INotification):void
         {
-			if (_isLoading)
-				return;
+            if (_isLoading)
+                return;
+			
             var med:MainViewMediator = getMediator(MainViewMediator);
             if (med)
             {
-				callShow(med);
+                callShow(med);
             }
             else
             {
+				_isLoading=true;
                 //加载界面SWF
-                ResLoader.load("mainView.swf", MultilanguageManager.getString(""), loaderComplete,true);
+                ResLoader.load("mainView.swf", MultilanguageManager.getString(""), loaderComplete, true);
             }
         }
 
@@ -58,25 +62,28 @@ package controller.mainView
         {
             //创建界面的外观
             var med:MainViewMediator = new MainViewMediator();
-			
+			//创建聊天界面的外观
+			var chatMediator:ChatViewMediator = new ChatViewMediator(med.comp.chatComp);
+
             //注册界面的中介
             facade.registerMediator(med);
-			_isLoading = false;
-			
-			callShow(med);
+			facade.registerMediator(chatMediator);
+            _isLoading = false;
+
+            callShow(med);
         }
-		
-		private function callShow(med:BaseMediator):void
-		{
-			if (loadCompleteCallBack!=null)
-			{
-				loadCompleteCallBack(med);
-				loadCompleteCallBack = null;
-			}
-			else
-			{
-            med.show();
+
+        private function callShow(med:BaseMediator):void
+        {
+            if (loadCompleteCallBack != null)
+            {
+                loadCompleteCallBack(med);
+                loadCompleteCallBack = null;
+            }
+            else
+            {
+                med.show();
+            }
         }
-		}
     }
 }

@@ -21,7 +21,9 @@ package controller
     import mediator.login.PkComponentMediator;
     import mediator.login.RegistComponentMediator;
     import mediator.login.StartComponentMediator;
+    import mediator.prompt.PromptCloseMediator;
     import mediator.prompt.PromptMediator;
+    import mediator.prompt.PromptSureMediator;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
@@ -69,6 +71,10 @@ package controller
             facade.registerMediator(new LoaderBarMediator());
 			//注册提示
 			facade.registerMediator(new PromptMediator());
+			
+			//tishi
+			facade.registerMediator(new PromptSureMediator());
+			facade.registerMediator(new PromptCloseMediator());
 			
 			facade.registerProxy(new LoginProxy());
 			

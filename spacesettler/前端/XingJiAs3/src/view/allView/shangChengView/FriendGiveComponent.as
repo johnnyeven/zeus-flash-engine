@@ -140,6 +140,7 @@ package view.allView.shangChengView
 				container.addChild(friendItem);
 			}
 			container.layout.update();
+			vsBar.update();
 		}
 		
 		protected function doChangeNameHandler(event:MouseEvent):void

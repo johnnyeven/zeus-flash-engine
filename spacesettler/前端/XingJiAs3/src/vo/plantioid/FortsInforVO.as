@@ -2,13 +2,13 @@ package vo.plantioid
 {
     import com.zn.utils.DateFormatter;
     import com.zn.utils.StringUtil;
-
+    
     import enum.plantioid.PlantioidTypeEnum;
-
+    
     import proxy.userInfo.UserInfoProxy;
-
+    
     import ui.vo.ValueObject;
-
+    
     import vo.userInfo.UserInfoVO;
 
     /**
@@ -18,6 +18,8 @@ package vo.plantioid
      */
     public class FortsInforVO extends ValueObject
     {
+		public static const FIELD_ID:String="id";
+		
         /**
          *要塞ID
          */

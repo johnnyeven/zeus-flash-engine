@@ -38,6 +38,8 @@ package view.plantioid
      */
     public class PlantioidComponent extends Component
     {
+		public static var MOUSE_ENABLED:Boolean=true;
+		
         public var topInfoComp:TopInfoComponent;
 
         public var xingQiuSp:Sprite;
@@ -153,6 +155,8 @@ package view.plantioid
 			
 			DisposeUtil.dispose(currentPlantBitmap);
 			DisposeUtil.dispose(newPlantBitmap);
+			
+			MOUSE_ENABLED=true;
 		}
 
         private function createNewPlantSenceComp():PlantSenceComponent

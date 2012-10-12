@@ -38,7 +38,7 @@ package net
         {
             data = JSON.parse(data);
 
-//            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
+            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
 //			Log.debug(NetHttpConn, "serverToClientOne", "收到信息："+commandID);
 
             //执行方法
@@ -48,9 +48,7 @@ package net
                 //调用方法
                 callFun(data);
             }
-            _requestCount--;
-            if (_requestCount == 0)
-                ApplicationFacade.getInstance().sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
+			subRequestCount();
         }
 
         public static function send(commandID:String, obj:Object = null, method:String = URLRequestMethod.POST):void
@@ -77,11 +75,23 @@ package net
             var httpRequest:HttpRequest = new HttpRequest(commandID, function(data:*):void
             {
                 NetHttpConn.getInstance().serverToClientOne(commandID, data);
-            });
+            }, sendErrorHandler,sendErrorHandler,sendErrorHandler);
             httpRequest.load(params, method);
 
             Log.debug(NetHttpConn, "send", "发送消息：" + commandID + "/n " + ObjectUtil.toString(obj));
         }
 
+        private static function sendErrorHandler(value:*):void
+        {
+			subRequestCount();
+            Log.debug(NetHttpConn, "sendErrorHandler", "发送错误消息：" + ObjectUtil.toString(value));
+        }
+		
+		private static function subRequestCount():void
+		{
+			_requestCount = Math.max(0, _requestCount - 1);
+			if (_requestCount == 0)
+				ApplicationFacade.getInstance().sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
+		}
     }
 }

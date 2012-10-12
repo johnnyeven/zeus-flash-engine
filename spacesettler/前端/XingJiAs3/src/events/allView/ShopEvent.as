@@ -20,12 +20,14 @@ package events.allView
 		public static const BUY_ITEM:String="buy_item";
 		
 		private var _num:int;		
-		private var _resourceName:String;
-		public function ShopEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false,num:int=0,name:String=null)
+		private var _resourceName:String="";
+		public var key:String;
+		public function ShopEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false,num:int=0,name:String="",key:String=null)
 		{
 			super(type, bubbles, cancelable);
 			_num=num;
 			_resourceName=name;
+			this.key=key;
 		}
 
 		public function get num():int

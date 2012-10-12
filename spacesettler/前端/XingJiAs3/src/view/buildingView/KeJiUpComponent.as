@@ -58,6 +58,10 @@ package view.buildingView
         public var speedButton:Button; //加速按钮
 
         public var progressMC:ProgressBar; //进度条
+		
+		public var manJiTf:Label;
+		
+		public var spComp:Component;
 
         private var _buildVO:BuildInfoVo;
 
@@ -65,23 +69,31 @@ package view.buildingView
 
         public function KeJiUpComponent(skin:DisplayObjectContainer)
         {
-            super(skin);
+            super(skin);			
+			
             levelLabel = createUI(Label, "level_textField");
-            anWuZhiXHLabel = createUI(Label, "anWuZhiXH_textField");
-            shuiJingKuangXHLabel = createUI(Label, "shuiJingKuangXH_textField");
-            chuanQingXHLabel = createUI(Label, "chuanQingXH_textField");
-            xiaoGuo1Label = createUI(Label, "xiaoGuo1_textField");
-            timeLabel = createUI(Label, "time_textField");
+			manJiTf =createUI(Label, "manji_tf");
+			manJiTf.visible=false;		
+			
+			spComp=createUI(Component,"sprite");
+			
+            anWuZhiXHLabel = spComp.createUI(Label, "anWuZhiXH_textField");
+            shuiJingKuangXHLabel = spComp.createUI(Label, "shuiJingKuangXH_textField");
+            chuanQingXHLabel = spComp.createUI(Label, "chuanQingXH_textField");
+            xiaoGuo1Label = spComp.createUI(Label, "xiaoGuo1_textField");
+            timeLabel = spComp.createUI(Label, "time_textField");
 
-            keYanButton = createUI(Button, "keYan_button");
-            upLevelButton = createUI(Button, "upLevel_button");
+            upLevelButton = spComp.createUI(Button, "upLevel_button");
+            speedButton = spComp.createUI(Button, "speed_button");
+            speedButton.visible = false;
+            progressMC = spComp.createUI(ProgressBar, "progress_MC");
+            progressMC.percent = 0;
+			
+			spComp.sortChildIndex();
+
             closeButton = createUI(Button, "close_button");
             infoButton = createUI(Button, "info_button");
-            speedButton = createUI(Button, "speed_button");
-            speedButton.visible = false;
-            progressMC = createUI(ProgressBar, "progress_MC");
-            progressMC.percent = 0;
-
+            keYanButton = createUI(Button, "keYan_button");
             sortChildIndex();
 
 //			keYanButton.addEventListener(MouseEvent.CLICK,keYanButton_clickHandler);
@@ -110,6 +122,11 @@ package view.buildingView
         {
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             _buildVO = buildProxy.getBuild(value);
+			
+			if(_buildVO.level>=40)
+			{
+				fullView();
+			}
 
             var curViewInfoVO:ViewInfoVO = ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value, _buildVO.level);
             var nextViewInfoVO:ViewInfoVO = ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value, _buildVO.level + 1);
@@ -125,7 +142,8 @@ package view.buildingView
             upLevelButton.visible = speedButton.visible = false;
 
             stopTweenLite();
-
+			progressMC.percent=0;
+			
             if (_buildVO == null || _buildVO.isNormal) //未建造
             {
                 timeLabel.text = DateFormatter.formatterTimeSFM(nextViewInfoVO.time);
@@ -183,5 +201,11 @@ package view.buildingView
         {
             dispatchEvent(new Event(BuildEvent.SPEED_EVENT));
         }
+		
+		public function fullView():void
+		{
+			spComp.visible=false;
+			manJiTf.visible=true;
+		}
     }
 }

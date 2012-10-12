@@ -1,6 +1,9 @@
 package mediator.mainView
 {
+	import events.friendList.FriendListEvent;
+	
 	import mediator.BaseMediator;
+	import mediator.friendList.FriendListComponentMediator;
 	
 	import mx.core.UIComponent;
 	
@@ -8,7 +11,11 @@ package mediator.mainView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import view.mainView.ChatViewComponent;
-	
+	/**
+	 * 聊天
+	 * @author lw
+	 * 
+	 */	
 	public class ChatViewMediator extends BaseMediator implements IMediator
 	{
 		public static const NAME:String="ChatViewMediator";
@@ -17,9 +24,10 @@ package mediator.mainView
 		
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 		
-		public function ChatViewMediator()
+		public function ChatViewMediator(obj:ChatViewComponent)
 		{
-			super(NAME, new ChatViewComponent());
+			super(NAME,obj);
+			comp.addEventListener(FriendListEvent.FRIEND_LIST_EVENT,showFriendListHAndler);
 		}
 		
 		/**
@@ -60,9 +68,14 @@ package mediator.mainView
 		 * @return
 		 *
 		 */
-		protected function get comp():UIComponent
+		protected function get comp():ChatViewComponent
 		{
-			return viewComponent as UIComponent;
+			return viewComponent as ChatViewComponent;
+		}
+		
+		private function showFriendListHAndler(event:FriendListEvent):void
+		{
+			sendNotification(FriendListComponentMediator.SHOW_NOTE);
 		}
 	}
 }

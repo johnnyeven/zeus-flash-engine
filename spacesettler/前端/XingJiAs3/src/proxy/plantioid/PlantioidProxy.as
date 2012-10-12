@@ -1,12 +1,16 @@
 package proxy.plantioid
 {
+    import com.zn.multilanguage.MultilanguageManager;
     import com.zn.net.Protocol;
     import com.zn.utils.DateFormatter;
+    import com.zn.utils.ObjectUtil;
     
     import enum.command.CommandEnum;
     
     import flash.geom.Point;
     import flash.net.URLRequestMethod;
+    
+    import mediator.prompt.PromptMediator;
     
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;
@@ -33,13 +37,18 @@ package proxy.plantioid
         [Bindable]
         public var plantioidList:Array = [];
 
-		[Bindable]
+        [Bindable]
         public var currentX:int = 0;
 
-		[Bindable]
+        [Bindable]
         public var currentY:int = 0;
-		
-		private var _tempPoint:Point;
+
+        private var _tempPoint:Point;
+
+        /**
+         * 选择的行星
+         */
+        public static var selectedVO:FortsInforVO;
 
         public function PlantioidProxy(data:Object = null)
         {
@@ -59,16 +68,23 @@ package proxy.plantioid
         {
             _getPlantioidListByXYCallBack = callBack;
 
-			_tempPoint=new Point(x,y);
+            _tempPoint = new Point(x, y);
             var obj:Object = { x: x, y: y };
             ConnDebug.send(CommandEnum.getPlantioidList, obj, ConnDebug.HTTP, URLRequestMethod.GET);
         }
 
         private function getPlantioidListByXYResult(data:*):void
         {
-			currentX = _tempPoint.x;
-			currentY = _tempPoint.y;
+			if (data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString(data.errors));
+				_getPlantioidListByXYCallBack = null;
+				return;
+			}
 			
+            currentX = _tempPoint.x;
+            currentY = _tempPoint.y;
+
             var list:Array = [];
             var obj:Object;
             var fortVO:FortsInforVO;
@@ -88,7 +104,7 @@ package proxy.plantioid
                 fortVO.y = currentY;
 
                 fortVO.protected_until = obj.protected_until;
-                fortVO.protectedEndTime = DateFormatter.currentTime + (fortVO.protected_until - currentTime)*1000;
+                fortVO.protectedEndTime = DateFormatter.currentTime + (fortVO.protected_until - currentTime) * 1000;
                 fortVO.fort_type = obj.fort_type;
                 fortVO.player_id = obj.player_id;
                 fortVO.fort_name = obj.fort_name;
@@ -107,11 +123,20 @@ package proxy.plantioid
             _getPlantioidListByXYCallBack = null;
         }
 
-    /***********************************************************
-     *
-     * 功能方法
-     *
-     * ****************************************************/
-
+        /***********************************************************
+         *
+         * 功能方法
+         *
+         * ****************************************************/
+        public function getPlantioidVOByID(id:String):FortsInforVO
+        {
+            var dic:Object = ObjectUtil.CreateDic(plantioidList, FortsInforVO.FIELD_ID);
+            return dic[id];
+        }
+		
+		public function setSelectedPlantioid(id:String):void
+		{
+			selectedVO=getPlantioidVOByID(id);
+		}
     }
 }

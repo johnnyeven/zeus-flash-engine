@@ -185,6 +185,7 @@ package view.allView
 			}
 			
 			container.layout.update();
+			vsBar.update();
 			container.addEventListener(MouseEvent.ROLL_OVER,mouseOverHandler);
 			container.addEventListener(MouseEvent.ROLL_OUT,mouseOutHandler);
 

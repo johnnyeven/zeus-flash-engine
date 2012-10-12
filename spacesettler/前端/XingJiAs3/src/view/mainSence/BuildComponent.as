@@ -268,6 +268,7 @@ package view.mainSence
                         {
                             addBuildSp(obj);
                             addCaiKuangEffect();
+							caiKuangEffectEvent(null);
                         });
                     }
                     else
@@ -380,7 +381,6 @@ package view.mainSence
             {
                 caiKuangCheEffectComp = new CaiKuangCheEffectComponent();
                 addChild(caiKuangCheEffectComp);
-                caiKuangCheEffectComp.init();
                 caiKuangCheEffectComp.addEventListener(CaiKuangCheEffectEvent.OUT_EVENT, caiKuangEffectEvent);
                 caiKuangCheEffectComp.addEventListener(CaiKuangCheEffectEvent.BACK_EVENT, caiKuangEffectEvent);
             }

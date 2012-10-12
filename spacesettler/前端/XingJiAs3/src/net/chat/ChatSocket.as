@@ -1,6 +1,9 @@
 package net.chat
 {
+    import com.zn.log.Log;
+    import com.zn.net.Protocol;
     import com.zn.net.socket.ClientSocket;
+    import com.zn.net.socket.SocketPackageIn;
     
     import flash.net.registerClassAlias;
     import flash.utils.ByteArray;
@@ -36,49 +39,29 @@ package net.chat
 
             return false;
         }
-
-        public static function writeIdType(id:String, by:ByteArray):void
-        {
-            var str:String = Number(id).toString(16);
-            var index:int = Math.max(0, str.length - 8);
-            var l:int = int(str.substr(index, 8));
-            var h:int = int(str.substr(0, index));
-
-            if (by.endian == Endian.LITTLE_ENDIAN)
-            {
-                by.writeInt(l);
-                by.writeInt(h);
-            }
-            else
-            {
-                by.writeInt(h);
-                by.writeInt(l);
-            }
-        }
-
-        /**
-         *
-         * @param by
-         * @return
-         */
-        public static function readIdType(by:ByteArray):String
-        {
-            var h:int;
-            var l:int;
-
-            if (by.endian == Endian.LITTLE_ENDIAN)
-            {
-                l = by.readInt();
-                h = by.readInt();
-            }
-            else
-            {
-                h = by.readInt();
-                l = by.readInt();
-            }
-
-            var str:String = "0x" + h + l;
-            return Number(str).toString();
-        }
+		
+		protected override function handlePackage(pkg:SocketPackageIn):void
+		{
+			try
+			{
+				Log.debug(ChatSocket,"handlePackage","接收到聊天命令:"+pkg.command);
+				
+				//执行协议方法
+				var callFunctionList:Vector.<Function> = ChatProtocol.getProtocolFunctionList(pkg.command);
+				
+				for each (var callFun:Function in callFunctionList)
+				{
+					//克隆流
+					pkg.position = 0;
+					//调用方法
+					callFun(pkg);
+				}
+			}
+			catch (err:Error)
+			{
+				trace("handlePackage:", err.getStackTrace());
+				//trace(ByteUtils.ToHexDump("Bytes Left:",_readBuffer,_readOffset,_readBuffer.bytesAvailable));
+			}
+		}
     }
 }

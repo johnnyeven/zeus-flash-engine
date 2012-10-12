@@ -50,6 +50,7 @@ package vo.allView
 		 *氚气增产量
 		 */		
 		public var tritium_inc:Number;
+		public var index:String;
 		
 		
 		public function ShopItemVo()

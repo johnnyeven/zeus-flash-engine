@@ -53,29 +53,41 @@ package view.buildingView
 		public var infoButton:Button;//信息按钮
 		public var speedButton:Button; //加速按钮
 		
+		public var manJiTf:Label;
+		
+		public var spComp:Component;
+		
 		private var _buildVO:BuildInfoVo;
 		private var _tweenLite:Object;
 		
 		public function ChuanQingUpComponent(skin:DisplayObjectContainer)
 		{
-			super(skin);
-			levelLabel=createUI(Label,"level_textField");
-			chuanQingCLLabel=createUI(Label,"chuanQingCL_textField");
-			anWuZhiXHLabel=createUI(Label,"anWuZhiXH_textField");
-			shuiJingKuangXHLabel=createUI(Label,"shuiJingKuangXH_textField");
-			chuanQingXHLabel=createUI(Label,"chuanQingXH_textField");
-			xiaoGuo1Label=createUI(Label,"xiaoGuo1_textField");
-			xiaoGuo2Label=createUI(Label,"xiaoGuo2_textField");
-			timeLabel=createUI(Label,"time_textField");
+			super(skin);			
 			
-			progressMC = createUI(ProgressBar, "progress_MC");
+			levelLabel=createUI(Label,"level_textField");
+			chuanQingCLLabel=createUI(Label,"chuanQingCL_textField");			
+			manJiTf =createUI(Label, "manji_tf");
+			manJiTf.visible=false;	
+			
+			spComp=createUI(Component,"sprite");
+			
+			anWuZhiXHLabel=spComp.createUI(Label,"anWuZhiXH_textField");
+			shuiJingKuangXHLabel=spComp.createUI(Label,"shuiJingKuangXH_textField");
+			chuanQingXHLabel=spComp.createUI(Label,"chuanQingXH_textField");
+			xiaoGuo1Label=spComp.createUI(Label,"xiaoGuo1_textField");
+			xiaoGuo2Label=spComp.createUI(Label,"xiaoGuo2_textField");
+			timeLabel=spComp.createUI(Label,"time_textField");
+			
+			progressMC = spComp.createUI(ProgressBar, "progress_MC");
 			progressMC.percent = 0;
 			
-			upLevelButton=createUI(Button,"upLevel_button");
+			upLevelButton=spComp.createUI(Button,"upLevel_button");
+			speedButton=spComp.createUI(Button,"speed_button");
+			
+			spComp.sortChildIndex();
+			
 			closeButton=createUI(Button,"close_button");
 			infoButton=createUI(Button,"info_button");
-			speedButton=createUI(Button,"speed_button");
-			
 			sortChildIndex();
 			
 			upLevelButton.addEventListener(MouseEvent.CLICK,upLevelButton_clickHandler);
@@ -103,6 +115,11 @@ package view.buildingView
 		{
 			var buildProxy:BuildProxy=ApplicationFacade.getProxy(BuildProxy);
 			_buildVO=buildProxy.getBuild(value);
+			
+			if(_buildVO.level>=40)
+			{
+				fullView();
+			}
 			
 			var curViewInfoVO:ViewInfoVO=ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value,_buildVO.level);
 			var nextViewInfoVO:ViewInfoVO=ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value,_buildVO.level+1);
@@ -178,6 +195,12 @@ package view.buildingView
 		protected function speedButton_clickHandler(event:MouseEvent):void
 		{
 			dispatchEvent(new Event(BuildEvent.SPEED_EVENT));
+		}
+		
+		public function fullView():void
+		{
+			spComp.visible=false;
+			manJiTf.visible=true;
 		}
 	}
 }

@@ -43,7 +43,6 @@ package proxy.allView
 			super(NAME,data);
 			
 			userInforProxy = getProxy(UserInfoProxy);
-			Protocol.registerProtocol(CommandEnum.allView, allViewResult);
 			Protocol.registerProtocol(CommandEnum.xingXing,viewXingXingResult);
 		}
 		
@@ -54,6 +53,8 @@ package proxy.allView
 		 */		
 		public function allView(callBack:Function=null):void
 		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.allView, allViewResult))
+			        Protocol.registerProtocol(CommandEnum.allView, allViewResult);
 			//基地ID
 			  var id:String = userInforProxy.userInfoVO.id;
 			_allViewCallBack=callBack;
@@ -63,6 +64,7 @@ package proxy.allView
 		
 		private function allViewResult(data:Object):void
 		{
+			Protocol.deleteProtocolFunction(CommandEnum.allView, allViewResult);
 			if(data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));

@@ -3,7 +3,9 @@ package proxy.content
     import com.zn.net.Protocol;
     import com.zn.net.http.HttpRequest;
     
+    import enum.BuildTypeEnum;
     import enum.command.CommandEnum;
+    import enum.science.ScienceEnum;
     
     import flash.net.URLRequestMethod;
     
@@ -12,6 +14,7 @@ package proxy.content
     
     import other.ConnDebug;
     
+    import vo.scienceResearch.ScienceResearchVO;
     import vo.viewInfo.ViewInfoVO;
 
     /**
@@ -97,6 +100,40 @@ package proxy.content
 			viewInfoVO.chuanQinCL=buildObj.property.tritium_output;
 			
 			return viewInfoVO;
+		}
+		/**
+		 *获取科研数据 
+		 * @param type
+		 * @return 
+		 * 
+		 */		
+		public function getScienceResearchInfo(type:int,level:int):ScienceResearchVO
+		{
+			var scienceResearchVO:ScienceResearchVO=new ScienceResearchVO();
+			scienceResearchVO.science_type=type;
+			scienceResearchVO.level=level;
+			
+			scienceResearchVO.scienceName=ScienceEnum.getResearchNameByResearchType(scienceResearchVO.science_type);
+			scienceResearchVO.scienceIconURL = ScienceEnum.getResearchIconURLByResearchType(scienceResearchVO.science_type);
+			
+			var scienceResearchTypeDic:Object=contentData.sciences[type];
+			var obj:Object=scienceResearchTypeDic[level];
+			
+			scienceResearchVO.command_center_level = obj.conditions.command_center_level;
+			scienceResearchVO.academy_level = obj.conditions.academy_level;
+			
+			scienceResearchVO.time = obj.cost.time;
+			scienceResearchVO.tritium = obj.cost.tritium;
+			scienceResearchVO.crystal = obj.cost.crystal;
+			scienceResearchVO.broken_crystal = obj.cost.broken_crystal;
+			
+//			scienceResearchVO.broken_crystal = obj.property.recipe.recipe_type;
+//			scienceResearchVO.broken_crystal = obj.property.recipe.category;
+//			scienceResearchVO.broken_crystal = obj.property.recipe.type;
+			
+//			scienceResearchVO.broken_crystal = obj.property.inc_power_supply;
+			
+			return scienceResearchVO;
 		}
     }
 }

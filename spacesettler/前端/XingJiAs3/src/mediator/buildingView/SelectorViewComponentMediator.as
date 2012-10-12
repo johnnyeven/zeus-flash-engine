@@ -15,6 +15,8 @@ package mediator.buildingView
     import mediator.allView.RongYuComponentMediator;
     import mediator.buildingView.YeLianChangUpComponentMediator;
     import mediator.cangKu.CangkuPackageViewComponentMediator;
+    import mediator.crystalSmelter.CrystalSmelterFunctionComponentMediator;
+    import mediator.scienceResearch.ScienceResearchComponentMediator;
     import mediator.timeMachine.TimeMachineComponentMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
@@ -240,7 +242,13 @@ package mediator.buildingView
 				}
 				case BuildTypeEnum.KUANGCHANG:
 				{
-//					sendNotification(
+					sendNotification(CrystalSmelterFunctionComponentMediator.SHOW_NOTE);
+					break;
+				}
+				case BuildTypeEnum.KEJI:
+				{
+					sendNotification(ScienceResearchComponentMediator.SHOW_NOTE);
+					break;
 				}
 			}
 		}

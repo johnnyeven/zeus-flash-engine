@@ -41,7 +41,7 @@ package view.mainView
 		/**
 		 * 拍卖按钮
 		 */		
-		public var auctionBtn:Button;
+//		public var auctionBtn:Button;
 		
 		/**
 		 * 邮件按钮
@@ -67,7 +67,7 @@ package view.mainView
 			armyGroupBtn=createUI(Button,"juntuan_btn");
 			shopBtn=createUI(Button,"shangcheng_btn");
 			arsenalBtn=createUI(Button,"wuqiku_btn");
-			auctionBtn=createUI(Button,"paimai_btn");
+//			auctionBtn=createUI(Button,"paimai_btn");
 			mailBtn=createUI(Button,"youjian_btn");
 			rankingBtn=createUI(Button,"paiming_btn");
 			systemBtn=createUI(Button,"xitong_btn");
@@ -79,26 +79,34 @@ package view.mainView
 			armyGroupBtn.toggle=true;
 			shopBtn.toggle=true;
 			arsenalBtn.toggle=true;
-			auctionBtn.toggle=true;
+//			auctionBtn.toggle=true;
 			mailBtn.toggle=true;
 			rankingBtn.toggle=true;
 			systemBtn.toggle=true;
 			currentSelcetedBtn=baseBtn;
 			
 			baseBtn.addEventListener(MouseEvent.CLICK,base_clickHandler);
-			auctionBtn.addEventListener(MouseEvent.CLICK,auction_clickHandler);
+//			auctionBtn.addEventListener(MouseEvent.CLICK,auction_clickHandler);
 			armyGroupBtn.addEventListener(MouseEvent.CLICK,armyGroup_clickHandler);
 			mailBtn.addEventListener(MouseEvent.CLICK,mail_clickHandler);
 //			systemBtn.addEventListener(MouseEvent.CLICK,rongYU_clickHandler);
 //			rankingBtn.addEventListener(MouseEvent.CLICK,zhongLan_clickHandler);
 //			mailBtn.addEventListener(MouseEvent.CLICK,timeMachine_clickHandler);
 			systemBtn.addEventListener(MouseEvent.CLICK,system_clickHandler);
-			rankingBtn.addEventListener(MouseEvent.CLICK,zhongLan_clickHandler);
+			rankingBtn.addEventListener(MouseEvent.CLICK,ranking_clickHandler);
 			mailBtn.addEventListener(MouseEvent.CLICK,timeMachine_clickHandler);
 			
 			arsenalBtn.addEventListener(MouseEvent.CLICK,cangKu_clickHandler);
 			shopBtn.addEventListener(MouseEvent.CLICK,shop_clickHandler);
 			planetBtn.addEventListener(MouseEvent.CLICK,planetBtn_clickHandler);
+		}
+		
+		
+		
+		protected function ranking_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.RANKING_EVENT,true,true));
+			currentSelcetedBtn=rankingBtn;
 		}
 		
 		protected function base_clickHandler(event:MouseEvent):void
@@ -107,13 +115,14 @@ package view.mainView
 			currentSelcetedBtn=baseBtn;
 		}
 		
-		protected function auction_clickHandler(event:MouseEvent):void
-		{
-			currentSelcetedBtn=auctionBtn;
-		}
+//		protected function auction_clickHandler(event:MouseEvent):void
+//		{
+//			currentSelcetedBtn=auctionBtn;
+//		}
 		
 		protected function armyGroup_clickHandler(event:MouseEvent):void
 		{
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.GROUP_EVENT,true,true));
 			currentSelcetedBtn=armyGroupBtn;	
 		}
 		
@@ -134,14 +143,14 @@ package view.mainView
 			currentSelcetedBtn=systemBtn;
 		}
 		
-		private function zhongLan_clickHandler(event:MouseEvent):void
+		/*private function zhongLan_clickHandler(event:MouseEvent):void
 		{
 			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.ALLVIEW_EVENT,true,true));
 			currentSelcetedBtn=rankingBtn;
-		}
+		}*/
 		private function timeMachine_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SHOW_COMPONENT_EVENT,0,0,true,true));
+//			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SHOW_COMPONENT_EVENT,0,0,true,true));
 		}
 		
 		private function cangKu_clickHandler(Event:MouseEvent):void

@@ -134,6 +134,11 @@
             <SWFLoader name="sence2_building_up"
                 url="zh_CN/images/senceMapBuilding/sence2_building_up.swf"
                 version="1"/>
+                
+            <!-- 采矿车 -->
+            <SWFLoader name="sence2_caiKuangChe"
+                url="zh_CN/images/senceMapEffect/sence2_caiKuangChe.swf"
+                version="1"/>
 
         </LoaderMax>
         
@@ -197,6 +202,11 @@
 	        <SWFLoader name="system.swf"
 	            url="zh_CN/system.swf"
 	            version="1"/>
+	            
+	        <!--军团 -->
+            <SWFLoader name="armyGroup.swf"
+                url="zh_CN/armyGroup.swf"
+                version="1"/>
 	
 	        <!--小行星带-->
 	        <SWFLoader name="planetoid.swf"
@@ -207,13 +217,38 @@
 	        <SWFLoader name="timeMachine.swf"
 	            url="zh_CN/timeMachine.swf"
 	            version="1"/>
+	
+	        <!--排行 -->
+	        <SWFLoader name="ranking.swf"
+	            url="zh_CN/ranking.swf"
+	            version="1"/>
 	            
 	        <!-- 熔炼（晶体冶炼厂） -->
 			<SWFLoader name="crystalSmelter.swf"
 			   url="zh_CN/crystalSmelter.swf"
 			   version="1"/>
+			   
+		     <!-- 科研（科技中心） -->
+			<SWFLoader name="scienceResearch.swf"
+			   url="zh_CN/scienceResearch.swf"
+			   version="1"/>
+			   
+			<!-- 好友列表（聊天） -->
+			<SWFLoader name="friendList.swf"
+			   url="zh_CN/friendList.swf"
+			   version="1"/>
         </LoaderMax>
 
 
+        <!-- 战场1 -->
+        <SWFLoader name="battleMap_1.swf"
+            url="zh_CN/images/battleMap/battleMap_1.swf"
+            version="1"/>
+
+        <!-- 飞船入口 -->
+        <SWFLoader name="battleEnter.swf"
+            url="zh_CN/battleEnter.swf"
+            version="1"/>
     </LoaderMax>
+        
 </root>

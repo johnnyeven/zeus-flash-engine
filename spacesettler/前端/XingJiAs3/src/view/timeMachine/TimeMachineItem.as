@@ -1,11 +1,14 @@
 package view.timeMachine
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.DateFormatter;
 	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
 	import enum.EventTypeEnum;
+	import enum.science.ScienceEnum;
 	
 	import events.timeMachine.TimeMachineEvent;
 	
@@ -49,6 +52,8 @@ package view.timeMachine
 		
 		private var _timer:Timer;
 		
+		private var _tweenLite:TweenLite;
+		
 		public function TimeMachineItem()
 		{
 			super(ClassUtil.getObject("view.timeMachine.TimeMachineItemSkin"));
@@ -64,6 +69,7 @@ package view.timeMachine
 			speedBtn = createUI(Button,"speedBtn");
 			
 			sortChildIndex();
+			mouseChildren = mouseEnabled = true;
 			_timer = new Timer(1000);
 			_timer.addEventListener(TimerEvent.TIMER,timerHandler);
 			speedBtn.addEventListener(MouseEvent.CLICK,speedBtn_clickHAndler);
@@ -88,14 +94,17 @@ package view.timeMachine
 			}
 			else if(_data.type == EventTypeEnum.RESEARCHEVENTSTYPE)
 			{
-				buildIconImage.source = BuildTypeEnum.getResearchIconURLByResearchType(_data.building_type);
-				buildNameTxt.text = BuildTypeEnum.getResearchNameByResearchType(_data.building_type);
+				buildIconImage.source = ScienceEnum.getResearchIconURLByResearchType(_data.building_type);
+				buildNameTxt.text = ScienceEnum.getResearchNameByResearchType(_data.building_type);
 			}
 			
 			var str:String = "<p><s>{0}级</s><s>-</s><s>{1}级</s></p>";
 			str = StringUtil.formatString(str,_data.level,_data.level+1);
 			buildLevelTxt.text = str;
 			
+			stopTweenLite();
+			progressBar.percent = (_data.current_time-_data.start_time)/(_data.finish_time-_data.start_time);
+			_tweenLite = TweenLite.to(progressBar, _data.remainTime/1000, { percent: 1, ease: Linear.easeNone });
 			_timer.start();
 		}
 
@@ -107,12 +116,11 @@ package view.timeMachine
 		
 		private function timerHandler(event:TimerEvent):void
 		{
-			if(_data.remainTime <10)
+			if(_data.remainTime <10000)
 			{
 				this.visible = false;
 			}
 			remainTimeTxt.text = DateFormatter.formatterTimeSFM(_data.remainTime/1000);
-			progressBar.percent = (_data.upTotalTome - _data.remainTime)/_data.upTotalTome;
 		}
 		
 		public override function dispose():void
@@ -122,6 +130,13 @@ package view.timeMachine
 			_timer.removeEventListener(TimerEvent.TIMER, timerHandler);
 			
 			_timer = null;
+		}
+		
+		private function stopTweenLite():void
+		{
+			if (_tweenLite)
+				_tweenLite.kill();
+			_tweenLite = null;
 		}
 	}
 }

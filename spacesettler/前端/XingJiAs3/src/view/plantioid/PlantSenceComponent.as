@@ -136,35 +136,38 @@ package view.plantioid
 
         protected function stageMouseMoveHandler(event:MouseEvent):void
         {
-            if (event.buttonDown)
+            if (PlantioidComponent.MOUSE_ENABLED)
             {
-                if (_downMovePoint == null)
-                    _downMovePoint = new Point(event.stageX, event.stageY);
+                if (event.buttonDown)
+                {
+                    if (_downMovePoint == null)
+                        _downMovePoint = new Point(event.stageX, event.stageY);
 
-                var newP:Point = new Point(event.stageX, event.stageY);
-                var disP:Point = newP.subtract(_downMovePoint);
+                    var newP:Point = new Point(event.stageX, event.stageY);
+                    var disP:Point = newP.subtract(_downMovePoint);
 
-                if (testMoveOut(_rangePoint.x - disP.x * 0.3, _rangePoint.y - disP.y * 0.3))
-                    return;
+                    if (testMoveOut(_rangePoint.x - disP.x * 0.3, _rangePoint.y - disP.y * 0.3))
+                        return;
 
-                _rangePoint.x -= disP.x * 0.3;
-                _rangePoint.y -= disP.y * 0.3;
+                    _rangePoint.x -= disP.x * 0.3;
+                    _rangePoint.y -= disP.y * 0.3;
 
-                bgEffectComp.x += disP.x * 0.1;
-                bgEffectComp.y += disP.y * 0.1;
+                    bgEffectComp.x += disP.x * 0.1;
+                    bgEffectComp.y += disP.y * 0.1;
 
-                xingQiu1.x += disP.x * 0.3;
-                xingQiu1.y += disP.y * 0.3;
+                    xingQiu1.x += disP.x * 0.3;
+                    xingQiu1.y += disP.y * 0.3;
 
-                xingQiu2.x += disP.x * 0.5;
-                xingQiu2.y += disP.y * 0.5;
+                    xingQiu2.x += disP.x * 0.5;
+                    xingQiu2.y += disP.y * 0.5;
 
-                _downMovePoint = newP;
-                updateInfoPoint();
-            }
-            else
-            {
-                _downMovePoint = null;
+                    _downMovePoint = newP;
+                    updateInfoPoint();
+                }
+                else
+                {
+                    _downMovePoint = null;
+                }
             }
         }
 

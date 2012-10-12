@@ -164,7 +164,7 @@ package proxy.login
             }
             else if (data.hasOwnProperty("errors"))
             {
-                sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString(data.errors));
+                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
 				loginMeditor.mouseEnabled=true;
                 return;
             }

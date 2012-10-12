@@ -92,6 +92,10 @@ package view.buildingView
         public var enterButton:Button; //进入按钮
 
         public var speedButton:Button; //加速按钮
+		
+		public var manJiTf:Label;
+		
+		public var spComp:Component;
 
         private var _buildVO:BuildInfoVo;
 
@@ -107,30 +111,42 @@ package view.buildingView
             shuXing2Label = createUI(Label, "shuXing2_textField");
             shuXing3Label = createUI(Label, "shuXing3_textField");
             shuXing4Label = createUI(Label, "shuXing4_textField");
-            shuiJingKuangCLLabel = createUI(Label, "shuiJingKuangCL_textField");
-            chuanQingCLLabel = createUI(Label, "chuanQingCL_textField");
+			levelLabel = createUI(Label, "level_textField");
+			chuanQingCLLabel = createUI(Label, "chuanQingCL_textField");
             anWuZhiCLLabel = createUI(Label, "anWuZhiCL_textField");
-            levelLabel = createUI(Label, "level_textField");
-            anWuzhiXHLabel = createUI(Label, "anWuZhiXH_textField");
-            chuanQingXHLabel = createUI(Label, "chuanQingXH_textField");
-            shuiJingKuangXHLabel = createUI(Label, "shuiJingKuangXH_textField");
-            xiaoGuo1Label = createUI(Label, "xiaoGuo1_textField");
-            xiaoGuo2Label = createUI(Label, "xiaoGuo2_textField");
-            xiaoGuo3Label = createUI(Label, "xiaoGuo3_textField");
-            timeLabel = createUI(Label, "time_textField");
+			shuiJingKuangCLLabel =createUI(Label, "shuiJingKuangCL_textField");
+			manJiTf =createUI(Label, "manji_tf");
+			manJiTf.visible=false;
+			
+			spComp=createUI(Component,"sprite");
+            
+			anWuzhiXHLabel = spComp.createUI(Label, "anWuZhiXH_textField");
+            chuanQingXHLabel = spComp.createUI(Label, "chuanQingXH_textField");
+            shuiJingKuangXHLabel = spComp.createUI(Label, "shuiJingKuangXH_textField");
+            xiaoGuo1Label = spComp.createUI(Label, "xiaoGuo1_textField");
+            xiaoGuo2Label =spComp. createUI(Label, "xiaoGuo2_textField");
+            xiaoGuo3Label = spComp.createUI(Label, "xiaoGuo3_textField");
+            timeLabel = spComp.createUI(Label, "time_textField");
+
+            progressMC =spComp. createUI(ProgressBar, "progress_MC");
+            progressMC.percent = 0;
+            upLevelButton = spComp.createUI(Button, "upLevel_button");
+            speedButton =spComp. createUI(Button, "speed_button");
+			
+			spComp.sortChildIndex();            
 
             shiDai1MC = getSkin("shiDai1_MC");
             shiDai2MC = getSkin("shiDai2_MC");
             shiDai3MC = getSkin("shiDai3_MC");
             shiDai4MC = getSkin("shiDai4_MC");
-            progressMC = createUI(ProgressBar, "progress_MC");
-            progressMC.percent = 0;
-
+			
+			shiDai2MC.gotoAndStop(2);
+			shiDai3MC.gotoAndStop(2);
+			shiDai4MC.gotoAndStop(2);
+			
             enterButton = createUI(Button, "enter_button");
-            upLevelButton = createUI(Button, "upLevel_button");
-            closeButton = createUI(Button, "close_button");
             infoButton = createUI(Button, "info_button");
-            speedButton = createUI(Button, "speed_button");
+            closeButton = createUI(Button, "close_button");
 
             sortChildIndex();
 
@@ -170,6 +186,11 @@ package view.buildingView
             _KeJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
 
             var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			
+			if(userInfoVO.level>=4)
+			{
+				fullView();
+			}
             var curViewInfoVO:ViewInfoVO = ContentProxy(ApplicationFacade.getProxy(ContentProxy)).getUpBuildInfo(value, _buildVO.level);
             var nextViewInfoVO:ViewInfoVO
             if (_buildVO.level == 4)
@@ -290,5 +311,11 @@ package view.buildingView
         {
             dispatchEvent(new Event(BuildEvent.SPEED_EVENT));
         }
+		
+		public function fullView():void
+		{
+			spComp.visible=false;
+			manJiTf.visible=true;
+		}
     }
 }

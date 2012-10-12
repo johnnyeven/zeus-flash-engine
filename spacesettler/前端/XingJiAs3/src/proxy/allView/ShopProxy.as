@@ -31,11 +31,6 @@ package proxy.allView
 		public function ShopProxy(data:Object=null)
 		{
 			super(NAME, data);
-			
-			Protocol.registerProtocol(CommandEnum.buyItem, buyItemRrsult);
-			Protocol.registerProtocol(CommandEnum.buyCrystal, buyCrystalRrsult);
-			Protocol.registerProtocol(CommandEnum.buyResources, buyResourceRrsult);
-			
 		}
 		
 		public function getContentInfoResult(callFunction:Function=null):void
@@ -86,7 +81,8 @@ package proxy.allView
 		public function buyResource(resource_name:String,count:int,player_id:String):void
 		{
 			var obj:Object = {resource_name:resource_name,count:count,player_id:player_id};
-			
+			if(!Protocol.registerProtocol(CommandEnum.buyResources, buyResourceRrsult))
+				Protocol.registerProtocol(CommandEnum.buyResources, buyResourceRrsult);
 			ConnDebug.send(CommandEnum.buyResources, obj);
 		}
 		
@@ -98,7 +94,8 @@ package proxy.allView
 		public function buyCrystal(player_id:String,type:String):void
 		{
 			var obj:Object={player_id:player_id,type:type};
-			
+			if(!Protocol.registerProtocol(CommandEnum.buyCrystal, buyCrystalRrsult))
+				Protocol.registerProtocol(CommandEnum.buyCrystal, buyCrystalRrsult);
 			ConnDebug.send(CommandEnum.buyCrystal,obj);
 		}
 			
@@ -111,7 +108,8 @@ package proxy.allView
 		public function buyItem(playerid:String,itemtype:int,friendid:String=null):void
 		{
 			var obj:Object = {player_id:playerid,item_type:itemtype,friend_id:friendid};
-			
+			if(!Protocol.registerProtocol(CommandEnum.buyItem, buyItemRrsult))
+				Protocol.registerProtocol(CommandEnum.buyItem, buyItemRrsult);
 			ConnDebug.send(CommandEnum.buyItem, obj);
 		}
 
@@ -119,6 +117,7 @@ package proxy.allView
 		
 		private function buyResourceRrsult(data:*):void
 		{
+			Protocol.deleteProtocolFunction(CommandEnum.buyResources, buyResourceRrsult);
 			if (data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));				
@@ -134,6 +133,8 @@ package proxy.allView
 		
 		private function buyItemRrsult(data:*):void
 		{
+			Protocol.deleteProtocolFunction(CommandEnum.buyCrystal, buyCrystalRrsult);
+			Protocol.deleteProtocolFunction(CommandEnum.buyItem, buyItemRrsult);
 			if (data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));				

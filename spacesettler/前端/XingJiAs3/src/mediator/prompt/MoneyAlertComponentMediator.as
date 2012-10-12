@@ -38,7 +38,7 @@ package mediator.prompt
 			popUpEffect=CENTER;
 
 			comp.med=this;
-			level=0;
+			level=2;
 			
             comp.addEventListener(MoneyAlertComponent.OK_EVENT, okHandler);
             comp.addEventListener(MoneyAlertComponent.NO_EVENT, noHandler);
@@ -91,12 +91,10 @@ package mediator.prompt
             return viewComponent as MoneyAlertComponent;
         }
 		
-		
 		public override function destroy():void
 		{
-			PopUpManager.removePopUp(comp);
+			PopUpManager.removePopUp(uiComp);
 		}
-
 
         protected function noHandler(event:Event):void
         {

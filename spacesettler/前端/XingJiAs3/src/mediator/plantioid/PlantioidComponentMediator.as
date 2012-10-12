@@ -1,18 +1,20 @@
 package mediator.plantioid
 {
     import events.plantioid.PlantioidEvent;
-
+    
     import flash.events.Event;
-
+    
     import mediator.BaseMediator;
     import mediator.allView.XingXingComponentMediator;
+    import mediator.battleEnter.BattleEnterComponentMediator;
     import mediator.mainView.MainViewMediator;
-
+    
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
-
+    
     import proxy.plantioid.PlantioidProxy;
-
+    
+    import view.plantioid.PlantSenceComponent;
     import view.plantioid.PlantioidComponent;
 
     /**
@@ -101,7 +103,10 @@ package mediator.plantioid
 
         protected function attackHandler(event:PlantioidEvent):void
         {
-            // TODO:zn 行星攻击
+			PlantioidComponent.MOUSE_ENABLED=false;
+			var plantioidProxy:PlantioidProxy=getProxy(PlantioidProxy);
+			plantioidProxy.setSelectedPlantioid(event.plantioidID);
+			sendNotification(BattleEnterComponentMediator.SHOW_NOTE);
         }
 
         protected function forceAttackHandler(event:PlantioidEvent):void
@@ -125,6 +130,8 @@ package mediator.plantioid
             if (event.jumpPoint.x != plantProxy.currentX ||
                 event.jumpPoint.y != plantProxy.currentY)
             {
+				PlantioidComponent.MOUSE_ENABLED=false;
+				
                 plantProxy.getPlantioidListByXY(event.jumpPoint.x, event.jumpPoint.y, function():void
                 {
                     sendNotification(SWITCH_PLANT_SENCE_NOTE);
