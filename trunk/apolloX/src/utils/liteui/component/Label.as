@@ -42,6 +42,7 @@ package utils.liteui.component
 			
 			_ftengine = new FTEngine();
 			
+			
 			_textBlock = new TextBlock();
 			_textBlock.baselineZero = TextBaseline.IDEOGRAPHIC_TOP;
 			_textBuffer = new Sprite();
