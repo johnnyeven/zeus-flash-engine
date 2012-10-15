@@ -1,5 +1,6 @@
 package utils.liteui.core.ftengine
 {
+	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.text.engine.BreakOpportunity;
@@ -9,6 +10,7 @@ package utils.liteui.core.ftengine
 	import flash.text.engine.FontLookup;
 	import flash.text.engine.FontPosture;
 	import flash.text.engine.FontWeight;
+	import flash.text.engine.GraphicElement;
 	import flash.text.engine.GroupElement;
 	import flash.text.engine.RenderingMode;
 	import flash.text.engine.TextBaseline;
@@ -17,6 +19,7 @@ package utils.liteui.core.ftengine
 	import flash.text.engine.TextLineMirrorRegion;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
+	import flash.utils.getDefinitionByName;
 	
 	import utils.StringUtils;
 
@@ -112,6 +115,23 @@ package utils.liteui.core.ftengine
 			_element.eventMirror = _evtDispatcher;
 			_element.userData = _value;
 			return _element;
+		}
+		
+		private function getGraphicElement(child: XMLList): ContentElement
+		{
+			try
+			{
+				var _class: Class = getDefinitionByName(child.toString()) as Class;
+				var _graphic: DisplayObject = new _class();
+				var _elementFormat: ElementFormat = new ElementFormat();
+				_elementFormat.dominantBaseline = TextBaseline.IDEOGRAPHIC_CENTER;
+				return new GraphicElement(_graphic, _graphic.width, _graphic.height, _elementFormat);
+			}
+			catch(err: Error)
+			{
+				
+			}
+			return null;
 		}
 		
 		private function onMouseOver(evt: MouseEvent): void
