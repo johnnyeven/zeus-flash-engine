@@ -28,7 +28,7 @@ package
 			{
 				removeEventListener(Event.ADDED_TO_STAGE, init);
 			}
-			LoginBGComponent.getInstance().destroy();
+			//LoginBGComponent.getInstance().destroy();
 			ApplicationFacade.getInstance().start(this);
 		}
 	}
