@@ -34,6 +34,10 @@ package view.login
 			_buttonLogin = _bottomDoorMC.getUI(Button, "btnLogin") as Button;
 			_buttonRegister = _bottomDoorMC.getUI(Button, "btnRegister") as Button;
 			
+			_topDoorMC.sortChildIndex();
+			_bottomDoorMC.sortChildIndex();
+			sortChildIndex();
+			
 			_buttonStart.addEventListener(MouseEvent.CLICK, onButtonStartClick);
 			_buttonLogin.addEventListener(MouseEvent.CLICK, onButtonLoginClick);
 			_buttonRegister.addEventListener(MouseEvent.CLICK, onButtonRegisterClick);

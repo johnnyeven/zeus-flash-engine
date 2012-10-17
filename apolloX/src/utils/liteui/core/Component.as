@@ -52,15 +52,30 @@ package utils.liteui.core
 			addEventListener(MouseEvent.ROLL_OUT, onMouseOut);
 		}
 		
+		public function sortChildIndex(): void
+		{
+			for(var i: uint = 0; i<_skinChildIndexList.length; i++)
+			{
+				setChildIndex(_skinChildIndex[_skinChildIndexList[i]], i);
+			}
+		}
+		
+		public function updateChildByName(_childName: String, _child: DisplayObject): void
+		{
+			_skinChildIndex[_childName] = _child;
+		}
+		
 		public function getUI(_componentClass: Class, _skinName: String): Sprite
 		{
 			var _ui: Sprite = new _componentClass(getSkin(_skinName)) as Sprite;
+			addChild(_ui);
+			updateChildByName(_skinName, _ui);
 			return _ui;
 		}
 		
 		protected function getSkin(_skinName: String): DisplayObject
 		{
-			var _child: DisplayObject = _skin.getChildByName(_skinName);
+			var _child: DisplayObject = getChildByName(_skinName);
 			if(_child != null)
 			{
 				return _child;

@@ -69,7 +69,7 @@ package utils.liteui.core.ftengine
 				switch(_parsedChild.localName())
 				{
 					case "string":
-						
+						_groupElement.push(getTextElement(_parsedChild));
 						break;
 					case "graphic":
 						
@@ -174,7 +174,7 @@ package utils.liteui.core.ftengine
 			}
 			else
 			{
-				if(StringUtils.empty(_fontName))
+				if(!StringUtils.empty(_fontName))
 				{
 					fontName = _fontName;
 				}
