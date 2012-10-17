@@ -46,9 +46,9 @@ package loader
 			_msgText.defaultTextFormat = txtFormat;
 			addChild(_msgText);
 			
-			//loadVersion();
-			var text: String = '<root><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">adsfasdfa</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">sdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT></root>';
-			trace(FTEFormater.htmlToFTEFormat(text));
+			loadVersion();
+			//var text: String = '<root><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">adsfasdfa</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">sdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT></root>';
+			//trace(FTEFormater.htmlToFTEFormat(text));
 		}
 		
 		private function loadVersion(): void

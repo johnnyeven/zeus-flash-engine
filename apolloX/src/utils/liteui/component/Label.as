@@ -19,7 +19,7 @@ package utils.liteui.component
 	{
 		private var _text: String = "";
 		private var _align: String = TextFormatAlign.LEFT;
-		private var _color: Number = 0x000000;
+		private var _color: uint = 0x000000;
 		private var _size: uint = 12;
 		private var _wordWrap: Boolean = false;
 		private var _autoSize: Boolean = false;
@@ -41,7 +41,10 @@ package utils.liteui.component
 			mouseChildren = false;
 			
 			_ftengine = new FTEngine();
-			
+			_ftengine.defaultBold = _bold;
+			_ftengine.defaultFontColor = _color;
+			_ftengine.defaultFontName = _fontName;
+			_ftengine.defaultFontSize = _size;
 			
 			_textBlock = new TextBlock();
 			_textBlock.baselineZero = TextBaseline.IDEOGRAPHIC_TOP;
@@ -178,14 +181,15 @@ package utils.liteui.component
 			updateText();
 		}
 
-		public function get color():Number
+		public function get color():uint
 		{
 			return _color;
 		}
 
-		public function set color(value:Number):void
+		public function set color(value:uint):void
 		{
 			_color = value;
+			_ftengine.defaultFontColor = value;
 			updateText();
 		}
 
@@ -197,6 +201,7 @@ package utils.liteui.component
 		public function set size(value:uint):void
 		{
 			_size = value;
+			_ftengine.defaultFontSize = value;
 			updateText();
 		}
 
