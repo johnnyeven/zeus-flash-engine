@@ -16,9 +16,9 @@ package utils.liteui.component
 		{
 			super(_skin);
 			
-			_buttonNormal = getSkin("buttonNormal");
-			_buttonOver = getSkin("buttonOver");
-			_buttonPress = getSkin("buttonPress");
+			_buttonNormal = getSkin("buttonNormal") as Sprite;
+			_buttonOver = getSkin("buttonOver") as Sprite;
+			_buttonPress = getSkin("buttonPress") as Sprite;
 			
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			addEventListener(MouseEvent.MOUSE_UP, onMouseUp);

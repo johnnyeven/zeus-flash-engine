@@ -36,7 +36,7 @@ package utils.liteui.component
 		
 		public function Label(_skin:TextField=null)
 		{
-			super(_skin);
+			super(null);
 			mouseEnabled = false;
 			mouseChildren = false;
 			
@@ -314,7 +314,7 @@ package utils.liteui.component
 			if(filterEnabled)
 			{
 				_textBuffer.filters = [
-					new GlowFilter(filterColor, 1, 3, 3, 300);
+					new GlowFilter(filterColor, 1, 3, 3, 300)
 				];
 			}
 			else

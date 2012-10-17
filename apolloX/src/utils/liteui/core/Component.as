@@ -60,15 +60,17 @@ package utils.liteui.core
 		
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void
 		{
-			super(type, listener, useCapture, priority, useWeakReference);
+			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
 			
 			if(_eventListener == null)
 			{
 				_eventListener = new Dictionary();
 			}
+			
+			var _listener: Vector.<Function>;
 			if(_eventListener[type] != null)
 			{
-				var _listener: Vector.<Function> = _eventListener[type] as Vector.<Function>;
+				_listener = _eventListener[type] as Vector.<Function>;
 				var _index: int = _listener.indexOf(listener);
 				if(_index == -1)
 				{
@@ -82,7 +84,7 @@ package utils.liteui.core
 			}
 			else
 			{
-				var _listener: Vector.<Function> = new Vector.<Function>();
+				_listener = new Vector.<Function>();
 				_listener.push(listener);
 				_eventListener[type] = _listener;
 			}
@@ -104,14 +106,6 @@ package utils.liteui.core
 			_isDispose = true;
 		}
 		
-		public function removeChildren(): void
-		{
-			while(numChildren > 0)
-			{
-				removeChildAt(0);
-			}
-		}
-		
 		public function removeEventListeners(): void
 		{
 			if(_eventListener != null)
@@ -128,7 +122,7 @@ package utils.liteui.core
 		{
 			var _listener: Vector.<Function> = _eventListener[type] as Vector.<Function>;
 			
-			for(var i = 0; i < _listener.length; i++)
+			for(var i:uint = 0; i < _listener.length; i++)
 			{
 				removeEventListener(type, _listener[i]);
 			}
