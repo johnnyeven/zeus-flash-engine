@@ -2,27 +2,51 @@ package utils.liteui.core
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 	
+	import utils.UIUtils;
+	
 	public class Component extends Sprite
 	{
 		private var _isDispose: Boolean;
+		private var _enabled: Boolean;
 		private var _eventListener: Dictionary;
 		private var _skin: DisplayObjectContainer;
 		protected var _filterColor: Number = 0x000000;
 		protected var _filterEnabled: Boolean = true;
+		protected var _skinChildIndex: Dictionary;
+		protected var _skinChildIndexList: Array;
 		
 		public function Component(_skin: DisplayObjectContainer = null)
 		{
 			super();
 			
 			_isDispose = false;
+			_enabled = true;
+			_skinChildIndex = new Dictionary();
+			_skinChildIndexList = new Array();
 			this._skin = _skin;
-			
-			addChild(_skin);
+			if(this._skin != null)
+			{
+				UIUtils.setCommonProperty(this, _skin);
+				while(this._skin.numChildren > 0)
+				{
+					var _child: DisplayObject = this._skin.getChildAt(0);
+					addChild(_child);
+					
+					_skinChildIndex[_child.name] = _child;
+					_skinChildIndexList.push(_child.name);
+					
+					if(_child is InteractiveObject)
+					{
+						(_child as InteractiveObject).mouseEnabled = false;
+					}
+				}
+			}
 			
 			addEventListener(MouseEvent.ROLL_OVER, onMouseOver);
 			addEventListener(MouseEvent.ROLL_OUT, onMouseOut);

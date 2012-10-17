@@ -5,6 +5,8 @@ package utils
 	import flash.geom.Point;
 	
 	import mediator.StageMediator;
+	
+	import utils.liteui.core.Component;
 
 	public class UIUtils
 	{
@@ -25,6 +27,13 @@ package utils
 			var _stageCenter: Point = stageCenter;
 			target.x = _stageCenter.x - (target.width * target.scaleX) / 2;
 			target.y = _stageCenter.y - (target.height * target.scaleY) / 2;
+		}
+		
+		public static function setCommonProperty(target: Component, source: DisplayObject): void
+		{
+			target.name = source.name;
+			target.x = source.x;
+			target.y = source.y;
 		}
 		
 		private static function get stageCenter(): Point
