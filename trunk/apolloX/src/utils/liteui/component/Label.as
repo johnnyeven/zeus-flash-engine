@@ -49,6 +49,7 @@ package utils.liteui.component
 			_textBlock = new TextBlock();
 			_textBlock.baselineZero = TextBaseline.IDEOGRAPHIC_TOP;
 			_textBuffer = new Sprite();
+			addChild(_textBuffer);
 			setFilter();
 			
 			if(_skin != null)

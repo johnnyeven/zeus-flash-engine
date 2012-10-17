@@ -1,7 +1,11 @@
 package utils.liteui.core.ftengine
 {
+	import flash.text.TextField;
+
 	public class FTEFormater
 	{
+		private static const _formater: TextField = new TextField();
+		
 		public function FTEFormater()
 		{
 			
@@ -9,9 +13,12 @@ package utils.liteui.core.ftengine
 		
 		public static function htmlToFTEFormat(value: String): String
 		{
+			_formater.htmlText = value;
+			value = _formater.htmlText;
+			
 			XML.ignoreWhitespace = false;
 			var _xml: XML = FTEngine.convertToXML(value);
-			var _xmlConverted: XML = new XML();
+			var _xmlConverted: XML = <p></p>;
 			
 			for(var key: String in _xml.children())
 			{
@@ -53,7 +60,7 @@ package utils.liteui.core.ftengine
 			var _color: String;
 			if(source.parent().hasOwnProperty("@COLOR"))
 			{
-				_color = "0x" + (source.parent().@COLOR as String).replace("#", "");
+				_color = "0x" + String(source.parent().@COLOR).replace("#", "");
 			}
 			var _href: String = (source.@HREF as String).replace("event:", "");
 			if(_color != null)
@@ -79,7 +86,7 @@ package utils.liteui.core.ftengine
 			var _color: String;
 			if(source.parent().hasOwnProperty("@COLOR"))
 			{
-				_color = "0x" + (source.parent().@COLOR as String).replace("#", "");
+				_color = "0x" + String(source.parent().@COLOR).replace("#", "");
 			}
 			if(_color != null)
 			{

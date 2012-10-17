@@ -24,6 +24,8 @@ package view.scene
 			_promptContainer = _skin.getChildByName("promptContainer") as MovieClip;
 			_menuContainer = _skin.getChildByName("menuContainer") as MovieClip;
 			_messageContainer = _skin.getChildByName("messageContainer") as MovieClip;
+			
+			sortChildIndex();
 		}
 	}
 }
