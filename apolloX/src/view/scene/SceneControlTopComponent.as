@@ -9,6 +9,11 @@ package view.scene
 	{
 		public var lblNickName: Label;
 		public var lblMilitaryRank: Label;
+		public var lblPrestige: Label;
+		public var lblResourceCrystal: Label;
+		public var lblResourceTritium: Label;
+		public var lblResourceDarkMatter: Label;
+		public var lblResourceDarkCrystal: Label;
 		
 		public function SceneControlTopComponent(_skin:DisplayObjectContainer=null)
 		{
@@ -16,6 +21,13 @@ package view.scene
 			
 			lblNickName = getUI(Label, "txtNickName") as Label;
 			lblMilitaryRank = getUI(Label, "txtRank") as Label;
+			lblPrestige = getUI(Label, "txtPrestige") as Label;
+			lblResourceCrystal = getUI(Label, "txtCrystal") as Label;
+			lblResourceTritium = getUI(Label, "txtTritium") as Label;
+			lblResourceDarkMatter = getUI(Label, "txtDarkMatter") as Label;
+			lblResourceDarkCrystal = getUI(Label, "txtDarkCrystal") as Label;
+			
+			lblResourceDarkMatter.color = 0x00FF00;
 			
 			sortChildIndex();
 		}

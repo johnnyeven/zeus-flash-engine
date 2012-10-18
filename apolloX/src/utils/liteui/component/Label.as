@@ -55,21 +55,17 @@ package utils.liteui.component
 			if(_skin != null)
 			{
 				lock = true;
+				UIUtils.setCommonProperty(this, _skin);
 				
-				x = _skin.x;
-				y = _skin.y;
-				width = _skin.width;
-				height = _skin.height;
-				
-				textWidth = _skin.width;
-				textHeight = _skin.height;
-				wordWrap = _skin.wordWrap;
+				_textWidth = _skin.width;
+				_textHeight = _skin.height;
+				_wordWrap = _skin.wordWrap;
 				
 				var defaultTextFormat: TextFormat = _skin.defaultTextFormat;
 				align = defaultTextFormat.align;
-				color = defaultTextFormat.color as Number;
-				size = defaultTextFormat.size as Number;
-				bold = defaultTextFormat.bold as Boolean;
+				color = Number(defaultTextFormat.color);
+				size = Number(defaultTextFormat.size);
+				bold = Boolean(defaultTextFormat.bold);
 				fontName = defaultTextFormat.font;
 				text = FTEFormater.htmlToFTEFormat(_skin.htmlText);
 				
@@ -236,6 +232,7 @@ package utils.liteui.component
 		public function set bold(value:Boolean):void
 		{
 			_bold = value;
+			_ftengine.defaultBold = value;
 			updateText();
 		}
 
@@ -247,6 +244,7 @@ package utils.liteui.component
 		public function set hGap(value:Number):void
 		{
 			_hGap = value;
+			_ftengine.defaultHGap = value;
 			updateText();
 		}
 
@@ -276,10 +274,16 @@ package utils.liteui.component
 				case "Microsoft YaHei":
 					_fontName = "微软雅黑";
 					break;
+				case "Microsoft YaHei Bold":
+					_fontName = "微软雅黑";
+					bold = true;
+					break;
 				default:
 					_fontName = value;
 					break;
 			}
+			//_fontName = value;
+			_ftengine.defaultFontName = _fontName;
 			updateText();
 		}
 		
