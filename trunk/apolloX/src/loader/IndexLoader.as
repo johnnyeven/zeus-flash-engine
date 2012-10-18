@@ -18,12 +18,13 @@ package loader
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import flash.text.engine.*;
 	
 	import utils.language.LanguageManager;
+	import utils.liteui.core.ftengine.FTEFormater;
 	
 	import view.loader.LoaderProgressBarComponent;
 	import view.login.LoginBGComponent;
-	import utils.liteui.core.ftengine.FTEFormater;
 	
 	[SWF(width="1028", height="600", backgroundColor="0x000000",frameRate="30")]
 	public class IndexLoader extends Sprite
@@ -45,7 +46,7 @@ package loader
 			var txtFormat: TextFormat = new TextFormat(null, 14, 0xffffff, true);
 			_msgText.defaultTextFormat = txtFormat;
 			addChild(_msgText);
-			
+			//output1();
 			loadVersion();
 			//var text: String = '<root><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">adsfasdfa</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">sdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT></root>';
 			//trace(FTEFormater.htmlToFTEFormat(text));
