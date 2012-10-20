@@ -14,14 +14,14 @@ package utils.loader
 	import flash.events.EventDispatcher;
 	import flash.system.LoaderContext;
 
-	public class CClassLoader extends EventDispatcher {
+	public class ClassLoader extends EventDispatcher {
 
 		public var name: String;
 		public var url:String;
-		public var loader:Loader;
+		public var _loader:Loader;
 
 		//构造函数
-		public function CClassLoader (obj:Object = null,lc:LoaderContext = null) {
+		public function ClassLoader (obj:Object = null,lc:LoaderContext = null) {
 			if (obj != null) {
 				if (obj is ByteArray) {
 					loadBytes (obj as ByteArray,lc);
@@ -35,25 +35,25 @@ package utils.loader
 		//加载
 		public function load (_url:String,lc:LoaderContext = null):void {
 			url = _url;
-			loader = new Loader;
-			loader.load (new URLRequest(url),lc);
+			_loader = new Loader;
+			_loader.load (new URLRequest(url),lc);
 			addEvent ();
 		}
 		//加载字节
 		public function loadBytes (bytes:ByteArray,lc:LoaderContext = null):void {
-			loader = new Loader;
-			loader.loadBytes (bytes,lc);
+			_loader = new Loader;
+			_loader.loadBytes (bytes,lc);
 			addEvent ();
 		}
 		//开始侦听
 		private function addEvent ():void {
-			loader.contentLoaderInfo.addEventListener (ProgressEvent.PROGRESS,progressFun);
-			loader.contentLoaderInfo.addEventListener (Event.COMPLETE,completeFun);
+			_loader.contentLoaderInfo.addEventListener (ProgressEvent.PROGRESS,progressFun);
+			_loader.contentLoaderInfo.addEventListener (Event.COMPLETE,completeFun);
 		}
 		//结束侦听
 		private function delEvent ():void {
-			loader.contentLoaderInfo.removeEventListener (ProgressEvent.PROGRESS,progressFun);
-			loader.contentLoaderInfo.removeEventListener (Event.COMPLETE,completeFun);
+			_loader.contentLoaderInfo.removeEventListener (ProgressEvent.PROGRESS,progressFun);
+			_loader.contentLoaderInfo.removeEventListener (Event.COMPLETE,completeFun);
 		}
 		//加载成功，发布成功事件
 		private function completeFun (e:Event):void {
@@ -66,19 +66,19 @@ package utils.loader
 		}
 		//获取定义
 		public function getClass (className:String):Object {
-			return loader.contentLoaderInfo.applicationDomain.getDefinition(className);
+			return _loader.contentLoaderInfo.applicationDomain.getDefinition(className);
 		}
 		//是否含有该定义
 		public function hasClass (className:String):Boolean {
-			return loader.contentLoaderInfo.applicationDomain.hasDefinition(className);
+			return _loader.contentLoaderInfo.applicationDomain.hasDefinition(className);
 		}
 		public function getApplicationDomain (): ApplicationDomain {
-			return loader.contentLoaderInfo.applicationDomain;
+			return _loader.contentLoaderInfo.applicationDomain;
 		}
 		//清除
 		public function clear ():void {
-			loader.unload ();
-			loader = null;
+			_loader.unload ();
+			_loader = null;
 		}
 	}
 }

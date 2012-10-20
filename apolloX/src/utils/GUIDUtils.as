@@ -6,11 +6,11 @@ package utils
 	 * ...
 	 * @author john
 	 */
-	public class GUID 
+	public class GUIDUtils 
 	{
 		private static var counter:Number = 0;
 		
-		public function GUID() 
+		public function GUIDUtils() 
 		{
 			
 		}
