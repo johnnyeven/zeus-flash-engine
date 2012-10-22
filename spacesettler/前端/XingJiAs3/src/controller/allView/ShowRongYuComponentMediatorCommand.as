@@ -41,17 +41,20 @@ package controller.allView
 			
 			var allViewProxy:AllViewProxy = getProxy(AllViewProxy);
 //			allViewProxy.
-            var med:RongYuComponentMediator = getMediator(RongYuComponentMediator);
-            if (med)
-            {
-				callShow(med);
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("allView.swf", MultilanguageManager.getString("loaderRongYu"), loaderComplete,true);
-            }
+			allViewProxy.allView(function():void
+			{
+	            var med:RongYuComponentMediator = getMediator(RongYuComponentMediator);
+	            if (med)
+	            {
+					callShow(med);
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("allView.swf", MultilanguageManager.getString("loaderRongYu"), loaderComplete,true);
+	            }
+			});
         }
 
         /**

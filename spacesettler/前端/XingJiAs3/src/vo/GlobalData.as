@@ -5,6 +5,8 @@ package vo
 	import flash.net.sendToURL;
 	
 	import mediator.BaseMediator;
+	import mediator.battle.BattleEditMediator;
+	import mediator.battle.BattleFightMediator;
 	import mediator.mainSence.MainSenceComponentMediator;
 	import mediator.plantioid.PlantioidComponentMediator;
 	
@@ -59,6 +61,16 @@ package vo
 				case SenceTypeEnum.PLANT:
 				{
 					_currentSenceMed=PlantioidComponentMediator;
+					break;
+				}
+				case SenceTypeEnum.EDIT_BATTLE:
+				{
+					_currentSenceMed=BattleEditMediator;
+					break;
+				}
+				case SenceTypeEnum.FIGHT_BATTLE:
+				{
+					_currentSenceMed=BattleFightMediator;
 					break;
 				}
 			}

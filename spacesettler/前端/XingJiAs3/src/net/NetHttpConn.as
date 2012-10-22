@@ -38,8 +38,8 @@ package net
         {
             data = JSON.parse(data);
 
-            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
-//			Log.debug(NetHttpConn, "serverToClientOne", "收到信息："+commandID);
+//            Log.debug(NetHttpConn, "serverToClientOne", "收到信息：" + commandID + ":" + ObjectUtil.toString(data));
+			Log.debug(NetHttpConn, "serverToClientOne", "收到信息："+commandID);
 
             //执行方法
             var callFunctionList:Vector.<Function> = Protocol.getProtocolFunctionList(commandID);

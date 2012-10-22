@@ -21,6 +21,7 @@ package view.buildingView
     import mx.binding.utils.BindingUtils;
     
     import proxy.BuildProxy;
+    import proxy.allView.AllViewProxy;
     import proxy.content.ContentProxy;
     import proxy.userInfo.UserInfoProxy;
     
@@ -93,6 +94,8 @@ package view.buildingView
 
         public var speedButton:Button; //加速按钮
 		
+		public var conditionBtn:Button;//条件不足按钮
+		
 		public var manJiTf:Label;
 		
 		public var spComp:Component;
@@ -101,10 +104,14 @@ package view.buildingView
 
         private var _KeJiBuild:BuildInfoVo;
         private var _tweenLite:Object;
-
+		
+		private var allViewProxy:AllViewProxy;
         public function CenterUpComponent(skin:DisplayObjectContainer)
         {			
             super(skin);
+			allViewProxy = ApplicationFacade.getProxy(AllViewProxy);
+//			allViewProxy.allView();
+			
             userNameLabel = createUI(Label, "userName_textField");
             shiDaiLabel = createUI(Label, "shiDai_textField");
             shuXing1Label = createUI(Label, "shuXing1_textField");
@@ -132,7 +139,8 @@ package view.buildingView
             progressMC.percent = 0;
             upLevelButton = spComp.createUI(Button, "upLevel_button");
             speedButton =spComp. createUI(Button, "speed_button");
-			
+			conditionBtn=spComp.createUI(Button,"conditionBtn");
+						
 			spComp.sortChildIndex();            
 
             shiDai1MC = getSkin("shiDai1_MC");
@@ -140,17 +148,26 @@ package view.buildingView
             shiDai3MC = getSkin("shiDai3_MC");
             shiDai4MC = getSkin("shiDai4_MC");
 			
+			shiDai1MC.gotoAndStop(1);
 			shiDai2MC.gotoAndStop(2);
 			shiDai3MC.gotoAndStop(2);
 			shiDai4MC.gotoAndStop(2);
 			
             enterButton = createUI(Button, "enter_button");
+			enterButton.enabled=false;
             infoButton = createUI(Button, "info_button");
             closeButton = createUI(Button, "close_button");
 
             sortChildIndex();
 
-            enterButton.addEventListener(MouseEvent.CLICK, enterButton_clickHandler);
+            
+			if(allViewProxy.allViewVO)
+			{
+				shuiJingKuangCLLabel.text = allViewProxy.allViewVO.jinJingCountTxt +"/h";
+				chuanQingCLLabel.text = allViewProxy.allViewVO.chuanQiCountTxt +"/h";
+				anWuZhiCLLabel.text = allViewProxy.allViewVO.anWuZhiCountTxt +"/h";
+			}
+			
             upLevelButton.addEventListener(MouseEvent.CLICK, upLevelButton_clickHandler);
             closeButton.addEventListener(MouseEvent.CLICK, closeButton_clickHandler);
             infoButton.addEventListener(MouseEvent.CLICK, infoButton_clickHandler);
@@ -158,15 +175,19 @@ package view.buildingView
 			
         }
 
+		protected function conditionBtn_clickHandler(event:MouseEvent):void
+		{
+			
+		}
+		
         protected function enterButton_clickHandler(event:MouseEvent):void
         {
-            // TODO Auto-generated method stub
-
+            dispatchEvent(new AddViewEvent(AddViewEvent.ADDKEJICREATEVIEW_EVENT));
         }
 
         protected function upLevelButton_clickHandler(event:MouseEvent):void
         {
-            	dispatchEvent(new Event(BuildEvent.UP_EVENT));
+            dispatchEvent(new Event(BuildEvent.UP_EVENT));
         }
 
         protected function closeButton_clickHandler(event:MouseEvent):void
@@ -181,11 +202,15 @@ package view.buildingView
 
         public function set buildType(value:int):void
         {
+//			allViewProxy = ApplicationFacade.getProxy(AllViewProxy);
+//			allViewProxy.allView();
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             _buildVO = buildProxy.getBuild(value);
             _KeJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
 
             var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+			var contentInfoVO:ContentProxy=ApplicationFacade.getProxy(ContentProxy);
+			var contentObj:Object=contentInfoVO.contentData;
 			
 			if(userInfoVO.level>=4)
 			{
@@ -205,48 +230,72 @@ package view.buildingView
             {
                 case 1:
                     shiDaiLabel.text = CenterTechTypeEnum.type_1;
-                    shiDai2MC.gotoAndStop(2);
-                    shiDai3MC.gotoAndStop(2);
-                    shiDai4MC.gotoAndStop(2);
+					shiDai1MC.gotoAndStop(2);
+                    shiDai2MC.gotoAndStop(1);
+                    shiDai3MC.gotoAndStop(1);
+                    shiDai4MC.gotoAndStop(1);
                     xiaoGuo3Label.text = "提升到激光科技时代";
                     break;
                 case 2:
                     shiDaiLabel.text = CenterTechTypeEnum.type_2;
-                    shiDai2MC.gotoAndStop(1);
-                    shiDai3MC.gotoAndStop(2);
-                    shiDai4MC.gotoAndStop(2);
+					shiDai1MC.gotoAndStop(2);
+                    shiDai2MC.gotoAndStop(2);
+                    shiDai3MC.gotoAndStop(1);
+                    shiDai4MC.gotoAndStop(1);
                     xiaoGuo3Label.text = "提升到电磁科技时代";
                     break;
                 case 3:
                     shiDaiLabel.text = CenterTechTypeEnum.type_3;
-                    shiDai2MC.gotoAndStop(1);
-                    shiDai3MC.gotoAndStop(1);
-                    shiDai4MC.gotoAndStop(2);
-                    xiaoGuo3Label.text = "提升到核能科技时代";
+					shiDai1MC.gotoAndStop(2);
+                    shiDai2MC.gotoAndStop(2);
+                    shiDai3MC.gotoAndStop(2);
+                    shiDai4MC.gotoAndStop(1);
+                    xiaoGuo3Label.text = "提升到暗能科技时代";
                     break;
                 case 4:
                     shiDaiLabel.text =CenterTechTypeEnum.type_4;
-                    shiDai2MC.gotoAndStop(1);
-                    shiDai3MC.gotoAndStop(1);
-                    shiDai4MC.gotoAndStop(1);
+					shiDai1MC.gotoAndStop(2);
+                    shiDai2MC.gotoAndStop(2);
+                    shiDai3MC.gotoAndStop(2);
+                    shiDai4MC.gotoAndStop(2);
                     xiaoGuo3Label.text = "----";
                     break;
+				default:
+					shiDaiLabel.text=CenterTechTypeEnum.type_4;
+					shiDai1MC.gotoAndStop(2);
+					shiDai2MC.gotoAndStop(2);
+					shiDai3MC.gotoAndStop(2);
+					shiDai4MC.gotoAndStop(2);
+					xiaoGuo3Label.text = "----";
             }
 			
 			if(_KeJiBuild)
+			{
+				enterButton.enabled=true;
+				enterButton.addEventListener(MouseEvent.CLICK, enterButton_clickHandler);
             	levelLabel.text = _KeJiBuild.level + "";
+			}
 			else
 				levelLabel.text="0";
 			
-            shuiJingKuangCLLabel.text = curViewInfoVO.shuiJinCL + "";
-            chuanQingCLLabel.text = curViewInfoVO.chuanQinCL + "";
-            anWuZhiCLLabel.text = curViewInfoVO.anWuZhiCL + "";
+
+//            shuiJingKuangCLLabel.text = curViewInfoVO.shuiJinCL + "";
+//            chuanQingCLLabel.text = curViewInfoVO.chuanQinCL + "";
+//            anWuZhiCLLabel.text = curViewInfoVO.anWuZhiCL + "";
+			
             anWuzhiXHLabel.text = curViewInfoVO.anWuZhiXH + "";
             shuiJingKuangXHLabel.text = curViewInfoVO.shuiJinXH + "";
             chuanQingXHLabel.text = curViewInfoVO.chuanQinXH + "";
             xiaoGuo1Label.text = curViewInfoVO.DianNengXH + "/h --> " + nextViewInfoVO.DianNengXH + "/h";
             xiaoGuo2Label.text = curViewInfoVO.chuanQinCL + "/h --> " + nextViewInfoVO.chuanQinCL + "/h";
-
+			
+			if(curViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || curViewInfoVO.shuiJinXH>userInfoVO.crystal ||
+				curViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>_KeJiBuild.level)
+			{
+				conditionBtn.visible=true;
+				conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
+			}
+			
             removeCWList();
 
             upLevelButton.visible = speedButton.visible = false;

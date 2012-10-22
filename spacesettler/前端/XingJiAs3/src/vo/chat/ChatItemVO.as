@@ -16,6 +16,16 @@ package vo.chat
 		public var playerID:String = "";
 		
 		/**
+		 *玩家名字
+		 */	
+		public var playerName:String = "";
+		
+		/**
+		 *玩家VIP
+		 */	
+		public var vipLv:int;
+		
+		/**
 		 *军团ID 
 		 */		
 		public var legion_id:String;
@@ -30,6 +40,40 @@ package vo.chat
 		 */		
 		public var timeStamp:Number;
 		
+		/**
+		 *内容信息content
+		 */		
+		public var str:String = "";
+		
+		/**
+		 *系统
+		 */		
+		public var system:String = "";
+		
+		/**
+		 *类型
+		 */		
+		public var type:int;
+		
+		/**
+		 *内容信息长度
+		 */		
+		public var strLength:uint;
+		
+		/**
+		 *阵营
+		 */		
+		public var campID:uint;
+		
+		/**
+		 *世界在线人数
+		 */		
+		public var wordOnLineNumber:int;
+		
+		/**
+		 *军团在线人数
+		 */
+		public var groupOnLineNumber:int;
 		
 		public function ChatItemVO()
 		{

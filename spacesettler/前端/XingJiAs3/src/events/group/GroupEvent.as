@@ -7,12 +7,7 @@ package events.group
 		/**
 		 *创建军团 
 		 */		
-		public static const CREAT_GROUP:String="creat_group";
-		
-		/**
-		 *解散军团 
-		 */		
-		public static const DISMISS_GROUP:String="dismiss_group";
+		public static const CREAT_GROUP:String="creat_group";			
 		
 		/**
 		 *申请加入军团 

@@ -98,6 +98,8 @@
     <destroyItem>确认删除</destroyItem>
     <destroyIteminfo>是否删除物品？</destroyIteminfo>
     <useIteminfo>图纸学习成功！</useIteminfo>
+    <useItemshibai>图纸学习失败！</useItemshibai>
+    <useItemclose>图纸学习条件不足！</useItemclose>
     <useItem>道具使用成功！</useItem>
     <addItem>仓库空间购买成功！</addItem>
 	
@@ -107,8 +109,10 @@
     <loadFont>正在加载字体</loadFont>
     <loadFontError>加载字体错误</loadFontError>
 
+	<duiHuan>兑换</duiHuan>
 	<buySuccess>兑换成功！</buySuccess>
 	
+	<numOfYaoSai>要塞</numOfYaoSai>
     <!--———————————————————————小行星 ——————————————————————-->
     <plantStateNormalStr>正常</plantStateNormalStr>
     <plantStateBaoFuStr>不可攻击</plantStateBaoFuStr>
@@ -141,7 +145,9 @@
     <guanJianDes_shield>能量护盾</guanJianDes_shield>
     <guanJianDes_speed>推进力</guanJianDes_speed>
     <guanJianDes_age_level>类型</guanJianDes_age_level>
-     <guanJianDes_slot_type>挂件类型</guanJianDes_slot_type>
+    <guanJianDes_slot_type>挂件类型</guanJianDes_slot_type>
+    <zhanJheDes_slot_type>战车类型</zhanJheDes_slot_type>
+
 
     <guanJianShiDan>实弹伤害</guanJianShiDan>
     <guanJianJiguang>激光伤害</guanJianJiguang>
@@ -152,6 +158,8 @@
     <GuaJianTypeMid>中型挂件</GuaJianTypeMid>
     <GuaJianTypeSmall>小型挂件</GuaJianTypeSmall>
 
+	
+	
 	<!--———————————————————————时间机器 ——————————————————————-->
 	<totalEvent>使用时间机器完成全部任务需花费</totalEvent>
 	<thisEvent>使用时间机器完成本任务需花费</thisEvent>
@@ -171,4 +179,31 @@
 	<jiesan>解散军团</jiesan>
 	<jiesanjuntuan>确认解散军团吗？</jiesanjuntuan>
 	<jiesanchenggong>解散军团成功！</jiesanchenggong>
+	<jiesanchenggong>解散军团成功！</jiesanchenggong>
+	<desc>这家伙很懒，什么也没留下</desc>
+	
+	<!--———————————————————————军工厂 ——————————————————————-->
+	<huishou>战车回收</huishou>
+	<zhanchehuishou>将会回收战车以及战车上所有装载的挂件，你确定吗？</zhanchehuishou>
+	<nengliangtishi>重要提示</nengliangtishi>
+	<nengliangmax>消耗能量超过能量上限，战车将不可用</nengliangmax>
+	
+	<!--———————————————————————聊天 ——————————————————————-->
+	<CC_ERROR_INVALID_CHECKSUM>无效的校验</CC_ERROR_INVALID_CHECKSUM>
+	<CC_ERROR_INVALID_DIGIEST>无效的数据</CC_ERROR_INVALID_DIGIEST>
+	
+	<!--———————————————————————战场 ——————————————————————-->
+	<battleJiDi>要塞中心</battleJiDi>
+	<battleCaiKuang>采矿厂</battleCaiKuang>
+	<battleJiXiePaoTa>机械炮塔</battleJiXiePaoTa>
+	<battleJiGuangPaoTa>激光炮塔</battleJiGuangPaoTa>
+	<battleDianCiPaoTa>电磁炮塔</battleDianCiPaoTa>
+	<battleAnNengPaoTa>暗能炮塔</battleAnNengPaoTa>
+	
+	<battleCaiChu>拆除</battleCaiChu>
+	<battleXingXi>信息</battleXingXi>
+	<battleJiXiePaoTaInfo>机械炮塔</battleJiXiePaoTaInfo>
+	<battleJiGuangPaoTaInfo>激光炮塔</battleJiGuangPaoTaInfo>
+	<battleDianCiPaoTaInfo>电磁炮塔</battleDianCiPaoTaInfo>
+	<battleAnNengPaoTaInfo>暗能炮塔</battleAnNengPaoTaInfo>
 </root>

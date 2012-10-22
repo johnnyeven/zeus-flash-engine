@@ -2,7 +2,7 @@ package utils.battle
 {
     import enum.item.AttackTypeEnum;
     import enum.item.SlotEnum;
-    
+
     import vo.cangKu.GuaJianInfoVO;
     import vo.cangKu.ZhanCheInfoVO;
 
@@ -13,13 +13,13 @@ package utils.battle
      */
     public class CalculateUtil
     {
-		public static function zhanChe(itemVO:ZhanCheInfoVO):void
-		{
-			zhanCheAttack(itemVO);
-			zhanCheKangXing(itemVO);
-		}
-		
-		
+        public static function zhanChe(itemVO:ZhanCheInfoVO):void
+        {
+            zhanCheAttack(itemVO);
+            zhanCheKangXing(itemVO);
+        }
+
+
         /**
          *战车攻击力
          * @param zhanChe
@@ -38,9 +38,9 @@ package utils.battle
             for (var i:int = 0; i < itemVO.guaJianItemVOList.length; i++)
             {
                 guaJianVO = itemVO.guaJianItemVOList[i];
-                if (guaJianVO.slot_type == SlotEnum.BIG)
+                if (guaJianVO.slot_type == SlotEnum.BIG && !guaJianVO.disable)
                 {
-                    attack = guaJianVO.attack / guaJianVO.attack_speed * 3 * Math.pow(1.01, guaJianVO.attack_type + itemVO.age_level);
+                    attack = guaJianVO.attack / guaJianVO.attack_cool_down * 3 * Math.pow(1.01, guaJianVO.attack_type + itemVO.age_level);
                     total += attack;
                 }
             }
@@ -91,6 +91,28 @@ package utils.battle
                     }
                 }
             }
+        }
+
+        /**
+         *战场战车移动速度
+         * @param zhanChe
+         * @return
+         *
+         */
+        public static function fightZhanCheSpeed(zhanChe:CHARIOT):Number
+        {
+            return (1.4 + Math.pow(zhanChe.totalSpeed, 1 / 5) * 0.07) * 60;
+        }
+
+        /**
+         *战车攻击范围
+         * @param zhanChe
+         * @return
+         *
+         */
+        public static function fightZhanCheAttackArea(zhanChe:CHARIOT, guaJianVO:TANKPART):Number
+        {
+            return (150 + Math.pow(zhanChe.totalAttackArea, 1 / 4) * 3) * (1 - Math.pow(guaJianVO.attackCoolDown, -2.3));
         }
     }
 }

@@ -44,7 +44,6 @@ package view.cangKu
 		
 		protected function closeBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			dispatchEvent(new AddViewEvent(AddViewEvent.CLOSE_EVENT));
 		}
 		

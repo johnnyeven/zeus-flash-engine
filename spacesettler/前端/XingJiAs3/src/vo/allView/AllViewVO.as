@@ -58,9 +58,19 @@ package vo.allView
 		 * 消耗：
 		 */	
 		public var usePowerCountTxt:int;
+		/**
+		 * 勋章类型
+		 */	
+		public var medals_type:int;
+		/**
+		 * 勋章等级
+		 */	
+		public var medals_level:int;
+		
 		
 		public function AllViewVO()
 		{
 		}
+		
 	}
 }

@@ -27,6 +27,8 @@ package events.buildingView
 		
 		public static const GROUP_EVENT:String="group_event";
 		
+		public static const EMAIL_EVENT:String = "emailEvent";
+		
 		
 		public function ZhuJiDiEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

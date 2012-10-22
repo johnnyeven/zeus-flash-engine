@@ -13,6 +13,7 @@ package mediator.buildingView
 	
 	import mediator.BaseMediator;
 	import mediator.prompt.MoneyAlertComponentMediator;
+	import mediator.scienceResearch.ScienceResearchComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -48,6 +49,8 @@ package mediator.buildingView
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
+			
+			comp.addEventListener("keYanButton",keYanButtonHandler);
 		}
 		
 		private function formatStr(str:String):String
@@ -129,6 +132,11 @@ package mediator.buildingView
 				sendNotification(KeJiInfoComponentMediator.SHOW_NOTE);
 //			};
 //			sendNotification(DESTROY_NOTE);
+		}
+		
+		private function keYanButtonHandler(event:Event):void
+		{
+			sendNotification(ScienceResearchComponentMediator.SHOW_NOTE);
 		}
 	}
 }

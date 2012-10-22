@@ -8,6 +8,8 @@ package mediator.battleEnter
     import flash.events.Event;
     
     import mediator.BaseMediator;
+    import mediator.battle.BattleFightMediator;
+    import mediator.battle.BottomViewComponentMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
@@ -16,6 +18,7 @@ package mediator.battleEnter
     
     import ui.managers.SystemManager;
     
+    import view.battle.bottomView.BottomViewComponent;
     import view.battleEnter.BattleEnterComponent;
 
     /**
@@ -37,10 +40,10 @@ package mediator.battleEnter
             comp.med = this;
             level = 1;
             popUpEffect = UP;
-			
-			comp.addEventListener(BattleEnterEvent.BATTLE_ENTER_EVENT,battleEnterHandler);
+
+            comp.addEventListener(BattleEnterEvent.BATTLE_ENTER_EVENT, battleEnterHandler);
         }
-		
+
         /**
          *添加要监听的消息
          * @return
@@ -88,14 +91,15 @@ package mediator.battleEnter
 
             facade.removeMediator(getMediatorName());
         }
-		
-		protected function battleEnterHandler(event:BattleEnterEvent):void
-		{
-			var battleProxy:BattleProxy=getProxy(BattleProxy);
-			battleProxy.enterBattle(event.selectedZhanChe.id,function():void
-			{
-				sendNotification(DESTROY_NOTE);
-			});
-		}
+
+        protected function battleEnterHandler(event:BattleEnterEvent):void
+        {
+            var battleProxy:BattleProxy = getProxy(BattleProxy);
+            battleProxy.enterBattle(event.selectedZhanChe.id, function():void
+            {
+                sendNotification(BattleFightMediator.SHOW_NOTE);
+                sendNotification(DESTROY_NOTE);
+            });
+        }
     }
 }

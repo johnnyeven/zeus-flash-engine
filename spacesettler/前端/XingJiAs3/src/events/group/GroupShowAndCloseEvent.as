@@ -12,6 +12,8 @@ package events.group
 		
 		public static const SHOW_MEMBERMANAGE:String="show_membermanage";
 		
+		public static const SHOW_SHENHE_EVENT:String="show_shenhe_event";
+		
 		public function GroupShowAndCloseEvent(type:String)
 		{
 			super(type, false, false);

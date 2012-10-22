@@ -27,11 +27,7 @@ package view.group
 	 */	
     public class GroupMemberComponent extends Component
     {
-		/**
-		 *解散按钮 
-		 */		
-		public var jieSanBtn:Button;
-		
+				
 		/**
 		 *退出按钮 
 		 */		
@@ -62,7 +58,6 @@ package view.group
 			groupProxy=ApplicationFacade.getProxy(GroupProxy);
 			userProxy=ApplicationFacade.getProxy(UserInfoProxy);
 			
-			jieSanBtn=createUI(Button,"jiesan_btn");
 			tuiChuBtn=createUI(Button,"tuichu_btn");
 			fanHuiBtn=createUI(Button,"fanhui_btn");
 			vsBar=createUI(VScrollBar,"vs_bar");
@@ -103,6 +98,7 @@ package view.group
 			{
 				notGroupLeader();
 			}
+			
 			for(var i:int=0;i<groupProxy.memberArr.length;i++)
 			{
 				var memberVo:GroupMemberListVo=groupProxy.memberArr[i] as GroupMemberListVo;
@@ -112,6 +108,7 @@ package view.group
 				item.job.text=memberVo.job;
 				item.paiMing.text=memberVo.rank.toString();
 				item.userName.text=memberVo.username;
+				item.currtentVo=memberVo;
 				if(memberVo.vipLevel>0)
 				{
 					item.vip.visible=true;
@@ -140,28 +137,18 @@ package view.group
 		
 		public function isGroupLeader():void
 		{
-			jieSanBtn.visible=true;
 			tuiChuBtn.visible=false;
-			jieSanBtn.mouseEnabled=true;
 			tuiChuBtn.mouseEnabled=false;
 			
-			jieSanBtn.addEventListener(MouseEvent.CLICK,doJieSanHandler);
 		}
 		
 		public function notGroupLeader():void
 		{
-			jieSanBtn.visible=false;
 			tuiChuBtn.visible=true;
-			jieSanBtn.mouseEnabled=false;
 			tuiChuBtn.mouseEnabled=true;
 			
 			tuiChuBtn.addEventListener(MouseEvent.CLICK,doTuiChuHandler);
-		}
-		
-		protected function doJieSanHandler(event:MouseEvent):void
-		{
-			dispatchEvent(new GroupEvent(GroupEvent.DISMISS_GROUP,null,groupProxy.groupInfoVo.id));
-		}
+		}			
 		
 		protected function doTuiChuHandler(event:MouseEvent):void
 		{

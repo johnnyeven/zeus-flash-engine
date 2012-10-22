@@ -101,6 +101,7 @@ package view.buildingView
             closeButton.addEventListener(MouseEvent.CLICK, closeButton_clickHandler);
             infoButton.addEventListener(MouseEvent.CLICK, infoButton_clickHandler);
             speedButton.addEventListener(MouseEvent.CLICK, speedButton_clickHandler);
+			keYanButton.addEventListener(MouseEvent.CLICK,keYanButton_clickHandler);
         }
 
         protected function upLevelButton_clickHandler(event:MouseEvent):void
@@ -206,6 +207,11 @@ package view.buildingView
 		{
 			spComp.visible=false;
 			manJiTf.visible=true;
+		}
+		
+		public function keYanButton_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new Event("keYanButton"));
 		}
     }
 }

@@ -3,7 +3,9 @@ package proxy.allView
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	
+	import enum.ResEnum;
 	import enum.command.CommandEnum;
+	import enum.medal.MedalEnum;
 	
 	import flash.net.URLRequestMethod;
 	
@@ -15,6 +17,8 @@ package proxy.allView
 	import other.ConnDebug;
 	
 	import proxy.userInfo.UserInfoProxy;
+	
+	import view.allView.RongYuComponent;
 	
 	import vo.allView.AllViewVO;
 	import vo.plantioid.FortsInforVO;
@@ -38,6 +42,8 @@ package proxy.allView
 		
 		private var userInforProxy:UserInfoProxy;
 		
+		public var medals:Array;
+		public var medalsYSImgStr:String=""
 		public function AllViewProxy(data:Object = null)
 		{
 			super(NAME,data);
@@ -71,7 +77,6 @@ package proxy.allView
 				_allViewCallBack=null;
 				return ;
 			}
-			
 			var allViewVO:AllViewVO = new AllViewVO();
 			allViewVO.playerNameTxt = data.nickname;
 			allViewVO.rongYuTxt = data.prestige;
@@ -85,6 +90,19 @@ package proxy.allView
 			allViewVO.anWuZhiCountTxt = data.base.broken_crystal_output;
 			allViewVO.powerCountTxt = data.base.current_power_supply;
 			allViewVO.usePowerCountTxt = data.base.current_power_consume;
+			
+			medals=[];
+			if(data.medals!=null)
+			{
+				var arr:Array=data.medals;
+				for(var i:int=0;i<arr.length;i++)
+				{
+					if(arr[i].type==MedalEnum.MedalYaoSai)
+						medalsYSImgStr=ResEnum.medalsImgURL+arr[i].type+"_"+arr[i].level+".png";
+					else
+						medals.push(arr[i]);
+				}
+			}
 			
 			this.allViewVO = allViewVO;
 			

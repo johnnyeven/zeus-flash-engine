@@ -129,6 +129,7 @@ package view.mainView
 		protected function mail_clickHandler(event:MouseEvent):void
 		{
 			currentSelcetedBtn=mailBtn;
+			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.EMAIL_EVENT,true,true));
 		}
 		
 		protected function shop_clickHandler(event:MouseEvent):void

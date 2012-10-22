@@ -40,6 +40,8 @@ package vo.plantioid
          */
         public var y:Number;
 
+		public var current_time:Number;
+		
         /**
          *攻击保护时间
          */
@@ -52,6 +54,11 @@ package vo.plantioid
             return Math.max(0, protectedEndTime - DateFormatter.currentTime);
         }
 
+		public function initProtectedUntil():void
+		{
+			protectedEndTime = DateFormatter.currentTime + (protected_until - current_time) * 1000;
+		}
+		
         /**
          *要塞类型
          *
@@ -98,10 +105,6 @@ package vo.plantioid
 
         public var campID:int;
 
-        public function FortsInforVO()
-        {
-        }
-
         /**
          *产出水晶矿
          */
@@ -138,11 +141,29 @@ package vo.plantioid
                 type = PlantioidTypeEnum.NPC;
             else if (player_id == "0")
                 type = PlantioidTypeEnum.NO_OWN;
-            else if (campID == userInfoVO.camp)
+            else if (campID == userInfoVO.server_camp)
                 type = PlantioidTypeEnum.CAMP;
-            else if (campID != userInfoVO.camp ||
+            else if (campID != userInfoVO.server_camp &&
                 (!StringUtil.isEmpty(player_id) && userInfoVO.player_id != player_id))
                 type = PlantioidTypeEnum.ENEMY;
+			
+			if(type==PlantioidTypeEnum.OWN)
+				isEdit=true;
+			else
+				isEdit=false;
         }
+		
+		/**
+		 *行星已有建筑
+		 * BattleBuildVO 
+		 */		
+		public var buildVOList:Array=[];
+		
+		/**
+		 *是否可编辑 
+		 */		
+		public var isEdit:Boolean=false;
+		
+		public var mapID:int=1;
     }
 }

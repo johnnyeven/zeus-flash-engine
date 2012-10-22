@@ -18,8 +18,13 @@ package enum
 		public static const PLANT:int=2;
 		
 		/**
-		 *战场 
+		 *战场编辑 
 		 */		
-		public static const BATTLE:int=3;
+		public static const EDIT_BATTLE:int=3;
+		
+		/**
+		 *战场战斗
+		 */		
+		public static const FIGHT_BATTLE:int=4;
 	}
 }

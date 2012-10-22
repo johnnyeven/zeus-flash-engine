@@ -24,6 +24,10 @@ package view.prompt
 		
 		public var bg:Sprite;
 		
+		private var _tital:String;
+		
+		private var _content:String;
+		
 		public function PromptSureComponent(skin:DisplayObjectContainer)
 		{
 			super(skin);
@@ -38,7 +42,7 @@ package view.prompt
 			okButton.addEventListener(MouseEvent.CLICK,okButton_clickHandler);
 			noButton.addEventListener(MouseEvent.CLICK,noButton_clickHandler);
 		}
-		
+
 		protected function noButton_clickHandler(event:MouseEvent):void
 		{
 			dispatchEvent(new Event(NO_EVENT));
@@ -47,6 +51,28 @@ package view.prompt
 		protected function okButton_clickHandler(event:MouseEvent):void
 		{
 			dispatchEvent(new Event(OK_EVENT));
+		}
+		
+		public function get content():String
+		{
+			return _content;
+		}
+
+		public function set content(value:String):void
+		{
+			_content = value;
+			showTF.text=_content;
+		}
+		
+		public function get tital():String
+		{
+			return _tital;
+		}
+
+		public function set tital(value:String):void
+		{
+			_tital = value;
+			infoTF.text=_tital;
 		}
 	}
 }

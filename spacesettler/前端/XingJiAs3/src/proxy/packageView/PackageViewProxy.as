@@ -7,6 +7,7 @@ package proxy.packageView
     import com.zn.utils.XMLUtil;
     
     import enum.command.CommandEnum;
+    import enum.factory.FactoryEnum;
     import enum.item.ItemEnum;
     
     import flash.display.DisplayObject;
@@ -51,6 +52,8 @@ package proxy.packageView
 		public var itemXML:XML;
 
         public var itemVOList:Array = [];
+		
+		public var guaJianList:Array=[];
 
         public var chakanVO:BaseItemVO;
 
@@ -111,6 +114,7 @@ package proxy.packageView
 			if(data.dark_crystal)
 				userProxy.userInfoVO.dark_crystal=data.dark_crystal;
             itemVOList = [];
+			guaJianList.length=0;
 
             var zhanCheInfoVO:ZhanCheInfoVO;
             var guaJianVO:GuaJianInfoVO;
@@ -140,6 +144,8 @@ package proxy.packageView
                         guaJianVO.is_mounted = objItem.is_mounted;
 
                         itemVOList.push(guaJianVO);
+						guaJianList.push(guaJianVO);
+						
                         break;
                     }
                     case ItemEnum.recipes:
@@ -293,7 +299,7 @@ package proxy.packageView
                 setZhanCheInfo(itemVO, data);
 
             chakanVO = itemVO;
-
+			FactoryEnum.CURRENT_ZHANCHE_VO=itemVO;
             if (_chariotInfoCallBack != null)
                 _chariotInfoCallBack();
             _chariotInfoCallBack = null;
@@ -381,6 +387,7 @@ package proxy.packageView
                 itemVO.medium_slot = cObj.property.medium_slot;
                 itemVO.small_slot = cObj.property.small_slot;
                 itemVO.age_level = cObj.property.age_level;
+                itemVO.attackSpeed = cObj.property.attack_speed;
 
                 itemVO.max_attack_speed = cObj.improve_property.max_attack_speed;
                 itemVO.max_search_area = cObj.improve_property.max_search_area;
@@ -397,6 +404,8 @@ package proxy.packageView
                 itemVO.energy_inc = cObj.improve_property.energy_inc;
                 itemVO.speed_inc = cObj.improve_property.speed_inc;
             }
+			itemVO.createPropertyDes();
+			CalculateUtil.zhanChe(itemVO);
             return itemVO;
         }
 
@@ -408,10 +417,10 @@ package proxy.packageView
             else if (rootXML == tuZhiXML)
             {
                 xml = rootXML.recipes.(category == itemVO.category && enhanced == itemVO.enhanced && type == itemVO.type)[0];
-
-                if (xml != null)
-                    (itemVO as ItemVO).description = xml.des;
             }
+			
+            if (xml != null)
+                itemVO .description = xml.des;
 
             if (xml != null)
                 itemVO.name = xml.name;
@@ -426,6 +435,7 @@ package proxy.packageView
             guaJianInfoVO.category = obj.category;
             guaJianInfoVO.enhanced = obj.enhanced;
             guaJianInfoVO.type = obj.type;
+            guaJianInfoVO.is_mounted = obj.is_mounted;
             setBaseItemName(guaJianInfoVO, packageXML);
 
             var contentProxy:ContentProxy = getProxy(ContentProxy);
@@ -455,6 +465,7 @@ package proxy.packageView
                 guaJianInfoVO.damage_desc_type = cObj.property.damage_desc_type;
                 guaJianInfoVO.damage_desc = cObj.property.damage_desc;
             }
+			guaJianInfoVO.createPropertyDes();
             return guaJianInfoVO;
         }
 
@@ -589,6 +600,10 @@ package proxy.packageView
          */
         public function setGuaJianInfo(itemVO:GuaJianInfoVO, obj:Object):void
         {
+			if(obj.category)
+				itemVO.category=obj.category;
+			itemVO.item_type=ItemEnum.TankPart;
+			
             itemVO.id = obj.id;
             itemVO.enhanced = obj.enhanced;
             itemVO.type = obj.type;

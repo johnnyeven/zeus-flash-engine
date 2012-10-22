@@ -35,7 +35,6 @@ package proxy.userInfo
         [Bindable]
         public var userInfoVO:UserInfoVO;
 		
-		
         public function UserInfoProxy(data:Object = null)
         {
             super(NAME, data);
@@ -85,7 +84,7 @@ package proxy.userInfo
             userInfoVO.current_power_consume = data.base.current_power_consume;
             userInfoVO.current_power_supply = data.base.current_power_supply;
             userInfoVO.dark_crystal = data.dark_crystal;
-            userInfoVO.level = data.base.level;
+            userInfoVO.level = data.age_level;
             userInfoVO.prestige = data.prestige;
             userInfoVO.tritium = data.base.tritium;
             userInfoVO.userName = data.base.name;

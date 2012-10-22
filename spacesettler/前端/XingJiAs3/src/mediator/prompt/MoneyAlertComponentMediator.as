@@ -38,7 +38,7 @@ package mediator.prompt
 			popUpEffect=CENTER;
 
 			comp.med=this;
-			level=2;
+			level=3;
 			
             comp.addEventListener(MoneyAlertComponent.OK_EVENT, okHandler);
             comp.addEventListener(MoneyAlertComponent.NO_EVENT, noHandler);

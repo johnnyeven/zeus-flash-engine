@@ -58,6 +58,8 @@ package view.cangKu
 		
 		public function setValue(info:GuaJianInfoVO):void
 		{
+			if(info==null)
+				return;
 			wpName.text=info.name;
 			wplevel.text=info.level+"";
 			wpScore.text=info.value+"";
@@ -65,15 +67,15 @@ package view.cangKu
 			{
 				case 1:
 					wpType.text=MultilanguageManager.getString("GuaJianTypeBig");
-					wpTypeImage.source=ResEnum.senceEquipment+"ChariotPendant1.png";
+					wpTypeImage.source=ResEnum.senceEquipment+"enhanceType1.png";
 					break;
 				case 2:
 					wpType.text=MultilanguageManager.getString("GuaJianTypeMid");
-					wpTypeImage.source=ResEnum.senceEquipment+"ChariotPendant2.png";
+					wpTypeImage.source=ResEnum.senceEquipment+"enhanceType2.png";
 					break;
 				case 3:
 					wpType.text=MultilanguageManager.getString("GuaJianTypeSmall");
-					wpTypeImage.source=ResEnum.senceEquipment+"ChariotPendant3.png";
+					wpTypeImage.source=ResEnum.senceEquipment+"enhanceType3.png";
 					break;
 			}
 			

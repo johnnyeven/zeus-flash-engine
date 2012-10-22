@@ -1,6 +1,10 @@
 package mediator.friendList
 {
+	import com.greensock.TweenLite;
+	
 	import events.friendList.FriendListEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
@@ -29,6 +33,10 @@ package mediator.friendList
 			super(NAME, new FriendListComponent());
 			comp.addEventListener(FriendListEvent.CLOSE_FRIEND_LIST_EVENT,closeHandler);
 			comp.addEventListener(FriendListEvent.SEARCH_PLATER_EVENT,searchPlayerHandler);
+			comp.addEventListener(FriendListEvent.RENEW_FRIENF_LIST_EVENT,renewFriendListHandler);
+			
+			comp.addEventListener("destoryshangSprite",destoryshangSpriteHandler);
+			comp.addEventListener("destoryxiaSprite",destoryxiaSpriteHandler);
 		}
 		
 		/**
@@ -72,6 +80,23 @@ package mediator.friendList
 		private function searchPlayerHandler(event:FriendListEvent):void
 		{
 			sendNotification(SearchPlayerComponentMediator.SHOW_NOTE);
+		}
+		
+		private function renewFriendListHandler(event:FriendListEvent):void
+		{
+			
+		}
+		
+		private function destoryshangSpriteHandler(event:Event):void
+		{
+			comp.shangSprite.visible = false;
+			TweenLite.to(comp.shangSprite,0.5,{x:0,y:-330});
+		}
+		
+		private function destoryxiaSpriteHandler(event:Event):void
+		{
+			comp.xiaSprite.visible = false;
+			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
 		}
 	}
 }

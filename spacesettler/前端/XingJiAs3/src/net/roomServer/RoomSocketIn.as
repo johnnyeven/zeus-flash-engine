@@ -20,7 +20,7 @@ package net.roomServer
 			
             var len:int = readBuff.readUnsignedInt();
 
-            if (readBuff.bytesAvailable >= len-4)
+            if (len>0 && readBuff.bytesAvailable >= len-4)
             {
 				readBuff.position-=4;
                 readBuff.readBytes(this, 0, len);

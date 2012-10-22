@@ -91,6 +91,7 @@ package view.scienceResearch
 			upNameLabel = researchUPSprite.createUI(Label,"upNameLabel");
 			levelChangeLabel = researchUPSprite.createUI(Label,"levelChangeLabel");
 			upTimeLabel = researchUPSprite.createUI(Label,"upTimeLabel");
+			upTimeLabel.text = "";
 			progressBar = researchUPSprite.createUI(ProgressBar,"progressBar");
 			progressBar.percent = 0;
 			researchUPSprite.sortChildIndex();
@@ -191,7 +192,7 @@ package view.scienceResearch
 			progressBar.percent = (_data.current_time-_data.start_time)/(_data.finish_time-_data.start_time);
 			stopTweenLite();
 			_tweenLite = TweenLite.to(progressBar, _data.remainTime/1000, { percent: 1, ease: Linear.easeNone });
-			
+			upTimeLabel.text = DateFormatter.formatterTimeSFM(_data.remainTime/1000);
 		}
 		
 		private function timerHandler(event:TimerEvent):void

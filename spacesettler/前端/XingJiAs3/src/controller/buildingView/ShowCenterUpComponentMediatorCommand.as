@@ -12,6 +12,8 @@ package controller.buildingView
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.allView.AllViewProxy;
 
     /**
      *显示界面命令
@@ -36,18 +38,22 @@ package controller.buildingView
         {
 			if(_isLoading)
 				return ;
-			
-            var med:CenterUpComponentMediator = getMediator(CenterUpComponentMediator);
-            if (med)
-            {
-                med.show();
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("center_view", MultilanguageManager.getString(""), loaderComplete, true);
-            }
+			var allviewProxy:AllViewProxy = getProxy(AllViewProxy);
+			allviewProxy.allView(function():void
+			{
+				var med:CenterUpComponentMediator = getMediator(CenterUpComponentMediator);
+	            if (med)
+	            {
+	                med.show();
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("center_view", MultilanguageManager.getString(""), loaderComplete, true);
+	            }
+			});
+           
         }
 
         /**

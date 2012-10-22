@@ -87,6 +87,9 @@ package view.plantioid
                 {
                     ColorUtil.restore(bgSp);
 					ColorUtil.restore(titleBG);
+					
+//					ColorUtil.tint(bgSp, 0xFFFFFF, 1);
+//					ColorUtil.tint(titleBG, 0xFFFFFF, 1);
                     break;
                 }
                 case PlantioidTypeEnum.NPC:

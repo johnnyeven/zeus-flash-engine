@@ -5,6 +5,8 @@ package net.roomServer
     import com.zn.net.socket.ClientSocket;
     import com.zn.net.socket.SocketPackageIn;
     
+    import enum.battle.GameServerErrorEnum;
+    
     import flash.net.registerClassAlias;
     import flash.utils.ByteArray;
     import flash.utils.Endian;

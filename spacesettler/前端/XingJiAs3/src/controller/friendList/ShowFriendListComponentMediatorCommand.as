@@ -10,6 +10,8 @@ package controller.friendList
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.friendList.FriendProxy;
 
     /**
      *好友列表
@@ -36,18 +38,23 @@ package controller.friendList
         {
 			if(_isLoading)
 				return ;
-			
-            var med:FriendListComponentMediator = getMediator(FriendListComponentMediator);
-            if (med)
-            {
-				callShow(med);
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("friendList.swf", MultilanguageManager.getString(""), loaderComplete,true);
-            }
+			var playerID:String = notification.getBody() as String;
+			var friendProxy:FriendProxy = getProxy(FriendProxy);
+			friendProxy.getFriendList(playerID,function():void
+			{
+				 var med:FriendListComponentMediator = getMediator(FriendListComponentMediator);
+	            if (med)
+	            {
+					callShow(med);
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("friendList.swf", MultilanguageManager.getString(""), loaderComplete,true);
+	            }
+			});
+           
         }
 
         /**

@@ -9,10 +9,11 @@ package vo.cangKu
     import ui.vo.ValueObject;
 
 	/**
-	 * 
+	 * 挂件
 	 * @author zn
 	 * 
 	 */
+	[Bindable]
     public class GuaJianInfoVO extends BaseItemVO
     {
 
@@ -114,7 +115,7 @@ package vo.cangKu
 		/**
 		 * 是否已装备
 		 */
-		public var is_mounted:int;
+		public var is_mounted:Boolean;
 		
 		/**
 		 * 所属玩家ID
@@ -211,7 +212,7 @@ package vo.cangKu
 			if(attack_speed!=0)
 				str+=StringUtil.formatString("<s>{0}:{1}</s><n/>",MultilanguageManager.getString("guanJianDes_attack_speed"),attack_speed);
 			
-			if(endurance!=0)
+			if(endurance!=0&&!isNaN(endurance))
 				str+=StringUtil.formatString("<s>{0}:{1}</s><n/>",MultilanguageManager.getString("guanJianDes_endurance"),endurance);
 			
 			if(energy_supply!=0)

@@ -38,7 +38,7 @@ package vo.allView
 		
 		public var key:String;
 		public var index:String;
-		
+		public var vipLevel:int;
 		
 		
 		public function ShopInfoVo()

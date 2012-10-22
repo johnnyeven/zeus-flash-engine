@@ -12,6 +12,7 @@ package vo.cangKu
      * @author zn
      *
      */
+	[Bindable]
     public class ItemVO extends BaseItemVO
     {
         /**
@@ -29,10 +30,6 @@ package vo.cangKu
          */
         public var dark_crystal:int;
 
-        /**
-         * 道具介绍
-         */
-        public var description:String;
 
         /**
          * 道具效果持续时间
@@ -107,6 +104,10 @@ package vo.cangKu
          *科技描述
          */
         public var techPropertyDes:String = "";
+		/**
+		 *
+		 */
+		public var index:String;
 
         public function createTechPropertyDes():void
         {

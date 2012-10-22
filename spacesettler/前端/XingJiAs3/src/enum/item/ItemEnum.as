@@ -33,6 +33,19 @@ package enum.item
 		 */
         public static const count:int = 1;
 		
+		/**
+		 * 水晶
+		 */
+		public static const CRYSTAL:String = "Crystal";
 		
+		/**
+		 * 氢氚
+		 */
+		public static const TRITIUM:String = "Tritium";
+		
+		/**
+		 * 暗物质
+		 */
+		public static const BROKENCRYSTAL:String = "BrokenCrystal";
     }
 }

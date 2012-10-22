@@ -36,6 +36,9 @@ package mediator.shangCheng
 			mode = true;
 			popUpEffect=CENTER;
 			
+			comp.med = this;
+			level = 1;
+			
 			width=700;
 			height=450;
 			

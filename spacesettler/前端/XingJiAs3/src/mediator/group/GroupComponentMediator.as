@@ -44,8 +44,7 @@ package mediator.group
 		
 		protected function showGroupManageHandler(event:GroupShowAndCloseEvent):void
 		{
-			// TODO Auto-generated method stub
-			
+			sendNotification(GroupManageComponentMediator.SHOW_NOTE);
 		}
 		
 		protected function showLookMemberHandler(event:GroupShowAndCloseEvent):void
@@ -58,8 +57,10 @@ package mediator.group
 		
 		protected function showMemberManageHandler(event:GroupShowAndCloseEvent):void
 		{
-			// TODO Auto-generated method stub
-			
+			groupProxy.groupMemberList(groupProxy.groupInfoVo.id,function():void
+			{				
+				sendNotification(GroupMemberManageComponentMediator.SHOW_NOTE);
+			});
 		}
 		
 		/**
