@@ -17,6 +17,10 @@ package events.friendList
 		
 		public static const CLOSE_SEARCH_PLAYER_EVENT:String = "closeSearchPlayerEvent";
 		
+		public static const RENEW_FRIENF_LIST_EVENT:String = "renewFriendListEvent";
+		
+		public static const ENEMY_LIST_EVENT:String ="enemyListEvent";
+		
 		public function FriendListEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);

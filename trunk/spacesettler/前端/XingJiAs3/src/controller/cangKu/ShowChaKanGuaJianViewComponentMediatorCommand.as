@@ -15,6 +15,7 @@ package controller.cangKu
     
     import view.cangKu.ChaKanGuaJianViewComponent;
     
+    import vo.cangKu.BaseItemVO;
     import vo.cangKu.GuaJianInfoVO;
 
     /**
@@ -27,6 +28,8 @@ package controller.cangKu
 		private static var _isLoading:Boolean=false;
 		
 		public static var loadCompleteCallBack:Function;
+		
+		private var obj:BaseItemVO;
 		
         public function ShowChaKanGuaJianViewComponentMediatorCommand()
         {
@@ -42,8 +45,8 @@ package controller.cangKu
         {
 			if(_isLoading)
 				return ;
-			
             var med:ChaKanGuaJianViewComponentMediator = getMediator(ChaKanGuaJianViewComponentMediator);
+			
             if (med)
             {
 				callShow(med);
@@ -64,11 +67,9 @@ package controller.cangKu
         protected function loaderComplete(event:LoaderEvent):void
         {
             var med:ChaKanGuaJianViewComponentMediator = new ChaKanGuaJianViewComponentMediator();
-			
             //注册界面的中介
             facade.registerMediator(med);
 			callShow(med);
-			
 			_isLoading=false;
         }
 		

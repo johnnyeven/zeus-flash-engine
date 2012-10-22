@@ -26,6 +26,7 @@ package mediator.prompt
     import ui.utils.UIUtil;
     
     import view.prompt.PromptInfoComponent;
+    import view.prompt.PromptSureComponent;
 
     /**
      *提示
@@ -55,6 +56,8 @@ package mediator.prompt
         public static const HIDE_LOGIN_INFO_NOTE:String = "HIDE_LOGIN_INFO_NOTE";
 
         private var _infoComp:PromptInfoComponent;
+		
+		private var _sureInfoComp:PromptSureComponent;
 
         private var _loadWaitMC:MovieClip; // by rl
 
@@ -67,6 +70,10 @@ package mediator.prompt
             super(NAME, viewComponent);
             _infoComp = new PromptInfoComponent();
 			_infoComp.addEventListener(Event.CLOSE,hideInfo);
+			
+			_sureInfoComp=new PromptSureComponent(ClassUtil.getObject("res.Prompt_2_InfoSkin"));
+			_sureInfoComp.okButton.addEventListener(MouseEvent.CLICK,clickHandler);
+			_sureInfoComp.noButton.addEventListener(MouseEvent.CLICK,clickHandler);
 			
             _loadWaitMC = ClassUtil.getObject("res.loaderServerData"); // by rl
 
@@ -202,16 +209,27 @@ package mediator.prompt
          */
         private function showInfo(infoFiled:String):void
         {
-            var str:String = infoFiled;
-            _infoComp.text = str;
+//            var str:String = infoFiled;
+//            _infoComp.text = str;
+			var content:String=infoFiled;
+			_sureInfoComp.tital="提示";
+			_sureInfoComp.content=content;
 
-			PopUpManager.addPopUp(_infoComp,true);
-            UIUtil.centerUI(_infoComp);
+//			PopUpManager.addPopUp(_infoComp,true);
+//            UIUtil.centerUI(_infoComp);
+			PopUpManager.addPopUp(_sureInfoComp,true);
+            UIUtil.centerUI(_sureInfoComp);
         }
 
         private function hideInfo(event:*=null):void
         {
-			PopUpManager.removePopUp(_infoComp);
+//			PopUpManager.removePopUp(_infoComp);
+			PopUpManager.removePopUp(_sureInfoComp);
         }
+		
+		private function clickHandler(event:MouseEvent):void
+		{
+			hideInfo();
+		}
     }
 }

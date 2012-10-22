@@ -60,7 +60,7 @@ package vo.battle
         {
             _server_address_ipv4 = value;
 			
-			serverAddress=StringUtil.formatString("{0}.{1}.{2}.{3}",value&0xFF000000,value&0xFF0000,value&0xFF00,value&0xFF);
+			serverAddress=StringUtil.formatString("{3}.{2}.{1}.{0}",(value&0xFF000000)>>24,(value&0xFF0000)>>16,(value&0xFF00)>>8,value&0xFF);
         }
 
 		/**

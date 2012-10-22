@@ -3,6 +3,7 @@ package mediator.buildingView
     import com.zn.utils.ClassUtil;
     
     import enum.BuildTypeEnum;
+    import enum.factory.FactoryEnum;
     
     import events.buildingView.AddSelectorViewEvent;
     import events.buildingView.AddViewEvent;
@@ -16,6 +17,8 @@ package mediator.buildingView
     import mediator.buildingView.YeLianChangUpComponentMediator;
     import mediator.cangKu.CangkuPackageViewComponentMediator;
     import mediator.crystalSmelter.CrystalSmelterFunctionComponentMediator;
+    import mediator.factory.FactoryChangeComponentMediator;
+    import mediator.factory.FactoryMakeAndServiceComponentMediator;
     import mediator.scienceResearch.ScienceResearchComponentMediator;
     import mediator.timeMachine.TimeMachineComponentMediator;
     
@@ -23,6 +26,7 @@ package mediator.buildingView
     import org.puremvc.as3.interfaces.INotification;
     
     import proxy.allView.AllViewProxy;
+    import proxy.battle.BattleProxy;
     import proxy.timeMachine.TimeMachineProxy;
     import proxy.userInfo.UserInfoProxy;
     
@@ -174,6 +178,20 @@ package mediator.buildingView
 					sendNotification(TimeMachineComponentMediator.SHOW_NOTE);
 					break;
 				}
+				case BuildTypeEnum.JUNGONGCHANG:
+				{
+					if(!FactoryEnum.CURRENT_ZHANCHE_VO)
+					{
+						var obj:Object={};
+						obj.type=FactoryEnum.GAIZHUANG_FACTORY
+						sendNotification(FactoryMakeAndServiceComponentMediator.SHOW_NOTE,obj);						
+					}else
+					{
+						sendNotification(FactoryChangeComponentMediator.SHOW_NOTE);
+					}
+					
+					break;
+				}
             }
 			sendNotification(DESTROY_NOTE);
         }
@@ -250,6 +268,13 @@ package mediator.buildingView
 					sendNotification(ScienceResearchComponentMediator.SHOW_NOTE);
 					break;
 				}
+				case BuildTypeEnum.JUNGONGCHANG:
+				{
+					var obj:Object={};
+					obj.type=FactoryEnum.WEIXIU_FACTORY;
+					sendNotification(FactoryMakeAndServiceComponentMediator.SHOW_NOTE,obj);
+					break;
+				}
 			}
 		}
 		
@@ -260,6 +285,13 @@ package mediator.buildingView
 				case BuildTypeEnum.CENTER:
 				{
 					sendNotification(AllViewComponentMediator.SHOW_NOTE);
+					break;
+				}
+				case BuildTypeEnum.JUNGONGCHANG:
+				{
+					var obj:Object={};
+					obj.type=FactoryEnum.ZHIZAO_FACTORY
+					sendNotification(FactoryMakeAndServiceComponentMediator.SHOW_NOTE,obj);
 					break;
 				}
 			}

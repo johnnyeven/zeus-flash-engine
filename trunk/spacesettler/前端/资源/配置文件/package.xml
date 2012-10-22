@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<fight>
 		<name>企业号</name>
@@ -5,6 +6,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>企业号为实弹型战车，拥有3个能量槽，是所需资源最少的战车。</des>
 	</fight>
 	<fight>
 		<name>发现号</name>
@@ -12,6 +14,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>发现号为激光型战车，拥有4个能量槽，是战争初期常用战车。</des>
 	</fight>
 	<fight>
 		<name>勇气号</name>
@@ -19,6 +22,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>勇气号为电磁型战车，拥有5个能量槽，是电磁时代标志性战车。</des>
 	</fight>
 	<fight>
 		<name>奋进号</name>
@@ -26,6 +30,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>奋进号为暗能型战车，拥有5个能量槽，是暗能时代的基础战车。</des>
 	</fight>
 	<fight>
 		<name>思索者号</name>
@@ -33,6 +38,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>思索者号为暗能型战车，拥有5个能量槽，是暗能时代初期的经典战车。</des>
 	</fight>
 	<fight>
 		<name>引导者号</name>
@@ -40,6 +46,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>引导者号为暗能型战车，拥有6个能量槽，是外观设计最独特的战车。</des>
 	</fight>
 	<fight>
 		<name>先驱者号</name>
@@ -47,6 +54,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>先驱者号为暗能型战车，拥有6个能量槽，是战车技术飞跃的成果。</des>
 	</fight>
 	<fight>
 		<name>探索者号</name>
@@ -54,6 +62,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>探索者号为暗能型战车，拥有7个能量槽，是暗能时代战车中的宠儿。</des>
 	</fight>
 	<fight>
 		<name>挑战者号</name>
@@ -61,6 +70,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>挑战者号为暗能型战车，拥有8个能量槽，是被评为性价比最高的战车。</des>
 	</fight>
 	<fight>
 		<name>曙光号</name>
@@ -68,6 +78,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>曙光号为暗能型战车，拥有8个能量槽，是一款被称为骨灰级的战车。</des>
 	</fight>
 	<fight>
 		<name>进化号</name>
@@ -75,6 +86,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>进化号为暗能型战车，拥有9个能量槽，是能量槽最多的战车之一。</des>
 	</fight>
 	<fight>
 		<name>辉煌号</name>
@@ -82,6 +94,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>辉煌号为暗能型战车，拥有9个能量槽。是科技达到顶峰之作！</des>
 	</fight>
 	<fight>
 		<name>高级企业号</name>
@@ -89,6 +102,7 @@
 		<category>1</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级发现号</name>
@@ -96,6 +110,7 @@
 		<category>2</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级勇气号</name>
@@ -103,6 +118,7 @@
 		<category>3</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级奋进号</name>
@@ -110,6 +126,7 @@
 		<category>4</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级思索者号</name>
@@ -117,6 +134,7 @@
 		<category>5</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级引导者号</name>
@@ -124,6 +142,7 @@
 		<category>6</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级先驱者号</name>
@@ -131,6 +150,7 @@
 		<category>7</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级探索者号</name>
@@ -138,6 +158,7 @@
 		<category>8</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级挑战者号</name>
@@ -145,6 +166,7 @@
 		<category>9</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级曙光号</name>
@@ -152,6 +174,7 @@
 		<category>10</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级进化号</name>
@@ -159,6 +182,7 @@
 		<category>11</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>高级辉煌号</name>
@@ -166,6 +190,7 @@
 		<category>12</category>
 		<enhanced>2</enhanced>
 		<type>1</type>
+		<des/>
 	</fight>
 	<fight>
 		<name>重型战舰炮1型</name>
@@ -173,6 +198,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>重型战舰炮1型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>重型战舰炮2型</name>
@@ -180,6 +206,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>重型战舰炮2型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>重型战舰炮3型</name>
@@ -187,6 +214,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>重型战舰炮3型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>重型战舰炮4型</name>
@@ -194,6 +222,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>重型战舰炮4型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>重型战舰炮5型</name>
@@ -201,6 +230,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>重型战舰炮5型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>重型战舰炮6型</name>
@@ -208,6 +238,7 @@
 		<category>1</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>重型战舰炮6型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>大型战舰炮1型</name>
@@ -215,6 +246,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>大型战舰炮1型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>大型战舰炮2型</name>
@@ -222,6 +254,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>大型战舰炮2型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>大型战舰炮3型</name>
@@ -229,6 +262,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>大型战舰炮3型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>大型战舰炮4型</name>
@@ -236,6 +270,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>大型战舰炮4型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>大型战舰炮5型</name>
@@ -243,6 +278,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>大型战舰炮5型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>大型战舰炮6型</name>
@@ -250,6 +286,7 @@
 		<category>2</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>大型战舰炮6型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>速射战舰炮1型</name>
@@ -257,6 +294,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>速射战舰炮1型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>速射战舰炮2型</name>
@@ -264,6 +302,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>速射战舰炮2型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>速射战舰炮3型</name>
@@ -271,6 +310,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>速射战舰炮3型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>速射战舰炮4型</name>
@@ -278,6 +318,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>速射战舰炮4型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>速射战舰炮5型</name>
@@ -285,6 +326,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>速射战舰炮5型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>速射战舰炮6型</name>
@@ -292,6 +334,7 @@
 		<category>3</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>速射战舰炮6型为实弹攻击类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>重型激光炮1型</name>
@@ -299,6 +342,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>重型激光炮1型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>重型激光炮2型</name>
@@ -306,6 +350,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>重型激光炮2型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>重型激光炮3型</name>
@@ -313,6 +358,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>重型激光炮3型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>重型激光炮4型</name>
@@ -320,6 +366,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>重型激光炮4型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>重型激光炮5型</name>
@@ -327,6 +374,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>重型激光炮5型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>重型激光炮6型</name>
@@ -334,6 +382,7 @@
 		<category>4</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>重型激光炮6型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>大型激光炮1型</name>
@@ -341,6 +390,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>大型激光炮1型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>大型激光炮2型</name>
@@ -348,6 +398,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>大型激光炮2型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>大型激光炮3型</name>
@@ -355,6 +406,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>大型激光炮3型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>大型激光炮4型</name>
@@ -362,6 +414,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>大型激光炮4型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>大型激光炮5型</name>
@@ -369,6 +422,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>大型激光炮5型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>大型激光炮6型</name>
@@ -376,6 +430,7 @@
 		<category>5</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>大型激光炮6型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>速射激光炮1型</name>
@@ -383,6 +438,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>速射激光炮1型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>速射激光炮2型</name>
@@ -390,6 +446,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>速射激光炮2型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>速射激光炮3型</name>
@@ -397,6 +454,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>速射激光炮3型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>速射激光炮4型</name>
@@ -404,6 +462,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>速射激光炮4型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>速射激光炮5型</name>
@@ -411,6 +470,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>速射激光炮5型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>速射激光炮6型</name>
@@ -418,6 +478,7 @@
 		<category>6</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>速射激光炮6型为激光攻击类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>重型电磁炮1型</name>
@@ -425,6 +486,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>重型电磁炮1型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>重型电磁炮2型</name>
@@ -432,6 +494,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>重型电磁炮2型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>重型电磁炮3型</name>
@@ -439,6 +502,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>重型电磁炮3型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>重型电磁炮4型</name>
@@ -446,6 +510,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>重型电磁炮4型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>重型电磁炮5型</name>
@@ -453,6 +518,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>重型电磁炮5型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>重型电磁炮6型</name>
@@ -460,6 +526,7 @@
 		<category>7</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>重型电磁炮6型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>大型电磁炮1型</name>
@@ -467,6 +534,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>大型电磁炮1型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>大型电磁炮2型</name>
@@ -474,6 +542,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>大型电磁炮2型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>大型电磁炮3型</name>
@@ -481,6 +550,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>大型电磁炮3型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>大型电磁炮4型</name>
@@ -488,6 +558,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>大型电磁炮4型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>大型电磁炮5型</name>
@@ -495,6 +566,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>大型电磁炮5型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>大型电磁炮6型</name>
@@ -502,6 +574,7 @@
 		<category>8</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>大型电磁炮6型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>速射电磁炮1型</name>
@@ -509,6 +582,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>速射电磁炮1型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>速射电磁炮2型</name>
@@ -516,6 +590,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>速射电磁炮2型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>速射电磁炮3型</name>
@@ -523,6 +598,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>速射电磁炮3型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>速射电磁炮4型</name>
@@ -530,6 +606,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>速射电磁炮4型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>速射电磁炮5型</name>
@@ -537,6 +614,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>速射电磁炮5型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>速射电磁炮6型</name>
@@ -544,6 +622,7 @@
 		<category>9</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>速射电磁炮6型为电磁攻击类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>重型暗能炮1型</name>
@@ -551,6 +630,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>重型暗能炮1型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>重型暗能炮2型</name>
@@ -558,6 +638,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>重型暗能炮2型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>重型暗能炮3型</name>
@@ -565,6 +646,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>重型暗能炮3型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>重型暗能炮4型</name>
@@ -572,6 +654,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>重型暗能炮4型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>重型暗能炮5型</name>
@@ -579,6 +662,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>重型暗能炮5型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>重型暗能炮6型</name>
@@ -586,6 +670,7 @@
 		<category>10</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>重型暗能炮6型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>大型暗能炮1型</name>
@@ -593,6 +678,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>大型暗能炮1型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>大型暗能炮2型</name>
@@ -600,6 +686,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>大型暗能炮2型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>大型暗能炮3型</name>
@@ -607,6 +694,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>大型暗能炮3型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>大型暗能炮4型</name>
@@ -614,6 +702,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>大型暗能炮4型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>大型暗能炮5型</name>
@@ -621,6 +710,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>大型暗能炮5型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>大型暗能炮6型</name>
@@ -628,6 +718,7 @@
 		<category>11</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>大型暗能炮6型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>速射暗能炮1型</name>
@@ -635,6 +726,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>速射暗能炮1型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>速射暗能炮2型</name>
@@ -642,6 +734,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>速射暗能炮2型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>速射暗能炮3型</name>
@@ -649,6 +742,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>速射暗能炮3型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>速射暗能炮4型</name>
@@ -656,6 +750,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>速射暗能炮4型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>速射暗能炮5型</name>
@@ -663,6 +758,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>速射暗能炮5型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>速射暗能炮6型</name>
@@ -670,6 +766,7 @@
 		<category>12</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>速射暗能炮6型为暗能攻击类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>复合装甲1型</name>
@@ -677,6 +774,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>复合装甲1型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>复合装甲2型</name>
@@ -684,6 +782,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>复合装甲2型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>复合装甲3型</name>
@@ -691,6 +790,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>复合装甲3型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>复合装甲4型</name>
@@ -698,6 +798,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>复合装甲4型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>复合装甲5型</name>
@@ -705,6 +806,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>复合装甲5型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>复合装甲6型</name>
@@ -712,6 +814,7 @@
 		<category>13</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>复合装甲6型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反应装甲1型</name>
@@ -719,6 +822,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>反应装甲1型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反应装甲2型</name>
@@ -726,6 +830,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>反应装甲2型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反应装甲3型</name>
@@ -733,6 +838,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>反应装甲3型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反应装甲4型</name>
@@ -740,6 +846,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>反应装甲4型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反应装甲5型</name>
@@ -747,6 +854,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>反应装甲5型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反应装甲6型</name>
@@ -754,6 +862,7 @@
 		<category>14</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>反应装甲6型为实弹防御类挂件，研发于机械时代！</des>
 	</fight>
 	<fight>
 		<name>反射装甲1型</name>
@@ -761,6 +870,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>反射装甲1型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>反射装甲2型</name>
@@ -768,6 +878,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>反射装甲2型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>反射装甲3型</name>
@@ -775,6 +886,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>反射装甲3型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>反射装甲4型</name>
@@ -782,6 +894,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>反射装甲4型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>反射装甲5型</name>
@@ -789,6 +902,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>反射装甲5型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>反射装甲6型</name>
@@ -796,6 +910,7 @@
 		<category>15</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>反射装甲6型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>衍射装甲1型</name>
@@ -803,6 +918,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>衍射装甲1型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>衍射装甲2型</name>
@@ -810,6 +926,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>衍射装甲2型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>衍射装甲3型</name>
@@ -817,6 +934,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>衍射装甲3型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>衍射装甲4型</name>
@@ -824,6 +942,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>衍射装甲4型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>衍射装甲5型</name>
@@ -831,6 +950,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>衍射装甲5型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>衍射装甲6型</name>
@@ -838,6 +958,7 @@
 		<category>16</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>衍射装甲6型为激光防御类挂件，研发于激光时代！</des>
 	</fight>
 	<fight>
 		<name>屏蔽装甲1型</name>
@@ -845,6 +966,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>屏蔽装甲1型为电磁防御类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>屏蔽装甲2型</name>
@@ -852,6 +974,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>屏蔽装甲2型为电磁防御类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>屏蔽装甲3型</name>
@@ -859,6 +982,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>屏蔽装甲3型为电磁防御类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>屏蔽装甲4型</name>
@@ -866,6 +990,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>屏蔽装甲4型为电磁防御类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>屏蔽装甲5型</name>
@@ -873,6 +998,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>屏蔽装甲5型为电磁防御类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>屏蔽装甲6型</name>
@@ -880,6 +1006,7 @@
 		<category>17</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>屏蔽装甲6型为电磁防御类挂件，研发于电磁时代！</des>
 	</fight>
 	<fight>
 		<name>干扰装甲1型</name>
@@ -887,6 +1014,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>干扰装甲1型为中型防御装甲，主要用于电磁防御！</des>
 	</fight>
 	<fight>
 		<name>干扰装甲2型</name>
@@ -894,6 +1022,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>干扰装甲2型为中型防御装甲，主要用于电磁防御！</des>
 	</fight>
 	<fight>
 		<name>干扰装甲3型</name>
@@ -901,6 +1030,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>干扰装甲3型为中型防御装甲，主要用于电磁防御！</des>
 	</fight>
 	<fight>
 		<name>干扰装甲4型</name>
@@ -908,6 +1038,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>干扰装甲4型为中型防御装甲，主要用于电磁防御！</des>
 	</fight>
 	<fight>
 		<name>干扰装甲5型</name>
@@ -915,6 +1046,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>干扰装甲5型为中型防御装甲，主要用于电磁防御！</des>
 	</fight>
 	<fight>
 		<name>干扰装甲6型</name>
@@ -922,6 +1054,7 @@
 		<category>18</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>干扰装甲6型为中型防御装甲，主要用于电磁防御！</des>
 	</fight>
 	<fight>
 		<name>反物质装甲1型</name>
@@ -929,6 +1062,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>反物质装甲1型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反物质装甲2型</name>
@@ -936,6 +1070,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>反物质装甲2型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反物质装甲3型</name>
@@ -943,6 +1078,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>反物质装甲3型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反物质装甲4型</name>
@@ -950,6 +1086,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>反物质装甲4型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反物质装甲5型</name>
@@ -957,6 +1094,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>反物质装甲5型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反物质装甲6型</name>
@@ -964,6 +1102,7 @@
 		<category>19</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>反物质装甲6型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反引力装甲1型</name>
@@ -971,6 +1110,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>反引力装甲1型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反引力装甲2型</name>
@@ -978,6 +1118,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>反引力装甲2型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反引力装甲3型</name>
@@ -985,6 +1126,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>反引力装甲3型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反引力装甲4型</name>
@@ -992,6 +1134,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>反引力装甲4型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反引力装甲5型</name>
@@ -999,6 +1142,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>反引力装甲5型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>反引力装甲6型</name>
@@ -1006,6 +1150,7 @@
 		<category>20</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>反引力装甲6型为暗能防御类挂件，研发于暗能时代！</des>
 	</fight>
 	<fight>
 		<name>高效能量发生器1型</name>
@@ -1013,6 +1158,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>高效能量发生器1型为小型辅助类挂件，主要用于增加战车的装在能量！</des>
 	</fight>
 	<fight>
 		<name>高效能量发生器2型</name>
@@ -1020,6 +1166,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>高效能量发生器2型为小型辅助类挂件，主要用于增加战车的装在能量！</des>
 	</fight>
 	<fight>
 		<name>高效能量发生器3型</name>
@@ -1027,6 +1174,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>高效能量发生器3型为小型辅助类挂件，主要用于增加战车的装在能量！</des>
 	</fight>
 	<fight>
 		<name>高效能量发生器4型</name>
@@ -1034,6 +1182,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>高效能量发生器4型为小型辅助类挂件，主要用于增加战车的装在能量！</des>
 	</fight>
 	<fight>
 		<name>高效能量发生器5型</name>
@@ -1041,6 +1190,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>高效能量发生器5型为小型辅助类挂件，主要用于增加战车的装在能量！</des>
 	</fight>
 	<fight>
 		<name>高效能量发生器6型</name>
@@ -1048,6 +1198,7 @@
 		<category>21</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>高效能量发生器6型为小型辅助类挂件，主要用于增加战车的装在能量！</des>
 	</fight>
 	<fight>
 		<name>高能引擎1型</name>
@@ -1055,6 +1206,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>高能引擎1型为小型辅助类挂件，主要是把能量转换为推进力增加战车引擎动力的挂件！</des>
 	</fight>
 	<fight>
 		<name>高能引擎2型</name>
@@ -1062,6 +1214,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>高能引擎2型为小型辅助类挂件，主要是把能量转换为推进力增加战车引擎动力的挂件！</des>
 	</fight>
 	<fight>
 		<name>高能引擎3型</name>
@@ -1069,6 +1222,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>高能引擎3型为小型辅助类挂件，主要是把能量转换为推进力增加战车引擎动力的挂件！</des>
 	</fight>
 	<fight>
 		<name>高能引擎4型</name>
@@ -1076,6 +1230,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>高能引擎4型为小型辅助类挂件，主要是把能量转换为推进力增加战车引擎动力的挂件！</des>
 	</fight>
 	<fight>
 		<name>高能引擎5型</name>
@@ -1083,6 +1238,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>高能引擎5型为小型辅助类挂件，主要是把能量转换为推进力增加战车引擎动力的挂件！</des>
 	</fight>
 	<fight>
 		<name>高能引擎6型</name>
@@ -1090,6 +1246,7 @@
 		<category>22</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>高能引擎6型为小型辅助类挂件，主要是把能量转换为推进力增加战车引擎动力的挂件！</des>
 	</fight>
 	<fight>
 		<name>能量护盾1型</name>
@@ -1097,6 +1254,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>能量护盾1型属于中型辅助类挂件，主要是增加战车能量防御！</des>
 	</fight>
 	<fight>
 		<name>能量护盾2型</name>
@@ -1104,6 +1262,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>能量护盾2型属于中型辅助类挂件，主要是增加战车能量防御！</des>
 	</fight>
 	<fight>
 		<name>能量护盾3型</name>
@@ -1111,6 +1270,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>能量护盾3型属于中型辅助类挂件，主要是增加战车能量防御！</des>
 	</fight>
 	<fight>
 		<name>能量护盾4型</name>
@@ -1118,6 +1278,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>能量护盾4型属于中型辅助类挂件，主要是增加战车能量防御！</des>
 	</fight>
 	<fight>
 		<name>能量护盾5型</name>
@@ -1125,6 +1286,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>能量护盾5型属于中型辅助类挂件，主要是增加战车能量防御！</des>
 	</fight>
 	<fight>
 		<name>能量护盾6型</name>
@@ -1132,6 +1294,7 @@
 		<category>23</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>能量护盾6型属于中型辅助类挂件，主要是增加战车能量防御！</des>
 	</fight>
 	<fight>
 		<name>转换增速仪1型</name>
@@ -1139,6 +1302,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>转换增速仪1型为中型辅助类挂件，主要功能为把暗能量进行转换为攻击速度。</des>
 	</fight>
 	<fight>
 		<name>转换增速仪2型</name>
@@ -1146,6 +1310,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>转换增速仪2型为中型辅助类挂件，主要功能为把暗能量进行转换为攻击速度。</des>
 	</fight>
 	<fight>
 		<name>转换增速仪3型</name>
@@ -1153,6 +1318,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>转换增速仪3型为中型辅助类挂件，主要功能为把暗能量进行转换为攻击速度。</des>
 	</fight>
 	<fight>
 		<name>转换增速仪4型</name>
@@ -1160,6 +1326,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>转换增速仪4型为中型辅助类挂件，主要功能为把暗能量进行转换为攻击速度。</des>
 	</fight>
 	<fight>
 		<name>转换增速仪5型</name>
@@ -1167,6 +1334,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>转换增速仪5型为中型辅助类挂件，主要功能为把暗能量进行转换为攻击速度。</des>
 	</fight>
 	<fight>
 		<name>转换增速仪6型</name>
@@ -1174,6 +1342,7 @@
 		<category>24</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>转换增速仪6型为中型辅助类挂件，主要功能为把暗能量进行转换为攻击速度。</des>
 	</fight>
 	<fight>
 		<name>智能战斗雷达1型</name>
@@ -1181,6 +1350,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>智能战斗雷达1型为小型辅助类挂件，进行战斗区域内的情况扫描以及增加战车有效攻击范围。</des>
 	</fight>
 	<fight>
 		<name>智能战斗雷达2型</name>
@@ -1188,6 +1358,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>智能战斗雷达2型为小型辅助类挂件，进行战斗区域内的情况扫描以及增加战车有效攻击范围。</des>
 	</fight>
 	<fight>
 		<name>智能战斗雷达3型</name>
@@ -1195,6 +1366,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>智能战斗雷达3型为小型辅助类挂件，进行战斗区域内的情况扫描以及增加战车有效攻击范围。</des>
 	</fight>
 	<fight>
 		<name>智能战斗雷达4型</name>
@@ -1202,6 +1374,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>智能战斗雷达4型为小型辅助类挂件，进行战斗区域内的情况扫描以及增加战车有效攻击范围。</des>
 	</fight>
 	<fight>
 		<name>智能战斗雷达5型</name>
@@ -1209,6 +1382,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>智能战斗雷达5型为小型辅助类挂件，进行战斗区域内的情况扫描以及增加战车有效攻击范围。</des>
 	</fight>
 	<fight>
 		<name>智能战斗雷达6型</name>
@@ -1216,6 +1390,7 @@
 		<category>25</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>智能战斗雷达6型为小型辅助类挂件，进行战斗区域内的情况扫描以及增加战车有效攻击范围。</des>
 	</fight>
 	<fight>
 		<name>自爆装置1型</name>
@@ -1223,6 +1398,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>1</type>
+		<des>自爆装置1型为小型自爆行挂件，以自伤而伤他人的方式进行攻击！</des>
 	</fight>
 	<fight>
 		<name>自爆装置2型</name>
@@ -1230,6 +1406,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>2</type>
+		<des>自爆装置2型为小型自爆行挂件，以自伤而伤他人的方式进行攻击！</des>
 	</fight>
 	<fight>
 		<name>自爆装置3型</name>
@@ -1237,6 +1414,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>3</type>
+		<des>自爆装置3型为小型自爆行挂件，以自伤而伤他人的方式进行攻击！</des>
 	</fight>
 	<fight>
 		<name>自爆装置4型</name>
@@ -1244,6 +1422,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>4</type>
+		<des>自爆装置4型为小型自爆行挂件，以自伤而伤他人的方式进行攻击！</des>
 	</fight>
 	<fight>
 		<name>自爆装置5型</name>
@@ -1251,6 +1430,7 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>5</type>
+		<des>自爆装置5型为小型自爆行挂件，以自伤而伤他人的方式进行攻击！</des>
 	</fight>
 	<fight>
 		<name>自爆装置6型</name>
@@ -1258,5 +1438,6 @@
 		<category>26</category>
 		<enhanced>1</enhanced>
 		<type>6</type>
+		<des>自爆装置6型为小型自爆行挂件，以自伤而伤他人的方式进行攻击！</des>
 	</fight>
 </root>

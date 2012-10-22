@@ -74,6 +74,9 @@ package view.cangKu
 
         public function showValue(info:ZhanCheInfoVO):void
         {
+			if(info==null)
+				return;
+			
             wpName.text = info.name;
             wplevel.text = info.level + "";
             wpScore.text = info.value + "";

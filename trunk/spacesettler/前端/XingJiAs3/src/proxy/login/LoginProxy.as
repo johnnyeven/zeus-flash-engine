@@ -223,7 +223,7 @@ package proxy.login
                         serverVO.server_recommend = objList[i].server_recommend;
                         serverVO.server_message_ip = objList[i].server_message_ip.split(":")[0];
 						serverVO.server_message_port=objList[i].server_message_ip.split(":")[1];
-                        serverVO.server_game_id = objList[i].server_game_id;
+                        serverVO.server_game_id = objList[i].server_game_ip;
                         serverVO.server_game_port = objList[i].server_game_port;
 
                         list.push(serverVO);

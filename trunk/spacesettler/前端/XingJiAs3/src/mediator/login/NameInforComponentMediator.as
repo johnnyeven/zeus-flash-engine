@@ -33,6 +33,7 @@ package mediator.login
 		public function NameInforComponentMediator()
 		{
 			super(NAME, new NameInforComponent());
+			height=600;
 			popUpEffect=UP;
 			comp.addEventListener(NameInforEvent.BACK_EVENT,backHandler);
 			comp.addEventListener(NameInforEvent.NEXT_EVENT,nextHandler);

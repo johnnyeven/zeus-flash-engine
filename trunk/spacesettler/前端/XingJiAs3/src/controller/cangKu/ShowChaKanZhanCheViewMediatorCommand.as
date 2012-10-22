@@ -15,6 +15,7 @@ package controller.cangKu
     
     import view.cangKu.ChaKanZhanCheViewComponent;
     
+    import vo.cangKu.BaseItemVO;
     import vo.cangKu.ZhanCheInfoVO;
 
     /**
@@ -42,7 +43,6 @@ package controller.cangKu
         {
 			if(_isLoading)
 				return ;
-			
             var med:ChaKanZhanCheViewComponentMediator = getMediator(ChaKanZhanCheViewComponentMediator);
             if (med)
             {
@@ -64,7 +64,6 @@ package controller.cangKu
         protected function loaderComplete(event:LoaderEvent):void
         {
             var med:ChaKanZhanCheViewComponentMediator = new ChaKanZhanCheViewComponentMediator();
-			
             //注册界面的中介
             facade.registerMediator(med);
 			_isLoading=false;

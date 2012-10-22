@@ -1,6 +1,7 @@
 package mediator.friendList
 {
 	import mediator.BaseMediator;
+	import mediator.WindowMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -13,7 +14,7 @@ package mediator.friendList
 	 * @author lw
 	 *
 	 */
-	public class ViewIdCardComponentMediator extends BaseMediator implements IMediator
+	public class ViewIdCardComponentMediator extends WindowMediator implements IMediator
 	{
 		public static const NAME:String="ViewIdCardComponentMediator";
 
@@ -24,6 +25,8 @@ package mediator.friendList
 		public function ViewIdCardComponentMediator()
 		{
 			super(NAME, new ViewIdCardComponent());
+			
+			comp.addEventListener("closeIDCardComponent",closeHandler);
 		}
 		
 		/**

@@ -3,6 +3,7 @@ package mediator.cangKu
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
     
+    import enum.factory.FactoryEnum;
     import enum.item.ItemEnum;
     
     import events.buildingView.AddViewEvent;
@@ -12,6 +13,9 @@ package mediator.cangKu
     import flash.events.Event;
     
     import mediator.BaseMediator;
+    import mediator.factory.FactoryChangeComponentMediator;
+    import mediator.factory.FactoryMakeAndServiceComponentMediator;
+    import mediator.factory.FactoryStrengthenComponentMediator;
     import mediator.prompt.PromptSureMediator;
     
     import mx.binding.utils.ChangeWatcher;
@@ -24,6 +28,7 @@ package mediator.cangKu
     import proxy.userInfo.UserInfoProxy;
     
     import view.cangKu.CangkuPackageViewComponent;
+    import view.factory.FactoryMakeAndServiceComponent;
     
     import vo.cangKu.BaseItemVO;
     import vo.cangKu.GuaJianInfoVO;
@@ -62,12 +67,14 @@ package mediator.cangKu
             level = 1;
             comp.addEventListener(AddViewEvent.CLOSE_EVENT, closeHandler);
             comp.addEventListener(ChaKanEvent.ADDCHAKANVIEW_EVENT, addChaKanViewHandler);
+            comp.addEventListener(ChaKanEvent.ZHUANGPEI_EVENT, zhuangPeiHandler);
+            comp.addEventListener(ChaKanEvent.WEIXIU_EVENT, weiXiuHandler);
+            comp.addEventListener(ChaKanEvent.QIANGHUA_EVENT, qiangHuaHandler);
             comp.addEventListener(DonateEvent.DONATE_EVENT, addDonateViewHandler);
             comp.addEventListener(DonateEvent.DESTROY_EVENT, destroyHandler);
             comp.addEventListener(DonateEvent.USE_EVENT, useHandler);
             comp.addEventListener(DonateEvent.ADDSPACE_EVENT, addSpaceHandler);
         }
-			
 		
         /**
          *添加要监听的消息
@@ -214,5 +221,35 @@ package mediator.cangKu
 				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 			});
 		}	
+		
+		
+		protected function qiangHuaHandler(event:ChaKanEvent):void
+		{
+			packageProxy.getChariotInfo(event.itemVO.id, function():void
+			{
+				sendNotification(FactoryStrengthenComponentMediator.SHOW_NOTE);
+			});
+		}
+		
+		protected function weiXiuHandler(event:ChaKanEvent):void
+		{
+			packageProxy.getChariotInfo(event.itemVO.id, function():void
+			{
+				var obj:Object={};
+				obj.type=FactoryEnum.WEIXIU_FACTORY;
+				sendNotification(FactoryMakeAndServiceComponentMediator.SHOW_NOTE,obj);
+			});
+		}
+		
+		protected function zhuangPeiHandler(event:ChaKanEvent):void
+		{
+			packageProxy.getChariotInfo(event.itemVO.id, function():void
+			{
+				sendNotification(FactoryChangeComponentMediator.SHOW_NOTE);
+			});
+		}		
+		
+		
+		
     }
 }

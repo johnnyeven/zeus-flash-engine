@@ -7,6 +7,8 @@ package mediator.mainView
     import enum.SenceTypeEnum;
     
     import events.buildingView.ZhuJiDiEvent;
+    import events.friendList.FriendListEvent;
+    import events.talk.TalkEvent;
     
     import flash.events.Event;
     
@@ -14,14 +16,16 @@ package mediator.mainView
     import mediator.MainMediator;
     import mediator.allView.AllViewComponentMediator;
     import mediator.allView.RongYuComponentMediator;
-    import mediator.shangCheng.ShangChengComponentMediator;
-    import mediator.battle.BattleMediator;
+    import mediator.battle.BattleFightMediator;
     import mediator.cangKu.CangkuPackageViewComponentMediator;
+    import mediator.email.EmailComponentMediator;
+    import mediator.friendList.EnemyListComponentMediator;
     import mediator.group.GroupComponentMediator;
     import mediator.group.NotJoinGroupComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.plantioid.PlantioidComponentMediator;
     import mediator.ranking.RankingComponentMediator;
+    import mediator.shangCheng.ShangChengComponentMediator;
     import mediator.systemView.SystemComponentMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
@@ -35,7 +39,6 @@ package mediator.mainView
     import view.mainView.MainViewComponent;
     
     import vo.GlobalData;
-
 
     /**
      *游戏主界面
@@ -85,6 +88,14 @@ package mediator.mainView
 			
 			comp.addEventListener(ZhuJiDiEvent.RANKING_EVENT,rankingHandler);
 			comp.addEventListener(ZhuJiDiEvent.GROUP_EVENT,groupHandler);
+			
+			comp.addEventListener(FriendListEvent.ENEMY_LIST_EVENT,enemyListHandler);
+			comp.addEventListener(ZhuJiDiEvent.EMAIL_EVENT,emailHAndler);
+			
+			//查看军官证
+			comp.addEventListener(TalkEvent.CHECK_ID_CARD_EVENT,checkIdCardHandler);
+			//私聊
+			comp.addEventListener(TalkEvent.PRIVATE_TALK_EVENT,privateTalkHandler);
         }
 		
         /**
@@ -143,8 +154,7 @@ package mediator.mainView
 		
 		protected function rankingHandler(event:Event):void
 		{
-//			sendNotification(RankingComponentMediator.SHOW_NOTE);
-			sendNotification(BattleMediator.SHOW_NOTE);
+			sendNotification(RankingComponentMediator.SHOW_NOTE);
 		}
 		
         public override function show():void
@@ -159,8 +169,6 @@ package mediator.mainView
 
         private function zhongLanHandler(event:ZhuJiDiEvent):void
         {
-			//TODO:zn 暂用
-//            allViewProxy.allView(id);
             sendNotification(AllViewComponentMediator.SHOW_NOTE);
         }
 
@@ -215,7 +223,27 @@ package mediator.mainView
 				
 			}
 			
-		}		
+		}
+		
+		private function enemyListHandler(event:FriendListEvent):void
+		{
+			sendNotification(EnemyListComponentMediator.SHOW_NOTE,userInforProxy.userInfoVO.player_id);
+		}
+		
+		private function emailHAndler(event:ZhuJiDiEvent):void
+		{
+			sendNotification(EmailComponentMediator.SHOW_NOTE);
+		}
+		
+		private function checkIdCardHandler(event:TalkEvent):void
+		{
+			sendNotification(ChatViewMediator.SHOW_CHECKID,event.talk);
+		}
+		
+		private function privateTalkHandler(event:TalkEvent):void
+		{
+			sendNotification(ChatViewMediator.SHOW_PRIVATE_TALK,event.talk);
+		}
 		
     }
 }

@@ -2,10 +2,9 @@ package mediator.plantioid
 {
     import events.plantioid.PlantioidEvent;
     
-    import flash.events.Event;
-    
     import mediator.BaseMediator;
     import mediator.allView.XingXingComponentMediator;
+    import mediator.battle.BattleEditMediator;
     import mediator.battleEnter.BattleEnterComponentMediator;
     import mediator.mainView.MainViewMediator;
     
@@ -14,7 +13,6 @@ package mediator.plantioid
     
     import proxy.plantioid.PlantioidProxy;
     
-    import view.plantioid.PlantSenceComponent;
     import view.plantioid.PlantioidComponent;
 
     /**
@@ -103,20 +101,26 @@ package mediator.plantioid
 
         protected function attackHandler(event:PlantioidEvent):void
         {
-			PlantioidComponent.MOUSE_ENABLED=false;
-			var plantioidProxy:PlantioidProxy=getProxy(PlantioidProxy);
-			plantioidProxy.setSelectedPlantioid(event.plantioidID);
-			sendNotification(BattleEnterComponentMediator.SHOW_NOTE);
+            PlantioidComponent.MOUSE_ENABLED = false;
+            var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
+            plantioidProxy.setSelectedPlantioid(event.plantioidID);
+            sendNotification(BattleEnterComponentMediator.SHOW_NOTE);
         }
 
         protected function forceAttackHandler(event:PlantioidEvent):void
         {
-            // TODO: zn 行星强制攻击
+            // TODO:ZN 行星强制攻击
         }
 
         protected function managerHandler(event:PlantioidEvent):void
         {
-            // TODO：zn 行星管理
+            var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
+            plantioidProxy.setSelectedPlantioid(event.plantioidID);
+            plantioidProxy.getPlantioidInfo(PlantioidProxy.selectedVO.id, function():void
+            {
+                sendNotification(BattleEditMediator.SHOW_NOTE);
+                sendNotification(DESTROY_NOTE);
+            });
         }
 
         protected function myPlantHandler(event:PlantioidEvent):void
@@ -130,8 +134,8 @@ package mediator.plantioid
             if (event.jumpPoint.x != plantProxy.currentX ||
                 event.jumpPoint.y != plantProxy.currentY)
             {
-				PlantioidComponent.MOUSE_ENABLED=false;
-				
+                PlantioidComponent.MOUSE_ENABLED = false;
+
                 plantProxy.getPlantioidListByXY(event.jumpPoint.x, event.jumpPoint.y, function():void
                 {
                     sendNotification(SWITCH_PLANT_SENCE_NOTE);

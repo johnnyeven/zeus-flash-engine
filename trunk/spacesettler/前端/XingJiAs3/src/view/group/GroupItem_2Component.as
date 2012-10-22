@@ -7,6 +7,8 @@ package view.group
 	import ui.components.Label;
 	import ui.core.Component;
 	
+	import vo.group.GroupMemberListVo;
+	
 	/**
 	 *查看团员 管理成员的ITEM  
 	 * @author Administrator
@@ -45,6 +47,7 @@ package view.group
 		public var vip:Sprite;
 
 		public var back:Sprite;		
+		public var currtentVo:GroupMemberListVo;
 		
         public function GroupItem_2Component()
         {

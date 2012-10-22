@@ -2,18 +2,23 @@ package view.shangCheng
 {
     import com.zn.utils.ClassUtil;
     
+    import enum.ResEnum;
+    
     import events.allView.AllViewEvent;
     import events.allView.FriendGiveEvent;
     import events.allView.ShopEvent;
     
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.events.MouseEvent;
+    import flash.text.TextField;
     
+    import proxy.friendList.FriendProxy;
     import proxy.shangCheng.ShopProxy;
-    import proxy.friend.FriendProxy;
     
     import ui.components.Button;
     import ui.components.Container;
+    import ui.components.LoaderImage;
     import ui.components.VScrollBar;
     import ui.core.Component;
     import ui.layouts.HTileLayout;
@@ -25,6 +30,7 @@ package view.shangCheng
     
     import vo.allView.ShopInfoVo;
     import vo.allView.ShopItemVo;
+    import vo.cangKu.ItemVO;
 
     public class ShangChengComponent extends Component
     {
@@ -91,7 +97,9 @@ package view.shangCheng
         private var shopProxy:ShopProxy;
 
         private var friendProxy:FriendProxy;
-
+		
+		public var tuzhiComp:TuZhiComponent;
+		
         public function ShangChengComponent()
         {
             super(ClassUtil.getObject("view.allView.ShangChengSkin"));
@@ -110,6 +118,7 @@ package view.shangCheng
             daoJuSprite = getSkin("daoju_sprite");
             shuiJingSprite = getSkin("shuijing_sprite");
 
+			
             addContainer();
             vsBar.viewport = container;
             vsBar.visible = false;
@@ -163,19 +172,46 @@ package view.shangCheng
 
             for (var i:int = 0; i < length; i++)
             {
-                if (array[i] is ShopInfoVo)
+				var shopinfovo:ItemVO = array[i];
+				
+				tuzhiComp = new TuZhiComponent();
+				tuzhiComp.moneyText.text = shopinfovo.dark_crystal.toString();
+				tuzhiComp.titleText.text = shopinfovo.name;
+				if(shopinfovo.recipe_id)
+				{
+					
+					tuzhiComp.wuPingImg.source=ResEnum.senceEquipment + shopinfovo.item_type + "_" + shopinfovo.category + ".png";//
+				}
+				else
+				{
+					tuzhiComp.wuPingImg.source= ResEnum.getShopItemURL + shopinfovo.vip_level + ".png";
+//					var imgW:Number=tuzhiComp.wuPingImg.sp.width;
+//					var imgH:Number=tuzhiComp.wuPingImg.sp.height;
+					tuzhiComp.wuPingImg.x += 10;
+					tuzhiComp.wuPingImg.y += 25;
+				}
+				
+				tuzhiComp.wuPingImg.toolTipData=shopinfovo.description;
+				tuzhiComp.dyData = shopinfovo;
+				addExchangeMouseEvent(tuzhiComp.exchangeBtn);
+				addGiveMouseEvent(tuzhiComp.giveBtn);
+				_arr.push(tuzhiComp);
+				container.add(tuzhiComp);
+                /*if (array[i] is ShopInfoVo)
                 {
                     var shopinfovo:ShopInfoVo = array[i];
 
                     var tuzhiComp:TuZhiComponent = new TuZhiComponent();
                     tuzhiComp.moneyText.text = shopinfovo.dark_crystal.toString();
                     tuzhiComp.titleText.text = shopinfovo.name;
+					tuzhiComp.wuPingImg.source= ResEnum.getShopItemURL + shopinfovo.vipLevel + ".png";;
+					tuzhiComp.wuPingImg.toolTipData=shopinfovo.description;
                     tuzhiComp.dyData = shopinfovo;
                     addExchangeMouseEvent(tuzhiComp.exchangeBtn);
                     addGiveMouseEvent(tuzhiComp.giveBtn);
                     _arr.push(tuzhiComp);
                     container.add(tuzhiComp);
-
+					
                 }
                 else
                 {
@@ -184,13 +220,14 @@ package view.shangCheng
                     var tuZhiComp:TuZhiComponent = new TuZhiComponent();
                     tuZhiComp.moneyText.text = shopitemvo.dark_crystal.toString();
                     tuZhiComp.titleText.text = shopitemvo.name;
+					tuzhiComp.wuPingImg.source="";
+					tuzhiComp.toolTipData=shopitemvo.description;
                     tuzhiComp.dyData = shopitemvo;
                     addExchangeMouseEvent(tuZhiComp.exchangeBtn);
                     addGiveMouseEvent(tuZhiComp.giveBtn);
                     _arr.push(tuZhiComp);
                     container.add(tuZhiComp);
-                }
-
+                }*/
             }
 
             container.layout.update();
@@ -199,7 +236,7 @@ package view.shangCheng
             container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
 
         }
-
+		
         protected function mouseOutHandler(event:MouseEvent):void
         {
             vsBar.alpahaTweenlite(0);

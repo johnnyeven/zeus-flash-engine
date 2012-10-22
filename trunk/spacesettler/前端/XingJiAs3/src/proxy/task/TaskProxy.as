@@ -15,7 +15,7 @@ package proxy.task
 	import other.ConnDebug;
 	
 	import proxy.BuildProxy;
-	import proxy.friend.FriendProxy;
+	import proxy.friendList.FriendProxy;
 	import proxy.login.LoginProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -73,7 +73,7 @@ package proxy.task
 			userInfoProxy.getUserInfoResult(data);
 			
 			var friendInfoProxy:FriendProxy=getProxy(FriendProxy);
-			friendInfoProxy.getFriendInfoResult(data);
+			friendInfoProxy.getFriendList(data.playerID,null);
 			
 			var builderProxy:BuildProxy=getProxy(BuildProxy);
 			builderProxy.getBuildInfoResult(data);

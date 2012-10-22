@@ -33,6 +33,7 @@ package mediator.ranking
 			this.popUpEffect=UP;
 			level=2;
 			comp.med=this;
+			this.height=600;
 			
 			rankProxy=getProxy(RankingProxy);
 			userProxy=getProxy(UserInfoProxy);

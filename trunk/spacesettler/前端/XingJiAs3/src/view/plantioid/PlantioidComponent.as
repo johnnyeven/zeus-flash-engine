@@ -60,11 +60,12 @@ package view.plantioid
         {
             super(ClassUtil.getObject("plantioid.PlantioidSkin"));
 
+			MOUSE_ENABLED=true;
             topInfoComp = createUI(TopInfoComponent, "topInfoComp");
 
             infoComp = createUI(InfoComponent, "infoComp");
             infoComp.visible = false;
-
+			
             bgSp = getSkin("bgSp");
             bgSp.mouseEnabled = true;
             bgSp.addEventListener(MouseEvent.CLICK, bgSp_clickHandler);
@@ -143,6 +144,7 @@ package view.plantioid
 					switchPlantSenceTweentime.insert(TweenLite.to(newPlantBitmap, time, { x: rect.x }));
 				}
             }
+			_currentPlantSenceComp.bgEffectComp.addEventListener(MouseEvent.CLICK,bgSp_clickHandler);
         }
 		
 		private function switchComplete(currentPlantBitmap:Bitmap,newPlantBitmap:Bitmap):void

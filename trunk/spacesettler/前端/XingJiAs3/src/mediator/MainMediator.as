@@ -3,6 +3,7 @@ package mediator
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
+	import mediator.battle.BattleEditSelectorViewComponentMediator;
 	import mediator.buildingView.SelectorViewComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -75,7 +76,7 @@ package mediator
 		protected function mainClickHandler(event:MouseEvent):void
 		{
 			sendNotification(SelectorViewComponentMediator.DESTROY_NOTE);			
-			
+			sendNotification(BattleEditSelectorViewComponentMediator.DESTROY_NOTE);			
 		}
 	}
 }

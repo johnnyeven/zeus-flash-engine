@@ -6,6 +6,7 @@ package proxy.shangCheng
     import enum.command.CommandEnum;
     
     import mediator.prompt.PromptMediator;
+    import mediator.prompt.PromptSureMediator;
     
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;
@@ -18,6 +19,7 @@ package proxy.shangCheng
     
     import vo.allView.ShopInfoVo;
     import vo.allView.ShopItemVo;
+    import vo.cangKu.ItemVO;
     import vo.userInfo.UserInfoVO;
 
     public class ShopProxy extends Proxy implements IProxy
@@ -42,7 +44,28 @@ package proxy.shangCheng
             for (var index:String in contentProxy.contentData.items)
             {
                 var objItem:Object = contentProxy.contentData.items[index];
-                if (objItem.type)
+				
+				var shopItemVO:ItemVO=new ItemVO();
+				shopItemVO.dark_crystal = objItem.cost.dark_crystal;
+				shopItemVO.description=objItem.description;
+				shopItemVO.name=objItem.name;
+				shopItemVO
+				shopItemVO.broken_crystal_inc=objItem.property.broken_crystal_inc;
+				shopItemVO.crystal_inc=objItem.property.crystal_inc;
+				shopItemVO.discount=objItem.property.discount;
+				shopItemVO.time=objItem.property.time;
+				shopItemVO.tritium_inc=objItem.property.tritium_inc;
+				shopItemVO.vip_level=objItem.property.vip_level;
+				if(objItem.recipe_id)
+				{
+					shopItemVO.recipe_id=objItem.recipe_id;
+					shopItemVO.item_type=objItem.type;
+					shopItemVO.category=objItem.property.category;
+				}
+				shopItemVO.type=objItem.type;
+				shopItemVO.index=index;
+				list.push(shopItemVO);
+                /*if (objItem.type)//道具=="item"
                 {
                     var shopInfoVo:ShopInfoVo = new ShopInfoVo();
                     shopInfoVo.name = objItem.name;
@@ -50,12 +73,13 @@ package proxy.shangCheng
                     shopInfoVo.dark_crystal = objItem.cost.dark_crystal;
                     shopInfoVo.type = objItem.type;
                     shopInfoVo.key = objItem.key;
-                    shopInfoVo.recipe_id = objItem.property.recipe_id;
+					shopInfoVo.recipe_id = objItem.property.recipe_id;
 					shopInfoVo.index=index;
+					shopInfoVo.vipLevel=objItem.property.vip_level;
 
                     list.push(shopInfoVo);
                 }
-                else
+                else//图纸
                 {
                     var shopItemVo:ShopItemVo = new ShopItemVo();
                     shopItemVo.name = objItem.name;
@@ -63,6 +87,7 @@ package proxy.shangCheng
                     shopItemVo.dark_crystal = objItem.cost.dark_crystal;
                     shopItemVo.key = objItem.key;
                     shopItemVo.time = objItem.time;
+					shopItemVo.recipe_id = objItem.property.recipe_id;
                     shopItemVo.broken_crystal_inc = objItem.property.broken_crystal_inc;
                     shopItemVo.crystal_inc = objItem.property.crystal_inc;
                     shopItemVo.discount = objItem.property.discount;
@@ -70,7 +95,7 @@ package proxy.shangCheng
 					shopItemVo.index=index;
 					
                     list.push(shopItemVo);
-                }
+                }*/
             }
 
             shopArr = list;
@@ -128,11 +153,11 @@ package proxy.shangCheng
             Protocol.deleteProtocolFunction(CommandEnum.buyResources, buyResourceRrsult);
             if (data.hasOwnProperty("errors"))
             {
-                sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
+                sendNotification(PromptSureMediator.SHOW_NOTE, MultilanguageManager.getString(data.errors));
                 return;
             }
 			
-			sendNotification(PromptMediator.SHOW_INFO_NOTE,MultilanguageManager.getString("buySuccess"));
+			showBuySuccessView();
 			
             userInfoProxy = getProxy(UserInfoProxy);
             userInfoProxy.userInfoVO.broken_crysta = data.base.resources.broken_crystal;
@@ -152,7 +177,7 @@ package proxy.shangCheng
                 return;
             }
 			
-			sendNotification(PromptMediator.SHOW_INFO_NOTE,MultilanguageManager.getString("buySuccess"));
+			showBuySuccessView();
 			
             userInfoProxy = getProxy(UserInfoProxy);
             userInfoProxy.updateInfo();
@@ -167,12 +192,20 @@ package proxy.shangCheng
                 return;
             }
 			
-			sendNotification(PromptMediator.SHOW_INFO_NOTE,MultilanguageManager.getString("buySuccess"));
+			showBuySuccessView();
 			
             userInfoProxy = getProxy(UserInfoProxy);
             userInfoProxy.userInfoVO.prestige = data.prestige;
             userInfoProxy.userInfoVO.dark_crystal = data.dark_crystal;
 
         }
+		
+		private function showBuySuccessView():void
+		{
+			var obj:Object={};
+			obj.infoLable=MultilanguageManager.getString("duiHuan");
+			obj.showLable=MultilanguageManager.getString("buySuccess");
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+		}
     }
 }

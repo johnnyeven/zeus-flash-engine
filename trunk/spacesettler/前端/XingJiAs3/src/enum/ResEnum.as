@@ -18,7 +18,16 @@ package enum
 		{
 			return parentURL+"senceEquipment/";
 		}
+		
+		public static function get senceEquipmentSmall():String
+		{
+			return parentURL+"senceEquipmentSmall/";
+		}
 
+		public static function get medalsImgURL():String
+		{
+			return MultilanguageManager.language+ "/images/medalsIcon/hallofHonor_image_kind";
+		}
 		
 		public static function get crystalIconURL():String
 		{
@@ -43,6 +52,11 @@ package enum
 		public static function get getItemURL():String
 		{
 			return senceEquipment+"item.png";
+		}
+		
+		public static function get getShopItemURL():String
+		{
+			return parentURL+"itemIcon/vip";
 		}
 	}
 }

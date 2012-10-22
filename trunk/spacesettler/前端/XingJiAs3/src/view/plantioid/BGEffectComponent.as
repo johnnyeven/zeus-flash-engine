@@ -6,6 +6,7 @@ package view.plantioid
     
     import flash.display.DisplayObjectContainer;
     import flash.display.Sprite;
+    import flash.events.MouseEvent;
     import flash.geom.Rectangle;
     
     import mx.effects.Tween;
@@ -67,5 +68,6 @@ package view.plantioid
             var endX:Number = 0;
            _tweenMoveToLeft=TweenLite.to(sp, _time, { x: endX, ease: Linear.easeNone, onComplete: moveToLeftOut, onCompleteParams: [ sp ]});
         }
+		
     }
 }

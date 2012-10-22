@@ -2,6 +2,8 @@ package mediator.cangKu
 {
 	import com.zn.utils.ClassUtil;
 	
+	import enum.factory.FactoryEnum;
+	
 	import events.cangKu.ChaKanEvent;
 	
 	import mediator.BaseMediator;
@@ -10,6 +12,9 @@ package mediator.cangKu
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import view.cangKu.ChaKanZhanCheViewComponent;
+	
+	import vo.cangKu.BaseItemVO;
+	import vo.cangKu.ZhanCheInfoVO;
 
 	/**
 	 *模板 
@@ -28,7 +33,7 @@ package mediator.cangKu
 		{
 			super(NAME, new ChaKanZhanCheViewComponent(ClassUtil.getObject("zhanCheChaKan_View")));
 			comp.med=this;
-			level = 2;
+			level = 3;
 			comp.addEventListener(ChaKanEvent.CLOSEVIEW_EVENT,closeHandler);
 		}
 
@@ -70,6 +75,12 @@ package mediator.cangKu
 					destroy();
 					break;
 				}
+				/*case SHOW_NOTE:
+				{
+					upData();
+					show();
+					break;
+				}*/
 			}
 		}
 
@@ -87,5 +98,6 @@ package mediator.cangKu
 		{
 			sendNotification(DESTROY_NOTE);
 		}
+		
 	}
 }

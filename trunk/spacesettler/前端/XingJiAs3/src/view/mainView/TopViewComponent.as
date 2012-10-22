@@ -1,7 +1,10 @@
 package view.mainView
 {
+	import events.friendList.FriendListEvent;
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	
 	import mx.binding.utils.BindingUtils;
@@ -95,6 +98,8 @@ package view.mainView
 			cwList.push(BindingUtils.bindSetter(crystalChange,_userInfoProxy,["userInfoVO","crystal"]));
 			cwList.push(BindingUtils.bindSetter(tritiumChange,_userInfoProxy,["userInfoVO","tritium"]));
 			cwList.push(BindingUtils.bindSetter(darkChange,_userInfoProxy,["userInfoVO","broken_crysta"]));
+			
+			enemy.addEventListener(MouseEvent.CLICK,enemy_clickHandler);
 		}
 		
 		private function darkChange(value:*):void
@@ -118,6 +123,11 @@ package view.mainView
 				tritiumGasText.color=0xFF0000;
 			else
 				tritiumGasText.color=0xFFFFFF;
+		}
+		
+		private function enemy_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new FriendListEvent(FriendListEvent.ENEMY_LIST_EVENT,true,true));
 		}
 	}
 }

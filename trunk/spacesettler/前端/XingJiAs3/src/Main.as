@@ -33,6 +33,10 @@ package
     {
         public static var debug:Boolean = true;
 
+		public static const HEIGHT:Number=600;
+		
+		public static const WIDTH:Number=1067;
+		
         private var _facade:ApplicationFacade;
 
         public function Main()

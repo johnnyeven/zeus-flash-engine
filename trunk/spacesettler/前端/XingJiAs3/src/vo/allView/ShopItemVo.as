@@ -50,6 +50,11 @@ package vo.allView
 		 *氚气增产量
 		 */		
 		public var tritium_inc:Number;
+		/**
+		 *道具id  2:21:1:6
+		 */		
+		public var recipe_id:String;
+		
 		public var index:String;
 		
 		

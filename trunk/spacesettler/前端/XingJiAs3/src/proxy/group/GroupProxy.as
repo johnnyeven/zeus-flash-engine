@@ -47,10 +47,13 @@ package proxy.group
 		 */		
 		[Bindable]
 		public var auditArr:Array=[]
+			
+		private var userProxy:UserInfoProxy
 		public function GroupProxy( data:Object=null)
 		{
 			super(NAME, data);
 			groupInfoVo=new GroupListVo();
+			userProxy=getProxy(UserInfoProxy);
 		}
 		
 		/**
@@ -132,6 +135,35 @@ package proxy.group
 		}
 			
 		/**
+		 *军团管理
+		 * 参数：玩家id 军团Id   可选verification是否需要审核验证0否 1 是  forbid_getting_warship是否禁止领舰队  0允许 1 禁止 desc公告
+		 */		
+		public function legion_manage(verification:int,forbid_getting_warship:int,desc:String=null,callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.legion_manage, refreshGroupReputation))
+				Protocol.registerProtocol(CommandEnum.legion_manage, refreshGroupReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id,
+				verification:verification,forbid_getting_warship:forbid_getting_warship,desc:desc};
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.legion_manage, obj);
+		}
+		
+		/**
+		 *军团成员管理
+		 * 参数：玩家id 军团Id 0否1是  member_id成员ID  kick_member是否提出军团  member_leve设置成员职务1=军团长（表示转让军团）2=副团长3=执政官4=高级指挥官5=指挥官6=普通成员
+		 * member_warship_capacity：成员可指挥战舰数
+		 */		
+		public function legion_member_manage(member_level:int,member_warship_capacity:int,member_id:String,kick_member:int=0,callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.legion_member_manage, groupMemberListReputation))
+				Protocol.registerProtocol(CommandEnum.legion_member_manage, groupMemberListReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id,
+				member_id:member_id,kick_member:kick_member,member_level:member_level,member_warship_capacity:member_warship_capacity};
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.legion_member_manage, obj);
+		}
+			
+		/**
 		 *申请加入军团
 		 * 参数：玩家id 军团ID
 		 */		
@@ -143,20 +175,7 @@ package proxy.group
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.applyjoinGroup, obj);
 		}
-			
-		/**
-		 *解散军团
-		 * 参数 军团ID   和查询玩家军团信息共用一个数据处理
-		 */		
-		public function dismissGroup(legion_id:String,callBcakFun:Function=null):void
-		{		
-			if(!Protocol.hasProtocolFunction(CommandEnum.dismissGroup, dissMissAndQuitGroupReputation))
-				Protocol.registerProtocol(CommandEnum.dismissGroup, dissMissAndQuitGroupReputation);
-			var obj:Object = {legion_id:legion_id};
-			callBcakFunction=callBcakFun;
-			ConnDebug.send(CommandEnum.dismissGroup, obj);
-		}
-			
+		
 		/**
 		 *退出军团
 		 * 参数 军团ID 玩家ID  和查询玩家军团信息共用一个数据处理
@@ -181,6 +200,32 @@ package proxy.group
 			var obj:Object = {keyword:keyword};
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.searchGroup, obj);
+		}
+			
+		/**
+		 *建造战舰
+		 * 参数 数量
+		 */		
+		public function produce_warship(count:int,callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.produce_warship, refreshGroupReputation))
+				Protocol.registerProtocol(CommandEnum.produce_warship, refreshGroupReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id,count:count};
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.produce_warship, obj);
+		}
+		
+		/**
+		 *建造战舰完成
+		 * 参数 无
+		 */		
+		public function update_produce_warship(callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.update_produce_warship, refreshGroupReputation))
+				Protocol.registerProtocol(CommandEnum.update_produce_warship, refreshGroupReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id};
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.update_produce_warship, obj);
 		}
 			
 		//*****************************************************************处理数据
@@ -208,6 +253,7 @@ package proxy.group
 		private function groupMemberListReputation(data:*):void
 		{
 			Protocol.deleteProtocolFunction(CommandEnum.groupMemberList, groupMemberListReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.legion_member_manage, groupMemberListReputation);
 			if (data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
@@ -246,6 +292,9 @@ package proxy.group
 		{
 			Protocol.deleteProtocolFunction(CommandEnum.refreshGroup, refreshGroupReputation);
 			Protocol.deleteProtocolFunction(CommandEnum.createGroup, refreshGroupReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.legion_manage, refreshGroupReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.update_produce_warship, refreshGroupReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.produce_warship, refreshGroupReputation);
 			
 			if (data.hasOwnProperty("errors"))
 			{
@@ -272,7 +321,18 @@ package proxy.group
 			groupInfoVo.player_id=data.legion.player_id;
 			groupInfoVo.level=data.legion.level;
 			groupInfoVo.dark_crystal=data.legion.dark_crystal;
+			groupInfoVo.stadonate_dark_matter=data.legion.stadonate_dark_matter;
 			
+			if(data.legion.event)
+			{
+				groupInfoVo.eventId=data.legion.event.id;
+				groupInfoVo.start_time=data.legion.event.start_time;
+				groupInfoVo.finish_time=data.legion.event.finish_time;
+				groupInfoVo.currenttime=data.legion.event.current_time;
+				groupInfoVo.count=data.legion.event.count;
+				groupInfoVo.initTime();
+			}
+				
 			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userProxy.userInfoVO.legion_id=data.legion.id;
 			
@@ -359,7 +419,6 @@ package proxy.group
 		//解散和退出军团 数据处理
 		private function dissMissAndQuitGroupReputation(data:*):void
 		{
-			Protocol.deleteProtocolFunction(CommandEnum.dismissGroup, dissMissAndQuitGroupReputation);
 			Protocol.deleteProtocolFunction(CommandEnum.quitGroup, dissMissAndQuitGroupReputation);
 			
 			if (data.hasOwnProperty("errors"))

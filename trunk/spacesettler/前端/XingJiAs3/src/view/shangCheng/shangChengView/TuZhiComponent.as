@@ -7,6 +7,7 @@ package view.shangCheng.shangChengView
 	
 	import ui.components.Button;
 	import ui.components.Label;
+	import ui.components.LoaderImage;
 	import ui.core.Component;
 	
 	public class TuZhiComponent extends Component
@@ -30,6 +31,9 @@ package view.shangCheng.shangChengView
 		 * 赠送按钮
 		 */		
 		public var giveBtn:Button;
+		
+		public var wuPingImg:LoaderImage;
+		
 		public function TuZhiComponent()
 		{
 			super(ClassUtil.getObject("view.allView.TuZhiSkin"));
@@ -39,6 +43,8 @@ package view.shangCheng.shangChengView
 			
 			moneyText=createUI(Label,"money_tf");
 			titleText=createUI(Label,"title_tf");
+			
+			wuPingImg=createUI(LoaderImage,"wuPing_image");
 			
 			sortChildIndex();
 		}

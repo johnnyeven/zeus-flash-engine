@@ -3,6 +3,7 @@ package view.cangKu
     import com.greensock.TweenLite;
     import com.zn.utils.ClassUtil;
     
+    import enum.factory.FactoryEnum;
     import enum.item.ItemEnum;
     
     import events.buildingView.AddViewEvent;
@@ -119,10 +120,10 @@ package view.cangKu
 
             container = new Container(null);
             container.contentWidth = 325;
-            container.contentHeight = 325;
+            container.contentHeight = 335;
             container.layout = new HTileLayout(container);
             container.x = 12.5;
-            container.y = 137.5;
+            container.y = 147.5;
             addChild(container);
 
             container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
@@ -205,7 +206,7 @@ package view.cangKu
             DisposeUtil.dispose(mcUp);
             DisposeUtil.dispose(mcDown);
             DisposeUtil.dispose(menuLine);
-
+			
             if (hasLegion)
             {
                 if (selectedItemVO.item_type == ItemEnum.Chariot) //Chariot
@@ -453,22 +454,19 @@ package view.cangKu
         //添加装配界面
         protected function zhuangPeiBtn_clickHandler(event:MouseEvent):void
         {
-            // TODO Auto-generated method stub
-
-        }
-
+            dispatchEvent(new ChaKanEvent(ChaKanEvent.ZHUANGPEI_EVENT,selectedItemVO));
+			
+		}
         //添加强化界面
         protected function qiangHuaBtn_clickHandler(event:MouseEvent):void
         {
-            // TODO Auto-generated method stub
-
+			dispatchEvent(new ChaKanEvent(ChaKanEvent.QIANGHUA_EVENT,selectedItemVO));
         }
 
         //添加维修界面
         protected function weiXiuBtn_clickHandler(event:MouseEvent):void
         {
-            // TODO Auto-generated method stub
-
+			dispatchEvent(new ChaKanEvent(ChaKanEvent.WEIXIU_EVENT,selectedItemVO));
         }
     }
 }

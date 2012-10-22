@@ -1,10 +1,10 @@
 package vo.cangKu
 {
     import com.zn.utils.StringUtil;
-
+    
     import enum.ResEnum;
     import enum.item.ItemEnum;
-
+    
     import ui.vo.ValueObject;
 
     [Bindable]
@@ -16,6 +16,8 @@ package vo.cangKu
     public class BaseItemVO extends ValueObject
     {
         public static const FIELD_ID:String = "id";
+		
+		public static const MONEY:int=1;
 
         /**
          *ID
@@ -46,6 +48,13 @@ package vo.cangKu
          * 型号
          */
         public var type:int;
+		
+		/**
+		 * 道具介绍
+		 */
+		public var description:String;
+		
+		
 
         private var _iconURL:String = "";
 

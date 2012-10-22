@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-	<version>client_1.1.3.20121008_beta</version>
-	<languageResouce>1</languageResouce>
-	<indexLoader>1</indexLoader>
-	<Main>1</Main>
-	<baseUI>1</baseUI>
-	<res>1</res>
-	<loaderConfig>1</loaderConfig>
-	<font>1</font>
+    <version>client_1.1.4.20121019_beta</version>
+    <languageResouce>1</languageResouce>
+    <indexLoader>1</indexLoader>
+    <Main>1</Main>
+    <baseUI>1</baseUI>
+    <res>1</res>
+    <loaderConfig>1</loaderConfig>
+    <font>1</font>
 </root>

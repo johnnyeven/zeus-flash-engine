@@ -27,7 +27,7 @@ package mediator.ranking
 			this.popUpEffect=UP;
 			level=2;
 			comp.med=this;
-			
+			this.height=600;
 			comp.addEventListener(RankingEvent.CLOSE,closeHandler);
 		}
 		

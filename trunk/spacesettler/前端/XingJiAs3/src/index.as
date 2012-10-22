@@ -42,8 +42,8 @@ package
 
         public function index()
         {
-            MultilanguageManager.language = Capabilities.language;
-//			MultilanguageManager.language="en";
+//            MultilanguageManager.language = Capabilities.language;
+			MultilanguageManager.language="zh_CN";
 
             _tf = new TextField();
             _tf.width = 300;

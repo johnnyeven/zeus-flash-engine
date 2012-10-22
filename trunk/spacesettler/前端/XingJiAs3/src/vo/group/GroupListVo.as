@@ -1,5 +1,7 @@
 package vo.group
 {
+	import com.zn.utils.DateFormatter;
+	
 	import ui.vo.ValueObject;
 	
 	/**
@@ -61,7 +63,7 @@ package vo.group
 		public var warship:int;
 		
 		/**
-		 *当前拥有的战舰数
+		 *玩家当前拥有的战舰数
 		 */		
 		public var current_warship:int;
 		
@@ -98,9 +100,37 @@ package vo.group
 		/**
 		 *职务等级 
 		 */		
-		public var level:int;
+		public var level:int;		
+		
+		/**
+		 *玩家捐献的暗物质数
+		 */		
+		public var stadonate_dark_matter:int;
+		
+		/**
+		 *EVENTID
+		 */		
+		public var eventId:String=null ;
+		/**
+		 *开始时间
+		 */		
+		public var start_time:int;
+		/**
+		 *结束时间
+		 */		
+		public var finish_time:int;
+		/**
+		 *当前时间
+		 */		
+		public var currenttime:int;
+		/**
+		 *制造数量
+		 */		
+		public var count:int;
+		
 		
 		private var _job:String;
+		public var endTime:int=0;
 				
 		public function GroupListVo()
 		{
@@ -139,7 +169,20 @@ package vo.group
 		public function set job(value:String):void
 		{
 			_job = value;
+		}		
+		
+		/**
+		 *剩余时间 
+		 * @return 
+		 * 
+		 */		
+		public function get remainTime():Number
+		{
+			return Math.max(0,endTime-DateFormatter.currentTime);
 		}
-
+		public function initTime():void
+		{
+			endTime= DateFormatter.currentTime + (finish_time - currenttime) * 1000;
+		}
 	}
 }

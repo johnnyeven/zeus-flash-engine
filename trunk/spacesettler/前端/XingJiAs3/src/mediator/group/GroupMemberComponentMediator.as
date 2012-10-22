@@ -39,7 +39,6 @@ package mediator.group
 			level=2;
 			
 			comp.addEventListener(GroupShowAndCloseEvent.CLOSE,doCloseHandler);
-			comp.addEventListener(GroupEvent.DISMISS_GROUP,dissMissGroup);
 			comp.addEventListener(GroupEvent.QUITE_GROUP,quiteGroup);
 		}
 		
@@ -80,25 +79,7 @@ package mediator.group
 		protected function get comp():GroupMemberComponent
 		{
 			return viewComponent as GroupMemberComponent;
-		}
-		
-		protected function dissMissGroup(event:GroupEvent):void
-		{
-			var obj:Object={};
-			obj.infoLable=MultilanguageManager.getString("jiesan");
-			obj.showLable=MultilanguageManager.getString("jiesanjuntuan");
-			obj.okCallBack=function():void
-			{
-				groupProxy.dismissGroup(event.id,function():void
-				{
-					var obj1:Object={}
-					obj1.showLable=MultilanguageManager.getString("jiesanchenggong");
-					sendNotification(PromptCloseMediator.SHOW_NOTE,obj1);
-					sendNotification(GroupComponentMediator.DESTROY_NOTE);
-				});
-			}
-			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
-		}
+		}		
 		
 		protected function quiteGroup(event:GroupEvent):void
 		{

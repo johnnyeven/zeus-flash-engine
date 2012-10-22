@@ -1,0 +1,57 @@
+package events.email
+{
+	import flash.events.Event;
+	
+	/**
+	 * 邮件
+	 * @author lw
+	 * 
+	 */	
+	public class EmailEvent extends Event
+	{
+		public static const RECEIVE_EMAIL_EVENT:String = "receiveEmailEvent";
+		public static const SEND_EMAIL_EVENT:String = "sendEmailEvent";
+		public static const DELETE_EMAIL_EVENT:String = "deleteEmailEvent";
+		public static const DELETE_SUCCESS_EVENT:String = "deleteSuccessEvent";
+		public static const CLOSE_EVENT:String = "closeEvent";
+		
+		public static const CLOSE_SEND_EMAIL_EVENT:String = "closeSendEmailEvent";
+		public static const SEND_NEW_EMAIL_EVENT:String = "sendNewEmailEvent";
+		
+		public static const DELETE_ONE_EMAIL_EVENT:String = "deleteOneEmailEvent";
+		public static const DELETE_ALL_READ_EMAIL_EVENT:String = "deleteAllReadEmailEvent";
+		
+		public static const SHOW_EMAIL_INFOR_EVENT:String = "showEmailInforEvent";
+		/**
+		 * 收取资源或附件
+		 */		
+		public static const RECEIVE_SOURCE_EVENT:String = "receiveSourceEvent";
+		/**
+		 * 从查看界面删除邮件
+		 */		
+		public static const DELETE_EMAIL_BY_VIEW_COMPONENT_EVENT:String = "deleteEmailByViewComponentEvent";
+		/**
+		 * 从查看界面回复邮件
+		 */		
+		public static const CALL_BACK_EMAIL_EVENT:String = "callBackEmailEvent";
+		
+		private var _obj:Object;
+		
+		public function EmailEvent(type:String, obj:Object = null,bubbles:Boolean=false, cancelable:Boolean=false)
+		{
+			super(type, bubbles, cancelable);
+			_obj = obj;
+		}
+
+		public function get obj():Object
+		{
+			return _obj;
+		}
+
+		public function set obj(value:Object):void
+		{
+			_obj = value;
+		}
+
+	}
+}

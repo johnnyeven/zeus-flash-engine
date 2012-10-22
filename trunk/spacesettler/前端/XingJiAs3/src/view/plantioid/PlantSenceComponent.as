@@ -1,7 +1,7 @@
 package view.plantioid
 {
     import events.plantioid.PlantioidEvent;
-
+    
     import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
     import flash.display.Sprite;
@@ -10,7 +10,7 @@ package view.plantioid
     import flash.events.MouseEvent;
     import flash.geom.Point;
     import flash.geom.Rectangle;
-
+    
     import ui.core.Component;
     import ui.managers.SystemManager;
 
@@ -68,8 +68,9 @@ package view.plantioid
             rangeRect = new Rectangle(100, 100, w * 2 - 100, h * 2 - 100);
 
             SystemManager.rootStage.addEventListener(MouseEvent.MOUSE_MOVE, stageMouseMoveHandler);
+			
         }
-
+		
         public override function dispose():void
         {
             super.dispose();

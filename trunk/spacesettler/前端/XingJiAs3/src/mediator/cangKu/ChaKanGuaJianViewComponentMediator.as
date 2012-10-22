@@ -2,6 +2,8 @@ package mediator.cangKu
 {
 	import com.zn.utils.ClassUtil;
 	
+	import enum.factory.FactoryEnum;
+	
 	import events.cangKu.ChaKanEvent;
 	
 	import flash.events.Event;
@@ -12,6 +14,9 @@ package mediator.cangKu
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import view.cangKu.ChaKanGuaJianViewComponent;
+	
+	import vo.cangKu.BaseItemVO;
+	import vo.cangKu.GuaJianInfoVO;
 
 	/**
 	 *模板 
@@ -30,7 +35,7 @@ package mediator.cangKu
 		{
 			super(NAME, new ChaKanGuaJianViewComponent(ClassUtil.getObject("guaJianChaKan_View")));
 			comp.med=this;
-			level = 2;
+			level = 3;
 			comp.addEventListener(ChaKanEvent.CLOSEVIEW_EVENT,closeHandler);
 		}
 		
@@ -53,11 +58,7 @@ package mediator.cangKu
 		{
 			switch (note.getName())
 			{
-				/*case SHOW_NOTE:
-				{
-					show();
-					break;
-				}*/
+				
 				case DESTROY_NOTE:
 				{
 					//销毁对象
@@ -81,6 +82,6 @@ package mediator.cangKu
 		{
 			sendNotification(DESTROY_NOTE);
 		}
-
+		
 	}
 }

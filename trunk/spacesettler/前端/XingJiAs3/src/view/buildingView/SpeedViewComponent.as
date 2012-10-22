@@ -40,7 +40,6 @@ package view.buildingView
 		
 		protected function okButton_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			
 		}
 	}

@@ -3,13 +3,12 @@ package vo.cangKu
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.StringUtil;
 
-
+	/**
+	 *战车
+	 * @author zn
+	 *
+	 */
     [Bindable]
-    /**
-     *
-     * @author zn
-     *
-     */
     public class ZhanCheInfoVO extends BaseItemVO
     {
         /**
@@ -60,7 +59,7 @@ package vo.cangKu
         /**
          * 消耗氚氢
          */
-        public var tritium:int;
+        public var tritium:int;        
 
         /**
          * 消耗暗物质
@@ -133,79 +132,79 @@ package vo.cangKu
         public var small_slot:int;
 
         /**
-         * 小型挂件槽数量
+         * 时代等级
          */
         public var age_level:int;
 
         /**
-         *
+         *最大攻击速度
          */
         public var max_attack_speed:int;
 
         /**
-         *
+         *最大搜索范围
          */
         public var max_search_area:int;
 
         /**
-         *
+         *最大攻击范围
          */
         public var max_attack_area:int;
 
         /**
-         *
+         *最大耐力
          */
         public var max_endurance:int;
 
         /**
-         *
+         *最大重量
          */
         public var max_weight:int;
 
         /**
-         *
+         *最大能量
          */
         public var max_energy:int;
 
         /**
-         *
+         *最大速度
          */
         public var max_speed:int;
 
         /**
-         *
+         *攻击速度百分比
          */
-        public var attack_speed_inc:Number;
+        public var attack_speed_inc:Number=attack_speed/max_attack_speed;
 
         /**
-         *
+         *搜索范围百分比
          */
         public var search_area_inc:Number;
 
         /**
-         *
+         *攻击范围百分比
          */
-        public var attack_area_inc:Number;
+        public var attack_area_inc:Number=attack_area/max_attack_area;
 
         /**
-         *
+         *耐力百分比
          */
-        public var endurance_inc:Number;
+        public var endurance_inc:Number=endurance/max_endurance;
 
         /**
-         *
+         *重量百分比
          */
         public var weight_inc:Number;
 
         /**
-         *
+         *能量百分比
          */
-        public var energy_inc:Number;
+        public var energy_inc:Number=energy/max_energy;
 
         /**
-         *
+         *速度百分比
          */
-        public var speed_inc:Number;
+        public var speed_inc:Number=speed/max_speed;
 
         /**
          *战车折合暗物质数
@@ -263,7 +262,7 @@ package vo.cangKu
         public var total_speed:int;
 		
 		/**
-		 *当前耐久 
+		 *剩余耐久 
 		 */		
         public var current_endurance:int;
 		
@@ -301,6 +300,10 @@ package vo.cangKu
 		 */		
 		public var propertyDes:String;
 		
+		private var _type:String;
+		private var _naiLi:String;
+		private var _nengLiang:String;
+				
 		public function createPropertyDes():void
 		{
 			var str:String="<p>";
@@ -321,11 +324,56 @@ package vo.cangKu
 				str+=StringUtil.formatString("<s>{0} {1}</s><n/>",MultilanguageManager.getString("guanJianDes_endurance"),endurance);
 			
 			if(speed!=0)
-				str+=StringUtil.formatString("<s>{0} {1}</s>",MultilanguageManager.getString("guanJianDes_speed"),speed);
+				str+=StringUtil.formatString("<s>{0} {1}</s><n/>",MultilanguageManager.getString("guanJianDes_speed"),speed);
+			
+			if(gongJiType!=null)
+				str+=StringUtil.formatString("<s>{0} {1}</s>",MultilanguageManager.getString("zhanJheDes_slot_type"),gongJiType);
 			
 			str+="</p>";
 			
 			propertyDes=str;
+		}
+
+		/**
+		 * 攻击类型
+		 */
+		public function get gongJiType():String
+		{
+			if(category==1||category==2||category==3)
+				_type="实弹";
+			if(category==4||category==5||category==6)
+				_type="激光";
+			if(category==7||category==8||category==9)
+				_type="电磁";
+			if(category==10||category==11||category==12)
+				_type="暗能";
+			
+			return _type;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gongJiType(value:String):void
+		{
+			_type = value;
+		}
+		
+		/**
+		 *耐力比 耐久 
+		 * @return 
+		 * 
+		 */		
+		public function get naiLi():String
+		{
+			_naiLi=current_endurance.toString()+"/"+endurance.toString();
+			
+			return _naiLi;
+		}
+
+		public function set naiLi(value:String):void
+		{
+			_naiLi = value;
 		}
     }
 }
