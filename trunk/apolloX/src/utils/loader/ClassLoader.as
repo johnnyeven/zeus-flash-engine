@@ -14,6 +14,8 @@ package utils.loader
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	
+	import utils.events.LoaderEvent;
 
 	public class ClassLoader extends ItemLoader
 	{
@@ -57,6 +59,7 @@ package utils.loader
 		{
 			super.onLoadComplete(evt);
 			_contentLoaded = _loader.content;
+			dispatchEvent(new LoaderEvent(LoaderEvent.COMPLETE, this));
 		}
 		
 		//加载

@@ -11,6 +11,7 @@ package utils.loader
 	import utils.RequestUtils;
 	import utils.StringUtils;
 	import utils.enum.LoaderStatus;
+	import utils.events.LoaderEvent;
 	
 	public class ItemLoader extends EventDispatcher
 	{
@@ -63,6 +64,7 @@ package utils.loader
 			LoaderPool.instance.dispose(url);
 			_contentLoaded = null;
 			_urlRequest = null;
+			dispatchEvent(new LoaderEvent(LoaderEvent.DISPOSE, this));
 		}
 		
 		public function load(): void
@@ -79,11 +81,13 @@ package utils.loader
 		{
 			_bytesLoaded = evt.bytesLoaded;
 			_bytesTotal = evt.bytesTotal;
+			dispatchEvent(new LoaderEvent(LoaderEvent.PROGRESS, this, _bytesLoaded, _bytesTotal));
 		}
 		
 		protected function onLoadIOError(evt: IOErrorEvent): void
 		{
 			loaderStatus = LoaderStatus.ERROR;
+			dispatchEvent(new LoaderEvent(LoaderEvent.IO_ERROR, this));
 		}
 
 		public function get bytesLoaded():uint
