@@ -53,6 +53,12 @@ package utils.loader
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
 		}
 		
+		override protected function onLoadComplete(evt: Event): void
+		{
+			super.onLoadComplete(evt);
+			_contentLoaded = _loader.content;
+		}
+		
 		//加载
 		override public function load (): void
 		{

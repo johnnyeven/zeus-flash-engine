@@ -43,6 +43,7 @@ package utils.loader
 			{
 				
 			}
+			LoaderPool.instance.addLoader(this);
 			init();
 		}
 		
@@ -58,6 +59,8 @@ package utils.loader
 				return;
 			}
 			isDispose = true;
+			LoaderPool.instance.dispose(name);
+			LoaderPool.instance.dispose(url);
 			_contentLoaded = null;
 			_urlRequest = null;
 		}

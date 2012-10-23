@@ -45,15 +45,8 @@ package utils.loader
 				}
 				_errorCallbackIndex[url].push(errorCallback);
 			}
-			var _loader: Loader = new Loader();
-			var _urlRequest: URLRequest = new URLRequest(url);
-			
-			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadCompelete);
-			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onLoadIOError);
-			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onLoadProgress);
-			
-			var _loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			_loader.load(_urlRequest, _loaderContext);
+			var _loader: ItemLoader = LoaderPool.instance.initLoader(url);
+			_loader.load();
 		}
 		
 		private static function resetIndex(key: String): void
