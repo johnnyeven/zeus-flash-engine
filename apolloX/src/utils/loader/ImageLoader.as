@@ -7,6 +7,8 @@ package utils.loader
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	
+	import utils.events.LoaderEvent;
 
 	public class ImageLoader extends ItemLoader
 	{
@@ -58,6 +60,7 @@ package utils.loader
 			{
 				dispose();
 			}
+			dispatchEvent(new LoaderEvent(LoaderEvent.COMPLETE, this));
 		}
 		
 		public function get image(): Bitmap

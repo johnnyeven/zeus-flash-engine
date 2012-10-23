@@ -9,13 +9,13 @@ package utils.loader
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 
-	public class ResourceLoader
+	public class ResourceLoadManager
 	{
 		private static var _completeCallbackIndex: Dictionary = new Dictionary();
 		private static var _errorCallbackIndex: Dictionary = new Dictionary();
 		private static var _progressCallbackIndex: Dictionary = new Dictionary();
 		
-		public function ResourceLoader()
+		public function ResourceLoadManager()
 		{
 		}
 		
