@@ -1,7 +1,7 @@
 package utils.network.data.basic 
 {
 	import utils.network.data.interfaces.IParameterFill;
-	import objects.dependency.CDependency;
+	//import objects.dependency.CDependency;
 	
 	/**
 	 * ...
@@ -16,7 +16,7 @@ package utils.network.data.basic
 		private var _buildingLevel: uint;
 		private var _x: int;
 		private var _y: int;
-		private var _dependency: CDependency;
+		//private var _dependency: CDependency;
 		
 		public function CBuildingParameter() 
 		{
@@ -57,15 +57,15 @@ package utils.network.data.basic
 			return _objectId;
 		}
 		
-		public function get dependency():CDependency 
-		{
-			return _dependency;
-		}
-		
-		public function set dependency(value:CDependency):void 
-		{
-			_dependency = value;
-		}
+//		public function get dependency():CDependency 
+//		{
+//			return _dependency;
+//		}
+//		
+//		public function set dependency(value:CDependency):void 
+//		{
+//			_dependency = value;
+//		}
 		
 		public function fill(data: Object): void
 		{
