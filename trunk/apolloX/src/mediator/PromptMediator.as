@@ -10,7 +10,7 @@ package mediator
 	import com.greensock.TweenLite;
 	
 	import view.PromptComponent;
-	import utils.UIUtils;
+	import zeus.apollox.utils.UIUtils;
 	
 	public class PromptMediator extends Mediator implements IMediator
 	{

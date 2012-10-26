@@ -9,7 +9,7 @@ package mediator.loader
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
-	import utils.UIUtils;
+	import zeus.apollox.utils.UIUtils;
 	
 	import view.loader.LoaderProgressBarComponent;
 	
