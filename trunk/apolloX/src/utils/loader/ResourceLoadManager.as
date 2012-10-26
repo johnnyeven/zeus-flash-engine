@@ -139,6 +139,7 @@ package utils.loader
 			{
 				return _loader.url;
 			}
+			return "";
 		}
 	}
 }

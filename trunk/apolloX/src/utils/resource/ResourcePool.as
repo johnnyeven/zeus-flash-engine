@@ -15,33 +15,12 @@ package utils.resource
 
 	public class ResourcePool
 	{
-		private static var _instance: ResourcePool;
-		private static var _allowInstance: Boolean = false;
-		private static var _pool: Dictionary;
-		private static var _resourceLoadedIndex: Dictionary;
+		private static var _pool: Dictionary = new Dictionary();
+		private static var _resourceLoadedIndex: Dictionary = new Dictionary();
 		
 		public function ResourcePool()
 		{
-			if(_allowInstance)
-			{
-				_pool = new Dictionary();
-				_resourceLoadedIndex = new Dictionary();
-			}
-			else
-			{
-				throw new IllegalOperationError("You cant get instance trough constructor.");
-			}
-		}
-		
-		public static function get instance(): ResourcePool
-		{
-			if(_instance == null)
-			{
-				_allowInstance = true;
-				_instance = new ResourcePool();
-				_allowInstance = false;
-			}
-			return _instance;
+			
 		}
 		
 		public static function getResource(className: String): DisplayObject

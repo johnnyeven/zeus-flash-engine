@@ -18,10 +18,9 @@ package loader
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-	import flash.text.engine.*;
 	
 	import utils.language.LanguageManager;
-	import utils.liteui.core.ftengine.FTEFormater;
+	import utils.resource.ResourcePool;
 	
 	import view.loader.LoaderProgressBarComponent;
 	import view.login.LoginBGComponent;
@@ -46,10 +45,19 @@ package loader
 			var txtFormat: TextFormat = new TextFormat(null, 14, 0xffffff, true);
 			_msgText.defaultTextFormat = txtFormat;
 			addChild(_msgText);
-			//output1();
-			loadVersion();
-			//var text: String = '<root><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">adsfasdfa</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">sdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="Microsoft YaHei" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="1">asdfasdf</FONT></P></TEXTFORMAT></root>';
-			//trace(FTEFormater.htmlToFTEFormat(text));
+			
+			//loadVersion();
+			test();
+		}
+		
+		private function test(): void
+		{
+			ResourcePool.getResourceByLoader("resources/test.swf", "test1", testcallback);
+		}
+		
+		private function testcallback(obj: DisplayObject): void
+		{
+			addChild(obj);
 		}
 		
 		private function loadVersion(): void
