@@ -40,6 +40,7 @@ package utils
 		{
 			var _stageMediator: StageMediator = ApplicationFacade.getInstance().retrieveMediator(StageMediator.NAME) as StageMediator;
 			var _stage: Stage = _stageMediator.stage;
+			
 			return new Point(_stage.stageWidth / 2, _stage.stageHeight / 2);
 		}
 	}
