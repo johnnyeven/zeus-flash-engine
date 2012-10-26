@@ -1,22 +1,15 @@
 package view.battle.fight
 {
-    import com.zn.utils.BitmapUtil;
     import com.zn.utils.ClassUtil;
     import com.zn.utils.StringUtil;
-
-    import enum.battle.BattleBuildStateEnum;
-
-    import flash.display.BitmapData;
+    
     import flash.display.MovieClip;
     import flash.display.Sprite;
-    import flash.geom.Point;
-    import flash.geom.Rectangle;
-
+    
     import mx.binding.utils.BindingUtils;
-
+    
     import ui.core.Component;
     import ui.utils.DisposeUtil;
-    import flash.events.MouseEvent;
 
     /**
      *战场建筑
@@ -25,18 +18,18 @@ package view.battle.fight
      */
     public class FightBuildComponent extends Component
     {
-        public var buildVO:FORTBUILDING;
+        public var itemVO:FORTBUILDING;
 
         private var _buildSp:Sprite;
 
-        private var _paotaRotaion:Number;
+        private var _tankPartRotaion:Number;
 
         public function FightBuildComponent(buildVO:FORTBUILDING)
         {
             super(null);
 
             buttonMode = true;
-            this.buildVO = buildVO;
+            this.itemVO = buildVO;
 
             x = buildVO.x;
             y = buildVO.y;
@@ -50,10 +43,10 @@ package view.battle.fight
 
             var className:String = "";
 
-            if (buildVO.type == 1 || buildVO.type == 2)
-                className = StringUtil.formatString("build_icon_{0}_normal", buildVO.type);
+            if (itemVO.type == 1 || itemVO.type == 2)
+                className = StringUtil.formatString("build_icon_{0}_normal", itemVO.type);
             else
-                className = StringUtil.formatString("battle.build_{0}", buildVO.type);
+                className = StringUtil.formatString("battle.build_{0}", itemVO.type);
 
             _buildSp = ClassUtil.getObject(className);
             if (turretMC)
@@ -68,17 +61,17 @@ package view.battle.fight
             return _buildSp.getChildByName("taMC") as MovieClip;
         }
 
-        public function get paotaRotaion():Number
+        public function get tankPartRotaion():Number
         {
-            return _paotaRotaion;
+            return _tankPartRotaion;
         }
 
-        public function set paotaRotaion(value:Number):void
+        public function set tankPartRotaion(value:Number):void
         {
             if (value == 360)
                 value = 0;
 
-            _paotaRotaion = value;
+            _tankPartRotaion = value;
 
             var r:int = Math.round(value / 20) * 2;
 

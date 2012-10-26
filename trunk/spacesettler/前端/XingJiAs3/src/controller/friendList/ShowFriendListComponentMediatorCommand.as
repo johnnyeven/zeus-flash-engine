@@ -23,7 +23,10 @@ package controller.friendList
 		private static var _isLoading:Boolean=false;
 		
 		public static var loadCompleteCallBack:Function;
-		
+		//显示层级
+		private var mediatorLevel:int;
+		//是否是从邮件中选择的好友列表
+		private var isSendEmail:Boolean = false;
         public function ShowFriendListComponentMediatorCommand()
         {
             super();
@@ -38,13 +41,24 @@ package controller.friendList
         {
 			if(_isLoading)
 				return ;
-			var playerID:String = notification.getBody() as String;
+			var playerID:String = notification.getBody().playerID;
+			if(notification.getBody().isSendEmail)
+			{
+				isSendEmail = notification.getBody().isSendEmail;
+			}
+			if(notification.getBody().mediatorLevel)
+			{
+				mediatorLevel = notification.getBody().mediatorLevel +1;
+			}
+			
 			var friendProxy:FriendProxy = getProxy(FriendProxy);
 			friendProxy.getFriendList(playerID,function():void
 			{
 				 var med:FriendListComponentMediator = getMediator(FriendListComponentMediator);
 	            if (med)
 	            {
+					med.setMediatorLevel(mediatorLevel);
+					med.setIsSendEmail(isSendEmail);
 					callShow(med);
 	            }
 	            else
@@ -68,7 +82,8 @@ package controller.friendList
 
             //注册界面的中介
             facade.registerMediator(med);
-			
+			med.setMediatorLevel(mediatorLevel);
+			med.setIsSendEmail(isSendEmail);
 			_isLoading=false;
 			
 			callShow(med);

@@ -61,6 +61,9 @@ package vo.viewInfo
 		 *升级限制
 		 */		
 		public var limit:int;
+		
+		public var all_subjects_level:int;
+		
 		public function ViewInfoVO()
 		{
 			

@@ -13,13 +13,16 @@ package events.group
 		
 		public static const REFUSE:String="refuse";
 		
+		public static const ALL_ALLOW:String="all_allow";
+		
+		public static const ALL_REFUSE:String="all_refuse";
+		
 		
 		private var _playerId:String;
 		private var _applyId:String;
-		public function GroupExamineEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false
-		playerId:String=null,applyId:String=null)
+		public function GroupExamineEvent(type:String,playerId:String=null,applyId:String=null)
 		{
-			super(type, bubbles, cancelable);
+			super(type, false, false);
 			_playerId=playerId;
 			_applyId=applyId;
 		}

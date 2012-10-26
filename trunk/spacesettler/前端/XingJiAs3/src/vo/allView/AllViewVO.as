@@ -35,9 +35,9 @@ package vo.allView
 		 */	
 		public var junXianTxt:String = "";
 		/**
-		 * 军衔级别
+		 * 科技中心等级
 		 */	
-		public var junXianLvTxt:int;
+		public var scienceLvTxt:int;
 		/**
 		 *金晶矿：
 		 */	
@@ -70,6 +70,38 @@ package vo.allView
 		
 		public function AllViewVO()
 		{
+		}
+		
+		/**
+		 * 根据科技时代等级获取   科技时代的名称
+		 */
+		public function get getKeJiShiDaiNameByKeJiShiDaiLevel():String
+		{
+			var name:String = "";
+			switch(keJiShiDaiTxt)
+			{
+				case 1:
+				{
+					name = "机械时代";
+					break;
+				}
+				case 2:
+				{
+					name = "激光时代";
+					break;
+				}
+				case 3:
+				{
+					name = "电磁时代";
+					break;
+				}
+				case 4:
+				{
+					name = "暗能时代";
+					break;
+				}
+			}
+			return name;
 		}
 		
 	}

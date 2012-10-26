@@ -8,12 +8,19 @@ package mediator.friendList
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.email.SendEmailComponentMediator;
+	import mediator.mainView.ChatViewMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.friendList.FriendProxy;
+	import proxy.userInfo.UserInfoProxy;
+	
 	import view.friendList.FriendListComponent;
+	
+	import vo.allView.FriendInfoVo;
 
 	/**
 	 *好友列表
@@ -28,15 +35,24 @@ package mediator.friendList
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		private var friendProxy:FriendProxy;
+		private var userInforProxy:UserInfoProxy;
 		public function FriendListComponentMediator()
 		{
 			super(NAME, new FriendListComponent());
+			friendProxy = getProxy(FriendProxy);
+			userInforProxy = getProxy(UserInfoProxy);
+			
 			comp.addEventListener(FriendListEvent.CLOSE_FRIEND_LIST_EVENT,closeHandler);
 			comp.addEventListener(FriendListEvent.SEARCH_PLATER_EVENT,searchPlayerHandler);
 			comp.addEventListener(FriendListEvent.RENEW_FRIENF_LIST_EVENT,renewFriendListHandler);
 			
 			comp.addEventListener("destoryshangSprite",destoryshangSpriteHandler);
 			comp.addEventListener("destoryxiaSprite",destoryxiaSpriteHandler);
+			comp.addEventListener(FriendListEvent.CHECK_PLAYER_ID_CARD_EVENT,checkPlayerIdCardHandler);
+			comp.addEventListener(FriendListEvent.DELETED_FRIEND_INFOR_EVENT,deletedFriendHandler);
+			comp.addEventListener(FriendListEvent.CHAT_WITH_FRIEND_EVENT,privateChatWithFriendHandler);
+			comp.addEventListener(FriendListEvent.SEND_DATA_TO_EMAIL_EVENT,sendDatToEmailHandler);
 		}
 		
 		/**
@@ -77,6 +93,22 @@ package mediator.friendList
 			return viewComponent as FriendListComponent;
 		}
 
+		/**
+		 * 设置mediator的显示层级
+		 * @param mediatorLevel
+		 * 
+		 */		
+		public function setMediatorLevel(mediatorLevel:int):void
+		{
+			comp.med=this;
+			level = mediatorLevel;
+		}
+		
+	    public function setIsSendEmail(vaule:Boolean):void
+		{
+			comp.isSendEmail = vaule;
+		}
+		
 		private function searchPlayerHandler(event:FriendListEvent):void
 		{
 			sendNotification(SearchPlayerComponentMediator.SHOW_NOTE);
@@ -84,7 +116,8 @@ package mediator.friendList
 		
 		private function renewFriendListHandler(event:FriendListEvent):void
 		{
-			
+			//刷新列表
+			friendProxy.getFriendList(userInforProxy.userInfoVO.player_id);
 		}
 		
 		private function destoryshangSpriteHandler(event:Event):void
@@ -97,6 +130,33 @@ package mediator.friendList
 		{
 			comp.xiaSprite.visible = false;
 			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
+		}
+		
+		private function checkPlayerIdCardHandler(event:FriendListEvent):void
+		{
+			friendProxy.checkOtherPlayer((event.obj as FriendInfoVo).id,function():void
+			{
+				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
+			});
+		}
+		
+		private function deletedFriendHandler(event:FriendListEvent):void
+		{
+			
+			friendProxy.deletedFriend((event.obj as FriendInfoVo).id);
+		}
+		
+		private function privateChatWithFriendHandler(event:FriendListEvent):void
+		{
+			//私聊
+			sendNotification(ChatViewMediator.SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST,event.obj);
+		}
+		
+		private function sendDatToEmailHandler(event:FriendListEvent):void
+		{
+			//关闭自己
+			sendNotification(DESTROY_NOTE);
+			sendNotification(SendEmailComponentMediator.SEND_EMAIL_DATA_BY_FRIEND_LISE,event.obj);
 		}
 	}
 }

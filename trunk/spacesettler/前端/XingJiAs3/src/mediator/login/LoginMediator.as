@@ -107,8 +107,6 @@ package mediator.login
 				return;
 			}
 			
-			mouseEnabled=false;
-			
 			var myProxy:LoginProxy = getProxy(LoginProxy);
 			myProxy.login(event.userName, event.password);
         }

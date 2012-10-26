@@ -11,6 +11,7 @@ package view.mainView
     import flash.display.DisplayObjectContainer;
     import flash.display.MovieClip;
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.events.TextEvent;
@@ -42,6 +43,11 @@ package view.mainView
     {
         //玩家VIP
         public static const VIP_COUNT:int = 3;
+		
+		/**
+		 * 聊天显示的行距
+		 */
+		public static const DISTANCE_COUNT:int = 4;
 
         /**
          * 聊天输入框
@@ -106,17 +112,11 @@ package view.mainView
         public var allShowSprite:Component;
 
         public var vScrollBar:VScrollBar;
-
-        public var allShowContainer:Container;
-
+		
         /**
          *显示部分聊天内容
          */
         public var partShowSprite:Component;
-
-//        public var partScrollBar:VScrollBar;
-
-        public var partShowContainer:Container;
 
         /**
          *表情按钮
@@ -125,7 +125,15 @@ package view.mainView
 
         private var chatString:String = "";
 
-        private var _channelSelected:int = ChannelEnum.CHANNEL_WORLD;
+        private var _channelSelected:String = ChannelEnum.CHANNEL_WORLD;
+		/**
+		 *当前选择显示的部分显示框
+		 */
+//		private var selectedPartContainer:Container;
+		/**
+		 *当前选择显示的全部显示框
+		 */
+//		private var selectedAllContainer:Container;
 
         private var chatProxy:ChatProxy;
 
@@ -133,9 +141,15 @@ package view.mainView
 
         private var chatVO:ChatVO = new ChatVO();
 
-        private var container_all:Container;
+        private var container_all_word:Container;
+		private var container_all_camp:Container;
+		private var container_all_group:Container;
+		private var container_all_private:Container;
 
-        private var container_part:Container;
+        private var container_part_word:Container;
+		private var container_part_camp:Container;
+		private var container_part_group:Container;
+		private var container_part_private:Container;
 		
 		//记录数据条数
 		private var _count:int;
@@ -183,12 +197,9 @@ package view.mainView
 
             allShowSprite = createUI(Component, "allShowSprite");
             vScrollBar = allShowSprite.createUI(VScrollBar, "vScrollBar");
-            allShowContainer = allShowSprite.createUI(Container, "allShowContainer");
             allShowSprite.sortChildIndex();
 
             partShowSprite = createUI(Component, "partShowSprite");
- //           partScrollBar = partShowSprite.createUI(VScrollBar, "partScrollBar");
-            partShowContainer = partShowSprite.createUI(Container, "partShowContainer");
             partShowSprite.sortChildIndex();
 
             sortChildIndex();
@@ -200,24 +211,71 @@ package view.mainView
 //			allShowContainer.layout = new VTileLayout(allShowContainer);
 //			partShowContainer.layout = new VTileLayout(partShowContainer);
 
-            container_all = new Container(null);
-            container_all.contentWidth = 364;
-            container_all.contentHeight = 300;
-            container_all.layout = new VLayout(container_all);
-            container_all.x = 8;
-            container_all.y = 5;
-            allShowSprite.addChild(container_all);
+			container_all_word = new Container(null);
+			container_all_word.contentWidth = 364;
+			container_all_word.contentHeight = 300;
+			container_all_word.layout = new VLayout(container_all_word);
+			container_all_word.x = 8;
+			container_all_word.y = 5;
+            allShowSprite.addChild(container_all_word);
+			
+			container_all_camp = new Container(null);
+			container_all_camp.contentWidth = 364;
+			container_all_camp.contentHeight = 300;
+			container_all_camp.layout = new VLayout(container_all_camp);
+			container_all_camp.x = 8;
+			container_all_camp.y = 5;
+			allShowSprite.addChild(container_all_camp);
+			
+			container_all_group = new Container(null);
+			container_all_group.contentWidth = 364;
+			container_all_group.contentHeight = 300;
+			container_all_group.layout = new VLayout(container_all_group);
+			container_all_group.x = 8;
+			container_all_group.y = 5;
+			allShowSprite.addChild(container_all_group);
+			
+			container_all_private = new Container(null);
+			container_all_private.contentWidth = 364;
+			container_all_private.contentHeight = 300;
+			container_all_private.layout = new VLayout(container_all_private);
+			container_all_private.x = 8;
+			container_all_private.y = 5;
+			allShowSprite.addChild(container_all_private);
 
-            vScrollBar.viewport = container_all;
             vScrollBar.autoScroll = true;
 
-            container_part = new Container(null);
-            container_part.contentWidth = 372;
-            container_part.contentHeight = 60;
-            container_part.layout = new VLayout(container_part);
-            container_part.x = 0;
-            container_part.y = 5;
-            partShowSprite.addChild(container_part);
+			container_part_word = new Container(null);
+			container_part_word.contentWidth = 372;
+			container_part_word.contentHeight = 60;
+			container_part_word.layout = new VLayout(container_part_word);
+			container_part_word.x = 0;
+			container_part_word.y = 5;
+            partShowSprite.addChild(container_part_word);
+			
+			container_part_camp = new Container(null);
+			container_part_camp.contentWidth = 372;
+			container_part_camp.contentHeight = 60;
+			container_part_camp.layout = new VLayout(container_part_camp);
+			container_part_camp.x = 0;
+			container_part_camp.y = 5;
+			partShowSprite.addChild(container_part_camp);
+			
+			container_part_group = new Container(null);
+			container_part_group.contentWidth = 372;
+			container_part_group.contentHeight = 60;
+			container_part_group.layout = new VLayout(container_part_group);
+			container_part_group.x = 0;
+			container_part_group.y = 5;
+			partShowSprite.addChild(container_part_group);
+			
+			container_part_private = new Container(null);
+			container_part_private.contentWidth = 372;
+			container_part_private.contentHeight = 60;
+			container_part_private.layout = new VLayout(container_part_private);
+			container_part_private.x = 0;
+			container_part_private.y = 5;
+			partShowSprite.addChild(container_part_private);
 
 //			partScrollBar.height = 60;
 //           partScrollBar.viewport = container_part;
@@ -250,42 +308,15 @@ package view.mainView
             chatVO = data as ChatVO;
             if (chatVO)
             {
-				if(channelSelected == ChannelEnum.CHANNEL_WORLD)
-				{
-					setDat(chatVO.wordList);
-				}
-				else if(channelSelected == ChannelEnum.CHANNEL_NB)
-				{
-					setDat(chatVO.wordList);
-				}
-				else if(channelSelected == ChannelEnum.CHANNEL_ARMY_GROUP)
-				{
-					setDat(chatVO.armyGroupList);
-				}
-				else if(channelSelected == ChannelEnum.CHANNEL_PRIVATE)
-				{
-					setDat(chatVO.privateList);
-				}
-               
+			  setDat(chatVO.wordList,ChannelEnum.CHANNEL_WORLD);
+			  setDat(chatVO.campList,ChannelEnum.CHANNEL_CAMP);
+			  setDat(chatVO.armyGroupList,ChannelEnum.CHANNEL_ARMY_GROUP);
+			  setDat(chatVO.privateList,ChannelEnum.CHANNEL_PRIVATE);
             }
-
         }
 
-        private function setDat(value:Array):void
+        private function setDat(value:Array,channel:String):void
         {
-			//选择频道后，第一次进来都把原来的数据全部删了
-		   if(count == 1)
-		   {
-			  while(allShowContainer.num)
-				DisposeUtil.dispose(allShowContainer.removeAt(0));
-			  while(partShowContainer.num)
-				DisposeUtil.dispose(partShowContainer.removeAt(0));
-			  
-			  count = count+1;
-		   }
-		   
-			
-
             if (value.length > 0)
             {
                 for (var i:int = 0; i < value.length; i++)
@@ -295,11 +326,10 @@ package view.mainView
 					itemLabel.color = 0xFFFFFF;
 					itemLabel.fontName = "微软雅黑";
 					itemLabel.mouseChildren = itemLabel.mouseEnabled = true;
-                    itemLabel.textWidth = allShowContainer.width;
                     itemLabel.textHeight = 12
-                    itemLabel.text = setString(itemVo);
-
-                    container_all.add(itemLabel);
+                    itemLabel.text = setString(itemVo,channel);
+					
+					allContainerAddData(itemLabel,channel);
                     //超链接
                     itemLabel.addEventListener(TextEvent.LINK, itemLabel_linkClickHandler);
                 }
@@ -315,10 +345,9 @@ package view.mainView
 
                 for (var j:int = 0; j < arr.length; j++)
                 {
-					while(container_part.num >3)
+					while(getContainerByChannel(channel).num >2)
 					{
-						DisposeUtil.dispose(container_part.removeAt(0));
-//						container_part.num
+						DisposeUtil.dispose(getContainerByChannel(channel).removeAt(0));
 					}
 						
                     var chatItemVo:ChatItemVO = (arr[j] as ChatItemVO);
@@ -326,20 +355,13 @@ package view.mainView
 					partItemLabel.color = 0xFFFFFF;
 					partItemLabel.fontName = "微软雅黑";
 					partItemLabel.mouseChildren = partItemLabel.mouseEnabled = true;
-                    partItemLabel.textWidth = partShowContainer.width;
                     partItemLabel.textHeight = 12;
-                    partItemLabel.text = setString(chatItemVo);
-                    container_part.add(partItemLabel);
-
+                    partItemLabel.text = setString(chatItemVo,channel);
+					
+					partContainerAddData(partItemLabel,channel);
                     //超链接
                     partItemLabel.addEventListener(TextEvent.LINK, itemLabel_linkClickHandler);
                 }
-
-                container_all.layout.update();
-				container_all.layout.vGap = 4;
-                container_part.layout.update();
-				container_part.layout.vGap = 4;
-
             }
 
         }
@@ -363,7 +385,7 @@ package view.mainView
 
         private function send_clickHandler(event:MouseEvent):void
         {
-            if (chatString == "")
+            if (chatString == "" || chatString == "请在聊天框或好友列表中选择私聊对象！")
                 return;
             dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
 			chatText.text = "";
@@ -409,8 +431,13 @@ package view.mainView
 				
 				count=1;
 	            channelSelected = ChannelEnum.CHANNEL_WORLD;
+				getPanelByChannel(channelSelected);
 			}
-                
+              
+			//点击其他按钮恢复输如框
+			privateChatName = "";
+			chatText.text = "";
+			chatText.mouseEnabled = true;
         }
 
         private function campBtn_clickHandler(event:MouseEvent):void
@@ -437,13 +464,26 @@ package view.mainView
 				privateChatBtn.selected=false;
 				
 				count=1;
-	            channelSelected = ChannelEnum.CHANNEL_NB;
+	            channelSelected = ChannelEnum.CHANNEL_CAMP;
+				getPanelByChannel(channelSelected);
 			}
+			
+			//点击其他按钮恢复输如框
+			privateChatName = "";
+			chatText.text = "";
+			chatText.mouseEnabled = true;
                 
         }
 
         private function armyGroupBtn_clickHandler(event:MouseEvent):void
         {
+			if(StringUtil.isEmpty(userInforProxy.userInfoVO.legion_id))
+			{
+				dispatchEvent(new Event("tipsInChatArmyGroup"));
+				armyGroupBtn.toggle=true;
+				armyGroupBtn.selected=false;
+				return;
+			}
 			if(groupBoolean)
 			{
 				wordBoolean = true;
@@ -466,6 +506,7 @@ package view.mainView
 				privateChatBtn.selected=false;
 				count = 1;
 	            channelSelected = ChannelEnum.CHANNEL_ARMY_GROUP;
+				getPanelByChannel(channelSelected);
 			}
 			
 			//点击其他按钮恢复输如框
@@ -501,6 +542,7 @@ package view.mainView
 				
 				count=1;
 	            channelSelected = ChannelEnum.CHANNEL_PRIVATE;
+				getPanelByChannel(channelSelected);
 			}  
 			
 			//私聊通道的控制
@@ -524,7 +566,7 @@ package view.mainView
 
         private function hyperlinkBtn_clickHandler(event:MouseEvent):void
         {
-            dispatchEvent(new TalkEvent(TalkEvent.SHOW_BAG_COMPONENT_EVENT, "", 0));
+            dispatchEvent(new TalkEvent(TalkEvent.SHOW_BAG_COMPONENT_EVENT, "", "0"));
         }
 
         public function setLabel(value:String):void
@@ -532,12 +574,12 @@ package view.mainView
             chatText.text += value;
         }
 
-        public function get channelSelected():int
+        public function get channelSelected():String
         {
             return _channelSelected;
         }
 
-        public function set channelSelected(value:int):void
+        public function set channelSelected(value:String):void
         {
             _channelSelected = value;
         }
@@ -581,15 +623,162 @@ package view.mainView
 			_privateChatName = value;
 		}
 
+		//根据选择的频道显示对应频道界面
+		private function getPanelByChannel(channel:String):void
+		{
+			container_all_word.visible = false;
+			container_all_camp.visible = false;
+			container_all_group.visible = false;
+			container_all_private.visible = false;
+			
+			container_part_word.visible = false;
+			container_part_camp.visible = false;
+			container_part_group.visible = false;
+			container_part_private.visible = false;
+			switch(channel)
+			{
+				case ChannelEnum.CHANNEL_WORLD:
+				{
+					container_all_word.visible = true;
+					container_part_word.visible = true;
+					vScrollBar.viewport = container_all_word;
+					break;
+				}
+				case ChannelEnum.CHANNEL_CAMP:
+				{
+					container_all_camp.visible = true;
+					container_part_camp.visible = true;
+					vScrollBar.viewport = container_all_camp;
+					break;
+				}
+				case ChannelEnum.CHANNEL_ARMY_GROUP:
+				{
+					container_all_group.visible = true;
+					container_part_group.visible = true;
+					vScrollBar.viewport = container_all_group;
+					break;
+				}
+				case ChannelEnum.CHANNEL_PRIVATE:
+				{
+					container_all_private.visible = true;
+					container_part_private.visible = true;
+					vScrollBar.viewport = container_all_private;
+					break;
+				}
+			}
+		}
+		
+		//向对应的显示框中添加数据
+		private function allContainerAddData(itemLabel:Label,channel:String):void
+		{
+			switch(channel)
+			{
+				case ChannelEnum.CHANNEL_WORLD:
+				{
+					container_all_word.add(itemLabel);
+					container_all_word.layout.update();
+					container_all_word.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+				case ChannelEnum.CHANNEL_CAMP:
+				{
+					container_all_camp.add(itemLabel);
+					container_all_camp.layout.update();
+					container_all_camp.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+				case ChannelEnum.CHANNEL_ARMY_GROUP:
+				{
+					container_all_group.add(itemLabel);
+					container_all_group.layout.update();
+					container_all_group.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+				case ChannelEnum.CHANNEL_PRIVATE:
+				{
+					container_all_private.add(itemLabel);
+					container_all_private.layout.update();
+					container_all_private.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+			}
+		}
+		
+		//向对应的显示框中添加数据
+		private function partContainerAddData(partItemLabel:Label,channel:String):void
+		{
+			switch(channel)
+			{
+				case ChannelEnum.CHANNEL_WORLD:
+				{
+					container_part_word.add(partItemLabel);
+					container_part_word.layout.update();
+					container_part_word.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+				case ChannelEnum.CHANNEL_CAMP:
+				{
+					container_part_camp.add(partItemLabel);
+					container_part_camp.layout.update();
+					container_part_camp.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+				case ChannelEnum.CHANNEL_ARMY_GROUP:
+				{
+					container_part_group.add(partItemLabel);
+					container_part_group.layout.update();
+					container_part_group.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+				case ChannelEnum.CHANNEL_PRIVATE:
+				{
+					container_part_private.add(partItemLabel);
+					container_part_private.layout.update();
+					container_part_private.layout.vGap = DISTANCE_COUNT;
+					break;
+				}
+			}
+		}
+		
+		//当数据改变后，对相应的部分显示框进行处理
+		private function getContainerByChannel(channel:String):Container
+		{
+			var container:Container;
+			switch(channel)
+			{
+				case ChannelEnum.CHANNEL_WORLD:
+				{
+					container = container_part_word;
+					break;
+				}
+				case ChannelEnum.CHANNEL_CAMP:
+				{
+					container = container_part_camp;
+					break;
+				}
+				case ChannelEnum.CHANNEL_ARMY_GROUP:
+				{
+					container = container_part_group;
+					break;
+				}
+				case ChannelEnum.CHANNEL_PRIVATE:
+				{
+					container = container_part_private;
+					break;
+				}
+			}
+			return container;
+		}
+		
 
         /***********************************************************
          *
          * 功能方法
          *
          * ****************************************************/
-        private function setString(data:ChatItemVO):String
+        private function setString(data:ChatItemVO,channel:String):String
         {
-			if(channelSelected == ChannelEnum.CHANNEL_PRIVATE)
+			if(channel == ChannelEnum.CHANNEL_PRIVATE)
 			{
 //				if(data.str.indexOf("PRIVATE_") != -1)
 //			    {
@@ -604,13 +793,22 @@ package view.mainView
             var str:String
             if (data.system)
             {
+				var color:uint = 0;
+				if(data.type == "0")
+				{
+					color = 0xffb02e;
+				}
+				else if(data.type == "1")
+				{
+					color = 0x90ff00;
+				}
                 timeStr = DateFormatter.formatterTime(data.timeStamp / 1000);
-                str = "<p color = '0xdcbd7a'><s>{0}</s><s></s><s>{1}</s><s>[</s><s>{2}</s><s>]</s></p>";
-                str = StringUtil.formatString(str, "系统广播:", data.str, timeStr);
+                str = "<p color = '{0}'><s>{1}</s><s></s><s>{2}</s><s>[</s><s>{3}</s><s>]</s></p>";
+                str = StringUtil.formatString(str, color, "系统广播:", data.str, timeStr);
             }
             else
             {
-                if (data.channel > 10)
+                if (int(data.channel) > 10)
                 {
                     if (dataObj.myID == userInforProxy.userInfoVO.player_id)
                     {
@@ -620,7 +818,7 @@ package view.mainView
 						str1 = str1.replace(/\"/g,t1);
 						//发送者的显示设置
                         timeStr = DateFormatter.formatterTime(data.timeStamp/1000);
-                        str = "<p color = '0xc3d4e8'><s>我对</s><g>/{0}</g><s>[</s><a value = '{1}'><s>{2}</s></a><s>]</s><s>说：</s><s>{3}</s><s>[{4}]</s></p>";
+                        str = "<p color = '0xd1e4ff'><s>我对</s><g>/{0}</g><s>[</s><a value = '{1}'><s>{2}</s></a><s>]</s><s>说：</s><s>{3}</s><s>[{4}]</s></p>";
                         str = StringUtil.formatString(str,dataObj.otherVIP,str1,dataObj.otherName,dataObj.textStr,timeStr);
 				
                     }
@@ -632,7 +830,7 @@ package view.mainView
 						str2 = str2.replace(/\"/g,t2);
 						//接收者的显示设置
                         timeStr = DateFormatter.formatterTime(data.timeStamp/1000);
-                        str = "<p color = '0x5283ae'><g>/{0}</g><s>[</s><a value = '{1}'><s>{2}</s></a><s>]</s><s>对我说：</s><s>{3}</s><s>[{4}]</s></p>";
+                        str = "<p color = '0x22afe5'><g>/{0}</g><s>[</s><a value = '{1}'><s>{2}</s></a><s>]</s><s>对我说：</s><s>{3}</s><s>[{4}]</s></p>";
                         str = StringUtil.formatString(str, dataObj.myVIP,str2,dataObj.myName,dataObj.textStr,timeStr);
                     }
 
@@ -642,13 +840,13 @@ package view.mainView
                     if (data.playerID == userInforProxy.userInfoVO.player_id)
                     {
                         timeStr = DateFormatter.formatterTime(data.timeStamp/1000);
-                        str = "<p color = '0xc3d4e8'><s>{0}</s><s>[</s><s>{1}</s><s>]</s></p>";
+                        str = "<p color = '0xd1e4ff'><s>{0}</s><s>[</s><s>{1}</s><s>]</s></p>";
                         str = StringUtil.formatString(str,data.str, timeStr);
                     }
                     else
                     {
                         timeStr = DateFormatter.formatterTime(data.timeStamp/1000);
-                        str = "<p color = '0x5283ae'><s>{0}</s><s>[</s><s>{1}</s><s>]</s></p>";
+                        str = "<p color = '0x22afe5'><s>{0}</s><s>[</s><s>{1}</s><s>]</s></p>";
                         str = StringUtil.formatString(str,data.str, timeStr);
                     }
 

@@ -38,9 +38,9 @@ package controller.allView
         {
 			if(_isLoading)
 				return ;
-			
+			var playerID:String = notification.getBody() as String;
 			var allViewProxy:AllViewProxy = getProxy(AllViewProxy);
-			allViewProxy.viewXingXing(function():void
+			allViewProxy.viewXingXing(playerID,function():void
 			{
 				 var med:XingXingComponentMediator = getMediator(XingXingComponentMediator);
 	            if (med)

@@ -1,6 +1,7 @@
 package view.ranking
 {
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.DateFormatter;
 	
 	import events.ranking.RankingEvent;
 	
@@ -8,6 +9,8 @@ package view.ranking
 	
 	import ui.components.Button;
 	import ui.core.Component;
+	
+	import vo.ranking.RankingUserVo;
 	
     public class RankingComponent extends Component
     {
@@ -47,6 +50,26 @@ package view.ranking
 			item_5.addEventListener(MouseEvent.CLICK,doShowPveHandler);
 
         }
+		
+		public function upData(rankVo:RankingUserVo):void
+		{
+			item_1.timeText.text=DateFormatter.formatterTimeNYR(rankVo.orders_rank_updated_time);
+			item_2.timeText.text=DateFormatter.formatterTimeNYR(rankVo.forts_count_rank_updated_time);
+			item_3.timeText.text=DateFormatter.formatterTimeNYR(rankVo.legion_prestige_rank_updated_time);
+			item_4.timeText.text=DateFormatter.formatterTimeNYR(rankVo.person_prestige_rank_updated_time);
+			
+			item_1.zongBangText.text=rankVo.orders_total_rank_first;
+			item_1.riBangText.text=rankVo.orders_daily_rank_first;
+			
+			item_2.zongBangText.text=rankVo.forts_count_total_rank_first;
+			item_2.riBangText.text=rankVo.forts_count_daily_rank_first;
+			
+			item_3.zongBangText.text=rankVo.legion_prestige_total_rank_first;
+			item_3.riBangText.text=rankVo.legion_prestige_daily_rank_first;
+			
+			item_4.zongBangText.text=rankVo.person_prestige_total_rank_first;
+			item_4.riBangText.text=rankVo.person_prestige_daily_rank_first;
+		}
 		
 		protected function doShowCaiFuHandler(event:MouseEvent):void
 		{

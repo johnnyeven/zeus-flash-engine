@@ -1,5 +1,6 @@
 package mediator.mainView
 {
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.DateFormatter;
 	import com.zn.utils.StringUtil;
@@ -10,6 +11,7 @@ package mediator.mainView
 	import events.friendList.FriendListEvent;
 	import events.talk.TalkEvent;
 	
+	import flash.events.Event;
 	import flash.events.TextEvent;
 	import flash.geom.Point;
 	
@@ -19,6 +21,7 @@ package mediator.mainView
 	import mediator.cangKu.ChaKanZhanCheViewComponentMediator;
 	import mediator.friendList.FriendListComponentMediator;
 	import mediator.friendList.ViewIdCardComponentMediator;
+	import mediator.prompt.PromptSureMediator;
 	import mediator.showBag.ShowBagComponentMediator;
 	
 	import mx.binding.utils.BindingUtils;
@@ -28,6 +31,7 @@ package mediator.mainView
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.chat.ChatProxy;
+	import proxy.friendList.FriendProxy;
 	import proxy.packageView.PackageViewProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -36,6 +40,7 @@ package mediator.mainView
 	import view.mainView.ChatSelectedComponent;
 	import view.mainView.ChatViewComponent;
 	
+	import vo.allView.FriendInfoVo;
 	import vo.cangKu.BaseItemVO;
 	import vo.cangKu.GuaJianInfoVO;
 	import vo.cangKu.ItemVO;
@@ -61,8 +66,10 @@ package mediator.mainView
 		public static const SHOW_ZHANCHE:String = "show" + NAME + "zhanChe";
 		//查看军官证
 		public static const SHOW_CHECKID:String = "show" + NAME + "checkID";
-		//私聊
+		//通过聊天框选择的私聊
 		public static const SHOW_PRIVATE_TALK:String = "show" + NAME + "privateTalk";
+		//通过好友列表选择的私聊
+		public static const SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST:String = "show" + NAME + "privateTalkSelectedByFriendList";
 		
 //		public static const SHOW_GUAJIAN:String = "show" + NAME + "guaJian";
 		
@@ -73,6 +80,8 @@ package mediator.mainView
 		private var packageViewproxy:PackageViewProxy;
 		
 		private var userInforProxy:UserInfoProxy;
+		
+		private var friendProxy:FriendProxy;
 		
 		private var itemDic:Object ={};
 		
@@ -87,6 +96,8 @@ package mediator.mainView
 		private var obj:Object = {};
 		//是否存在选择弹出框
 		private var isHave:Boolean;
+		//是否是通过好友列表选择的私聊
+		private var isFriendList:Boolean;
 		private var chatSelectedComponent:ChatSelectedComponent;
 
 		public function ChatViewMediator(obj:ChatViewComponent)
@@ -96,16 +107,14 @@ package mediator.mainView
 			chatProxy = getProxy(ChatProxy);
 			packageViewproxy = getProxy(PackageViewProxy);
 			userInforProxy = getProxy(UserInfoProxy);
+			friendProxy = getProxy(FriendProxy);
 			
 			comp.addEventListener(FriendListEvent.FRIEND_LIST_EVENT,showFriendListHAndler);
 			comp.addEventListener(TalkEvent.TALK_EVENT,talkingHandler);
 			comp.addEventListener(TextEvent.LINK,linkHandler);
 			
 			comp.addEventListener(TalkEvent.SHOW_BAG_COMPONENT_EVENT,showBagComponentHandler);
-			//查看军官证
-//			comp.addEventListener(TalkEvent.CHECK_ID_CARD_EVENT,checkIdCardHandler);
-			//私聊
-//			comp.addEventListener(TalkEvent.PRIVATE_TALK_EVENT,privateTalkHandler);
+			comp.addEventListener("tipsInChatArmyGroup",tipsHandler);
 			
 		}
 		
@@ -116,7 +125,7 @@ package mediator.mainView
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [SHOW_NOTE, DESTROY_NOTE,INFOR_NOTE,SHOW_ZHANCHE,SHOW_CHECKID,SHOW_PRIVATE_TALK];
+			return [SHOW_NOTE, DESTROY_NOTE,INFOR_NOTE,SHOW_ZHANCHE,SHOW_CHECKID,SHOW_PRIVATE_TALK,SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST];
 		}
 		
 		/**
@@ -160,13 +169,23 @@ package mediator.mainView
 				}
 				case SHOW_CHECKID:
 				{
+					//通过聊天框选择的查看军官证
+					isFriendList = false;
 					checkIdCardHandler(note.getBody() as String);
 					break;
 				}
 				case SHOW_PRIVATE_TALK:
 				{
+					//通过聊天框选择的私聊
+					isFriendList = false;
 					privateTalkHandler(note.getBody() as String);
 					break;
+				}
+				case SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST:
+				{
+					//通过好友列表选择的私聊
+					isFriendList = true;
+					privateTalkByFriendListHandler(note.getBody() as FriendInfoVo);
 				}
 /*				case SHOW_GUAJIAN:
 				{
@@ -217,15 +236,15 @@ package mediator.mainView
 					if(item.item_type == ItemEnum.Chariot)
 					{
 						
-						text = text.replace(key,StringUtil.formatString("</s><a value = '{0}'><s color = '0x5b2fab'>{1}</s></a><s>","ZhanChe_"+(item as ZhanCheInfoVO).id,(item as ZhanCheInfoVO).name));
+						text = text.replace(key,StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>","ZhanChe_"+(item as ZhanCheInfoVO).id,(item as ZhanCheInfoVO).name));
 					}
 					else if(item.item_type == ItemEnum.TankPart)
 					{
-						text = text.replace(key,StringUtil.formatString("</s><a value = '{0}'><s color = '0x5b2fab'>{1}</s></a><s>","GuaJian_"+(item as GuaJianInfoVO).id,(item as GuaJianInfoVO).name));
+						text = text.replace(key,StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>","GuaJian_"+(item as GuaJianInfoVO).id,(item as GuaJianInfoVO).name));
 					}
 					else if(item.item_type == ItemEnum.recipes)
 					{
-						text = text.replace(key,StringUtil.formatString("</s><a value = '{0}'><s color = '0x5b2fab'>{1}</s></a><s>","TuZhi_"+(item as ItemVO).id,(item as ItemVO).name));
+						text = text.replace(key,StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>","TuZhi_"+(item as ItemVO).id,(item as ItemVO).name));
 					}
 				}
 				
@@ -236,24 +255,37 @@ package mediator.mainView
 			var str:String = "";
 			if(comp.channelSelected == ChannelEnum.CHANNEL_PRIVATE)
 			{
-				var privateObj:Object = {myVIP:userInforProxy.userInfoVO.vip_level,myID:userInforProxy.userInfoVO.player_id,myName:userInforProxy.userInfoVO.nickname,	
+				var privateObj:Object = {};
+				if(isFriendList == true)
+				{
+					//通过好友列表选择的私聊
+					var friendInforVo:FriendInfoVo = obj as FriendInfoVo;
+					privateObj = {myVIP:userInforProxy.userInfoVO.vip_level,myID:userInforProxy.userInfoVO.player_id,myName:userInforProxy.userInfoVO.nickname,	
+						otherVIP:friendInforVo.vip_level,otherID:friendInforVo.id,otherName:friendInforVo.nickname,textStr:text };
+				}
+				else
+				{
+					//通过聊天框选择的私聊
+					privateObj = {myVIP:userInforProxy.userInfoVO.vip_level,myID:userInforProxy.userInfoVO.player_id,myName:userInforProxy.userInfoVO.nickname,	
 				                          otherVIP:obj.playerVIP,otherID:obj.playerID,otherName:obj.playerName,textStr:text };
+				}
+				
 				var str2:String=JSON.stringify(privateObj);
 				str = StringUtil.formatString("</s><a value = '{0}'></a><s>",str2);
 			}
 			else
 			{
-				var obj:Object = {};
-				if(comp.channelSelected == ChannelEnum.CHANNEL_NB)
+				var obj1:Object = {};
+				if(comp.channelSelected == ChannelEnum.CHANNEL_CAMP)
 				{
-					obj = {playerVIP:userInforProxy.userInfoVO.vip_level,playerID:userInforProxy.userInfoVO.player_id,playerName:userInforProxy.userInfoVO.nickname,campID:userInforProxy.userInfoVO.camp};
+					obj1 = {playerVIP:userInforProxy.userInfoVO.vip_level,playerID:userInforProxy.userInfoVO.player_id,playerName:userInforProxy.userInfoVO.nickname,campID:userInforProxy.userInfoVO.camp};
 				}
 				else
 				{
-					obj = {playerVIP:userInforProxy.userInfoVO.vip_level,playerID:userInforProxy.userInfoVO.player_id,playerName:userInforProxy.userInfoVO.nickname};
+					obj1 = {playerVIP:userInforProxy.userInfoVO.vip_level,playerID:userInforProxy.userInfoVO.player_id,playerName:userInforProxy.userInfoVO.nickname};
 				}
 				
-			    var str1:String=JSON.stringify(obj);
+			    var str1:String=JSON.stringify(obj1);
 				var t:String = String.fromCharCode(11);
 				str1 = str1.replace(/\"/g,t);
 //				var pattern1:RegExp = new RegExp(,"g");
@@ -272,7 +304,8 @@ package mediator.mainView
 		
 		private function showFriendListHAndler(event:FriendListEvent):void
 		{
-			sendNotification(FriendListComponentMediator.SHOW_NOTE,userInforProxy.userInfoVO.player_id);
+			var obj:Object = {playerID:userInforProxy.userInfoVO.player_id};
+			sendNotification(FriendListComponentMediator.SHOW_NOTE,obj);
 		}
 		
 		private function talkingHandler(event:TalkEvent):void
@@ -281,7 +314,17 @@ package mediator.mainView
 			str = setDat(str);
 			if(comp.channelSelected == ChannelEnum.CHANNEL_PRIVATE)
 			{
-				chatProxy.talking(str,int(obj.playerID));
+				if(isFriendList == true)
+				{
+					//通过好友列表选择的私聊
+					chatProxy.talking(str,(obj as FriendInfoVo).id);
+				}
+				else
+				{
+					//通过聊天框选择的私聊
+					chatProxy.talking(str,obj.playerID);
+				}
+				
 			}
 			else
 			{
@@ -351,7 +394,7 @@ package mediator.mainView
 		{
 			isHave = false;
 			obj=JSON.parse(talk);
-			chatProxy.checkOtherPlayer(obj.playerID,function():void
+			friendProxy.checkOtherPlayer(obj.playerID,function():void
 			{
 				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
 			});
@@ -366,9 +409,24 @@ package mediator.mainView
 			
 		}
 		
+		private function privateTalkByFriendListHandler(friendinforVO:FriendInfoVo):void
+		{
+			//通过好友列表选择的私聊
+			obj = friendinforVO;
+			comp.privateChatName = friendinforVO.nickname;
+			comp.privateChatHandler();
+			
+		}
+		
 		private function showBagComponentHandler(event:TalkEvent):void
 		{
 			sendNotification(ShowBagComponentMediator.SHOW_NOTE);
+		}
+		
+		private function tipsHandler(event:Event):void
+		{
+			var obj:Object = {infoLable:MultilanguageManager.getString("titleInChat"),showLable:MultilanguageManager.getString("inforInChat")};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 		}
 		
 		/***********************************************************

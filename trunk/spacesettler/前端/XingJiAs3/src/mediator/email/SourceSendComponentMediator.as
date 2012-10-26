@@ -1,6 +1,9 @@
 package mediator.email
 {
+	import events.email.EmailEvent;
+	
 	import mediator.BaseMediator;
+	import mediator.WindowMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -13,7 +16,7 @@ package mediator.email
 	 * @author lw
 	 *
 	 */
-	public class SourceSendComponentMediator extends BaseMediator implements IMediator
+	public class SourceSendComponentMediator extends WindowMediator implements IMediator
 	{
 		public static const NAME:String="SourceSendComponentMediator";
 
@@ -24,6 +27,10 @@ package mediator.email
 		public function SourceSendComponentMediator()
 		{
 			super(NAME, new SourceSendComponent());
+			comp.med=this;
+			level = 4;
+			comp.addEventListener("closeSendSourceComponent",closeHandler);
+			comp.addEventListener(EmailEvent.SEND_SOURCE_DATA_EVENT,sendSourceHandler);
 		}
 		
 		/**
@@ -64,5 +71,10 @@ package mediator.email
 			return viewComponent as SourceSendComponent;
 		}
 
+		private function sendSourceHandler(event:EmailEvent):void
+		{
+			sendNotification(DESTROY_NOTE);
+			sendNotification(SendEmailComponentMediator.SELECTED_SOURCE_DATA,event.obj);
+		}
 	}
 }

@@ -80,6 +80,10 @@ package view.email
 			
 			removeCWList();
 			cwList.push(BindingUtils.bindSetter(itemVOListChange,emailProxy,"emailList"));
+			cwList.push(BindingUtils.bindSetter(function():void
+			{
+				emailCountLabel.text = emailProxy.emailCount +"/" +emailProxy.emailCount +"";
+			},emailProxy,"emailCount"));
 			//刷新邮件列表
 			receiveEmailBtn.addEventListener(MouseEvent.CLICK,receiveEmailBtn_clickHandler);
 			sendEmailBtn.addEventListener(MouseEvent.CLICK,sendEmailBtn_clickHandler);
@@ -101,7 +105,7 @@ package view.email
 			 arr = value as Array;
 			 if(arr.length>0)
 			 {
-				 emailCountLabel.text = (arr[0] as EmailItemVO).mails_count +"/" +(arr[0] as EmailItemVO).mails_count +"";
+//				 emailCountLabel.text = (arr[0] as EmailItemVO).mails_count +"/" +(arr[0] as EmailItemVO).mails_count +"";
 			    for (var i:int = 0; i < arr.length; i++)
 				{
 					var emailItem:EmailItem = new EmailItem();
@@ -122,6 +126,7 @@ package view.email
 		
 		private function emailItem_clickHandler(event:MouseEvent):void
 		{
+//			event.stopImmediatePropagation();
 			var emailItemVO:EmailItemVO = (event.currentTarget as EmailItem).data
              dispatchEvent(new EmailEvent(EmailEvent.SHOW_EMAIL_INFOR_EVENT,emailItemVO));
 		}
@@ -147,6 +152,8 @@ package view.email
 		
 		private function receiveEmailBtn_clickHandler(event:MouseEvent):void
 		{
+			deleteEmailBtn.visible = true;
+			deleteSuccessBtn.visible = false;
 			dispatchEvent(new EmailEvent(EmailEvent.RECEIVE_EMAIL_EVENT));
 		}
 			
@@ -154,13 +161,17 @@ package view.email
 		{
 			// TODO Auto-generated method stub
 			var arrJson:Array = [];
+			var emialID:int;
 			for(var i:int = 0;i<arr.length;i++)
 			{
 				if((arr[i] as EmailItemVO).is_read == true)
 				{
-					arrJson.push((arr[i] as EmailItemVO).id);
+					emialID = int((arr[i] as EmailItemVO).id);
+					arrJson.push(emialID);
 				}
 			}
+			deleteEmailBtn.visible = true;
+			deleteSuccessBtn.visible = false;
 			dispatchEvent(new EmailEvent(EmailEvent.DELETE_ALL_READ_EMAIL_EVENT,arrJson));
 		}
 		
@@ -169,6 +180,7 @@ package view.email
 			// TODO Auto-generated method stub
 			deleteEmailBtn.visible = true;
 			deleteSuccessBtn.visible = false;
+			//隐藏删除小按钮
 			isDelete = false;
 			itemVOListChange(arr,isDelete);
 		}
@@ -178,6 +190,7 @@ package view.email
 			// TODO Auto-generated method stub
 			deleteEmailBtn.visible = false;
 			deleteSuccessBtn.visible = true;
+			//显示删除小按钮
 			isDelete = true;
 			itemVOListChange(arr,isDelete);
 		}

@@ -153,7 +153,7 @@ package proxy.shangCheng
             Protocol.deleteProtocolFunction(CommandEnum.buyResources, buyResourceRrsult);
             if (data.hasOwnProperty("errors"))
             {
-                sendNotification(PromptSureMediator.SHOW_NOTE, MultilanguageManager.getString(data.errors));
+                sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
                 return;
             }
 			

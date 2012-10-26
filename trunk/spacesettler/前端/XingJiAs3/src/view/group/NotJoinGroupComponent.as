@@ -1,5 +1,6 @@
 package view.group
 {
+	import com.greensock.TweenLite;
 	import com.zn.utils.ClassUtil;
 	
 	import events.group.GroupEvent;
@@ -8,6 +9,8 @@ package view.group
 	import flash.display.Sprite;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	
 	import proxy.group.GroupProxy;
@@ -17,6 +20,7 @@ package view.group
 	import ui.components.VScrollBar;
 	import ui.core.Component;
 	import ui.layouts.HTileLayout;
+	import ui.utils.DisposeUtil;
 	
 	import vo.group.GroupListVo;
 	
@@ -34,21 +38,29 @@ package view.group
 		public var vsBar:VScrollBar;
 		
 		public var itemSp:Sprite;
+		public var mcUp:Component;
+		public var menuLine:Sprite;
 		
 		/**
 		 *军团名输入框 
 		 */		
 		public var groupText:TextField;
+		
+		public var shenqing_btn:Button;
 
 		private var container:Container;
 		private var _groupProxy:GroupProxy;
 		private var _arr:Array=[];
+		private var menuMask:Sprite;
+		private var id:String;
+		
+		private var _currtentItem:GroupItem_1Component;
         public function NotJoinGroupComponent()
         {
             super(ClassUtil.getObject("view.group.NotJoinGroupSkin"));
 			
 			_groupProxy=ApplicationFacade.getProxy(GroupProxy);
-			
+			_currtentItem=new GroupItem_1Component();
 			foundBtn=createUI(Button,"chuangjian_btn");
 			closeBtn=createUI(Button,"close_btn");
 			vsBar=createUI(VScrollBar,"vs_bar");
@@ -135,14 +147,72 @@ package view.group
 		protected function clickHandler(event:MouseEvent):void
 		{
 			var item:GroupItem_1Component=event.currentTarget as GroupItem_1Component;
+			currtentItem=item;
+			var point:Point=new Point(0,item.height*0.5);
+			point = item.localToGlobal(point);
+			point = globalToLocal(point);
+			
+			menuMask = new Sprite();
+			menuMask.graphics.beginFill(0, 0.5);
+			menuMask.graphics.drawRect(0, 0, this.width, this.height);
+			menuMask.graphics.endFill();
+			addChild(menuMask);
+			
+			DisposeUtil.dispose(mcUp);
+			
+			mcUp = new Component(ClassUtil.getObject("view.group.GroupPopSkin"))
+			menuLine = ClassUtil.getObject("view.group.GroupPopLineSkin");
+			shenqing_btn=mcUp.createUI(Button, "shenqing_btn");
+			mcUp.sortChildIndex();
+			
 			for(var i:int=0;i<_arr.length;i++)
 			{
 				if(_arr[i]==item)
 				{
 					var grouplistvo:GroupListVo=_groupProxy.groupArr[i] as  GroupListVo;
-					dispatchEvent(new GroupEvent(GroupEvent.APPLYJOIN_GROUP,grouplistvo.groupname,grouplistvo.id));
+//					dispatchEvent(new GroupEvent(GroupEvent.APPLYJOIN_GROUP,grouplistvo.groupname,grouplistvo.id));
+					id=grouplistvo.id;
 				}
 			}
+			menuLine.x = point.x;
+			menuLine.y = point.y;
+			menuMask.addChild(mcUp);
+			menuMask.addChild(menuLine);
+			move();
+			shenqing_btn.addEventListener(MouseEvent.CLICK,shenqingBtn_ClickHandler)
+			menuMask.addEventListener(MouseEvent.CLICK, remove_clickHandler);
 		}
+		
+		public function move():void
+		{
+			var rect:Rectangle=menuLine.getRect(menuLine);			
+			TweenLite.to(mcUp, 0.5, { y: menuLine.y + rect.top -mcUp.height- 2 });
+		}
+		
+		protected function shenqingBtn_ClickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new GroupEvent(GroupEvent.APPLYJOIN_GROUP,null,id));
+		}
+		
+		protected function remove_clickHandler(event:MouseEvent):void
+		{
+			this.removeChild(menuMask);
+			menuMask = null;
+		}
+
+		public function get currtentItem():GroupItem_1Component
+		{
+			return _currtentItem;
+		}
+
+		public function set currtentItem(value:GroupItem_1Component):void
+		{
+			if(_currtentItem)
+				_currtentItem.isNotClick();
+			
+			_currtentItem = value;
+			_currtentItem.isClick();
+		}
+
 	}
 }

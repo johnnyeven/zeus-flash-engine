@@ -22,6 +22,8 @@ package controller.email
 		
 		public static var loadCompleteCallBack:Function;
 		
+		private var obj:Object = {};
+		
         public function ShowViewEmailComponentMediatorCommand()
         {
             super();
@@ -37,9 +39,12 @@ package controller.email
 			if(_isLoading)
 				return ;
 			
+			obj = notification.getBody();
+			
             var med:ViewEmailComponentMediator = getMediator(ViewEmailComponentMediator);
             if (med)
             {
+				med.setData(obj);
 				callShow(med);
             }
             else
@@ -61,7 +66,7 @@ package controller.email
 
             //注册界面的中介
             facade.registerMediator(med);
-			
+			med.setData(obj);
 			_isLoading=false;
 			
 			callShow(med);

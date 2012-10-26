@@ -2,6 +2,8 @@ package view.shangCheng.shangChengView
 {
 	import com.zn.utils.ClassUtil;
 	
+	import enum.ShangChengEnum;
+	
 	import events.allView.ShopEvent;
 	
 	import flash.display.DisplayObjectContainer;
@@ -61,37 +63,37 @@ package view.shangCheng.shangChengView
 			{
 				case shuiJingComp_1.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,1,"DOLLAR_1_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,1,ShangChengEnum.TYPE_1));
 					break;
 				}
 				case shuiJingComp_4.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,4,"DOLLAR_4_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,4,ShangChengEnum.TYPE_2));
 					break;
 				}
 				case shuiJingComp_9.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,9,"DOLLAR_9_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,9,ShangChengEnum.TYPE_3));
 					break;
 				}
 				case shuiJingComp_19.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,19,"DOLLAR_19_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,19,ShangChengEnum.TYPE_4));
 					break;
 				}
 				case shuiJingComp_39.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,39,"DOLLAR_39_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,39,ShangChengEnum.TYPE_5));
 					break;
 				}
 				case shuiJingComp_79.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,79,"DOLLAR_79_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,79,ShangChengEnum.TYPE_6));
 					break;
 				}
 				case shuiJingComp_99.exchangeBtn:
 				{
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,99,"DOLLAR_99_99"));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_DARK_CRYSTAL,true,false,99,ShangChengEnum.TYPE_7));
 					break;
 				}
 			}

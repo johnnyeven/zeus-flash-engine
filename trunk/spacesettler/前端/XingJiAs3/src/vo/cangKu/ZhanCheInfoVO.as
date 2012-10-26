@@ -74,12 +74,12 @@ package vo.cangKu
         /**
          *战车评分
          */
-        public var value:int;
+ //       public var value:int;
 
         /**
          *战车等级
          */
-        public var level:int;
+//        public var level:int;
 
         /**
          * 攻击速度

@@ -34,7 +34,7 @@ package view.allView
 		
 		public var junXianTxt:Label;
 		
-		public var junXianLvTxt:Label;
+		public var scienceLvTxt:Label;
 		
 		public var jinJingCountTxt:Label;
 		
@@ -71,7 +71,7 @@ package view.allView
 			
 			junXianTxt = createUI(Label,"junXianTxt");
 			
-			junXianLvTxt = createUI(Label,"junXianLvTxt");
+			scienceLvTxt = createUI(Label,"scienceLvTxt");
 			
 			jinJingCountTxt = createUI(Label,"jinJingCountTxt");
 			
@@ -85,7 +85,7 @@ package view.allView
 			
 			sortChildIndex();
 			
-			playerNameTxt.text = rongYuTxt.text = keJiShiDaiTxt.text = junTuanTxt.text = startCountTxt.text = junXianTxt.text = junXianLvTxt.text="";
+			playerNameTxt.text = rongYuTxt.text = keJiShiDaiTxt.text = junTuanTxt.text = startCountTxt.text = junXianTxt.text = scienceLvTxt.text="";
 			jinJingCountTxt.text = chuanQiCountTxt.text = anWuZhiCountTxt.text = powerCountTxt.text = usePowerCountTxt.text = "";
 			
 			if(allViewProxy.allViewVO)
@@ -94,7 +94,7 @@ package view.allView
 				
 				rongYuTxt.text = allViewProxy.allViewVO.rongYuTxt +"";
 				
-				keJiShiDaiTxt.text = allViewProxy.allViewVO.keJiShiDaiTxt+"";
+				keJiShiDaiTxt.text = allViewProxy.allViewVO.getKeJiShiDaiNameByKeJiShiDaiLevel;
 				
 				if(allViewProxy.allViewVO.junTuanTxt)
 				{
@@ -106,7 +106,7 @@ package view.allView
 				
 				junXianTxt.text = allViewProxy.allViewVO.junXianTxt;
 				
-				junXianLvTxt.text = allViewProxy.allViewVO.junXianLvTxt+"";
+				scienceLvTxt.text = allViewProxy.allViewVO.scienceLvTxt+"级";
 				
 				jinJingCountTxt.text = allViewProxy.allViewVO.jinJingCountTxt+"/h";
 				

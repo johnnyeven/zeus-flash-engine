@@ -40,6 +40,8 @@ package mediator.battleEnter
             comp.med = this;
             level = 1;
             popUpEffect = UP;
+			width=Main.WIDTH;
+			height=Main.HEIGHT;
 
             comp.addEventListener(BattleEnterEvent.BATTLE_ENTER_EVENT, battleEnterHandler);
         }

@@ -61,7 +61,7 @@ package mediator.cangKu
 			groupProxy=getProxy(GroupProxy);
 			userProxy=getProxy(UserInfoProxy);
 			if(!groupProxy.groupInfoVo)
-				groupProxy.refreshGroup(userProxy.userInfoVO.player_id);
+				groupProxy.refreshGroup();
 			
             comp.med = this;
             level = 1;
@@ -174,7 +174,7 @@ package mediator.cangKu
 			obj.count=count;
 			obj.okCallBack=function():void
 			{
-				packageProxy.groupDonate(groupProxy.groupInfoVo.id,selectedItemVO.id,count,
+				packageProxy.groupDonate(userProxy.userInfoVO.legion_id,selectedItemVO.id,count,
 										selectedItemVO.item_type,function():void
 										{
 											var obj1:Object={};

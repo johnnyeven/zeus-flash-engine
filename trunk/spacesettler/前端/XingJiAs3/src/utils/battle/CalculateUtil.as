@@ -2,7 +2,7 @@ package utils.battle
 {
     import enum.item.AttackTypeEnum;
     import enum.item.SlotEnum;
-
+    
     import vo.cangKu.GuaJianInfoVO;
     import vo.cangKu.ZhanCheInfoVO;
 
@@ -114,5 +114,19 @@ package utils.battle
         {
             return (150 + Math.pow(zhanChe.totalAttackArea, 1 / 4) * 3) * (1 - Math.pow(guaJianVO.attackCoolDown, -2.3));
         }
+		
+		/**
+		 *攻击伤害计算 
+		 * @param tankpart
+		 * @param hitVO
+		 * @return 
+		 * 
+		 */
+		public static function fightExplodeZhanCheAttackHurt(tankpart:TANKPART,hitVO:*):Number
+		{
+			var num:Number=0;
+			
+			return num;
+		}
     }
 }

@@ -45,17 +45,11 @@ package mediator.group
 		}
 		
 		protected function applyJoinGroupHandler(event:GroupEvent):void
-		{
-			var obj:Object={};	
-			obj.name="军团："+event.groupName;
-			obj.okCallBack=function():void
+		{			
+			groupProxy.applyjoinGroup(userProxy.userInfoVO.player_id,event.id,function():void
 			{
-				groupProxy.applyjoinGroup(userProxy.userInfoVO.player_id,event.id,function():void
-				{
-					sendNotification(GroupComponentMediator.SHOW_NOTE);
-				});
-			}
-			sendNotification(GroupPopComponentMediator.SHOW_NOTE,obj);
+				sendNotification(GroupComponentMediator.SHOW_NOTE);
+			});			
 		}
 		
 		protected function creatGroupHandler(event:GroupEvent):void

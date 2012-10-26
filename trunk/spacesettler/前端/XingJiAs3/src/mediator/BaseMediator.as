@@ -27,6 +27,8 @@ package mediator
 
         public static const RIGHT:int = 2;
 
+        public static const LEFT:int = 3;
+		
         protected var _popUp:Boolean = true;
 
         public var mode:Boolean = false;
@@ -91,7 +93,7 @@ package mediator
                     var endX:Number = uiComp.x - uiComp.width;
                     TweenLite.to(uiComp, 0.4, { x: endX, onComplete: showComplete });
                 }
-                else
+                else if(popUpEffect == CENTER)
                 {
                     if (uiComp.scaleX == 1)
                     {
@@ -105,7 +107,12 @@ package mediator
                     uiComp.y = centerPoint.y;
 
                     TweenLite.to(uiComp, 0.4, { transformAroundCenter: { scaleX: 1, scaleY: 1, alpha: 1 }, ease: Linear.easeNone, onComplete: showComplete });
-                }
+                }else if(popUpEffect == LEFT)
+				{
+					uiComp.x = -uiComp.width;
+					uiComp.y = 310;
+					TweenLite.to(uiComp, 0.4, { x: 0, onComplete: showComplete });
+				}
 
             }
             else
@@ -139,7 +146,7 @@ package mediator
                         //toRight
                         TweenLite.to(uiComp, 0.4, { x: SystemManager.rootStage.stageWidth, ease: Linear.easeNone, onComplete: removeTweenLiteComplete });
                     }
-                    else
+                    else if(popUpEffect == CENTER)
                     {
                         TweenLite.to(uiComp, 0.4, { transformAroundCenter: { scaleX: 0.6, scaleY: 0.6, alpha: 0.5 }, ease: Linear.easeNone, onComplete: function():void
                         {
@@ -151,7 +158,11 @@ package mediator
 
                             callDestoryCallBack();
                         }});
-                    }
+                    }else if(popUpEffect == LEFT)
+					{		
+						//toLeft
+						TweenLite.to(uiComp, 0.4, { x: -uiComp.width, onComplete: removeTweenLiteComplete });						
+					}
                 }
                 else
                 {

@@ -3,14 +3,16 @@ package net
     import com.zn.log.Log;
     import com.zn.net.Protocol;
     import com.zn.net.http.HttpRequest;
-
+    
     import flash.net.URLRequestMethod;
-
+    
     import mediator.prompt.PromptMediator;
-
+    
     import mx.utils.ObjectUtil;
-
+    
     import org.puremvc.as3.patterns.facade.Facade;
+    
+    import ui.managers.SystemManager;
 
     public class NetHttpConn
     {
@@ -53,6 +55,8 @@ package net
 
         public static function send(commandID:String, obj:Object = null, method:String = URLRequestMethod.POST):void
         {
+			SystemManager.instance.setMouseEnabled(false);
+			
             if (showLoadServerData)
                 ApplicationFacade.getInstance().sendNotification(PromptMediator.SHOW_LOADWAITMC_NOTE);
             _requestCount++;
@@ -91,7 +95,10 @@ package net
 		{
 			_requestCount = Math.max(0, _requestCount - 1);
 			if (_requestCount == 0)
+			{
 				ApplicationFacade.getInstance().sendNotification(PromptMediator.HIDE_LOADWAITMC_NOTE);
+				SystemManager.instance.setMouseEnabled(true);
+			}
 		}
     }
 }

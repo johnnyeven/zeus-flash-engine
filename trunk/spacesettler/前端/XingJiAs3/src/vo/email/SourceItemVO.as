@@ -19,6 +19,16 @@ package vo.email
 		 */
 		public var attachment_count:int;
 		
+		/**
+		 *玩家库存的资源数量
+		 */
+		public var mySourceCount:int;
+		
+		/**
+		 *发送资源需花费的 暗物质（钱）
+		 */
+		public var costMoney:int;
+		
 		public var count:int = 1;
 		
 		public function SourceItemVO()

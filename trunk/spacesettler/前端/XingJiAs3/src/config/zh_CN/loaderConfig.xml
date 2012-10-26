@@ -1,305 +1,359 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <!--<SWFLoader name="roleSymbol" url="flash/role.swf" version="1"/> -->
+	<!--<SWFLoader name="roleSymbol" url="flash/role.swf" version="1"/> -->
 
-    <!--<XMLLoader name="config" url="config/config.xml" version="1"/> -->
+	<!--<XMLLoader name="config" url="config/config.xml" version="1"/> -->
 
-    <!--<ZipLoader name="configList.zip" url="config/zh_CN/configList.zip" version="1"/> -->
+	<!--<ZipLoader name="configList.zip" url="config/zh_CN/configList.zip" version="1"/> -->
 
-    <LoaderMax name="preLoader">
-        <XMLLoader name="connectionConfig.xml"
-            url="config/zh_CN/connectionConfig.xml"
-            version="1"/>
-    </LoaderMax>
+	<LoaderMax name="preLoader">
+		<XMLLoader name="connectionConfig.xml"
+				   url="config/zh_CN/connectionConfig.xml"
+				   version="1"/>
+	</LoaderMax>
 
-    <!--配置文件 -->
-    <ZipLoader name="configList.zip"
-        url="config/zh_CN/configList.zip"
-        version="1"/>
+	<!--配置文件 -->
+	<ZipLoader name="configList.zip"
+			   url="config/zh_CN/configList.zip"
+			   version="1"/>
 
-    <!--登陆 -->
-    <SWFLoader name="login.swf"
-        url="zh_CN/login.swf"
-        version="1"/>
+	<!--登陆 -->
+	<SWFLoader name="login.swf"
+			   url="zh_CN/login.swf"
+			   version="1"/>
 
-    <!--创建角色 -->
-    <SWFLoader name="createRole.swf"
-        url="zh_CN/createRole.swf"
-        version="1"/>
+	<!--创建角色 -->
+	<SWFLoader name="createRole.swf"
+			   url="zh_CN/createRole.swf"
+			   version="1"/>
 
-    <!--进入游戏的必须资源 -->
-    <LoaderMax name="needRes">
-    </LoaderMax>
+	<!--进入游戏的必须资源 -->
+	<LoaderMax name="needRes">
+	</LoaderMax>
 
-    <!--其他后台加载资源 -->
-    <LoaderMax name="otherRes">
-        <!--主界面 -->
-        <SWFLoader name="mainView.swf"
-            url="zh_CN/mainView.swf"
-            version="1"/>
+	<!--其他后台加载资源 -->
+	<LoaderMax name="otherRes">
+		<!--主界面 -->
+		<SWFLoader name="mainView.swf"
+				   url="zh_CN/mainView.swf"
+				   version="1"/>
 
-        <LoaderMax name="mainSence1">
-            <SWFLoader name="mainSence_1"
-                url="zh_CN/images/senceMap/mainSence_1.swf"
-                version="1"/>
+		<LoaderMax name="mainSence1">
+			<SWFLoader name="mainSence_1"
+					   url="zh_CN/images/senceMap/mainSence_1.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_anNengDianChang"
-                url="zh_CN/images/senceMapBuilding/sence1_anNengDianChang.swf"
-                version="1"/>
+			<SWFLoader name="sence1_anNengDianChang"
+					   url="zh_CN/images/senceMapBuilding/sence1_anNengDianChang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_building_up"
-                url="zh_CN/images/senceMapBuilding/sence1_building_up.swf"
-                version="1"/>
+			<SWFLoader name="sence1_building_up"
+					   url="zh_CN/images/senceMapBuilding/sence1_building_up.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_cangKu"
-                url="zh_CN/images/senceMapBuilding/sence1_cangKu.swf"
-                version="1"/>
+			<SWFLoader name="sence1_cangKu"
+					   url="zh_CN/images/senceMapBuilding/sence1_cangKu.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_centerBuilding"
-                url="zh_CN/images/senceMapBuilding/sence1_centerBuilding.swf"
-                version="1"/>
+			<SWFLoader name="sence1_centerBuilding"
+					   url="zh_CN/images/senceMapBuilding/sence1_centerBuilding.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_chuanQingCang"
-                url="zh_CN/images/senceMapBuilding/sence1_chuanQingCang.swf"
-                version="1"/>
+			<SWFLoader name="sence1_chuanQingCang"
+					   url="zh_CN/images/senceMapBuilding/sence1_chuanQingCang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_jianzao"
-                url="zh_CN/images/senceMapBuilding/sence1_jianzao.swf"
-                version="1"/>
+			<SWFLoader name="sence1_jianzao"
+					   url="zh_CN/images/senceMapBuilding/sence1_jianzao.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_junGongCang"
-                url="zh_CN/images/senceMapBuilding/sence1_junGongCang.swf"
-                version="1"/>
+			<SWFLoader name="sence1_junGongCang"
+					   url="zh_CN/images/senceMapBuilding/sence1_junGongCang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_keXueYuan"
-                url="zh_CN/images/senceMapBuilding/sence1_keXueYuan.swf"
-                version="1"/>
+			<SWFLoader name="sence1_keXueYuan"
+					   url="zh_CN/images/senceMapBuilding/sence1_keXueYuan.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_kuangChang"
-                url="zh_CN/images/senceMapBuilding/sence1_kuangChang.swf"
-                version="1"/>
+			<SWFLoader name="sence1_kuangChang"
+					   url="zh_CN/images/senceMapBuilding/sence1_kuangChang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence1_timeMachine"
-                url="zh_CN/images/senceMapBuilding/sence1_timeMachine.swf"
-                version="1"/>
+			<SWFLoader name="sence1_timeMachine"
+					   url="zh_CN/images/senceMapBuilding/sence1_timeMachine.swf"
+					   version="1"/>
 
-            <!-- 采矿车 -->
-            <SWFLoader name="sence1_caiKuangChe"
-                url="zh_CN/images/senceMapEffect/sence1_caiKuangChe.swf"
-                version="1"/>
+			<!-- 采矿车 -->
+			<SWFLoader name="sence1_caiKuangChe"
+					   url="zh_CN/images/senceMapEffect/sence1_caiKuangChe.swf"
+					   version="1"/>
 
-        </LoaderMax>
+		</LoaderMax>
 
-        <LoaderMax name="mainSence2">
-            <SWFLoader name="mainSence_2"
-                url="zh_CN/images/senceMap/mainSence_2.swf"
-                version="1"/>
+		<LoaderMax name="mainSence2">
+			<SWFLoader name="mainSence_2"
+					   url="zh_CN/images/senceMap/mainSence_2.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_anNengDianChang"
-                url="zh_CN/images/senceMapBuilding/sence2_anNengDianChang.swf"
-                version="1"/>
+			<SWFLoader name="sence2_anNengDianChang"
+					   url="zh_CN/images/senceMapBuilding/sence2_anNengDianChang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_cangKu"
-                url="zh_CN/images/senceMapBuilding/sence2_cangKu.swf"
-                version="1"/>
+			<SWFLoader name="sence2_cangKu"
+					   url="zh_CN/images/senceMapBuilding/sence2_cangKu.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_centerBuilding"
-                url="zh_CN/images/senceMapBuilding/sence2_centerBuilding.swf"
-                version="1"/>
+			<SWFLoader name="sence2_centerBuilding"
+					   url="zh_CN/images/senceMapBuilding/sence2_centerBuilding.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_chuanQingCang"
-                url="zh_CN/images/senceMapBuilding/sence2_chuanQingCang.swf"
-                version="1"/>
+			<SWFLoader name="sence2_chuanQingCang"
+					   url="zh_CN/images/senceMapBuilding/sence2_chuanQingCang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_junGongCang"
-                url="zh_CN/images/senceMapBuilding/sence2_junGongCang.swf"
-                version="1"/>
+			<SWFLoader name="sence2_junGongCang"
+					   url="zh_CN/images/senceMapBuilding/sence2_junGongCang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_keXueYuan"
-                url="zh_CN/images/senceMapBuilding/sence2_keXueYuan.swf"
-                version="1"/>
+			<SWFLoader name="sence2_keXueYuan"
+					   url="zh_CN/images/senceMapBuilding/sence2_keXueYuan.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_kuangChang"
-                url="zh_CN/images/senceMapBuilding/sence2_kuangChang.swf"
-                version="1"/>
+			<SWFLoader name="sence2_kuangChang"
+					   url="zh_CN/images/senceMapBuilding/sence2_kuangChang.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_timeMachine"
-                url="zh_CN/images/senceMapBuilding/sence2_timeMachine.swf"
-                version="1"/>
+			<SWFLoader name="sence2_timeMachine"
+					   url="zh_CN/images/senceMapBuilding/sence2_timeMachine.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_jianzao"
-                url="zh_CN/images/senceMapBuilding/sence2_jianzao.swf"
-                version="1"/>
+			<SWFLoader name="sence2_jianzao"
+					   url="zh_CN/images/senceMapBuilding/sence2_jianzao.swf"
+					   version="1"/>
 
-            <SWFLoader name="sence2_building_up"
-                url="zh_CN/images/senceMapBuilding/sence2_building_up.swf"
-                version="1"/>
+			<SWFLoader name="sence2_building_up"
+					   url="zh_CN/images/senceMapBuilding/sence2_building_up.swf"
+					   version="1"/>
 
-            <!-- 采矿车 -->
-            <SWFLoader name="sence2_caiKuangChe"
-                url="zh_CN/images/senceMapEffect/sence2_caiKuangChe.swf"
-                version="1"/>
+			<!-- 采矿车 -->
+			<SWFLoader name="sence2_caiKuangChe"
+					   url="zh_CN/images/senceMapEffect/sence2_caiKuangChe.swf"
+					   version="1"/>
 
-        </LoaderMax>
+		</LoaderMax>
 
-        <LoaderMax name="up_build_view">
-            <SWFLoader name="annengdianchang_view"
-                url="zh_CN/images/senceBuildingView/annengdianchang_view.swf"
-                version="1"/>
+		<LoaderMax name="up_build_view">
+			<SWFLoader name="annengdianchang_view"
+					   url="zh_CN/images/senceBuildingView/annengdianchang_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="cangKu_view"
-                url="zh_CN/images/senceBuildingView/cangKu_view.swf"
-                version="1"/>
+			<SWFLoader name="cangKu_view"
+					   url="zh_CN/images/senceBuildingView/cangKu_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="center_view"
-                url="zh_CN/images/senceBuildingView/center_view.swf"
-                version="1"/>
+			<SWFLoader name="center_view"
+					   url="zh_CN/images/senceBuildingView/center_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="chuanQingChang_view"
-                url="zh_CN/images/senceBuildingView/chuanQingChang_view.swf"
-                version="1"/>
+			<SWFLoader name="chuanQingChang_view"
+					   url="zh_CN/images/senceBuildingView/chuanQingChang_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="junGongChang_view"
-                url="zh_CN/images/senceBuildingView/junGongChang_view.swf"
-                version="1"/>
+			<SWFLoader name="junGongChang_view"
+					   url="zh_CN/images/senceBuildingView/junGongChang_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="keJi_view"
-                url="zh_CN/images/senceBuildingView/keJi_view.swf"
-                version="1"/>
+			<SWFLoader name="keJi_view"
+					   url="zh_CN/images/senceBuildingView/keJi_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="shiJianJiQi_info_view"
-                url="zh_CN/images/senceBuildingView/shiJianJiQi_info_view.swf"
-                version="1"/>
+			<SWFLoader name="shiJianJiQi_info_view"
+					   url="zh_CN/images/senceBuildingView/shiJianJiQi_info_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="speed_view"
-                url="zh_CN/images/senceBuildingView/speed_view.swf"
-                version="1"/>
+			<SWFLoader name="speed_view"
+					   url="zh_CN/images/senceBuildingView/speed_view.swf"
+					   version="1"/>
 
-            <SWFLoader name="yeLianChang_view"
-                url="zh_CN/images/senceBuildingView/yeLianChang_view.swf"
-                version="1"/>
+			<SWFLoader name="yeLianChang_view"
+					   url="zh_CN/images/senceBuildingView/yeLianChang_view.swf"
+					   version="1"/>
 
-        </LoaderMax>
+		</LoaderMax>
 
-        <!-- 功能模块-->
-        <LoaderMax name="function_module">
+		<!-- 功能模块-->
+		<LoaderMax name="function_module">
 
-            <!--总览、荣誉、小行星 -->
-            <SWFLoader name="allView.swf"
-                url="zh_CN/allView.swf"
-                version="1"/>
-            <!--查看仓库 -->
-            <SWFLoader name="cangKuPackageView.swf"
-                url="zh_CN/cangKuPackageView.swf"
-                version="1"/>
+			<!--总览、荣誉、小行星 -->
+			<SWFLoader name="allView.swf"
+					   url="zh_CN/allView.swf"
+					   version="1"/>
+			<!--查看仓库 -->
+			<SWFLoader name="cangKuPackageView.swf"
+					   url="zh_CN/cangKuPackageView.swf"
+					   version="1"/>
 
-            <!--商城-->
-            <SWFLoader name="ShangCheng.swf"
-                url="zh_CN/shangCheng.swf"
-                version="1"/>
+			<!--商城-->
+			<SWFLoader name="ShangCheng.swf"
+					   url="zh_CN/shangCheng.swf"
+					   version="1"/>
 
-            <!--系统-->
-            <SWFLoader name="system.swf"
-                url="zh_CN/system.swf"
-                version="1"/>
-			
-			 <!--军工厂 -->
-            <SWFLoader name="ordnanceFactory.swf"
-                url="zh_CN/ordnanceFactory.swf"
-                version="1"/>
-			
-            <!--军团 -->
-            <SWFLoader name="armyGroup.swf"
-                url="zh_CN/armyGroup.swf"
-                version="1"/>
+			<!--系统-->
+			<SWFLoader name="system.swf"
+					   url="zh_CN/system.swf"
+					   version="1"/>
 
-            <!--小行星带-->
-            <SWFLoader name="planetoid.swf"
-                url="zh_CN/planetoid.swf"
-                version="1"/>
+			<!--军工厂 -->
+			<SWFLoader name="ordnanceFactory.swf"
+					   url="zh_CN/ordnanceFactory.swf"
+					   version="1"/>
 
-            <!--时间机器及其描述 -->
-            <SWFLoader name="timeMachine.swf"
-                url="zh_CN/timeMachine.swf"
-                version="1"/>
+			<!--军团 -->
+			<SWFLoader name="armyGroup.swf"
+					   url="zh_CN/armyGroup.swf"
+					   version="1"/>
 
-            <!--排行 -->
-            <SWFLoader name="ranking.swf"
-                url="zh_CN/ranking.swf"
-                version="1"/>
+			<!--小行星带-->
+			<SWFLoader name="planetoid.swf"
+					   url="zh_CN/planetoid.swf"
+					   version="1"/>
 
-            <!-- 熔炼（晶体冶炼厂） -->
-            <SWFLoader name="crystalSmelter.swf"
-                url="zh_CN/crystalSmelter.swf"
-                version="1"/>
+			<!--时间机器及其描述 -->
+			<SWFLoader name="timeMachine.swf"
+					   url="zh_CN/timeMachine.swf"
+					   version="1"/>
 
-            <!-- 科研（科技中心） -->
-            <SWFLoader name="scienceResearch.swf"
-                url="zh_CN/scienceResearch.swf"
-                version="1"/>
+			<!--排行 -->
+			<SWFLoader name="ranking.swf"
+					   url="zh_CN/ranking.swf"
+					   version="1"/>
 
-            <!-- 好友列表（聊天） -->
-            <SWFLoader name="friendList.swf"
-                url="zh_CN/friendList.swf"
-                version="1"/>
+			<!-- 熔炼（晶体冶炼厂） -->
+			<SWFLoader name="crystalSmelter.swf"
+					   url="zh_CN/crystalSmelter.swf"
+					   version="1"/>
 
-            <!-- 武器展示列表（聊天） -->
-            <SWFLoader name="showBag.swf"
-                url="zh_CN/showBag.swf"
-                version="1"/>
-                
-            <!-- 邮件 -->
-            <SWFLoader name="email.swf"
-                url="zh_CN/email.swf"
-                version="1"/>
-                
-        </LoaderMax>
+			<!-- 科研（科技中心） -->
+			<SWFLoader name="scienceResearch.swf"
+					   url="zh_CN/scienceResearch.swf"
+					   version="1"/>
 
-        <!-- 战场-->
-        <LoaderMax name="battle">
-            <!-- 战场建筑 -->
-            <SWFLoader name="battleBuild_3.swf"
-                url="zh_CN/images/battleBuild/build_3.swf"
-                version="1"/>
+			<!-- 好友列表（聊天） -->
+			<SWFLoader name="friendList.swf"
+					   url="zh_CN/friendList.swf"
+					   version="1"/>
 
-            <SWFLoader name="battleBuild_4.swf"
-                url="zh_CN/images/battleBuild/build_4.swf"
-                version="1"/>
+			<!-- 武器展示列表（聊天） -->
+			<SWFLoader name="showBag.swf"
+					   url="zh_CN/showBag.swf"
+					   version="1"/>
 
-            <SWFLoader name="battleBuild_5.swf"
-                url="zh_CN/images/battleBuild/build_5.swf"
-                version="1"/>
+			<!-- 邮件 -->
+			<SWFLoader name="email.swf"
+					   url="zh_CN/email.swf"
+					   version="1"/>
 
-            <SWFLoader name="battleBuild_6.swf"
-                url="zh_CN/images/battleBuild/build_6.swf"
-                version="1"/>
+		</LoaderMax>
 
-            <SWFLoader name="battleBuild_icon.swf"
-                url="zh_CN/images/battleBuild/build_icon.swf"
-                version="1"/>
+		<!-- 战场-->
+		<LoaderMax name="battle">
+			<!-- 战场建筑 -->
+			<SWFLoader name="battleBuild_3.swf"
+					   url="zh_CN/images/battleBuild/build_3.swf"
+					   version="1"/>
 
-            <!-- 战场地图1 -->
-            <SWFLoader name="battleMap_1.swf"
-                url="zh_CN/images/battleMap/battleMap_1.swf"
-                version="1"/>
+			<SWFLoader name="battleBuild_4.swf"
+					   url="zh_CN/images/battleBuild/build_4.swf"
+					   version="1"/>
 
-            <!-- 战场 -->
-            <SWFLoader name="battle.swf"
-                url="zh_CN/battle.swf"
-                version="1"/>
-        </LoaderMax>
-        
-          <!-- 战场战车-->
-        <LoaderMax name="battleZhanChe">
-            <SWFLoader name="zhanChe_1.swf"
-                url="zh_CN/images/battleZhanChe/zhanChe_1.swf"
-                version="1"/>
-        </LoaderMax>
+			<SWFLoader name="battleBuild_5.swf"
+					   url="zh_CN/images/battleBuild/build_5.swf"
+					   version="1"/>
 
-        <!-- 飞船入口 -->
-        <SWFLoader name="battleEnter.swf"
-            url="zh_CN/battleEnter.swf"
-            version="1"/>
-    </LoaderMax>
+			<SWFLoader name="battleBuild_6.swf"
+					   url="zh_CN/images/battleBuild/build_6.swf"
+					   version="1"/>
+
+			<SWFLoader name="battleBuild_icon.swf"
+					   url="zh_CN/images/battleBuild/build_icon.swf"
+					   version="1"/>
+
+			<!-- 战场地图1 -->
+			<SWFLoader name="battleMap_1.swf"
+					   url="zh_CN/images/battleMap/battleMap_1.swf"
+					   version="1"/>
+
+			<!-- 战场 -->
+			<SWFLoader name="battle.swf"
+					   url="zh_CN/battle.swf"
+					   version="1"/>
+
+			<!-- 战场飞机 -->
+			<SWFLoader name="zhanChe_13.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_13.swf"
+					   version="1"/>
+			<SWFLoader name="zhanChe_14.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_14.swf"
+					   version="1"/>
+			<SWFLoader name="zhanChe_15.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_15.swf"
+					   version="1"/>
+		</LoaderMax>
+
+		<!-- 战场战车-->
+		<LoaderMax name="battleZhanChe">
+			<SWFLoader name="zhanChe_1.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_1.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_2.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_2.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_3.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_3.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_4.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_4.swf"
+					   version="1"/>
+			<SWFLoader name="zhanChe_5.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_5.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_6.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_6.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_7.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_7.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_8.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_8.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_9.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_9.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_10.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_10.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_11.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_11.swf"
+					   version="1"/>
+
+			<SWFLoader name="zhanChe_12.swf"
+					   url="zh_CN/images/battleZhanChe/zhanChe_12.swf"
+					   version="1"/>
+		</LoaderMax>
+
+		<!-- 飞船入口 -->
+		<SWFLoader name="battleEnter.swf"
+				   url="zh_CN/battleEnter.swf"
+				   version="1"/>
+	</LoaderMax>
 
 </root>

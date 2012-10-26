@@ -67,7 +67,7 @@ package view.mainView
 		
 		private function checkBtn_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new TalkEvent(TalkEvent.CHECK_ID_CARD_EVENT,data,0,true,true));
+			dispatchEvent(new TalkEvent(TalkEvent.CHECK_ID_CARD_EVENT,data,"0",true,true));
 			mainMeditor.comp.removeChild(this);
 		}
 		

@@ -7,9 +7,11 @@ package view.buildingView
 	import com.zn.utils.StringUtil;
 	
 	import enum.BuildTypeEnum;
+	import enum.ResEnum;
 	
 	import events.buildingView.AddViewEvent;
 	import events.buildingView.BuildEvent;
+	import events.buildingView.ConditionEvent;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -19,6 +21,7 @@ package view.buildingView
 	
 	import proxy.BuildProxy;
 	import proxy.content.ContentProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.components.Button;
 	import ui.components.Label;
@@ -26,6 +29,7 @@ package view.buildingView
 	import ui.core.Component;
 	
 	import vo.BuildInfoVo;
+	import vo.userInfo.UserInfoVO;
 	import vo.viewInfo.ViewInfoVO;
 	
 	/**
@@ -47,13 +51,19 @@ package view.buildingView
 		public var infoButton:Button;//信息按钮
 		public var speedButton:Button; //加速按钮
 		public var progressMC:ProgressBar;//进度条
+		public var conditionBtn:Button;//条件不足按钮
 		
 		public var manJiTf:Label;
 		
 		public var spComp:Component;
 
 		private var _buildVO:BuildInfoVo;
+		
+		private var _KeJiBuild:BuildInfoVo;
+		
 		private var _tweenLite:TweenLite;
+		
+		public var conditionArr:Array;
 		
 		public function AnNengDianChangUpComponent(skin:DisplayObjectContainer)
 		{
@@ -81,7 +91,8 @@ package view.buildingView
 			spComp.sortChildIndex();
 			closeButton=createUI(Button,"close_button");
 			infoButton=createUI(Button,"info_button");
-			
+			conditionBtn=spComp.createUI(Button,"conditionBtn");
+			conditionBtn.visible=false;
 			sortChildIndex();
 			
 			upLevelButton.addEventListener(MouseEvent.CLICK,upLevelButton_clickHandler);
@@ -92,7 +103,10 @@ package view.buildingView
 		
 		protected function upLevelButton_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new Event(BuildEvent.UP_EVENT));
+			if(conditionBtn.visible==true)
+				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
+			else
+				dispatchEvent(new Event(BuildEvent.UP_EVENT));
 		}
 		
 		protected function closeButton_clickHandler(event:MouseEvent):void
@@ -109,6 +123,10 @@ package view.buildingView
 		{
 			var buildProxy:BuildProxy=ApplicationFacade.getProxy(BuildProxy);
 			_buildVO=buildProxy.getBuild(value);
+			_KeJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
+			var centerBuild:BuildInfoVo=buildProxy.getBuild(BuildTypeEnum.CENTER);
+			
+			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			
 			if(_buildVO.level>=40)
 			{
@@ -124,6 +142,47 @@ package view.buildingView
 			shuiJingKuangXHLabel.text=nextViewInfoVO.shuiJinXH+"";
 			chuanQingXHLabel.text=nextViewInfoVO.chuanQinXH+"";
 			xiaoGuoLabel.text=curViewInfoVO.DianNengTG+"/h --> "+nextViewInfoVO.DianNengTG+"/h";
+			
+			if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || nextViewInfoVO.shuiJinXH>userInfoVO.crystal ||
+				nextViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>centerBuild.level)
+			{
+				conditionBtn.visible=true;
+				conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
+			}
+			//不足的条件
+			conditionArr=[];
+			if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta)
+			{
+				var obj1:Object=new Object();
+				obj1.imgSource=ResEnum.getConditionIconURL+"1.png";
+				obj1.content=MultilanguageManager.getString("broken_crysta")+userInfoVO.broken_crysta+"/"+nextViewInfoVO.anWuZhiXH;
+				obj1.btnLabel=MultilanguageManager.getString("buy_click");
+				conditionArr.push(obj1);
+			}
+			if(nextViewInfoVO.shuiJinXH>userInfoVO.crystal)
+			{
+				var obj2:Object=new Object();
+				obj2.imgSource=ResEnum.getConditionIconURL+"2.png";
+				obj2.content=MultilanguageManager.getString("crystal")+userInfoVO.crystal+"/"+nextViewInfoVO.shuiJinXH;
+				obj2.btnLabel=MultilanguageManager.getString("buy_click");
+				conditionArr.push(obj2);
+			}
+			if(nextViewInfoVO.chuanQinXH>userInfoVO.tritium)
+			{
+				var obj3:Object=new Object();
+				obj3.imgSource=ResEnum.getConditionIconURL+"3.png";
+				obj3.content=MultilanguageManager.getString("tritium")+userInfoVO.tritium+"/"+nextViewInfoVO.chuanQinXH;
+				obj3.btnLabel=MultilanguageManager.getString("buy_click");
+				conditionArr.push(obj3);
+			}
+			if(curViewInfoVO.limit>centerBuild.level)
+			{
+				var obj4:Object=new Object();
+				obj4.imgSource=ResEnum.getConditionIconURL+"5.png";
+				obj4.content=MultilanguageManager.getString("center_build")+centerBuild.level+"/"+curViewInfoVO.limit;
+				obj4.btnLabel=MultilanguageManager.getString("up_center");
+				conditionArr.push(obj4);
+			}
 			
 			removeCWList();
 			
@@ -178,6 +237,16 @@ package view.buildingView
 				speedButton.visible = false;
 			
 			timeLabel.text = DateFormatter.formatterTimeSFM(_buildVO.remainTime);
+		}
+		
+		/**
+		 *条件不足
+		 * @param event
+		 *
+		 */
+		protected function conditionBtn_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 		}
 		
 		/**

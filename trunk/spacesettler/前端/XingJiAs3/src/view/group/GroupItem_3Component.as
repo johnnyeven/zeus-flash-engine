@@ -8,6 +8,8 @@ package view.group
 	import ui.components.Label;
 	import ui.core.Component;
 	
+	import vo.group.GroupAuditListVo;
+	
 	/**
 	 *审核成员的ITEM  
 	 * @author Administrator
@@ -42,7 +44,9 @@ package view.group
 		
 		public var vip:Sprite;
 
-		public var back:Sprite;		
+		public var back:Sprite;	
+		
+		public var currtentVo:GroupAuditListVo;
 			
         public function GroupItem_3Component()
         {

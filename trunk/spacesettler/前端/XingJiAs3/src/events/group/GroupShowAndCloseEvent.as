@@ -14,6 +14,8 @@ package events.group
 		
 		public static const SHOW_SHENHE_EVENT:String="show_shenhe_event";
 		
+		public static const SHOW_PLANE_EVENT:String="show_plane_event";
+		
 		public function GroupShowAndCloseEvent(type:String)
 		{
 			super(type, false, false);

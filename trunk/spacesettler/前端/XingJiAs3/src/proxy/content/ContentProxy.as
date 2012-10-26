@@ -86,6 +86,8 @@ package proxy.content
 			var buildLevelDic:Object=contentData.buildings[type];
 			var buildObj:Object=buildLevelDic[level];
 			
+			if(buildObj.conditions.all_subjects_level)
+				viewInfoVO.all_subjects_level=buildObj.conditions.all_subjects_level;
 			viewInfoVO.limit=buildObj.conditions.academy_level;
 			viewInfoVO.time=buildObj.cost.time;
 			viewInfoVO.anWuZhiXH=buildObj.cost.broken_crystal;

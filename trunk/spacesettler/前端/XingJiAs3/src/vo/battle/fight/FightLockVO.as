@@ -2,6 +2,8 @@ package vo.battle.fight
 {
 	import com.zn.net.socket.ClientSocket;
 	
+	import enum.battle.FightCustomMessageTypeEnum;
+	
 	import flash.utils.ByteArray;
 	
 	import ui.vo.ValueObject;
@@ -20,11 +22,18 @@ package vo.battle.fight
 		 */		
 		public var lockedID:String="";
 		
+		/**
+		 *原来被锁定的对象，用于取消锁定 
+		 */		
+		public var oldLocked:String="";
+		
 		public function toBy():ByteArray
 		{
 			var body:ByteArray = ClientSocket.getBy();
+			body.writeUnsignedInt(FightCustomMessageTypeEnum.LOCK);
 			SocketUtil.writeIdType(lockID, body);
 			SocketUtil.writeIdType(lockedID, body);
+			SocketUtil.writeIdType(oldLocked, body);
 			
 			return body;
 		}
@@ -33,6 +42,7 @@ package vo.battle.fight
 		{
 			lockID = SocketUtil.readIdType(by);
 			lockedID = SocketUtil.readIdType(by);
+			oldLocked = SocketUtil.readIdType(by);
 		}
 	}
 }

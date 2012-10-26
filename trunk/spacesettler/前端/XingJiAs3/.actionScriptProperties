@@ -31,7 +31,7 @@
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
     </libraryPath>
     <sourceAttachmentPath>
-      <sourceAttachmentPathEntry kind="3" linkType="1" path="D:/工作文档/星际/svn/前端/XingJiAs3/libs/Libaray.swc" sourcepath="${DOCUMENTS}/Libaray/src" useDefaultLinkType="false"/>
+      <sourceAttachmentPathEntry kind="3" linkType="1" path="D:/宸ヤ綔鏂囨。/鏄熼檯/svn/鍓嶇/XingJiAs3/libs/Libaray.swc" sourcepath="${DOCUMENTS}/Libaray/src" useDefaultLinkType="false"/>
     </sourceAttachmentPath>
   </compiler>
   <applications>
@@ -42,3 +42,4 @@
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
 </actionScriptProperties>
+

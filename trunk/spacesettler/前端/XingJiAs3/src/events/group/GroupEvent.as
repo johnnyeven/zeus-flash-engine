@@ -19,6 +19,11 @@ package events.group
 		 */		
 		public static const QUITE_GROUP:String="quite_Group";
 		
+		/**
+		 *补充舰队
+		 */		
+		public static const BUCHONG_EVENT:String="buchong_event";
+		
 		private var _groupName:String;
 		private var _id:String;
 

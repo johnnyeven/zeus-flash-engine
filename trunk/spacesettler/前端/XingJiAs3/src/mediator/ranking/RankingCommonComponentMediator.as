@@ -1,6 +1,8 @@
 package mediator.ranking
 {
 	
+	import enum.rank.RankEnum;
+	
 	import events.ranking.RankingEvent;
 	
 	import flash.events.Event;
@@ -33,7 +35,7 @@ package mediator.ranking
 			this.popUpEffect=UP;
 			level=2;
 			comp.med=this;
-			this.height=600;
+			this.height=Main.HEIGHT;
 			
 			rankProxy=getProxy(RankingProxy);
 			userProxy=getProxy(UserInfoProxy);
@@ -41,34 +43,40 @@ package mediator.ranking
 			comp.addEventListener(RankingEvent.CLOSE,closeHandler);
 			comp.addEventListener(RankingEvent.DAYLIST_FORTERESS,dayForteress);
 			comp.addEventListener(RankingEvent.LIST_FORTERESS,listForteress);
+			
 			comp.addEventListener(RankingEvent.DAYLIST_REPUTATION,dayReputation);
 			comp.addEventListener(RankingEvent.LIST_REPUTATION,listReputation);
-		}
-		
+			
+			comp.addEventListener(RankingEvent.DAYLIST_MONEY,dayMoney);
+			comp.addEventListener(RankingEvent.LIST_MONEY,listMoney);
+			
+			comp.addEventListener(RankingEvent.DAYLIST_GROUP,dayGroup);
+			comp.addEventListener(RankingEvent.LIST_GROUP,listGroup);
+		}		
 		
 		public function showPage(obj:Object):void
 		{
 			
 			switch(obj.type)
 			{
-				case "caifu":
+				case RankEnum.CAIFU:
 				{
-					comp.showCaiFu("caifu");
+					comp.showCaiFu(RankEnum.CAIFU);
 					break;
 				}
-				case "shengwang":
+				case RankEnum.SHENGWANG:
 				{
-					comp.showShengWang("shengwang");
+					comp.showShengWang(RankEnum.SHENGWANG);
 					break;
 				}
-				case "juntuan":
+				case RankEnum.GROUP:
 				{
-					comp.showJunTuan("juntuan");
+					comp.showJunTuan(RankEnum.GROUP);
 					break;
 				}
-				case "yaosai":
+				case RankEnum.YAOSAI:
 				{
-					comp.showYaoSai("yaosai");
+					comp.showYaoSai(RankEnum.YAOSAI);
 					break;
 				}
 			}
@@ -145,7 +153,39 @@ package mediator.ranking
 			{
 				comp.cleanAndAdd();
 			});
+		}	
+		
+		protected function listGroup(event:RankingEvent):void
+		{
+			rankProxy.listPrestige(userProxy.userInfoVO.player_id,0,function():void
+			{
+				comp.cleanAndAdd();
+			});
 		}
+		
+		protected function dayGroup(event:RankingEvent):void
+		{
+			rankProxy.dayListPrestige(userProxy.userInfoVO.player_id,0,function():void
+			{
+				comp.cleanAndAdd();
+			});
+		}
+		
+		protected function listMoney(event:RankingEvent):void
+		{
+			rankProxy.listWealth(userProxy.userInfoVO.player_id,0,function():void
+			{
+				comp.cleanAndAdd();
+			});
+		}
+		
+		protected function dayMoney(event:RankingEvent):void
+		{
+			rankProxy.dayListWealth(userProxy.userInfoVO.player_id,0,function():void
+			{
+				comp.cleanAndAdd();
+			});
+		}			
 		
 		protected function closeHandler(event:RankingEvent):void
 		{

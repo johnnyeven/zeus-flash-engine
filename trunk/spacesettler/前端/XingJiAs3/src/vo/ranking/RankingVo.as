@@ -10,7 +10,7 @@ package vo.ranking
 		public var id:String;
 		
 		/**
-		 *昵称 
+		 *昵称  或者军团名
 		 */		
 		public var nickname:String;
 		
@@ -20,12 +20,12 @@ package vo.ranking
 		public var vip_level:int;
 		
 		/**
-		 *军团名 
+		 *军团名  或者军团长名字
 		 */		
 		public var legion_name:String;
 		
 		/**
-		 * 显示
+		 * 显示 可以是财富 声望 军团声望 要塞数
 		 */		
 		public var show:int;
 		

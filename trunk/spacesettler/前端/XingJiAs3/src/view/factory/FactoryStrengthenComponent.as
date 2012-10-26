@@ -160,11 +160,17 @@ package view.factory
 			tf_2.text=info.medium_slot.toString();
 			tf_1.text=info.small_slot.toString();
 			text_1.text=info.attack.toString();
-			text_2.text=String(info.damageDescShiDan*100)+"%";
-			text_3.text=String(info.damageDescDianCi*100)+"%";
 			text_4.text=info.total_shield.toString();
-			text_5.text=String(info.damageDescJiGuang*100)+"%";
-			text_6.text=String(info.damageDescAnNeng*100)+"%";
+			
+			var str1:String=(info.damageDescShiDan*100).toFixed(1);
+			var str2:String=(info.damageDescJiGuang*100).toFixed(1);
+			var str3:String=(info.damageDescDianCi*100).toFixed(1);
+			var str4:String=(info.damageDescAnNeng*100).toFixed(1);
+			
+			text_2.text=str1+"%";
+			text_3.text=str3+"%";
+			text_5.text=str2+"%";
+			text_6.text=str4+"%";
 			
 			show_1.text=info.total_attack_speed.toString()+"/"+info.max_attack_speed.toString();
 			show_2.text=info.total_attack_area .toString()+"/"+info.max_attack_area.toString();

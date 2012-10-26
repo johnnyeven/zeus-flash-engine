@@ -165,15 +165,23 @@ package view.email
 		private function dirtBtn_clickHandler(event:MouseEvent):void
 		{
 			var arrJson:Array = [];
-			arrJson.push(_data.id);
-			dispatchEvent(new EmailEvent(EmailEvent.DELETE_EMAIL_BY_VIEW_COMPONENT_EVENT,arrJson));
-			dispatchEvent(new Event("closeViewEmailComponent"));
+			if(_data)
+			{
+				arrJson.push(_data.id);
+				dispatchEvent(new EmailEvent(EmailEvent.DELETE_EMAIL_BY_VIEW_COMPONENT_EVENT,arrJson));
+				dispatchEvent(new Event("closeViewEmailComponent"));
+			}
+			
 		}
 		
 		private function callBackBtn_clickHandler(event:MouseEvent):void
 		{
-			_data.title = "回复"+ _data.sender +"的邮件";
-			dispatchEvent(new EmailEvent(EmailEvent.CALL_BACK_EMAIL_EVENT,_data));
+			if(_data)
+			{
+				_data.title = "回复"+ _data.sender +"的邮件";
+				dispatchEvent(new EmailEvent(EmailEvent.CALL_BACK_EMAIL_EVENT,_data));
+			}
+			
 		}
     }
 }

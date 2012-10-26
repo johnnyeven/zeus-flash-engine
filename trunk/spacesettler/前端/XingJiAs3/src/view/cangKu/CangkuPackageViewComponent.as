@@ -136,8 +136,8 @@ package view.cangKu
             vScrollBar.alpahaTweenlite(0);
 
             sortChildIndex();
+			addChild(vScrollBar);
 
-            addChild(vScrollBar);
 
             buyBtn.addEventListener(MouseEvent.CLICK, buyBtn_clickHandler);
             closeBtn.addEventListener(MouseEvent.CLICK, closeBtn_clickHandler);
@@ -147,12 +147,22 @@ package view.cangKu
 
             var packageViewProxy:PackageViewProxy = ApplicationFacade.getProxy(PackageViewProxy);
 
-            cwList.push(BindingUtils.bindProperty(shuiJinRL, "text", userInfoProxy, [ "userInfoVO", "crystal" ]));
+            cwList.push(BindingUtils.bindSetter(crystalChange, userInfoProxy, [ "userInfoVO", "crystal" ]));
             cwList.push(BindingUtils.bindProperty(anWuZhiRL, "text", userInfoProxy, [ "userInfoVO", "broken_crysta" ]));
-            cwList.push(BindingUtils.bindProperty(chuanQiRL, "text", userInfoProxy, [ "userInfoVO", "tritium" ]));
+            cwList.push(BindingUtils.bindSetter(tritiumChange, userInfoProxy, [ "userInfoVO", "tritium" ]));
             cwList.push(BindingUtils.bindProperty(anNengShuiJinRL, "text", userInfoProxy, [ "userInfoVO", "dark_crystal" ]));
             cwList.push(BindingUtils.bindSetter(itemVOListChange, packageViewProxy, "itemVOList"));
         }
+		
+		private function crystalChange(value:*):void
+		{			
+			shuiJinRL.text=Math.round(value)+"";
+		}
+		
+		private function tritiumChange(value:*):void
+		{
+			chuanQiRL.text=Math.round(value)+"";
+		}
 
         private function removeAllItem():void
         {

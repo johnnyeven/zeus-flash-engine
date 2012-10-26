@@ -9,9 +9,11 @@ package view.buildingView
     
     import enum.BuildTypeEnum;
     import enum.CenterTechTypeEnum;
+    import enum.ResEnum;
     
     import events.buildingView.AddViewEvent;
     import events.buildingView.BuildEvent;
+    import events.buildingView.ConditionEvent;
     
     import flash.display.DisplayObjectContainer;
     import flash.display.MovieClip;
@@ -102,10 +104,13 @@ package view.buildingView
 
         private var _buildVO:BuildInfoVo;
 
-        private var _KeJiBuild:BuildInfoVo;
+        private var _keJiBuild:BuildInfoVo;
         private var _tweenLite:Object;
 		
 		private var allViewProxy:AllViewProxy;
+		
+		public var conditionArr:Array;
+		
         public function CenterUpComponent(skin:DisplayObjectContainer)
         {			
             super(skin);
@@ -140,7 +145,7 @@ package view.buildingView
             upLevelButton = spComp.createUI(Button, "upLevel_button");
             speedButton =spComp. createUI(Button, "speed_button");
 			conditionBtn=spComp.createUI(Button,"conditionBtn");
-						
+			conditionBtn.visible=false;
 			spComp.sortChildIndex();            
 
             shiDai1MC = getSkin("shiDai1_MC");
@@ -175,9 +180,14 @@ package view.buildingView
 			
         }
 
+		/**
+		 *条件不足
+		 * @param event
+		 *
+		 */
 		protected function conditionBtn_clickHandler(event:MouseEvent):void
 		{
-			
+			dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 		}
 		
         protected function enterButton_clickHandler(event:MouseEvent):void
@@ -187,7 +197,10 @@ package view.buildingView
 
         protected function upLevelButton_clickHandler(event:MouseEvent):void
         {
-            dispatchEvent(new Event(BuildEvent.UP_EVENT));
+			if(conditionBtn.visible==true)
+				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
+			else
+            	dispatchEvent(new Event(BuildEvent.UP_EVENT));
         }
 
         protected function closeButton_clickHandler(event:MouseEvent):void
@@ -206,7 +219,7 @@ package view.buildingView
 //			allViewProxy.allView();
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             _buildVO = buildProxy.getBuild(value);
-            _KeJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
+            _keJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
 
             var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			var contentInfoVO:ContentProxy=ApplicationFacade.getProxy(ContentProxy);
@@ -269,11 +282,11 @@ package view.buildingView
 					xiaoGuo3Label.text = "----";
             }
 			
-			if(_KeJiBuild)
+			if(_keJiBuild)
 			{
 				enterButton.enabled=true;
 				enterButton.addEventListener(MouseEvent.CLICK, enterButton_clickHandler);
-            	levelLabel.text = _KeJiBuild.level + "";
+            	levelLabel.text = _keJiBuild.level + "";
 			}
 			else
 				levelLabel.text="0";
@@ -283,17 +296,77 @@ package view.buildingView
 //            chuanQingCLLabel.text = curViewInfoVO.chuanQinCL + "";
 //            anWuZhiCLLabel.text = curViewInfoVO.anWuZhiCL + "";
 			
-            anWuzhiXHLabel.text = curViewInfoVO.anWuZhiXH + "";
-            shuiJingKuangXHLabel.text = curViewInfoVO.shuiJinXH + "";
-            chuanQingXHLabel.text = curViewInfoVO.chuanQinXH + "";
+            anWuzhiXHLabel.text = nextViewInfoVO.anWuZhiXH + "";
+            shuiJingKuangXHLabel.text = nextViewInfoVO.shuiJinXH + "";
+            chuanQingXHLabel.text = nextViewInfoVO.chuanQinXH + "";
             xiaoGuo1Label.text = curViewInfoVO.DianNengXH + "/h --> " + nextViewInfoVO.DianNengXH + "/h";
-            xiaoGuo2Label.text = curViewInfoVO.chuanQinCL + "/h --> " + nextViewInfoVO.chuanQinCL + "/h";
+            xiaoGuo2Label.text = curViewInfoVO.chuanQinRL+"";// + "/h --> " + nextViewInfoVO.chuanQinRL + "/h"
 			
-			if(curViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || curViewInfoVO.shuiJinXH>userInfoVO.crystal ||
-				curViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>_KeJiBuild.level)
+			//条件不足判断并显示条件不足按钮
+			if(_keJiBuild)
+			{
+				if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || nextViewInfoVO.shuiJinXH>userInfoVO.crystal ||
+					nextViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>_keJiBuild.level ||
+					nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply)
+				{
+					conditionBtn.visible=true;
+					conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
+				}
+			}
+			else
 			{
 				conditionBtn.visible=true;
 				conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
+			}
+			//不足的条件
+			conditionArr=[];
+			if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta)
+			{
+				var obj1:Object=new Object();
+				obj1.imgSource=ResEnum.getConditionIconURL+"1.png";
+				obj1.content=MultilanguageManager.getString("broken_crysta")+userInfoVO.broken_crysta+"/"+nextViewInfoVO.anWuZhiXH;
+				obj1.btnLabel=MultilanguageManager.getString("buy_click");
+				conditionArr.push(obj1);
+			}
+			if(nextViewInfoVO.shuiJinXH>userInfoVO.crystal)
+			{
+				var obj2:Object=new Object();
+				obj2.imgSource=ResEnum.getConditionIconURL+"2.png";
+				obj2.content=MultilanguageManager.getString("crystal")+userInfoVO.crystal+"/"+nextViewInfoVO.shuiJinXH;
+				obj2.btnLabel=MultilanguageManager.getString("buy_click");
+				conditionArr.push(obj2);
+			}
+			if(nextViewInfoVO.chuanQinXH>userInfoVO.tritium)
+			{
+				var obj3:Object=new Object();
+				obj3.imgSource=ResEnum.getConditionIconURL+"3.png";
+				obj3.content=MultilanguageManager.getString("tritium")+userInfoVO.tritium+"/"+nextViewInfoVO.chuanQinXH;
+				obj3.btnLabel=MultilanguageManager.getString("buy_click");
+				conditionArr.push(obj3);
+			}
+			if(_keJiBuild && curViewInfoVO.limit>_keJiBuild.level)
+			{
+				var obj4:Object=new Object();
+				obj4.imgSource=ResEnum.getConditionIconURL+"6.png";
+				obj4.content=MultilanguageManager.getString("science_build")+_keJiBuild.level+"/"+curViewInfoVO.limit;
+				obj4.btnLabel=MultilanguageManager.getString("up_science");
+				conditionArr.push(obj4);
+			}
+			if(nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply)
+			{
+				var obj5:Object=new Object();
+				obj5.imgSource=ResEnum.getConditionIconURL+"4.png";
+				obj5.content=MultilanguageManager.getString("power_supply")+userInfoVO.current_power_supply+"/"+nextViewInfoVO.DianNengXH;
+				obj5.btnLabel=MultilanguageManager.getString("produce_click");
+				conditionArr.push(obj5);
+			}
+			if(!_keJiBuild)
+			{
+				var obj6:Object=new Object();
+				obj6.imgSource=ResEnum.getConditionIconURL+"6.png";
+				obj6.content=MultilanguageManager.getString("science_build")+"0/"+nextViewInfoVO.limit;
+				obj6.btnLabel=MultilanguageManager.getString("build_click");
+				conditionArr.push(obj6);
 			}
 			
             removeCWList();

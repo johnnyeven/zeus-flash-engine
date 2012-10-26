@@ -2,6 +2,8 @@ package vo.allView
 {
 	import ui.vo.ValueObject;
 	
+	import vo.group.GroupListVo;
+	
 	/**
 	 * 好友和敌人列表数据
 	 * @author lw
@@ -70,10 +72,221 @@ package vo.allView
 		 */		
 		public var is_captured:Boolean;
 		
+		/**
+		 *
+		 */		
+		public var shopping_discount:int;
+		
+		/**
+		 *
+		 */		
+		public var daily_orders:int;
+		
+		/**
+		 *
+		 */		
+		public var occupy_forts_total_record:int;
+		
+		/**
+		 *
+		 */		
+		public var prestige:int;
+		
+		/**
+		 *
+		 */		
+		public var collecting_factory_count:int;
+		
+		/**
+		 *
+		 */		
+		public var dark_crystal:int;
+		
+		/**
+		 *
+		 */		
+		public var package_size:int;
+		
+		/**
+		 *
+		 */		
+		public var email:int;
+		
+		/**
+		 *
+		 */		
+		public var camp_id:int;
+		
+		/**
+		 *
+		 */		
+		public var my_invite_code:int;
+		
+		/**
+		 *
+		 */		
+		public var player_type:int;
+		
+		/**
+		 *
+		 */		
+		public var occupy_forts_daily_record:int;
+		
+		/**
+		 *
+		 */		
+		public var total_orders:int;
+		
+		/**
+		 *
+		 */		
+		public var vip_expired_at:int;
+		
+		/**
+		 *军衔
+		 */		
+		public var military_rank:int;
+		
+		/**
+		 *
+		 */		
+		public var package_use:int;
+		
+		/**
+		 *
+		 */		
+		public var current_time:int;
+		
+		/**
+		 *
+		 */		
+		public var fort_count:int;
+		
+		/**
+		 *科技等级
+		 */		
+		public var academy_level:int;
+		
+		/**
+		 *
+		 */		
+		public var new_mail:int;
+		
+		/**
+		 *
+		 */		
+		public var legion_relation_id:int;
+		
+		/**
+		 *
+		 */		
+		public var legion_id:int;
+		
+		/**
+		 *
+		 */		
+		public var count_login_days:int;
+		
+		/**
+		 *军团ID
+		 */		
+		public var groupID:String;
+		
+		/**
+		 *
+		 */		
+		public var broken_crystal:int;
+		
+		/**
+		 *军团名字
+		 */		
+		public var groupName:String;
+		
+		/**
+		 *
+		 */		
+		public var desc:int;
+		
+		/**
+		 *
+		 */		
+		public var warship:int;
+		
+		/**
+		 *
+		 */		
+		public var president:int;
+		
+		/**
+		 *
+		 */		
+		public var members_count:int;
+		
+		/**
+		 *玩家总的声望
+		 */		
+		public var total_prestige:int;
+		
+		/**
+		 *玩家总的声望排名
+		 */		
+		public var total_prestige_rank:int;
+		
+		/**
+		 *玩家每日声望
+		 */		
+		public var daily_prestige:int;
+		
+		/**
+		 *玩家每日声望排名
+		 */		
+		public var daily_prestige_rank:int;
+		
+		/**
+		 *玩家军团信息
+		 */		
+		public var groupListVO:GroupListVo = new GroupListVo();
+		
+		/**
+		 *是否是我的好友
+		 */	
+		public var isMyFriend:Boolean = false;
+		
 		
 		public function FriendInfoVo()
 		{
-			super();
+		}
+		
+		/**
+		 * 根据科技时代等级获取   科技时代的名称
+		 */
+		public function getKeJiShiDaiNameByKeJiShiDaiLevel(keJiShiDaiTxt:int):String
+		{
+			var name:String = "";
+			switch(keJiShiDaiTxt)
+			{
+				case 1:
+				{
+					name = "机械时代";
+					break;
+				}
+				case 2:
+				{
+					name = "激光时代";
+					break;
+				}
+				case 3:
+				{
+					name = "电磁时代";
+					break;
+				}
+				case 4:
+				{
+					name = "暗能时代";
+					break;
+				}
+			}
+			return name;
 		}
 	}
 }

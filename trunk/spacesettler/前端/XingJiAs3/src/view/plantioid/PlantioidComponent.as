@@ -144,7 +144,6 @@ package view.plantioid
 					switchPlantSenceTweentime.insert(TweenLite.to(newPlantBitmap, time, { x: rect.x }));
 				}
             }
-			_currentPlantSenceComp.bgEffectComp.addEventListener(MouseEvent.CLICK,bgSp_clickHandler);
         }
 		
 		private function switchComplete(currentPlantBitmap:Bitmap,newPlantBitmap:Bitmap):void
@@ -170,6 +169,8 @@ package view.plantioid
             comp.plantX = _plantProxy.currentX;
             comp.plantY = _plantProxy.currentY;
 
+			comp.bgEffectComp.addEventListener(MouseEvent.CLICK,bgSp_clickHandler);
+			
             return comp;
         }
 

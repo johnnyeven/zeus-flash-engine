@@ -262,7 +262,7 @@ package enum.command
          */
         public static function get buyCrystal():String
         {
-            return "http://" + LoginProxy.selectedServerVO.server_ip + "/buy_dark_crystal";
+            return "http://" + LoginProxy.selectedServerVO.server_ip + "/web_buy_dark_crystal";
         }
 
         /**
@@ -279,6 +279,15 @@ package enum.command
          * 排名
          **********************************************************************************/
 
+        /**排名初始化
+         * @return
+         *
+         */
+        public static function get rank_info():String
+        {
+            return "http://" + LoginProxy.selectedServerVO.server_ip + "/rank_info";
+        }
+		
         /**排名声望接口（日榜）
          * @return
          *
@@ -619,6 +628,46 @@ package enum.command
 		{
 			return "http://" + LoginProxy.selectedServerVO.server_ip + "/friends_list";
 		}
+		
+		/**
+		 *搜寻玩家
+		 * @return
+		 *
+		 */
+		public static function get searchPlayer():String
+		{
+			return "http://" + LoginProxy.selectedServerVO.server_ip + "/players/search";
+		}
+		
+		/**
+		 *删除好友
+		 * @return
+		 *
+		 */
+		public static function get deletedFriend():String
+		{
+			return "http://" + LoginProxy.selectedServerVO.server_ip + "/remove_friend";
+		}
+
+		/**
+		 *添加好友
+		 * @return
+		 *
+		 */
+		public static function get addFriend():String
+		{
+			return "http://" + LoginProxy.selectedServerVO.server_ip + "/make_friends";
+		}
+		
+		/**
+		 *查看玩家军官证
+		 * @return
+		 *
+		 */
+		public static function get viewPlayerIDCard():String
+		{
+			return "http://" + LoginProxy.selectedServerVO.server_ip + "/overall_info";
+		}
 
 		/*********************************************************************************
 		 * 邮件
@@ -712,6 +761,11 @@ package enum.command
         public static const ROOM2CLIENT_LOGIN:int = 0;
 
         /**
+         *撤退
+         */
+        public static const ROOM2CLIENT_SURRENDER:int = 7;
+
+        /**
          *登陆房间返回
          */
         public static var ROOM2CLIENT_LOGIN_RESULT:int = 1000;
@@ -732,14 +786,51 @@ package enum.command
 		public static const ROOM2CLIENT_FIRE:int=3;
 		
 		/**
-		 * 锁定
+		 *自定义消息 
 		 */		
-		public static const ROOM2CLIENT_LOCK:int=2002;
+		public static const ROOM2CLIENT_BOARDCAST_MESSAGE:int=11;
 		
 		/**
-		 * 取消锁定
+		 *爆炸伤害 
 		 */		
-		public static const ROOM2CLIENT_UNLOCK:int=2003;
+		public static const ROOM2CLIENT_ATTACKED:int=4;
+
+		/**
+		 *捡到物品
+		 */		
+		public static const ROOM2CLIENT_REQUEST_BUFFER:int=13;
+		
+		/**
+		 *捡到物品 返回
+		 */		
+		public static const ROOM2CLIENT_REQUEST_BUFFER_RESULT:int=1015;
+		
+		/**
+		 *生成小飞机
+		 */		
+		public static const ROOM2CLIENT_NPC_CHARIOT_ENTER:int=1017;
+		/**
+		 *获取控制权 
+		 */		
+		public static const ROOM2CLIENT_REQUEST_CONTROL:int=8;
+		/**
+		 *请求控制结果 
+		 */		
+		public static const ROOM2CLIENT_REQUEST_CONTROL_RESULT:int=1005;
+		/**
+		 *释放控制权 
+		 */		
+		public static const ROOM2CLIENT_RELEASE_CONTROL:int=9;
+		
+		/**
+		 *广播受到伤害对象当前 
+		 */		
+		public static const ROOM2CLIENT_BOARDCAST_STATUS:int=1001;
+		
+		/**
+		 *更新对象属性 改基地耐久为5%，攻击去掉 
+		 */		
+		public static const ROOM2CLIENT_UPDATE_OBJECT:int=1019;
 		
 		/*********************************************************************************
 		 * 军工厂

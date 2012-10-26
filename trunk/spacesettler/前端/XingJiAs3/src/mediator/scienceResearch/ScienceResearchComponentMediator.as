@@ -1,10 +1,12 @@
 package mediator.scienceResearch
 {
+	import events.buildingView.ConditionEvent;
 	import events.scienceResearch.SciencePopuEvent;
 	import events.scienceResearch.ScienceResearchEvent;
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.buildingView.ConditionViewCompMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -40,7 +42,8 @@ package mediator.scienceResearch
 			comp.addEventListener(ScienceResearchEvent.RESEARCH_EVENT,researchHAndler);
 			comp.addEventListener(ScienceResearchEvent.GET_DATA_RESULT,getDataHandler);
 			
-			comp.addEventListener(SciencePopuEvent.POPU_DATA_EVENT,popuHandler);
+//			comp.addEventListener(SciencePopuEvent.POPU_DATA_EVENT,popuHandler);
+			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,addConditionViewHandler);
 		}
 		
 		/**
@@ -93,14 +96,19 @@ package mediator.scienceResearch
 			scienceResearchProxy.researchUp(event.scienceType);
 		}
 		
-		private function popuHandler(event:SciencePopuEvent):void
-		{
-			sendNotification(PopuItemComponentMediator.SHOW_NOTE,event.data);
-		}
+//		private function popuHandler(event:SciencePopuEvent):void
+//		{
+//			sendNotification(PopuItemComponentMediator.SHOW_NOTE,event.data);
+//		}
 
 		private function getDataHandler(event:ScienceResearchEvent):void
 		{
 			scienceResearchProxy.researchReturn(event.scienceType);
+		}
+		
+		private function addConditionViewHandler(event:ConditionEvent):void
+		{
+			sendNotification(ConditionViewCompMediator.SHOW_NOTE,event.conditionArr);
 		}
 	}
 }

@@ -122,9 +122,10 @@ package view.email
 		
 		private function deleteBtn_clickHandler(event:MouseEvent):void
 		{
+			event.stopImmediatePropagation();
 			var arr:Array = [];
 			arr.push(_data.id);
-			dispatchEvent(new EmailEvent(EmailEvent.DELETE_ONE_EMAIL_EVENT,arr));
+			dispatchEvent(new EmailEvent(EmailEvent.DELETE_ONE_EMAIL_EVENT,arr,true));
 		}
 	}
 }
