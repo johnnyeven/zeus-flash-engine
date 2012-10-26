@@ -172,7 +172,7 @@ package proxy.chat
 			var chatItemVO:ChatItemVO = new ChatItemVO();
 			
 			chatItemVO.playerID = SocketUtil.readIdType(pg.body);
-			chatItemVO.channel = int(SocketUtil.readIdType(pg.body));
+			chatItemVO.channel =  SocketUtil.readIdType(pg.body);
 			chatItemVO.timeStamp = Number(SocketUtil.readIdType(pg.body));
 			
 			chatItemVO.strLength = pg.body.readUnsignedInt();
@@ -194,7 +194,7 @@ package proxy.chat
 			var dataObj:Object = JSON.parse(userData);
 
 			chatVO.channel = chatItemVO.channel;
-			if(chatVO.channel > 10)
+			if(int(chatVO.channel) > 10)
 			{
 				chatVO.privateList.push(chatItemVO);
 			}
@@ -215,7 +215,7 @@ package proxy.chat
 							if(dataObj.campID == userInfoVO.camp)
 							{
 								//是否为自己的阵营
-								chatVO.wordList.push(chatItemVO);
+								chatVO.campList.push(chatItemVO);
 							}
 							
 						}
@@ -241,9 +241,9 @@ package proxy.chat
 		 *获取聊天内容 
 		 * 
 		 */	
-		public function talking(infor:String,channel:int):void
+		public function talking(infor:String,channel:String):void
 		{
-			if(channel == ChannelEnum.CHANNEL_NB)
+			if(channel == ChannelEnum.CHANNEL_CAMP)
 			{
 				//阵营通道也用世界通道传值
 				channel = ChannelEnum.CHANNEL_WORLD;
@@ -255,7 +255,7 @@ package proxy.chat
 			
 			var body:ByteArray = ClientSocket.getBy();
 			SocketUtil.writeIdType(userInfoVO.player_id, body);
-			SocketUtil.writeIdType(String(channel), body);
+			SocketUtil.writeIdType(channel, body);
 			SocketUtil.writeIdType(time.toString(), body);
 			
 			var byStr:ByteArray = ClientSocket.getBy();
@@ -355,19 +355,6 @@ package proxy.chat
 			
 			chatVO.wordList.push(chatItemVO);
 			sendNotification(ChatViewMediator.INFOR_NOTE,chatVO);
-		}
-		
-		public function checkOtherPlayer(playerID:String,callBack:Function):void
-		{
-			callBackFunction = callBack;
-			checkOtherPlayerResult(null);
-		}
-		
-		private function checkOtherPlayerResult(data:Object):void
-		{
-			if(callBackFunction != null)
-				callBackFunction();
-			callBackFunction = null;
 		}
 		
 		/***********************************************************

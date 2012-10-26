@@ -2,17 +2,20 @@ package view.cangKu
 {
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-
+    
     import enum.ResEnum;
     import enum.item.ItemEnum;
-
+    
+    import proxy.packageView.PackageViewProxy;
+    
     import ui.components.Button;
     import ui.components.Label;
     import ui.components.LoaderImage;
     import ui.core.Component;
-
+    
     import vo.cangKu.BaseItemVO;
     import vo.cangKu.GuaJianInfoVO;
+    import vo.cangKu.ItemVO;
     import vo.cangKu.ZhanCheInfoVO;
 
     public class CangKuGridComponent extends Component
@@ -94,11 +97,20 @@ package view.cangKu
                     }
                     case ItemEnum.item:
                     {
+						var obj:Object=info as Object;
                         wpName.text = info.name;
                         //                    wpLevel.text = info.level+"";
                         wpLevel.visible = false;
                         jiLabel.visible = false;
-						image.source =info.iconURL;
+						if(obj.key=="vip_level_1")
+							image.source =info.iconURL+ "1.png";
+						if(obj.key=="vip_level_2")
+							image.source =info.iconURL+ "2.png";
+						if(obj.key=="vip_level_3")
+							image.source =info.iconURL+ "3.png";
+						
+						image.y+=15;
+						image.x+=10;
                         break;
                     }
                 }

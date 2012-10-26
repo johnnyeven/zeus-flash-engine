@@ -188,7 +188,10 @@ package view.factory
 			{
 				nengliang_tf.color=0xff0000;
 				if(!isNumOne)
+				{
 					dispatchEvent(new FactoryEvent(FactoryEvent.NENGLIANG_MAX_EVENT));
+				}
+					
 				
 			}else
 			{
@@ -197,10 +200,15 @@ package view.factory
 			zhuanhuan_tf.text=infoVo.attackSpeed.toString();
 			gongji_tf.text=infoVo.attack.toString();
 			
-			tf_1.text=String(infoVo.damageDescShiDan*100)+"%";
-			tf_2.text=String(infoVo.damageDescJiGuang*100)+"%";
-			tf_3.text=String(infoVo.damageDescDianCi*100)+"%";
-			tf_4.text=String(infoVo.damageDescAnNeng*100)+"%";
+			var str1:String=(infoVo.damageDescShiDan*100).toFixed(1);
+			var str2:String=(infoVo.damageDescJiGuang*100).toFixed(1);
+			var str3:String=(infoVo.damageDescDianCi*100).toFixed(1);
+			var str4:String=(infoVo.damageDescAnNeng*100).toFixed(1);
+			
+			tf_1.text=str1+"%";
+			tf_2.text=str2+"%";
+			tf_3.text=str3+"%";
+			tf_4.text=str4+"%";
 			isNumOne=false;
 		}
 		
@@ -333,7 +341,8 @@ package view.factory
 			dispatchEvent(new FactoryEvent(FactoryEvent.GENHUAN_GUAJIAN_EVENT));
 		}
 		
-		protected function chaKanBtn_clickHandler(event:MouseEvent):void		{
+		protected function chaKanBtn_clickHandler(event:MouseEvent):void	
+		{
 			
 			pageProxy.chakanVO=FactoryEnum.CURRENT_GUAJIAN_VO;
 			dispatchEvent(new FactoryEvent(FactoryEvent.CHAKAN_GUAJIAN_EVENT));

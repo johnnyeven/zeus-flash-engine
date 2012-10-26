@@ -24,10 +24,11 @@ package mediator.ranking
 		public function rankingPvpComponentMediator()
 		{
 			super(NAME, new rankingPvpComponent());
+			
 			this.popUpEffect=UP;
 			level=2;
 			comp.med=this;
-			this.height=600;
+			this.height=Main.HEIGHT;
 			comp.addEventListener(RankingEvent.CLOSE,closeHandler);
 		}
 		

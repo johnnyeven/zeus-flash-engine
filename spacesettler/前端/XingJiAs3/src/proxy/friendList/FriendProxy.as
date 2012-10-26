@@ -1,18 +1,28 @@
 package proxy.friendList
 {
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	
 	import enum.command.CommandEnum;
 	
 	import flash.net.URLRequestMethod;
 	
+	import mediator.prompt.PromptMediator;
+	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
 	import other.ConnDebug;
 	
+	import proxy.userInfo.UserInfoProxy;
+	
 	import vo.allView.FriendInfoVo;
 	
+	/**
+	 *好友 
+	 * @author lw
+	 * 
+	 */	
 	public class FriendProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = "FriendProxy";
@@ -25,15 +35,34 @@ package proxy.friendList
 		[Bindable]
 		public var enemyArr:Array = [];
 		
+		[Bindable]
+		public var searchPlayerList:Array = [];
+		
+		[Bindable]
+		public var playerIDCardVO:FriendInfoVo;
+		
+		private var callBackFunction:Function;
+		
+		private var userInforProxy:UserInfoProxy;
+		
 		public function FriendProxy( data:Object=null)
 		{
 			super(NAME, data);
-			
+			userInforProxy = getProxy(UserInfoProxy);
 			Protocol.registerProtocol(CommandEnum.friendList,getFriendInfoResult);
+			Protocol.registerProtocol(CommandEnum.searchPlayer,searchPlayerResult);
+			Protocol.registerProtocol(CommandEnum.deletedFriend,deletedFriendResult);
+			Protocol.registerProtocol(CommandEnum.viewPlayerIDCard,checkOtherPlayerResult);
+			Protocol.registerProtocol(CommandEnum.addFriend,addFriendResult);
 		}
 		
-		
-		public function getFriendList(playerID:String,callBack:Function):void
+		/**
+		 *获取好友列表   或敌人列表 
+		 * @param playerID
+		 * @param callBack
+		 * 
+		 */		
+		public function getFriendList(playerID:String,callBack:Function=null):void
 		{
 			_getFriendListCallBack = callBack;
 			var obj:Object = {player_id:playerID};
@@ -42,6 +71,11 @@ package proxy.friendList
 		
 		private function getFriendInfoResult(data:Object):void
 		{
+			if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
 			var friendList:Array=[];
 			var enemyList:Array=[];
 			if(data.friends_list)
@@ -83,6 +117,133 @@ package proxy.friendList
 			if(_getFriendListCallBack != null)
 				_getFriendListCallBack();
 			 _getFriendListCallBack=null;
+		}
+		
+		/**
+		 * 搜寻玩家
+		 * @param nickName
+		 * 
+		 */		
+		public function searchPlayer(nickName:String):void
+		{
+			var obj:Object = {keyword:nickName};
+			ConnDebug.send(CommandEnum.searchPlayer,obj,ConnDebug.HTTP,URLRequestMethod.GET);
+		}
+		
+		private function searchPlayerResult(data:Object):void
+		{
+			if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
+			
+			var playerList:Array=[];
+			if(data.players)
+			{
+				for(var i:int = 0;i<data.players.length;i++)
+				{
+					var searchPlayerListVO:FriendInfoVo = new FriendInfoVo();
+					searchPlayerListVO.id = data.players[i].id;
+					searchPlayerListVO.nickname = data.players[i].nickname;
+					searchPlayerListVO.officer_id = data.players[i].officer_id;
+					searchPlayerListVO.vip_level = data.players[i].vip_level;
+					searchPlayerListVO.age_level = data.players[i].age_level;
+					searchPlayerListVO.last_login_time = data.players[i].last_login_time;
+					
+					playerList.push(searchPlayerListVO);
+				}
+				searchPlayerList=playerList;
+			}
+		}
+		
+		/**
+		 *查看军官证 
+		 * @param playerID
+		 * @param callBack
+		 * 
+		 */		
+		public function checkOtherPlayer(playerID:String,callBack:Function=null):void
+		{
+			callBackFunction = callBack;
+			var obj:Object = {type:"player",id:playerID};
+			ConnDebug.send(CommandEnum.viewPlayerIDCard,obj,ConnDebug.HTTP,URLRequestMethod.GET);
+		}
+		
+		private function checkOtherPlayerResult(data:Object):void
+		{
+			if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
+			var idCardVO:FriendInfoVo = new FriendInfoVo();
+			
+			
+		        idCardVO.nickname = data.nickname;
+			    idCardVO.academy_level = data.academy_level;
+				idCardVO.age_level = data.age_level;
+				if(data.legion)
+				{
+					idCardVO.groupListVO.groupname = data.legion.name;
+					idCardVO.groupListVO.level = data.legion.level;
+				}
+				
+				idCardVO.military_rank = data.military_rank;
+				idCardVO.total_prestige_rank = data.my_rank.total_prestige_rank;
+				
+				
+			playerIDCardVO = idCardVO;
+			if(callBackFunction != null)
+				callBackFunction();
+			callBackFunction = null;
+		}
+		
+		/**
+		 * 删除好友
+		 * @param playerID
+		 * 
+		 */		
+		public function deletedFriend(playerID:String):void
+		{
+			var myID:String = userInforProxy.userInfoVO.player_id;
+			var obj:Object = {player_id:myID,friend_id:playerID};
+			ConnDebug.send(CommandEnum.deletedFriend,obj);
+		}
+		
+		private function deletedFriendResult(data:Object):void
+		{
+			if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
+			
+			getFriendInfoResult(data);
+		}
+		
+		/**
+		 * 添加好友
+		 * @param playerID
+		 * 
+		 */		
+		public function addFriend(playerID:String):void
+		{
+			var myID:String = userInforProxy.userInfoVO.player_id;
+			var obj:Object = {player_id:myID,friend_id:playerID};
+			ConnDebug.send(CommandEnum.addFriend,obj);
+		}
+		
+		private function addFriendResult(data:Object):void
+		{
+			if(data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
+				return ;
+			}
+			
+			getFriendInfoResult(data);
+			searchPlayerResult(data);
 		}
 	}
 }

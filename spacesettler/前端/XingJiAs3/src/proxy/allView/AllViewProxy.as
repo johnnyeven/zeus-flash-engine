@@ -83,8 +83,8 @@ package proxy.allView
 			allViewVO.keJiShiDaiTxt = data.age_level;
 			allViewVO.junTuanTxt = data.name
 			allViewVO.startCountTxt = data.fort_count;
-//			allViewVO.junXianTxt = data.
-			allViewVO.junXianLvTxt = data.military_rank;
+			allViewVO.junXianTxt = userInforProxy.userInfoVO.junXian;
+//			allViewVO.junXianLvTxt = data.military_rank;
 			allViewVO.jinJingCountTxt = data.base.crystal_output;
 			allViewVO.chuanQiCountTxt = data.base.tritium_output;
 			allViewVO.anWuZhiCountTxt = data.base.broken_crystal_output;
@@ -111,10 +111,10 @@ package proxy.allView
 			_allViewCallBack=null;
 		}
 		
-		public function viewXingXing(callBack:Function = null):void
+		public function viewXingXing(playID:String,callBack:Function = null):void
 		{
 			_viewXingXingCallBack = callBack;
-			var playID:String = userInforProxy.userInfoVO.player_id;
+//			var playID:String = userInforProxy.userInfoVO.player_id;
 			var obj:Object = {player_id:playID};
 			ConnDebug.send(CommandEnum.xingXing,obj,ConnDebug.HTTP,URLRequestMethod.GET);
 		}

@@ -5,6 +5,7 @@ package proxy.group
 	
 	import enum.command.CommandEnum;
 	
+	import mediator.group.GroupComponentMediator;
 	import mediator.prompt.PromptMediator;
 	import mediator.prompt.PromptSureMediator;
 	
@@ -13,8 +14,10 @@ package proxy.group
 	
 	import other.ConnDebug;
 	
+	import proxy.chat.ChatProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
+	import vo.group.GroupAuditListVo;
 	import vo.group.GroupListVo;
 	import vo.group.GroupMemberListVo;
 	
@@ -49,22 +52,24 @@ package proxy.group
 		public var auditArr:Array=[]
 			
 		private var userProxy:UserInfoProxy
+		private var chatProxy:ChatProxy;
 		public function GroupProxy( data:Object=null)
 		{
 			super(NAME, data);
 			groupInfoVo=new GroupListVo();
 			userProxy=getProxy(UserInfoProxy);
+			chatProxy = getProxy(ChatProxy);
 		}
 		
 		/**
 		 *查询玩家所在军团信息
 		 * 参数：玩家ID 
 		 */		
-		public function refreshGroup(playerId:String,callBcakFun:Function=null):void
+		public function refreshGroup(callBcakFun:Function=null):void
 		{
 			if(!Protocol.hasProtocolFunction(CommandEnum.refreshGroup, refreshGroupReputation))
 				Protocol.registerProtocol(CommandEnum.refreshGroup, refreshGroupReputation);
-			var obj:Object = {player_id:playerId };
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id };
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.refreshGroup, obj);
 		}
@@ -73,11 +78,11 @@ package proxy.group
 		 *获取申请加入军团列表
 		 * 参数：玩家ID 军团ID
 		 */		
-		public function groupApplyList(playerId:String,legionId:String,callBcakFun:Function=null):void
+		public function groupApplyList(callBcakFun:Function=null):void
 		{
 			if(!Protocol.hasProtocolFunction(CommandEnum.groupApplyList, groupApplyListReputation))
 				Protocol.registerProtocol(CommandEnum.groupApplyList, groupApplyListReputation);
-			var obj:Object = {player_id:playerId,legion_id:legionId };
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id };
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.groupApplyList, obj);
 		}
@@ -114,8 +119,8 @@ package proxy.group
 		 */		
 		public function allowJoinGroup(playerId:String,apply_id:String,callBcakFun:Function=null):void
 		{
-			if(!Protocol.hasProtocolFunction(CommandEnum.allowJoinGroup, allowOrRefresJoinGroupReputation))
-				Protocol.registerProtocol(CommandEnum.allowJoinGroup, allowOrRefresJoinGroupReputation);
+			if(!Protocol.hasProtocolFunction(CommandEnum.allowJoinGroup, groupApplyListReputation))
+				Protocol.registerProtocol(CommandEnum.allowJoinGroup, groupApplyListReputation);
 			var obj:Object = {player_id:playerId,apply_id:apply_id };
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.allowJoinGroup, obj);
@@ -127,11 +132,50 @@ package proxy.group
 		 */		
 		public function refresJoinGroup(playerId:String,apply_id:String,callBcakFun:Function=null):void
 		{
-			if(!Protocol.hasProtocolFunction(CommandEnum.refresJoinGroup, allowOrRefresJoinGroupReputation))
-				Protocol.registerProtocol(CommandEnum.refresJoinGroup, allowOrRefresJoinGroupReputation);
+			if(!Protocol.hasProtocolFunction(CommandEnum.refresJoinGroup, groupApplyListReputation))
+				Protocol.registerProtocol(CommandEnum.refresJoinGroup, groupApplyListReputation);
 			var obj:Object = {player_id:playerId,apply_id:apply_id };
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.refresJoinGroup, obj);
+		}
+			
+		/**
+		 *领取战舰
+		 * 
+		 */		
+		public function get_warship(callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.get_warship, refreshGroupReputation))
+				Protocol.registerProtocol(CommandEnum.get_warship, refreshGroupReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id };
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.get_warship, obj);
+		}
+			
+		/**
+		 *全部通过审核
+		 * 
+		 */		
+		public function allow_all(callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.allow_all, refreshGroupReputation))
+				Protocol.registerProtocol(CommandEnum.allow_all, refreshGroupReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id };
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.allow_all, obj);
+		}
+			
+		/**
+		 *全部拒绝通过审核
+		 * 
+		 */		
+		public function refuse_all(callBcakFun:Function=null):void
+		{
+			if(!Protocol.hasProtocolFunction(CommandEnum.refuse_all, refreshGroupReputation))
+				Protocol.registerProtocol(CommandEnum.refuse_all, refreshGroupReputation);
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id,legion_id:userProxy.userInfoVO.legion_id };
+			callBcakFunction=callBcakFun;
+			ConnDebug.send(CommandEnum.refuse_all, obj);
 		}
 			
 		/**
@@ -233,6 +277,8 @@ package proxy.group
 		private function groupApplyListReputation(data:*):void
 		{
 			Protocol.deleteProtocolFunction(CommandEnum.groupApplyList, groupApplyListReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.allowJoinGroup, groupApplyListReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.refresJoinGroup, groupApplyListReputation);
 			if (data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
@@ -242,7 +288,23 @@ package proxy.group
 			
 			auditArr.length=0;
 			var list:Array=[];
-			//TODO:  gx
+			for(var i:int=0;i<data.apply_list.length;i++)
+			{
+				var auditVo:GroupAuditListVo=new GroupAuditListVo();
+				auditVo.id=data.apply_list[i].id;
+				auditVo.legion_id=data.apply_list[i].legion_id;
+				auditVo.military_rank=data.apply_list[i].military_rank;
+				auditVo.nickname=data.apply_list[i].nickname;
+				auditVo.player_id=data.apply_list[i].player_id;
+				auditVo.prestige_rank=data.apply_list[i].prestige_rank;
+				auditVo.vip_level=data.apply_list[i].vip_level;
+				
+				list.push(auditVo);
+			}
+			
+			auditArr=list;
+			//控制军团的聊天(聊天是单独的服务器）
+//			chatProxy.loginChat();
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -279,7 +341,8 @@ package proxy.group
 			
 			memberArr=list;
 			
-			
+			//控制军团的聊天(聊天是单独的服务器）
+//			chatProxy.loginChat();
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -295,6 +358,9 @@ package proxy.group
 			Protocol.deleteProtocolFunction(CommandEnum.legion_manage, refreshGroupReputation);
 			Protocol.deleteProtocolFunction(CommandEnum.update_produce_warship, refreshGroupReputation);
 			Protocol.deleteProtocolFunction(CommandEnum.produce_warship, refreshGroupReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.allow_all, refreshGroupReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.refuse_all, refreshGroupReputation);
+			Protocol.deleteProtocolFunction(CommandEnum.get_warship, refreshGroupReputation);
 			
 			if (data.hasOwnProperty("errors"))
 			{
@@ -304,6 +370,7 @@ package proxy.group
 			}
 			
 			groupInfoVo.current_time=data.current_time;
+			
 			groupInfoVo.broken_crystal=data.legion.broken_crystal;
 			groupInfoVo.current_warship=data.legion.current_warship;
 			groupInfoVo.desc=data.legion.desc;
@@ -333,9 +400,12 @@ package proxy.group
 				groupInfoVo.initTime();
 			}
 				
-			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
+//			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userProxy.userInfoVO.legion_id=data.legion.id;
 			
+			sendNotification(GroupComponentMediator.CHANGE_NOTE);
+			//控制军团的聊天(聊天是单独的服务器）
+//			chatProxy.loginChat();
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -379,18 +449,6 @@ package proxy.group
 			}
 		}
 		
-		//同意和拒绝加入的邀请数据处理
-		private function allowOrRefresJoinGroupReputation(data:*):void
-		{
-			Protocol.deleteProtocolFunction(CommandEnum.allowJoinGroup, allowOrRefresJoinGroupReputation);
-			Protocol.deleteProtocolFunction(CommandEnum.refresJoinGroup, allowOrRefresJoinGroupReputation);
-			if (data.hasOwnProperty("errors"))
-			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
-				callBcakFunction=null;
-				return;
-			}
-		}
 		//申请和邀请加入军团 数据处理
 		private function inviteOrapplyjoinGroupReputation(data:*):void
 		{
@@ -415,6 +473,9 @@ package proxy.group
 				refreshGroupReputation(data);
 				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 			}
+			
+			//控制军团的聊天(聊天是单独的服务器）
+			chatProxy.connect();
 		}
 		//解散和退出军团 数据处理
 		private function dissMissAndQuitGroupReputation(data:*):void
@@ -430,12 +491,15 @@ package proxy.group
 			
 			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userProxy.userInfoVO.legion_id=null;
-			
+			//控制军团的聊天(聊天是单独的服务器）
+			chatProxy.connect();
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
 				callBcakFunction=null;
 			}
+			
+			
 		}
 	}
 }

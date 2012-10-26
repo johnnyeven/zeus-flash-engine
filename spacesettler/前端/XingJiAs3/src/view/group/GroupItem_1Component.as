@@ -96,5 +96,13 @@ package view.group
 			jinPai.visible=false;
 			paiMing.visible=false;
 		}
+		public function isClick():void
+		{
+			back.visible=true;
+		}
+		public function isNotClick():void
+		{
+			back.visible=false;
+		}
     }
 }

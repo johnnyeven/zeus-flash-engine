@@ -4,6 +4,7 @@ package view.group
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.DateFormatter;
 	
+	import events.group.GroupEvent;
 	import events.group.GroupShowAndCloseEvent;
 	
 	import flash.display.Sprite;
@@ -76,7 +77,9 @@ package view.group
 
 		public var downMc:Sprite;
 		public var upMc:Sprite;
+		public var gapNum:int;
 		
+		private var _current_warship:int=1;
 		
 		private var groupProxy:GroupProxy;
 		private var userProxy:UserInfoProxy;
@@ -113,9 +116,21 @@ package view.group
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closeClickHandler);
 			chaKanTuanYuanBtn.addEventListener(MouseEvent.CLICK,lookMemberHandler);
+			buChongZhanJiBtn.addEventListener(MouseEvent.CLICK,buChongZhanJiBtn_Handler);
+			joinBattlefieldBtn.addEventListener(MouseEvent.CLICK,joinBattlefieldBtn_Handler);
         }
 		
-		private function upData():void
+		protected function joinBattlefieldBtn_Handler(event:MouseEvent):void
+		{
+			dispatchEvent(new GroupShowAndCloseEvent(GroupShowAndCloseEvent.SHOW_PLANE_EVENT));
+		}
+		
+		protected function buChongZhanJiBtn_Handler(event:MouseEvent):void
+		{
+			dispatchEvent(new GroupEvent(GroupEvent.BUCHONG_EVENT));
+		}
+		
+		public function upData():void
 		{
 			if(groupProxy.groupInfoVo.username==userProxy.userInfoVO.nickname)
 			{
@@ -129,6 +144,7 @@ package view.group
 			chengyuanNumText.text=groupProxy.groupInfoVo.peopleNum.toString();
 			controlledNumText.text=groupProxy.groupInfoVo.max_warship.toString();
 			jobText.text=groupProxy.groupInfoVo.job;
+			current_warship=groupProxy.groupInfoVo.current_warship;
 			junTuanZhangText.text=groupProxy.groupInfoVo.username;
 			topText.text="top"+groupProxy.groupInfoVo.rank;
 			groupNameText.text=groupProxy.groupInfoVo.groupname;
@@ -179,5 +195,27 @@ package view.group
 			chengYuanGuanLiBtn.mouseEnabled=false;
 			junTuanGuanLiBtn.mouseEnabled=false;
 		}
+
+		/**
+		 *玩家当前拥有的战舰数 
+		 */
+		public function get current_warship():int
+		{
+			return _current_warship;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set current_warship(value:int):void
+		{
+			if(_current_warship!=1)
+			{
+				gapNum=value-_current_warship;
+			}
+			
+			_current_warship = value;
+		}
+
     }
 }

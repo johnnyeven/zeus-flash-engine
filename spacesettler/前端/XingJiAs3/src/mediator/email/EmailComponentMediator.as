@@ -12,6 +12,8 @@ package mediator.email
 	import proxy.email.EmailProxy;
 	
 	import view.email.EmailComponent;
+	
+	import vo.email.EmailItemVO;
 
 	/**
 	 *邮件
@@ -30,6 +32,8 @@ package mediator.email
 		public function EmailComponentMediator()
 		{
 			super(NAME, new EmailComponent());
+			comp.med=this;
+			level=1;
 			emailProxy = getProxy(EmailProxy);
 			
 			comp.addEventListener(EmailEvent.RECEIVE_EMAIL_EVENT,receiveHandler);
@@ -90,7 +94,9 @@ package mediator.email
 		
 		private function deleteOneEmailHandler(event:EmailEvent):void
 		{
-			event.stopImmediatePropagation();
+//			event.stopImmediatePropagation();
+			comp.deleteEmailBtn.visible = true;
+			comp.deleteSuccessBtn.visible = false;
 			emailProxy.deleteEmail(event.obj);
 		}
 		
@@ -101,6 +107,13 @@ package mediator.email
 		
 		private function showEmailInforHandler(event:EmailEvent):void
 		{
+//			event.stopImmediatePropagation();
+			if((event.obj as EmailItemVO).is_read == false)
+			{
+				//没读过的邮件才进行标记
+				emailProxy.isRead((event.obj as EmailItemVO).id);
+			}
+			
 			sendNotification(ViewEmailComponentMediator.SHOW_NOTE,event.obj);
 		}
 	}

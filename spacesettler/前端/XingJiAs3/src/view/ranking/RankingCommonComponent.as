@@ -2,6 +2,8 @@ package view.ranking
 {
 	import com.zn.utils.ClassUtil;
 	
+	import enum.rank.RankEnum;
+	
 	import events.ranking.RankingEvent;
 	
 	import flash.display.Sprite;
@@ -192,10 +194,14 @@ package view.ranking
 			maskSp.visible=false;
 			sprite2.visible=false;
 			container.contentHeight=vsBar.height=296;
-			if(_type=="yaosai")
+			if(_type==RankEnum.YAOSAI)
 				dispatchEvent(new RankingEvent(RankingEvent.DAYLIST_FORTERESS));
-			if(_type=="shengwang")
+			if(_type==RankEnum.SHENGWANG)
 				dispatchEvent(new RankingEvent(RankingEvent.DAYLIST_REPUTATION));
+			if(_type==RankEnum.CAIFU)
+				dispatchEvent(new RankingEvent(RankingEvent.DAYLIST_MONEY));
+			if(_type==RankEnum.GROUP)
+				dispatchEvent(new RankingEvent(RankingEvent.DAYLIST_GROUP));
 			
 			
 		}
@@ -211,11 +217,14 @@ package view.ranking
 			maskSp.visible=true;
 			sprite2.visible=true;
 			container.contentHeight=vsBar.height=156;
-			if(_type=="yaosai")
+			if(_type==RankEnum.YAOSAI)
 				dispatchEvent(new RankingEvent(RankingEvent.LIST_FORTERESS));
-			if(_type=="shengwang")
+			if(_type==RankEnum.SHENGWANG)
 				dispatchEvent(new RankingEvent(RankingEvent.LIST_REPUTATION));
-			
+			if(_type==RankEnum.CAIFU)
+				dispatchEvent(new RankingEvent(RankingEvent.LIST_MONEY));
+			if(_type==RankEnum.GROUP)
+				dispatchEvent(new RankingEvent(RankingEvent.LIST_GROUP));
 		}
 		
 		protected function mouseOutHandler(event:MouseEvent):void

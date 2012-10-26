@@ -9,6 +9,7 @@ package mediator.buildingView
 	
 	import events.buildingView.AddViewEvent;
 	import events.buildingView.BuildEvent;
+	import events.buildingView.ConditionEvent;
 	
 	import flash.events.Event;
 	
@@ -45,18 +46,22 @@ package mediator.buildingView
 		
 		public var CenterUpViewComp:CenterUpComponent;
 		
-		
+		private var _keJiBuild:BuildInfoVo;
 		public function CenterUpComponentMediator()
 		{
 			super(NAME, new CenterUpComponent(ClassUtil.getObject(formatStr("up_center_view_{0}"))));
 			comp.med=this;
 			level=1;			
+			
+			_keJiBuild=BuildProxy(ApplicationFacade.getProxy(BuildProxy)).getBuild(BuildTypeEnum.KEJI);
+			
 			comp.buildType=BuildTypeEnum.CENTER;
 			comp.addEventListener(AddViewEvent.CLOSE_EVENT,closeHandler);
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 			comp.addEventListener(AddViewEvent.ADDKEJICREATEVIEW_EVENT,enterKeJiViewHandler);
+			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,addConditionViewHandler);
 		}
 		
 		protected function closeHandler(event:AddViewEvent):void
@@ -109,11 +114,19 @@ package mediator.buildingView
 		
 		protected function upHandler(event:Event):void
 		{
-			var buildProxy:BuildProxy = getProxy(BuildProxy);
-			buildProxy.upBuild(BuildTypeEnum.CENTER, function():void
+			
+			if(_keJiBuild)
 			{
-				comp.buildType = BuildTypeEnum.CENTER;
-			});
+				var buildProxy:BuildProxy = getProxy(BuildProxy);
+				buildProxy.upBuild(BuildTypeEnum.CENTER, function():void
+				{
+					comp.buildType = BuildTypeEnum.CENTER;
+				});
+			}
+			else
+			{
+				sendNotification(KeJiCreateComponentMediator.SHOW_NOTE);
+			}
 		}
 		
 		protected function speedHandler(event:Event):void
@@ -144,6 +157,18 @@ package mediator.buildingView
 		protected function enterKeJiViewHandler(event:AddViewEvent):void
 		{
 			sendNotification(ScienceResearchComponentMediator.SHOW_NOTE);
+		}
+		
+		protected function addConditionViewHandler(event:ConditionEvent):void
+		{
+//			if(_keJiBuild)
+//			{
+				sendNotification(ConditionViewCompMediator.SHOW_NOTE,event.conditionArr);
+//			}
+//			else
+//			{
+//				sendNotification(KeJiCreateComponentMediator.SHOW_NOTE);
+//			}
 		}
 	}
 }

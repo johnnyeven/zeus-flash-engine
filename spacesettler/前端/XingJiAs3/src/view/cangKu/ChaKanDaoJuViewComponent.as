@@ -9,6 +9,7 @@ package view.cangKu
 	
 	import ui.components.Button;
 	import ui.components.Label;
+	import ui.components.LoaderImage;
 	import ui.core.Component;
 	
 	import vo.cangKu.BaseItemVO;
@@ -22,12 +23,15 @@ package view.cangKu
 		
 		public var desLabel:Label;
 		
+		public var itemImg:LoaderImage;
+		
 		public function ChaKanDaoJuViewComponent(skin:DisplayObjectContainer)
 		{
 			super(skin);
 			itemName=createUI(Label,"itemName_tf");
 			backBtn=createUI(Button,"back_btn");
 			desLabel=createUI(Label,"desLabel");
+			itemImg=createUI(LoaderImage,"image");
 			
 			sortChildIndex();
 			
@@ -46,6 +50,13 @@ package view.cangKu
 		{
 			itemName.text=info.name;
 			desLabel.text=info.description;
+			
+			if(info.key=="vip_level_1")
+				itemImg.source =info.iconURL+ "1.png";
+			if(info.key=="vip_level_2")
+				itemImg.source =info.iconURL+ "2.png";
+			if(info.key=="vip_level_3")
+				itemImg.source =info.iconURL+ "3.png";
 		}
 	}
 }

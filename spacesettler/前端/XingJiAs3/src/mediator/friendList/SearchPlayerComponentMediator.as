@@ -1,6 +1,10 @@
 package mediator.friendList
 {
+	import com.greensock.TweenLite;
+	
 	import events.friendList.FriendListEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
@@ -9,7 +13,11 @@ package mediator.friendList
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.friendList.FriendProxy;
+	
 	import view.friendList.SearchPlayerComponent;
+	
+	import vo.allView.FriendInfoVo;
 
 	/**
 	 *搜索玩家
@@ -24,10 +32,17 @@ package mediator.friendList
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		private var friendListProxy:FriendProxy;
 		public function SearchPlayerComponentMediator()
 		{
 			super(NAME, new SearchPlayerComponent());
-			comp.addEventListener(FriendListEvent.CLOSE_SEARCH_PLAYER_EVENT,closeHandler)
+			friendListProxy = getProxy(FriendProxy);
+			
+			comp.addEventListener(FriendListEvent.CLOSE_SEARCH_PLAYER_EVENT,closeHandler);
+			comp.addEventListener(FriendListEvent.SEARCH_PLATER_EVENT,searchPlayerHandler);
+			comp.addEventListener("search_destoryxiaSprite",destoryxiaSpriteHandler);
+			comp.addEventListener(FriendListEvent.SEARCH_CHECK_PLAYER_ID_CARD_EVENT,checkPlayerIdCardHandler);
+			comp.addEventListener(FriendListEvent.SEARCH_ADD_FRIEND_EVENT,addFriendHandler);
 		}
 		
 		/**
@@ -67,6 +82,29 @@ package mediator.friendList
 		{
 			return viewComponent as SearchPlayerComponent;
 		}
+		
+		private function searchPlayerHandler(event:FriendListEvent):void
+		{
+			friendListProxy.searchPlayer(event.obj as String);
+		}
 
+		private function destoryxiaSpriteHandler(event:Event):void
+		{
+			comp.xiaSprite.visible = false;
+			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
+		}
+		
+		private function checkPlayerIdCardHandler(event:FriendListEvent):void
+		{
+			friendListProxy.checkOtherPlayer((event.obj as FriendInfoVo).id,function():void
+			{
+				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
+			});
+		}
+		
+		private function addFriendHandler(event:FriendListEvent):void
+		{
+			friendListProxy.addFriend((event.obj as FriendInfoVo).id);
+		}
 	}
 }

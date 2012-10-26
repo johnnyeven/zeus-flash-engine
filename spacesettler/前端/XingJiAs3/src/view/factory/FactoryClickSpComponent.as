@@ -28,6 +28,7 @@ package view.factory
         public function FactoryClickSpComponent(skin:DisplayObjectContainer)
         {
             super(null);
+			_guajianVo=new GuaJianInfoVO();
 			sp=skin as Sprite;
 			item_sp=new LoaderImage(sp.getChildByName("item_sp") as Sprite);
 			

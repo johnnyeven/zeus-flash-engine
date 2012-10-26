@@ -100,7 +100,6 @@ package view.ranking
 			
 			sortChildIndex();
 			
-			
 			notMySelf();
 		}
 		
@@ -114,6 +113,9 @@ package view.ranking
 			junTuanText.color=0xffffff;
 			zhenYingText.color=0xffffff;
 			xianShiText.color=0xffffff;
+			upMc.visible=true;
+			downMc.visible=true;
+			upOrDownText.visible=true;
 		}
 		 
 		public function notMySelf():void
@@ -126,6 +128,9 @@ package view.ranking
 			junTuanText.color=0x0099ff;
 			zhenYingText.color=0x0099ff;
 			xianShiText.color=0x0099ff;
+			upMc.visible=false;
+			downMc.visible=false;
+			upOrDownText.visible=false;
 		}
 				
 	}

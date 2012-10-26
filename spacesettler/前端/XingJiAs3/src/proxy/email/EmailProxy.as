@@ -27,6 +27,9 @@ package proxy.email
 		public static const NAME:String = "EmailProxy";
 		[Bindable]
 		public var emailList:Array = [];
+		
+		[Bindable]
+		public var emailCount:int;
 		private var _getEmailListCallBack:Function;
 		
 		private var userInforProxy:UserInfoProxy;
@@ -61,15 +64,15 @@ package proxy.email
 			{
 				var arr:Array = [];
 				var emailArr:Array = [];
-				var count:int;
 				var emailItemVO:EmailItemVO;
 				arr = data.mails;
-				count = data.mails_count;
+				emailCount = arr.length;
+				
 				for(var i:int = 0;i<arr.length;i++)
 				{
 					emailItemVO = new EmailItemVO();
 					
-					emailItemVO.mails_count = count;
+					emailItemVO.mails_count = emailCount;
 					emailItemVO.id = arr[i].id;
 					emailItemVO.created_at = arr[i].created_at;
 					emailItemVO.type = arr[i].type;
@@ -134,7 +137,7 @@ package proxy.email
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
 				return ;
 			}
-			if(data.message == "ok")
+			if(data.message == "OK")
 			{
 				getEmailList();
 			}
@@ -147,7 +150,8 @@ package proxy.email
 		public function deleteEmail(arr:Object):void
 		{
 			var strJson:String = JSON.stringify(arr);
-			var obj:Object = {mail_ids:strJson};
+			var playerID:String = userInforProxy.userInfoVO.player_id;
+			var obj:Object = {player_id:playerID,mail_ids:strJson};
 			ConnDebug.send(CommandEnum.deleteEmail,obj);
 		}
 		

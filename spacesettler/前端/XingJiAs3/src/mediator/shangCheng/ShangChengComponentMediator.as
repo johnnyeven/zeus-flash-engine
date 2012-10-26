@@ -18,6 +18,7 @@ package mediator.shangCheng
 	import proxy.userInfo.UserInfoProxy;
 	
 	import view.shangCheng.ShangChengComponent;
+	import view.shangCheng.shangChengView.TuZhiComponent;
 
 	public class ShangChengComponentMediator extends BaseMediator implements IMediator
 	{
@@ -29,6 +30,7 @@ package mediator.shangCheng
 		
 		private var shopProxy:ShopProxy;
 		private var userProxy:UserInfoProxy;
+				
 		public function ShangChengComponentMediator()
 		{
 			super(NAME, new ShangChengComponent());
@@ -61,7 +63,8 @@ package mediator.shangCheng
 		
 		protected function buyItemHandler(event:ShopEvent):void
 		{
-			shopProxy.buyItem(userProxy.userInfoVO.player_id,event.key,event.resourceName);
+			sendNotification(BuyPromptComponentMediator.SHOW_NOTE,event);
+//			shopProxy.buyItem(userProxy.userInfoVO.player_id,event.key,event.resourceName);
 		}
 		
 		protected function buyDarkCrystalHandler(event:ShopEvent):void

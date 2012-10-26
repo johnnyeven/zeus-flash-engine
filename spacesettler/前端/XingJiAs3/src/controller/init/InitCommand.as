@@ -13,9 +13,15 @@ package controller.init
     import controller.battle.ShowBattleMediatorCommand;
     import controller.battle.ShowBottomViewComponentMediatorCommand;
     import controller.battle.ShowTimeViewComponentMediatorCommand;
+    import controller.battle.fight.FightCreateFeiJiCommand;
+    import controller.battle.fight.FightExplodeCommand;
     import controller.battle.fight.FightFireCommand;
+    import controller.battle.fight.FightHitCommand;
+    import controller.battle.fight.FightItemCommand;
     import controller.battle.fight.FightLockCommand;
-    import controller.battle.fight.FightZhanCheMoveCommand;
+    import controller.battle.fight.FightMoveCommand;
+    import controller.battle.fight.ShowBattleFightViewComponentMediatorCommand;
+    import controller.battle.fight.ShowBattleTiShiPanelComponentMediatorCommand;
     import controller.battleEnter.ShowBattleEnterComponentMediatorCommand;
     import controller.buildingView.ShowCangKuCreateComponentMediatorCommand;
     import controller.buildingView.ShowCangKuInfoComponentMediatorCommand;
@@ -25,6 +31,7 @@ package controller.init
     import controller.buildingView.ShowChuanQinCreateComponentMediatorCommand;
     import controller.buildingView.ShowChuanQinInfoComponentMediatorCommand;
     import controller.buildingView.ShowChuanQinUpComponentMediatorCommand;
+    import controller.buildingView.ShowConditionViewCompMediatorCommand;
     import controller.buildingView.ShowDianChangCreateComponentMediatorCommand;
     import controller.buildingView.ShowDianChangInfoComponentMediatorCommand;
     import controller.buildingView.ShowDianChangUpComponentMediatorCommand;
@@ -75,6 +82,7 @@ package controller.init
     import controller.scienceResearch.ShowPopuItemComponentMediatorCommand;
     import controller.scienceResearch.ShowScienceResearchComponentMediatorCommand;
     import controller.shangCheng.ShowShangChengComponentMediatorCommand;
+    import controller.shangCheng.shangChengView.ShowBuyPromptComponentMediatorCommand;
     import controller.shangCheng.shangChengView.ShowfriendGiveComponentMediatorCommand;
     import controller.showBag.ShowShowBagComponentMediatorCommand;
     import controller.systemView.ShowAccountNumberBoundaryComponentMediatorCommand;
@@ -91,6 +99,8 @@ package controller.init
     import mediator.battle.BattleEditMediator;
     import mediator.battle.BattleEditSelectorViewComponentMediator;
     import mediator.battle.BattleFightMediator;
+    import mediator.battle.BattleFightViewComponentMediator;
+    import mediator.battle.BattleTiShiPanelComponentMediator;
     import mediator.battle.BottomViewComponentMediator;
     import mediator.battle.TimeViewComponentMediator;
     import mediator.battleEnter.BattleEnterComponentMediator;
@@ -102,6 +112,7 @@ package controller.init
     import mediator.buildingView.ChuanQinCreateComponentMediator;
     import mediator.buildingView.ChuanQinInfoComponentMediator;
     import mediator.buildingView.ChuanQinUpComponentMediator;
+    import mediator.buildingView.ConditionViewCompMediator;
     import mediator.buildingView.DianChangCreateComponentMediator;
     import mediator.buildingView.DianChangInfoComponentMediator;
     import mediator.buildingView.DianChangUpComponentMediator;
@@ -155,6 +166,7 @@ package controller.init
     import mediator.scienceResearch.InforComponentMediator;
     import mediator.scienceResearch.PopuItemComponentMediator;
     import mediator.scienceResearch.ScienceResearchComponentMediator;
+    import mediator.shangCheng.BuyPromptComponentMediator;
     import mediator.shangCheng.FriendGiveComponentMediator;
     import mediator.shangCheng.ShangChengComponentMediator;
     import mediator.showBag.ShowBagComponentMediator;
@@ -310,6 +322,7 @@ package controller.init
 			facade.registerMediator(new WuPingChaKanMenuViewComponentMediator());
 			facade.registerMediator(new GroupPopComponentMediator());
 			facade.registerMediator(new BattleEditSelectorViewComponentMediator());
+//			facade.registerMediator(new BuyPromptComponentMediator());
         }
 
         /**
@@ -411,6 +424,9 @@ package controller.init
 			//基地中心升级
 			facade.registerCommand(CenterUpComponentMediator.SHOW_NOTE,ShowCenterUpComponentMediatorCommand);
 			
+			//条件不足界面
+			facade.registerCommand(ConditionViewCompMediator.SHOW_NOTE,ShowConditionViewCompMediatorCommand);
+			
 			//仓库信息
 			facade.registerCommand(CangKuInfoComponentMediator.SHOW_NOTE,ShowCangKuInfoComponentMediatorCommand);
 			
@@ -437,6 +453,8 @@ package controller.init
 			
 			//商城信息
 			facade.registerCommand(ShangChengComponentMediator.SHOW_NOTE,ShowShangChengComponentMediatorCommand);
+			//
+			facade.registerCommand(BuyPromptComponentMediator.SHOW_NOTE,ShowBuyPromptComponentMediatorCommand);
 			
 			//小行星带
 			facade.registerCommand(PlantioidComponentMediator.SHOW_NOTE,ShowPlantioidComponentMediatorCommand);
@@ -503,17 +521,35 @@ package controller.init
 			//战场底部界面
 			facade.registerCommand(BottomViewComponentMediator.SHOW_NOTE, ShowBottomViewComponentMediatorCommand);
 			
+			//战场底部界面2
+			facade.registerCommand(BattleFightViewComponentMediator.SHOW_NOTE, ShowBattleFightViewComponentMediatorCommand);
+			
+			//战场提示
+			facade.registerCommand(BattleTiShiPanelComponentMediator.SHOW_NOTE, ShowBattleTiShiPanelComponentMediatorCommand);
+			
 			//战场时间面板
 			facade.registerCommand(TimeViewComponentMediator.SHOW_NOTE, ShowTimeViewComponentMediatorCommand);
 			
 			//战车移动
-			facade.registerCommand(FightZhanCheMoveCommand.FIGHT_ZHAN_CHE_MOVE_COMMAND, FightZhanCheMoveCommand);
+			facade.registerCommand(FightMoveCommand.FIGHT_MOVE_COMMAND, FightMoveCommand);
 			
 			//开火
 			facade.registerCommand(FightFireCommand.FIGHT_FIRE_COMMAND, FightFireCommand);
 			
 			//锁定
 			facade.registerCommand(FightLockCommand.FIGHT_LOCK_COMMAND, FightLockCommand);
+			
+			//爆炸控制器
+			facade.registerCommand(FightExplodeCommand.FIGHT_EXPLODE_COMMAND, FightExplodeCommand);
+			
+			//拾取物品控制器
+			facade.registerCommand(FightItemCommand.FIGHT_ITEM_COMMAND, FightItemCommand);
+			
+			//生成小飞机
+			facade.registerCommand(FightCreateFeiJiCommand.CREATE_FEI_JI_COMMAND, FightCreateFeiJiCommand);
+			
+			//伤害
+			facade.registerCommand(FightHitCommand.FIGHT_HIT_COMMAND, FightHitCommand);
         }
     }
 }

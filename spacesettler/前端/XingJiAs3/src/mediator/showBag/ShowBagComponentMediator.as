@@ -4,6 +4,7 @@ package mediator.showBag
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.email.SendEmailComponentMediator;
 	import mediator.mainView.ChatViewMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -24,11 +25,18 @@ package mediator.showBag
 		public static const SHOW_NOTE:String="show" + NAME + "Note";
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
+		
+		/**
+		 *是否是邮件信息 
+		 */		
+		public static const IS_EMAIL_NOTE:String = "is" + NAME + "emailNote";
 
+		private var isEmailInfor:Boolean = false;
 		public function ShowBagComponentMediator()
 		{
 			super(NAME, new ShowBagComponent());
-			
+			comp.med=this;
+			level=4;
 			comp.addEventListener(ShowBagEvent.SHOW_DATA_EVENT,dataHandler);
 			comp.addEventListener(ShowBagEvent.CLOSE_EVENT,closeHandler);
 		}
@@ -40,7 +48,7 @@ package mediator.showBag
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [DESTROY_NOTE];
+			return [DESTROY_NOTE,IS_EMAIL_NOTE];
 		}
 
 		/**
@@ -58,6 +66,10 @@ package mediator.showBag
 					destroy();
 					break;
 				}
+				case IS_EMAIL_NOTE:
+				{
+					isEmailInfor = true;
+				}
 			}
 		}
 
@@ -73,8 +85,16 @@ package mediator.showBag
 		
 		private function dataHandler(event:ShowBagEvent):void
 		{
+			if(isEmailInfor)
+			{
+				sendNotification(SendEmailComponentMediator.SELECTED_ITEM_DATA,event.baseItemVO);
+			}
+			else
+			{
+				
+				sendNotification(ChatViewMediator.SHOW_ZHANCHE,event.baseItemVO);
+			}
 			sendNotification(DESTROY_NOTE);
-			sendNotification(ChatViewMediator.SHOW_ZHANCHE,event.baseItemVO);
 		}
 
 	}

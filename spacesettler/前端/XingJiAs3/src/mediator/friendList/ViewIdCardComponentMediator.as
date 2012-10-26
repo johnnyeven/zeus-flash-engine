@@ -1,11 +1,17 @@
 package mediator.friendList
 {
+	import events.friendList.FriendListEvent;
+	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.allView.XingXingComponentMediator;
+	import mediator.email.SendEmailComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
+	
+	import proxy.friendList.FriendProxy;
 	
 	import view.friendList.ViewIdCardComponent;
 
@@ -22,11 +28,15 @@ package mediator.friendList
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		private var friendProxy:FriendProxy;
 		public function ViewIdCardComponentMediator()
 		{
 			super(NAME, new ViewIdCardComponent());
-			
+			friendProxy = getProxy(FriendProxy);
 			comp.addEventListener("closeIDCardComponent",closeHandler);
+			comp.addEventListener(FriendListEvent.CHECK_FORT_BY_ID_CARD_EVENT,checkFortHandler);
+			comp.addEventListener(FriendListEvent.ADD_FRIEND_BY_ID_CARD_EVENT,addFriendHandler);
+			comp.addEventListener(FriendListEvent.SEND_EMAIL_BY_ID_CARD_EVENT,sendEmailHandler);
 		}
 		
 		/**
@@ -66,6 +76,24 @@ package mediator.friendList
 		{
 			return viewComponent as ViewIdCardComponent;
 		}
+		
+		private function checkFortHandler(event:FriendListEvent):void
+		{
+			sendNotification(XingXingComponentMediator.SHOW_NOTE,event.obj);
+		}
 
+		private function addFriendHandler(event:FriendListEvent):void
+		{
+			friendProxy.addFriend(event.obj as String);
+		}
+
+		private function sendEmailHandler(event:FriendListEvent):void
+		{
+			//显示界面
+			sendNotification(SendEmailComponentMediator.SHOW_NOTE);
+			//传送数据
+			sendNotification(SendEmailComponentMediator.SEND_EMAIL_DATA_BY_ID_CARD,event.obj);
+			
+		}
 	}
 }

@@ -15,6 +15,7 @@ package view.ranking
 		public var yaoSaiMC:Sprite;
 		
 		public var titleText:Label;
+		
 		public var timeText:Label;
 		public var zongBangText:Label;
 		public var riBangText:Label;

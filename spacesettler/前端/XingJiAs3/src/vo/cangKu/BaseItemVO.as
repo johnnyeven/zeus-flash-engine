@@ -54,7 +54,20 @@ package vo.cangKu
 		 */
 		public var description:String;
 		
+		/**
+		 * 评分
+		 */
+		public var value:int;
 		
+		/**
+		 * 等级
+		 */
+		public var level:int;
+		
+		/**
+		 * 选中的物品数量
+		 */
+		public var count:int = 1;
 
         private var _iconURL:String = "";
 

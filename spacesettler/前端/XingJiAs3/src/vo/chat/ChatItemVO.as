@@ -33,7 +33,7 @@ package vo.chat
 		/**
 		 *聊天频道
 		 */		
-		public var channel:int;
+		public var channel:String;
 		
 		/**
 		 *时间戳
@@ -51,9 +51,9 @@ package vo.chat
 		public var system:String = "";
 		
 		/**
-		 *类型
+		 *类型  0为一般系统公告   1为副本系统公告
 		 */		
-		public var type:int;
+		public var type:String;
 		
 		/**
 		 *内容信息长度

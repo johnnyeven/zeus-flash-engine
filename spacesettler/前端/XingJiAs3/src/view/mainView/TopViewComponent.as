@@ -5,7 +5,9 @@ package view.mainView
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.text.TextField;
+	import flash.utils.Timer;
 	
 	import mx.binding.utils.BindingUtils;
 	
@@ -63,7 +65,10 @@ package view.mainView
 		public var buff_3:Sprite;		
 
 		private var _userInfoProxy:UserInfoProxy;
-		
+		private var darkOut:Number;
+		private var crystalOut:Number;
+		private var tritiumOut:Number;
+		private var timer:Timer;
 		public function TopViewComponent(skin:DisplayObjectContainer)
 		{
 			super(skin);
@@ -76,7 +81,6 @@ package view.mainView
 			militaryExploitText=createUI(Label,"shengwang_tf");
 			userNameText=createUI(Label,"uesrname_tf");
 			
-			militaryRankText.text="新兵";//*****************************************
 			electricBar=createUI(ProgressBar,"dianliang_loader_bar");
 			enemy=createUI(Button,"diren_btn");//*******************敌人按钮暂时未加功能  以示！！！！
 			
@@ -85,31 +89,70 @@ package view.mainView
 			buff_3=getSkin("buff_3");					
 			
 			_userInfoProxy=ApplicationFacade.getProxy(UserInfoProxy);
+			timer=new Timer(1000);
+			timer.start();
+			timer.addEventListener(TimerEvent.TIMER,timerHandler);
 			
 			cwList.push(BindingUtils.bindProperty(userNameText,"text",_userInfoProxy,["userInfoVO","nickname"]));
-//			cwList.push(BindingUtils.bindProperty(pebbleText,"text",userInfoProxy,["userInfoVO","crystal"]));
+			cwList.push(BindingUtils.bindProperty(militaryRankText,"text",_userInfoProxy,["userInfoVO","junXian"]));
+//			cwList.push(BindingUtils.bindProperty(pebbleText,"text",_userInfoProxy,["userInfoVO","crystal"]));
 //			cwList.push(BindingUtils.bindProperty(tritiumGasText,"text",_userInfoProxy,["userInfoVO","tritium"]));
 //			cwList.push(BindingUtils.bindProperty(darkText,"text",_userInfoProxy,["userInfoVO","broken_crysta"]));
 			cwList.push(BindingUtils.bindProperty(moneyText,"text",_userInfoProxy,["userInfoVO","dark_crystal"]));
 			cwList.push(BindingUtils.bindProperty(militaryExploitText,"text",_userInfoProxy,["userInfoVO","prestige"]));
-			//cwList.push(BindingUtils.bindProperty(militaryRankText,"text",userInfoProxy,["userInfoVO","militaryRrank"]));
+//			cwList.push(BindingUtils.bindProperty(militaryRankText,"text",_userInfoProxy,["userInfoVO","militaryRrank"]));
 			cwList.push(BindingUtils.bindProperty(electricBar,"percent",_userInfoProxy,["userInfoVO","power"]));
 			
 			cwList.push(BindingUtils.bindSetter(crystalChange,_userInfoProxy,["userInfoVO","crystal"]));
 			cwList.push(BindingUtils.bindSetter(tritiumChange,_userInfoProxy,["userInfoVO","tritium"]));
 			cwList.push(BindingUtils.bindSetter(darkChange,_userInfoProxy,["userInfoVO","broken_crysta"]));
 			
+			cwList.push(BindingUtils.bindSetter(crystalOutChange,_userInfoProxy,["userInfoVO","crystal_output"]));
+			cwList.push(BindingUtils.bindSetter(tritiumOutChange,_userInfoProxy,["userInfoVO","tritium_output"]));
+			cwList.push(BindingUtils.bindSetter(darkOutChange,_userInfoProxy,["userInfoVO","broken_crystal_output"]));
+			
 			enemy.addEventListener(MouseEvent.CLICK,enemy_clickHandler);
 		}
 		
+		public override function dispose():void
+		{
+			super.dispose();
+			timer.stop();
+			timer.removeEventListener(TimerEvent.TIMER,timerHandler);
+			timer=null;
+		}
+		
+		protected function timerHandler(event:TimerEvent):void
+		{
+			_userInfoProxy.userInfoVO.broken_crysta+=darkOut;
+			_userInfoProxy.userInfoVO.crystal+=crystalOut;
+			_userInfoProxy.userInfoVO.tritium+=tritiumOut;
+		}
+		
+		private function crystalOutChange(value:*):void
+		{			
+			crystalOut=value/3600;
+		}
+		
+		private function tritiumOutChange(value:*):void
+		{
+			tritiumOut=value/3600;
+		}
+		
+		private function darkOutChange(value:*):void
+		{
+			darkOut=value/3600;
+		}
+		
+		
 		private function darkChange(value:*):void
 		{
-			darkText.text=value;
+			darkText.text=int(value).toString();
 		}
 		
 		private function crystalChange(value:*):void
 		{
-			pebbleText.text=value;
+			pebbleText.text=int(value).toString();
 			if(_userInfoProxy.userInfoVO.crystal>=_userInfoProxy.userInfoVO.crystal_volume)
 				pebbleText.color=0xFF0000;
 			else
@@ -118,7 +161,7 @@ package view.mainView
 		
 		private function tritiumChange(value:*):void
 		{
-			tritiumGasText.text=value;
+			tritiumGasText.text=int(value).toString();
 			if(_userInfoProxy.userInfoVO.tritium>=_userInfoProxy.userInfoVO.tritium_volume)
 				tritiumGasText.color=0xFF0000;
 			else

@@ -90,6 +90,7 @@ package proxy.userInfo
             userInfoVO.userName = data.base.name;
 			
 			userInfoVO.legion_id = data.legion_id;
+			userInfoVO.militaryRrank = data.military_rank;
 			
 			userInfoVO.server_camp=data.camp_id;
             userInfoVO.camp = userInfoVO.server_camp + 1;

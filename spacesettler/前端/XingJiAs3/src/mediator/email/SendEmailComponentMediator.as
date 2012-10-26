@@ -2,18 +2,26 @@ package mediator.email
 {
 	import events.email.EmailEvent;
 	
+	import flash.events.Event;
+	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.friendList.FriendListComponentMediator;
+	import mediator.showBag.ShowBagComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import proxy.email.EmailProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.email.SendEmailComponent;
 	
+	import vo.allView.FriendInfoVo;
+	import vo.cangKu.BaseItemVO;
 	import vo.email.EmailItemVO;
+	import vo.email.SourceItemVO;
 
 	/**
 	 * 发送新邮件
@@ -32,15 +40,41 @@ package mediator.email
 		 * 回复邮件数据
 		 */		
 		public static const CALL_BACK_EMAIL:String = "call" + NAME +"back_email";
+		
+		/**
+		 * 选择的资源数据
+		 */	
+		public static const SELECTED_SOURCE_DATA:String = "selected" + NAME + "sourceData";
+		
+		/**
+		 * 选择的战车或挂件的数据
+		 */	
+		public static const SELECTED_ITEM_DATA:String = "selected" + NAME + "itemData";
+		
+		/**
+		 * 从军官证发送的邮件数据
+		 */	
+		public static const SEND_EMAIL_DATA_BY_ID_CARD:String = "sendEmailData" + NAME + "byIdCard";
+		
+		/**
+		 * 从好友列表发送的邮件数据
+		 */	
+		public static const SEND_EMAIL_DATA_BY_FRIEND_LISE:String = "sendEmailData" + NAME + "byFriendList";
 		 
 		private var emailProxy:EmailProxy;
+		private var userInforProxy:UserInfoProxy;
 		public function SendEmailComponentMediator()
 		{
 			super(NAME, new SendEmailComponent());
-			
+			comp.med=this;
+			level = 3;
 			emailProxy = getProxy(EmailProxy);
+			userInforProxy = getProxy(UserInfoProxy);
 			comp.addEventListener(EmailEvent.CLOSE_SEND_EMAIL_EVENT,closeHandler);
 			comp.addEventListener(EmailEvent.SEND_NEW_EMAIL_EVENT,sendNewEmailHandler);
+			comp.addEventListener("showItemListEvent",showItemListHandler);
+			comp.addEventListener("showSourceListEvent",showSourceListHandler);
+			comp.addEventListener(EmailEvent.SHOW_FRIEND_LIST_EVENT,showFriendListHandler);
 		}
 		
 		/**
@@ -50,7 +84,7 @@ package mediator.email
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [DESTROY_NOTE,CALL_BACK_EMAIL];
+			return [DESTROY_NOTE,CALL_BACK_EMAIL,SELECTED_SOURCE_DATA,SELECTED_ITEM_DATA,SEND_EMAIL_DATA_BY_ID_CARD,SEND_EMAIL_DATA_BY_FRIEND_LISE];
 		}
 
 		/**
@@ -70,7 +104,32 @@ package mediator.email
 				}
 				case CALL_BACK_EMAIL:
 				{
+					//回复邮件的数据控制
 					comp.setData(note.getBody() as EmailItemVO);
+					break;
+				}
+				case SELECTED_SOURCE_DATA:
+				{
+					//选择的资源数据
+					comp.setSourceData(note.getBody() as SourceItemVO);
+					break;
+				}
+				case SELECTED_ITEM_DATA:
+				{
+					//选择的战车或挂件的数据
+					comp.setItemData(note.getBody() as BaseItemVO);
+					break;
+				}
+				case SEND_EMAIL_DATA_BY_ID_CARD:
+				{
+					//从军官证发送邮件的数据
+					comp.idCardEmailData(note.getBody() as FriendInfoVo);
+					break;
+				}
+				case SEND_EMAIL_DATA_BY_FRIEND_LISE:
+				{
+					//从好友列表发送的邮件数据
+					comp.friendListData(note.getBody() as FriendInfoVo);
 					break;
 				}
 			}
@@ -89,6 +148,23 @@ package mediator.email
 		private function sendNewEmailHandler(event:EmailEvent):void
 		{
 			emailProxy.sendEmail(event.obj);
+			sendNotification(DESTROY_NOTE);
+		}
+		
+		private function showItemListHandler(event:Event):void
+		{
+			sendNotification(ShowBagComponentMediator.SHOW_NOTE);
+		}
+		
+		private function showSourceListHandler(event:Event):void
+		{
+			sendNotification(SourceSendComponentMediator.SHOW_NOTE);
+		}
+		
+		private function showFriendListHandler(event:EmailEvent):void
+		{
+			var obj:Object = {playerID:userInforProxy.userInfoVO.player_id,mediatorLevel:level,isSendEmail:true}
+			sendNotification(FriendListComponentMediator.SHOW_NOTE,obj);
 		}
 
 	}

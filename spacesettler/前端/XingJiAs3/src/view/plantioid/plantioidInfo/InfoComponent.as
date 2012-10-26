@@ -3,24 +3,24 @@ package view.plantioid.plantioidInfo
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.DateFormatter;
     import com.zn.utils.StringUtil;
-
+    
     import enum.CenterTechTypeEnum;
     import enum.ResEnum;
     import enum.plantioid.PlantioidTypeEnum;
-
+    
     import events.plantioid.PlantioidEvent;
-
+    
     import flash.display.DisplayObjectContainer;
     import flash.display.MovieClip;
     import flash.display.Sprite;
     import flash.events.MouseEvent;
     import flash.events.TimerEvent;
     import flash.utils.Timer;
-
+    
     import ui.components.Button;
     import ui.components.Label;
     import ui.core.Component;
-
+    
     import vo.plantioid.FortsInforVO;
 
     /**
@@ -34,6 +34,8 @@ package view.plantioid.plantioidInfo
 
         public var canLiangItem_0:InfoResItemCompnent;
 
+		public var npcGift:Sprite;
+		
         public var areaLabel:Label;
 
         public var techLabel:Label;
@@ -67,6 +69,8 @@ package view.plantioid.plantioidInfo
             canLiangItem_1 = createUI(InfoResItemCompnent, "canLiangItem_1");
             canLiangItem_0 = createUI(InfoResItemCompnent, "canLiangItem_0");
 
+			npcGift=getSkin("npcGift");
+			
             areaLabel = createUI(Label, "areaLabel");
             techLabel = createUI(Label, "techLabel");
             attackLabel = createUI(Label, "attackLabel");
@@ -120,7 +124,9 @@ package view.plantioid.plantioidInfo
                 hideBtn();
 
                 if (plantVO.type == PlantioidTypeEnum.NPC)
+				{
                     bg1.visible = true;
+				}
                 else
                     bg2.visible = true;
 
@@ -138,6 +144,7 @@ package view.plantioid.plantioidInfo
 
                 canLiangItem_0.visible = false;
                 canLiangItem_1.visible = false;
+				npcGift.visible=false;
 
                 var index:int = 0;
                 if (plantVO.crystal_output != 0)
@@ -153,6 +160,11 @@ package view.plantioid.plantioidInfo
                     this["canLiangItem_" + index].visible = true;
                     index++;
                 }
+				
+				if(!plantVO.crystal_output || !plantVO.broken_crystal_output)
+				{
+					npcGift.visible=true;
+				}
             }
             else
             {

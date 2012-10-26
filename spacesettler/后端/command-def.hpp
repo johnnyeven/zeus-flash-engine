@@ -320,22 +320,22 @@ enum ENUM_FORT_BUILDING_TYPE {
 enum COMMAND_ROOM2CLIENT {
     
     ROOM2CLIENT_LOGIN = 0,         //玩家者登陆
-    ROOM2CLIENT_PING,                       //
+    ROOM2CLIENT_PING,                       //no
     ROOM2CLIENT_MOVING,                     //攻击者对象移动
     ROOM2CLIENT_FIRE,                       //开火
     
-    ROOM2CLIENT_ATTACKED,                   //报告伤害对象情况
-    ROOM2CLIENT_FIX,                        //防守者调整对象恢复速度
-    ROOM2CLIENT_AIRFORCE_HELP,              //防守者呼叫空中支援
+    ROOM2CLIENT_ATTACKED,                   //报告伤害对象情况爆炸
+    ROOM2CLIENT_FIX,                        //no防守者调整对象恢复速度
+    ROOM2CLIENT_AIRFORCE_HELP,              //no防守者呼叫空中支援
     ROOM2CLIENT_SURRENDER,                  //攻击者投降、撤离
     
     ROOM2CLIENT_REQUEST_CONTROL,            //攻击者请求控制防守方攻击对象
     ROOM2CLIENT_RELEASE_CONTROL,            //攻击者主动释放已控制的对象
-    ROOM2CLIENT_VOTE,                       //
-    ROOM2CLIENT_BOARDCAST_MESSAGE,          //
+    ROOM2CLIENT_VOTE,                       //投票
+    ROOM2CLIENT_BOARDCAST_MESSAGE,          //转发消息，套小包
     
     ROOM2CLIENT_OBJECT_REQUEST_RELIVE,      //请求复活对象，当前仅对战车有效
-    ROOM2CLIENT_REQUEST_BUFFER,             //请求获得增益效果
+    ROOM2CLIENT_REQUEST_BUFFER,             //请求获得增益效果 吃buffs
     
     
     
@@ -345,47 +345,48 @@ enum COMMAND_ROOM2CLIENT {
     //以下是room服务器发送给客户端的命令
     ROOM2CLIENT_LOGIN_RESULT = 1000,               //
     ROOM2CLIENT_BOARDCAST_STATUS,           //广播受到伤害对象当前
-    ROOM2CLIENT_FINISH,                     //游戏结束
+    ROOM2CLIENT_FINISH,                     //游戏结束 
     ROOM2CLIENT_FINISH_TIMEOUT,             //游戏超时结束
     
     ROOM2CLIENT_MOVING_HISTORY,             //可移动对象移动历史
     ROOM2CLIENT_REQUEST_CONTROL_RESULT,     //请求控制结果
-    ROOM2CLIENT_TIMEOUT_RELEASE_CONTROL,    //被控制对象超时被释放
+    ROOM2CLIENT_TIMEOUT_RELEASE_CONTROL,    //no被控制对象超时被释放
     ROOM2CLIENT_PLAYER_ENTER,               //新玩家进入房间
     
     ROOM2CLIENT_VOTE_STARTUP,               //开始投票
     ROOM2CLIENT_VOTE_RESULT,                //投票结果
-    ROOM2CLIENT_SHUTDOWN,
+    ROOM2CLIENT_SHUTDOWN,			//断开连接，赢了才会有战斗结果
     
     
-    ROOM2CLIENT_OBJECT_DYING,
+    ROOM2CLIENT_OBJECT_DYING,//no
     ROOM2CLIENT_OBJECT_REQUEST_RELIVE_RESULT,             //请求复活结果
-    ROOM2CLIENT_FORTBUILIDNG_CHANGING_GID,
+    ROOM2CLIENT_FORTBUILIDNG_CHANGING_GID,//no
 
 //    
-    ROOM2CLIENT_BUFFER_GENERATED,           //增益产生
+    ROOM2CLIENT_BUFFER_GENERATED,           //增益产生 物品掉落
     ROOM2CLIENT_REQUEST_BUFFER_RESULT,
     
-    ROOM2CLIENT_BUFFER_EATING,
-    ROOM2CLIENT_NPC_CHARIOT_ENTER,          //NPC战车加入战场
+    ROOM2CLIENT_BUFFER_EATING,//no
+    ROOM2CLIENT_NPC_CHARIOT_ENTER,          //NPC战车加入战场,产生小飞机
     
     
     
     ROOM2CLIENT_OBTAIN_HONOR,               //击毁建筑（炮台）获得荣誉
-    ROOM2CLIENT_UPDATE_OBJECT,              //更新对象属性
+    ROOM2CLIENT_UPDATE_OBJECT,              //更新对象属性 改基地耐久为5%，攻击去掉
 //    
 //    ROOM2CLIENT_OBJECT_RELIVE,              //对象复活
 };
 
 enum {
-    ROOM2CLIENT_CHARIOT_RESET_PLACE = 2000,
-    ROOM2CLIENT_BUILDING_LOOK,
-    ROOM2CLIENT_CHARIOT_LOCK,
-    ROOM2CLIENT_CHARIOT_LOCK_CANCEL,
-    ROOM2CLIENT_BOMB_CHARIOT_MOVE,
-    ROOM2CLIENT_AIR_SUPPORT,        //空中支援
-    ROOM2CLIENT_CONTINUE_EFFECT,    //地面持续效果
+    ROOM2CLIENT_CHARIOT_RESET_PLACE = 2000,     //no重置玩家战车位置
+    ROOM2CLIENT_BUILDING_LOOK,                  //no转发炮台朝向
+    ROOM2CLIENT_CHARIOT_LOCK,                   //转发战车锁定
+    ROOM2CLIENT_CHARIOT_LOCK_CANCEL,            //转发战车取消锁定
+    ROOM2CLIENT_BOMB_CHARIOT_MOVE,              //no转发自爆飞机移动(已不使用)
+    ROOM2CLIENT_AIR_SUPPORT,        //no空中支援
+    ROOM2CLIENT_CONTINUE_EFFECT,    //no地面持续效果
 };
+
 
 enum ENUM_ATTACK_TYPE {
     ATTACK_TYPE_REAL_ATTACK = 1,    //  # 实弹攻击
@@ -527,7 +528,7 @@ enum ENUM_OBJECT_TYPE {
 struct ATTACKED_OBJECT {
     id_type id_take_attack;    //受到伤害的目标id
     uint32_t type;              //0 chariot     1 building
-    uint32_t attack_type;       //攻击类型
+    uint32_t attack_type;       //攻击类型 
     POINT pt;                   //受到伤害的目标当前位置
 };
 
@@ -535,7 +536,7 @@ struct HEADER_ROOM2CLIENT_ATTACKED {
     HEADER header;
     POINT explode_pos;                 //爆炸点
     
-    id_type attacker_uid;
+    id_type attacker_uid;				//playerID
     uint32_t attacker_gid;              //攻击者gid
 //    float basic_min_attack;             //# 最小基础攻击
     float current_min_attack;           //# 当前最小基础攻击
@@ -676,29 +677,29 @@ enum FORT_OBTAIN_REASON {
 struct RESOURCE_OBTAIN_IN_BATTLE {
     
     //resource pickup in battle
-    int32_t crystal;
+    int32_t crystal;  //捡到的资源
     int32_t tritium;
     int32_t dark;
     int32_t dark_crystal;
     
     //resource obtain for winner
-    uint32_t resource_type;
+    uint32_t resource_type; //奖励
     uint32_t delta;
     
     //bluemap obtain for winner
-    int32_t bluemap_recipes_type;
+    int32_t bluemap_recipes_type; //赢了才会有图纸
     int32_t bluemap_recipes_category;
     int32_t bluemap_level;
     
-    int32_t honour_obtain;
+    int32_t honour_obtain;	//获得荣誉
     
-    int32_t gain_fort;          //0=no 1=yes
+    int32_t gain_fort;          //0=no 1=yes 是否获取到了要塞
 //    int32_t gain_reason;        //0=buy 1=need 2=single 3=single buy, only gain_fort=1
-    int32_t dark_delta;         //pay for fort buying or gain for sb buy fort, only gain_fort=1
+    int32_t dark_delta;         //pay for fort buying or gain for sb buy fort, only gain_fort=1 获取要塞的花费 ，负数表示买花费了多少
     
     
     //pay for relive
-    int32_t dark_crystal_for_relive;
+    int32_t dark_crystal_for_relive; //复活用了多少水晶
    
     int32_t reserved[8];
 };
@@ -820,8 +821,8 @@ struct HEADER_ROOM2CLIENT_NPC_CHARIOT_ENTER {
 
 struct HEADER_ROOM2CLIENT_OBTAIN_HONOR {
     HEADER header;
-    id_type who;            //who obtain honor
-    id_type generate_by;    //generate by fortbuilding only
+    id_type who;            //who obtain honor 自己PlayID
+    id_type generate_by;    //generate by fortbuilding only 建筑
     int honor;              //how much of honor
 };
 
@@ -943,5 +944,6 @@ struct HEADER_CHAT2CLIENT_GET_ONLINE_PLAYER_NUMBER_RESULT {
     int32_t world;
     int32_t group;
 };
+
 #pragma pack(pop)
 

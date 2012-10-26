@@ -27,8 +27,8 @@ package events.talk
 		public static const PRIVATE_TALK_EVENT:String = "privateTalkEvent";
 			
 		private var _talk:String;
-		private var _channel:int;
-		public function TalkEvent(type:String,talk:String,channel:int,bubbles:Boolean=false, cancelable:Boolean=false)
+		private var _channel:String;
+		public function TalkEvent(type:String,talk:String,channel:String,bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			_talk=talk;
@@ -55,7 +55,7 @@ package events.talk
 			_talk = value;
 		}
 
-		public function get channel():int
+		public function get channel():String
 		{
 			return _channel;
 		}

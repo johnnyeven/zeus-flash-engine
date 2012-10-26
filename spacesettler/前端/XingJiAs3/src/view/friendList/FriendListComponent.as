@@ -53,6 +53,9 @@ package view.friendList
 		
 		public var maskSprite:Sprite;
 		
+		//是否是从邮件中选择的好友列表
+		private var _isSendEmail:Boolean = false;
+		
         public function FriendListComponent()
         {
             super(ClassUtil.getObject("view.friendList.FriendListSkin"));
@@ -65,7 +68,7 @@ package view.friendList
 			container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
 			container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
 			container.x = 12;
-			container.y = 40;
+			container.y = 80;
 			addChild(container);
 			
 			vScrollBar = createUI(VScrollBar, "vScrollBar");
@@ -105,6 +108,14 @@ package view.friendList
 			reNewBtn.addEventListener(MouseEvent.CLICK,reNewBtn_clickHandler);
 			playerBtn.addEventListener(MouseEvent.CLICK,playerBtn_clickHandler);
 			closeBtn.addEventListener(MouseEvent.CLICK,closeBtn_clickHand);
+			
+			deletBtnUP.addEventListener(MouseEvent.CLICK,deleteBtn_clickHandler);
+			checkBtnUP.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler); 
+			chatBtnUP.addEventListener(MouseEvent.CLICK,chatBtn_clickHandler); 
+			
+			deletBtnDown.addEventListener(MouseEvent.CLICK,deleteBtn_clickHandler);
+			checkBtnDown.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler); 
+			chatBtnDown.addEventListener(MouseEvent.CLICK,chatBtn_clickHandler); 
         }
 		
 		private function itemVOListChange(value:*):void
@@ -118,6 +129,9 @@ package view.friendList
 				var friendItem:FriendItem = new FriendItem();
 				
 				friendItem.data = arr[i];
+				friendItem.topSprite.visible = false;
+				friendItem.buttonSprite.visible = false;
+				friendItem.buttonMode = true;
 				friendItem.addEventListener(MouseEvent.CLICK, friendItem_clickHandler);
 				friendItem.dyData = i;
 				
@@ -131,8 +145,17 @@ package view.friendList
 		
 		private function friendItem_clickHandler(event:MouseEvent):void
 		{
-			currentCount = (event.currentTarget as FriendItem).dyData;
-			currentSelected = (event.currentTarget as FriendItem);
+			if(isSendEmail == true)
+			{
+				event.stopImmediatePropagation();
+				dispatchEvent(new FriendListEvent(FriendListEvent.SEND_DATA_TO_EMAIL_EVENT,(event.currentTarget as FriendItem).data,true));
+			}
+			else
+			{
+				currentCount = (event.currentTarget as FriendItem).dyData;
+				currentSelected = (event.currentTarget as FriendItem);
+			}
+			
 		}
 		
 		protected function mouseOutHandler(event:MouseEvent):void
@@ -181,7 +204,7 @@ package view.friendList
 				currentSelected.buttonSprite.visible = true;
 				xiaSprite.visible = true;
 				xiaSprite.mask = maskSprite;
-				TweenLite.to(xiaSprite,0.5,{x:0,y:currentSelected.y+currentSelected.height});
+				TweenLite.to(xiaSprite,0.5,{x:0,y:currentSelected.y+currentSelected.height+currentSelected.buttonSprite.height});
 			}
 			else
 			{
@@ -211,6 +234,45 @@ package view.friendList
 				dispatchEvent(new Event("destoryxiaSprite"));
 			}
 		}
+		
+		private function checkBtn_clickHandler(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
+			dispatchEvent(new FriendListEvent(FriendListEvent.CHECK_PLAYER_ID_CARD_EVENT,_currentSelected.data,true));
+		}
+		
+		private function deleteBtn_clickHandler(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
+			dispatchEvent(new FriendListEvent(FriendListEvent.DELETED_FRIEND_INFOR_EVENT,_currentSelected.data,true));
+		}
+		
+		private function chatBtn_clickHandler(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
+			dispatchEvent(new FriendListEvent(FriendListEvent.CHAT_WITH_FRIEND_EVENT,_currentSelected.data,true));
+		}
+
+		public function get isSendEmail():Boolean
+		{
+			return _isSendEmail;
+		}
+
+		public function set isSendEmail(value:Boolean):void
+		{
+			_isSendEmail = value;
+			if(isSendEmail == true)
+			{
+				reNewBtn.visible = false;
+				playerBtn.visible = false;
+			}
+			else
+			{
+				reNewBtn.visible = true;
+				playerBtn.visible = true;
+			}
+		}
+
 
 	}
 }

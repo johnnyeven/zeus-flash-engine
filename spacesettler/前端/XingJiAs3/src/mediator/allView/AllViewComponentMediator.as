@@ -84,16 +84,16 @@ package mediator.allView
 
 		private function allViewHandler(event:AllViewEvent):void
 		{
-			sendNotification(XingXingComponentMediator.SHOW_NOTE);
+			sendNotification(XingXingComponentMediator.SHOW_NOTE,userInforProxy.userInfoVO.player_id);
 		}
 		
 		private function viewRongYuHandler(event:AllViewEvent):void
 		{
-			var id:String = userInforProxy.userInfoVO.id;
-			allViewProxy.allView(function():void
-			{
-			    sendNotification(RongYuComponentMediator.SHOW_NOTE);
-			});
+//			var id:String = userInforProxy.userInfoVO.id;
+//			allViewProxy.allView(function():void
+//			{
+			 sendNotification(RongYuComponentMediator.SHOW_NOTE);
+//			});
 			
 		}
 	}

@@ -8,12 +8,16 @@ package vo.chat
 		/**
 		 * 聊天频道
 		 */		
-		public var channel:int;
+		public var channel:String;
 		
 		/**
 		 * 世界频道数据列表
 		 */		
 		public var wordList:Array = [];
+		/**
+		 * 阵营频道数据列表
+		 */		
+		public var campList:Array = [];
 		
 		/**
 		 * 军团频道数据列表

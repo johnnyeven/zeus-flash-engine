@@ -51,12 +51,28 @@ package enum
 		
 		public static function get getItemURL():String
 		{
-			return senceEquipment+"item.png";
+//			return senceEquipment+"item.png";
+			return parentURL+"itemIcon/vip";
 		}
 		
 		public static function get getShopItemURL():String
 		{
 			return parentURL+"itemIcon/vip";
+		}
+		
+		public static function get getConditionIconURL():String
+		{
+			return parentURL+"conditionIcon/";
+		}
+		
+		/**
+		 *战斗buff物品 
+		 * @return 
+		 * 
+		 */
+		public static function get fightBuffItemIcon():String
+		{
+			return parentURL+"fightItemIcon/";
 		}
 	}
 }

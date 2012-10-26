@@ -1,5 +1,7 @@
 package mediator.mainView
 {
+    import com.zn.utils.StringUtil;
+    
     import controller.EnterMainSenceViewCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.plantioid.ShowPlantioidComponentMediatorCommand;
@@ -34,6 +36,7 @@ package mediator.mainView
     import proxy.BuildProxy;
     import proxy.allView.AllViewProxy;
     import proxy.group.GroupProxy;
+    import proxy.rankingProxy.RankingProxy;
     import proxy.userInfo.UserInfoProxy;
     
     import view.mainView.MainViewComponent;
@@ -57,6 +60,10 @@ package mediator.mainView
 
         public static const HIDE_TOP_VIEW_NOTE:String = "HIDE_TOP_VIEW_NOTE" + NAME;
 
+        public static const HIDE_RIGHT_VIEW_NOTE:String = "HIDE_RIGHT_VIEW_NOTE" + NAME;
+		
+        public static const SHOW_RIGHT_VIEW_NOTE:String = "SHOW_RIGHT_VIEW_NOTE" + NAME;
+		
         private var allViewProxy:AllViewProxy;
 
         private var userInforProxy:UserInfoProxy;
@@ -105,8 +112,9 @@ package mediator.mainView
          */
         override public function listNotificationInterests():Array
         {
-            return [ DESTROY_NOTE,
-                     SHOW_TOP_VIEW_NOTE, HIDE_TOP_VIEW_NOTE ];
+            return [ DESTROY_NOTE,HIDE_RIGHT_VIEW_NOTE,
+                     SHOW_TOP_VIEW_NOTE, HIDE_TOP_VIEW_NOTE,
+					 SHOW_RIGHT_VIEW_NOTE];
         }
 
         /**
@@ -133,6 +141,16 @@ package mediator.mainView
                     comp.topComp.visible = false;
                     break;
                 }
+                case HIDE_RIGHT_VIEW_NOTE:
+                {
+                    comp.controlComp.visible = false;
+                    break;
+                }
+                case SHOW_RIGHT_VIEW_NOTE:
+                {
+                    comp.controlComp.visible = true;
+                    break;
+                }
             }
         }
 
@@ -154,7 +172,11 @@ package mediator.mainView
 		
 		protected function rankingHandler(event:Event):void
 		{
-			sendNotification(RankingComponentMediator.SHOW_NOTE);
+			var rankProxy:RankingProxy=getProxy(RankingProxy);
+			rankProxy.rank_info(function():void
+			{				
+				sendNotification(RankingComponentMediator.SHOW_NOTE);
+			});
 		}
 		
         public override function show():void
@@ -206,9 +228,10 @@ package mediator.mainView
 		
 		protected function groupHandler(event:Event):void
 		{
-			if(userInforProxy.userInfoVO.legion_id!=null)
+			//if(userInforProxy.userInfoVO.legion_id!=null)
+			if(!StringUtil.isEmpty(userInforProxy.userInfoVO.legion_id))
 			{
-				groupProxy.refreshGroup(userInforProxy.userInfoVO.player_id,function():void
+				groupProxy.refreshGroup(function():void
 				{
 					sendNotification(GroupComponentMediator.SHOW_NOTE);
 					

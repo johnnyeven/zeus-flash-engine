@@ -113,6 +113,23 @@
 	<buySuccess>兑换成功！</buySuccess>
 	
 	<numOfYaoSai>要塞</numOfYaoSai>
+	
+    <!--———————————————————————条件不足 ——————————————————————-->
+    <broken_crysta>暗物质：</broken_crysta>
+    <crystal>水晶矿：</crystal>
+    <tritium>氚气：</tritium>
+    <power_supply>电能：</power_supply>
+    <center_build>基地中心：</center_build>
+    <science>科技：</science>
+    <science_build>科技中心：</science_build>
+    <buy_click>点击兑换</buy_click>
+    <up_science>点击升级</up_science>
+    <up_center>升级基地</up_center>
+    <produce_click>点击生产</produce_click>
+    <build_click>点击建造</build_click>
+    <study_click>点击研究</study_click>
+    
+    
     <!--———————————————————————小行星 ——————————————————————-->
     <plantStateNormalStr>正常</plantStateNormalStr>
     <plantStateBaoFuStr>不可攻击</plantStateBaoFuStr>
@@ -181,6 +198,9 @@
 	<jiesanchenggong>解散军团成功！</jiesanchenggong>
 	<jiesanchenggong>解散军团成功！</jiesanchenggong>
 	<desc>这家伙很懒，什么也没留下</desc>
+	<lingqu>领取成功</lingqu>
+	<lingquNum>此次领取军团战舰</lingquNum>
+	<NOT_ALLOWED_TO_GET_WARSHIP>军团禁止领取战舰！</NOT_ALLOWED_TO_GET_WARSHIP>
 	
 	<!--———————————————————————军工厂 ——————————————————————-->
 	<huishou>战车回收</huishou>
@@ -191,6 +211,8 @@
 	<!--———————————————————————聊天 ——————————————————————-->
 	<CC_ERROR_INVALID_CHECKSUM>无效的校验</CC_ERROR_INVALID_CHECKSUM>
 	<CC_ERROR_INVALID_DIGIEST>无效的数据</CC_ERROR_INVALID_DIGIEST>
+	<titleInChat>重要提示</titleInChat>
+	<inforInChat>您暂未加入军团，请加入后再试！</inforInChat>
 	
 	<!--———————————————————————战场 ——————————————————————-->
 	<battleJiDi>要塞中心</battleJiDi>
@@ -199,6 +221,7 @@
 	<battleJiGuangPaoTa>激光炮塔</battleJiGuangPaoTa>
 	<battleDianCiPaoTa>电磁炮塔</battleDianCiPaoTa>
 	<battleAnNengPaoTa>暗能炮塔</battleAnNengPaoTa>
+	<battleTiShi1>时间快要结束，请抓紧时间</battleTiShi1>
 	
 	<battleCaiChu>拆除</battleCaiChu>
 	<battleXingXi>信息</battleXingXi>

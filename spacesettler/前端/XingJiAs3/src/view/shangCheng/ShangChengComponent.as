@@ -185,8 +185,8 @@ package view.shangCheng
 				else
 				{
 					tuzhiComp.wuPingImg.source= ResEnum.getShopItemURL + shopinfovo.vip_level + ".png";
-//					var imgW:Number=tuzhiComp.wuPingImg.sp.width;
-//					var imgH:Number=tuzhiComp.wuPingImg.sp.height;
+					var imgW:Number=tuzhiComp.wuPingImg.sp.width;
+					var imgH:Number=tuzhiComp.wuPingImg.sp.height;
 					tuzhiComp.wuPingImg.x += 10;
 					tuzhiComp.wuPingImg.y += 25;
 				}
@@ -266,7 +266,7 @@ package view.shangCheng
                 var tuzhiComp:TuZhiComponent = _arr[i];
                 if (tuzhiComp.exchangeBtn == event.currentTarget)
                 {
-					dispatchEvent(new ShopEvent(ShopEvent.BUY_ITEM, true, false,0,"",tuzhiComp.dyData["index"]));
+					dispatchEvent(new ShopEvent(ShopEvent.BUY_ITEM, true, false,0,tuzhiComp.titleText.text,tuzhiComp.dyData["index"]));
                 }
             }
 

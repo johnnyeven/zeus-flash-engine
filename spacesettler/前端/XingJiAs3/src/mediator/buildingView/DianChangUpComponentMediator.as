@@ -8,6 +8,7 @@ package mediator.buildingView
 	
 	import events.buildingView.AddViewEvent;
 	import events.buildingView.BuildEvent;
+	import events.buildingView.ConditionEvent;
 	
 	import flash.events.Event;
 	
@@ -48,6 +49,8 @@ package mediator.buildingView
 			comp.addEventListener(BuildEvent.UP_EVENT, upHandler);
 			comp.addEventListener(BuildEvent.SPEED_EVENT, speedHandler);
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
+			
+			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,addConditionViewHandler);
 		}
 		
 		private function formatStr(str:String):String
@@ -128,6 +131,11 @@ package mediator.buildingView
 				sendNotification(DianChangInfoComponentMediator.SHOW_NOTE);
 //			};
 //			sendNotification(DESTROY_NOTE);
+		}
+		
+		protected function addConditionViewHandler(event:ConditionEvent):void
+		{
+			sendNotification(ConditionViewCompMediator.SHOW_NOTE,event.conditionArr);
 		}
 	}
 }

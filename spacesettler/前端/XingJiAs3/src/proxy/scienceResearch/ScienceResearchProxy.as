@@ -40,6 +40,9 @@ package proxy.scienceResearch
 		private var userInforProxy:UserInfoProxy;
 		
 		private var _scienceResearchCallBack:Function;
+		
+		public var totalLevel:int;
+		
 		public function ScienceResearchProxy(data:Object=null)
 		{
 			super(NAME, data);
@@ -136,11 +139,11 @@ package proxy.scienceResearch
 			}
 			else if(academyLevel>20 && academyLevel<=30)
 			{
-				academyLevel = 9;
+				researchCount = 9;
 			}
 			else if(academyLevel>30 && academyLevel<=40)
 			{
-				academyLevel = 12;
+				researchCount = 12;
 			}
 			return researchCount;
 		}
@@ -186,6 +189,7 @@ package proxy.scienceResearch
 						scienceResearchVO.remainingTime = (scienceResearchVO.finish_time-scienceResearchVO.start_time) - (scienceResearchVO.current_time - scienceResearchVO.start_time);
 						scienceResearchVO.finishTime = (scienceResearchVO.finish_time - scienceResearchVO.current_time)*1000 + DateFormatter.currentTime;
 					}
+					totalLevel+=scienceResearchVO.level;
 				}
 				
 				var level:int = scienceResearchVO.level +1;

@@ -27,6 +27,13 @@ package events.ranking
 		
 		public static const LIST_FORTERESS:String="list_forteress";
 		
+		public static const DAYLIST_MONEY:String="daylist_money";
+		
+		public static const LIST_MONEY:String="list_money";
+		
+		public static const DAYLIST_GROUP:String="daylist_group";
+		
+		public static const LIST_GROUP:String="list_group";
 		
 		private var _type:String;
 		

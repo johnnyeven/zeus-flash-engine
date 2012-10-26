@@ -1,6 +1,8 @@
 package mediator.ranking
 {
 	
+	import enum.rank.RankEnum;
+	
 	import events.ranking.RankingEvent;
 	
 	import flash.events.Event;
@@ -35,9 +37,11 @@ package mediator.ranking
 			this.popUpEffect=CENTER;
 			level=1;
 			comp.med=this;
-			
+			this.height=Main.HEIGHT;
 			rankProxy=getProxy(RankingProxy);
 			userProxy=getProxy(UserInfoProxy);
+			
+			comp.upData(rankProxy.rankUserVo);
 			
 			comp.addEventListener(RankingEvent.CLOSE_ALL,closeHandler);
 			comp.addEventListener(RankingEvent.SHOW_CAIFU,caiFuHandler);
@@ -49,13 +53,16 @@ package mediator.ranking
 		
 		protected function caiFuHandler(event:RankingEvent):void
 		{
-			obj.type="caifu"
-			sendNotification(RankingCommonComponentMediator.SHOW_NOTE,obj);
+			obj.type=RankEnum.CAIFU;
+			rankProxy.listWealth(userProxy.userInfoVO.player_id,0,function():void
+			{
+				sendNotification(RankingCommonComponentMediator.SHOW_NOTE,obj);
+			});
 		}
 		
 		protected function geRenHandler(event:RankingEvent):void
 		{
-			obj.type="shengwang"
+			obj.type=RankEnum.SHENGWANG;
 			rankProxy.listReputation(userProxy.userInfoVO.player_id,0,function():void
 				{
 					sendNotification(RankingCommonComponentMediator.SHOW_NOTE,obj);
@@ -65,8 +72,11 @@ package mediator.ranking
 		
 		protected function junTuanHandler(event:RankingEvent):void
 		{
-			obj.type="juntuan"
-			sendNotification(RankingCommonComponentMediator.SHOW_NOTE,obj);
+			obj.type=RankEnum.GROUP;
+			rankProxy.listPrestige(userProxy.userInfoVO.player_id,0,function():void
+			{
+				sendNotification(RankingCommonComponentMediator.SHOW_NOTE,obj);
+			});
 		}
 		
 		protected function pveHandler(event:RankingEvent):void
@@ -76,7 +86,7 @@ package mediator.ranking
 		
 		protected function yaoSaiHandler(event:RankingEvent):void
 		{
-			obj.type="yaosai"
+			obj.type=RankEnum.YAOSAI;
 			rankProxy.listFortress(userProxy.userInfoVO.player_id,0,function():void
 			{
 				sendNotification(RankingCommonComponentMediator.SHOW_NOTE,obj);

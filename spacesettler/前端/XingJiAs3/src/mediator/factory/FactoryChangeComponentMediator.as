@@ -44,8 +44,10 @@ package mediator.factory
 			comp.addEventListener(FactoryEvent.QIANGHUA_EVENT,qiangHuaHandler);
 			comp.addEventListener(FactoryEvent.CHANGE_ZHANCHE_EVENT,changeHandler);
 			comp.addEventListener(FactoryEvent.SHOW_INFO_EVENT,showInfoHandler);
+			
 			comp.addEventListener(FactoryEvent.LOAD_GUAJIAN_EVENT,loadGuaJianHandler);
 			comp.addEventListener(FactoryEvent.GENHUAN_GUAJIAN_EVENT,loadGuaJianHandler);
+			
 			comp.addEventListener(FactoryEvent.XIEZAI_EVENT,xieZaiHandler);
 			comp.addEventListener(FactoryEvent.XIEZAI_ALL_EVENT,xieZaiAllHandler);
 			comp.addEventListener(FactoryEvent.CHAKAN_GUAJIAN_EVENT,chaKanHandler);
@@ -55,11 +57,11 @@ package mediator.factory
 		}
 		
 		protected function nengLiangMaxHandler(event:FactoryEvent):void
-		{
-			var obj:Object={};
-			obj.infoLable=MultilanguageManager.getString("nengliangtishi");
-			obj.showLable=MultilanguageManager.getString("nengliangmax");
-			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+		{			
+				var obj:Object={};
+				obj.infoLable=MultilanguageManager.getString("nengliangtishi");
+				obj.showLable=MultilanguageManager.getString("nengliangmax");
+				sendNotification(PromptSureMediator.SHOW_NOTE,obj);					
 		}
 		
 		protected function chaKanHandler(event:FactoryEvent):void

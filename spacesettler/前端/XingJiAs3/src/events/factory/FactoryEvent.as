@@ -107,7 +107,7 @@ package events.factory
 		/**
 		 *能量超过上限
 		 */		
-		public static const NENGLIANG_MAX_EVENT:String="genhuan_guajian_event";
+		public static const NENGLIANG_MAX_EVENT:String="nengliang_max_event";
 		
 			
 		

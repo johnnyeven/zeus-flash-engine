@@ -1,6 +1,7 @@
 package enum.email
 {
 	import enum.ResEnum;
+	import enum.item.ItemEnum;
 
 	/**
 	 * 邮件类型
@@ -78,6 +79,44 @@ package enum.email
 			var equipImage:String = "";
 			equipImage = ResEnum.parentURL + "email/equipSmallImage/" + type +"_"+ category + ".png";
 			return equipImage;
+		}
+		
+		/**
+		 * 根据资源类型和数量   计算出花费钱的数量
+		 */
+		public static function getSourceCostBySourceCount(sourceCount:int,sourceType:String):int
+		{
+			var sourceCost:int;
+			switch(sourceType)
+			{
+				case ItemEnum.CRYSTAL:
+				{
+					sourceCost = sourceCount/75000 +1;
+					break;
+				}
+				case ItemEnum.TRITIUM:
+				{
+					sourceCost = sourceCount/5000 +1;
+					break;
+				}
+				case ItemEnum.BROKENCRYSTAL:
+				{
+					sourceCost = sourceCount/50 +1;
+					break;
+				}
+			}
+			return sourceCost;
+		}
+		
+		/**
+		 * 根据战车或挂件的评分、等级、强化次数  计算出花费钱的数量
+		 */
+		public static function getItemCostByItemInfor(value:int,level:int,enhanced:int):int
+		{
+			var itemCost:int;
+			    itemCost = value*level*level*0.00002 + enhanced*50;
+			
+			return itemCost;
 		}
 	}
 }

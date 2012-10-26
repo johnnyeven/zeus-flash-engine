@@ -12,6 +12,8 @@ package mediator.email
 	import proxy.email.EmailProxy;
 	
 	import view.email.ViewEmailComponent;
+	
+	import vo.email.EmailItemVO;
 
 	/**
 	 *查看邮件
@@ -34,6 +36,9 @@ package mediator.email
 		public function ViewEmailComponentMediator()
 		{
 			super(NAME, new ViewEmailComponent());
+			
+			comp.med = this;
+			level = 2;
 			emailProxy = getProxy(EmailProxy);
 			
 			comp.addEventListener(EmailEvent.RECEIVE_SOURCE_EVENT,receiveHandler);
@@ -85,6 +90,11 @@ package mediator.email
 			return viewComponent as ViewEmailComponent;
 		}
 		
+		public function setData(obj:Object):void
+		{
+			comp.data = (obj as EmailItemVO);
+		}
+		
 		private function receiveHandler(event:EmailEvent):void
 		{
 			emailProxy.getSource(event.obj as String);
@@ -97,6 +107,7 @@ package mediator.email
 		
 		private function callBackHandler(event:EmailEvent):void
 		{
+			sendNotification(SendEmailComponentMediator.SHOW_NOTE);
 			sendNotification(SendEmailComponentMediator.CALL_BACK_EMAIL,event.obj);
 		}
 

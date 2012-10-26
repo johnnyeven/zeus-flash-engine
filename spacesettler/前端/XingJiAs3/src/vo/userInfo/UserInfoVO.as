@@ -33,7 +33,7 @@ package vo.userInfo
         /**
          * 水晶矿数量 取值为正整数；
          */
-        private var _crystal:int;
+        private var _crystal:Number;
 
         /**
          * 水晶矿最大容量
@@ -48,7 +48,7 @@ package vo.userInfo
         /**
          * 氚气数量 取值为正整数；
          */
-        private var _tritium:int;
+        private var _tritium:Number;
 
         /**
          *（氚氢最大容量）
@@ -63,7 +63,7 @@ package vo.userInfo
 		/**
 		 * 暗物质数量 取值为正整数；
 		 */
-       private var _broken_crysta:int;
+       private var _broken_crysta:Number;
 
         /**
          *（暗物质产出）
@@ -88,7 +88,7 @@ package vo.userInfo
         /**
          *军衔
          */
-        public var militaryRrank:String;
+        public var militaryRrank:int;
 
         /**
          *声望
@@ -118,6 +118,7 @@ package vo.userInfo
         private var _current_power_consume:int;
 		
 		private var _legion_id:String;
+		private var _junXian:String;
 
 		/**
 		 *军团ID 
@@ -177,30 +178,30 @@ package vo.userInfo
         }
 
 
-        public function get crystal():int
+        public function get crystal():Number
         {
             return _crystal;
         }
 
-        public function set crystal(value:int):void
+        public function set crystal(value:Number):void
         {
 			_crystal=value;
             _crystal = Math.min(value, crystal_volume);
         }
 
-        public function get tritium():int
+        public function get tritium():Number
         {
             return _tritium;
         }
 
-        public function set tritium(value:int):void
+        public function set tritium(value:Number):void
         {
 			_tritium=value;
             _tritium = Math.min(value, tritium_volume);
         }       
 
 	  
-	   public function get broken_crysta():int
+	   public function get broken_crysta():Number
 	   {
 		   return _broken_crysta;
 	   }
@@ -208,11 +209,70 @@ package vo.userInfo
 	   /**
 	    * @private
 	    */
-	   public function set broken_crysta(value:int):void
+	   public function set broken_crysta(value:Number):void
 	   {
 		   _broken_crysta = value;
 	   }
-	   
+
+		public function get junXian():String
+		{
+			switch(militaryRrank)
+			{
+				case 0:
+				{
+					_junXian="准尉";
+					break;
+				}
+				case 1:
+				{
+					_junXian="少尉";
+					break;
+				}
+				case 2:
+				{
+					_junXian="中尉";
+					break;
+				}
+				case 3:
+				{
+					_junXian="上尉";
+					break;
+				}
+				case 4:
+				{
+					_junXian="少校";
+					break;
+				}
+				case 5:
+				{
+					_junXian="中校";
+					break;
+				}
+				case 6:
+				{
+					_junXian="上校";
+					break;
+				}
+				case 7:
+				{
+					_junXian="少将";
+					break;
+				}
+				case 8:
+				{
+					_junXian="中将";
+					break;
+				}
+				case 9:
+				{
+					_junXian="上将";
+					break;
+				}
+				
+			}
+			return _junXian;
+		}
+
 	   public var session_key:String;
 
     }

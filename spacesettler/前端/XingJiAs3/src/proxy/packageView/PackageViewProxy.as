@@ -101,7 +101,7 @@ package proxy.packageView
 			Protocol.deleteProtocolFunction(CommandEnum.groupDonate, packageViewResult);
             if (data.hasOwnProperty("errors"))
             {
-                sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString(data.errors));
+                sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
                 _packageViewViewCallBack = null;
                 return;
             }
@@ -130,7 +130,7 @@ package proxy.packageView
                         zhanCheInfoVO.level = objItem.level;
                         zhanCheInfoVO.value = objItem.value;
                         zhanCheInfoVO.dark_matter_value = objItem.dark_matter_value;
-
+						
                         itemVOList.push(zhanCheInfoVO);
                         break;
                     }
@@ -547,6 +547,7 @@ package proxy.packageView
                 itemInfoVO.key = cObj.key;
                 itemInfoVO.name = cObj.name;
                 itemInfoVO.description = cObj.description;
+				itemInfoVO.vip_level=cObj.property.vip_level;
             }
 
             return itemInfoVO;
@@ -581,7 +582,7 @@ package proxy.packageView
             itemVO.repair_cost_broken_crystal = obj.repair_cost.broken_crystal;
 
             var guaJianVO:GuaJianInfoVO;
-
+			itemVO.guaJianItemVOList.length=0;
             for (var i:int = 0; i < obj.slots.length; i++)
             {
                 guaJianVO = new GuaJianInfoVO();

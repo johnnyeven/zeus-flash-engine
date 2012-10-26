@@ -85,6 +85,7 @@ package view.group
 		private var _memberLevel:int;
 		private var _maxNum:int;
 		private var _killNum:int;
+		private var _isClick:Boolean;
         public function GroupMemberManageComponent()
         {
             super(ClassUtil.getObject("view.group.GroupMemberManageSkin"));
@@ -134,18 +135,26 @@ package view.group
 		
 		protected function backClickHandler(event:MouseEvent):void
 		{
-			TweenLite.to(click_sp,2,{y:click_sp.y+click_sp.height});
+			if(_isClick==false)
+			{
+				TweenLite.to(click_sp,0.5,{y:click_sp.y+click_sp.height});				
+			}else
+			{
+				TweenLite.to(click_sp,0.5,{y:click_sp.y-click_sp.height});
+			}
 			click_sp.mc_1.addEventListener(MouseEvent.CLICK,changeJobHandler);
 			click_sp.mc_2.addEventListener(MouseEvent.CLICK,changeJobHandler);
 			click_sp.mc_3.addEventListener(MouseEvent.CLICK,changeJobHandler);
 			click_sp.mc_4.addEventListener(MouseEvent.CLICK,changeJobHandler);
 			click_sp.mc_5.addEventListener(MouseEvent.CLICK,changeJobHandler);
 			click_sp.mc_6.addEventListener(MouseEvent.CLICK,changeJobHandler);
+			_isClick=!_isClick;
 		}
 		
 		protected function changeJobHandler(event:MouseEvent):void
 		{
-			TweenLite.to(click_sp,2,{y:click_sp.y-click_sp.height});
+			_isClick=false;
+			TweenLite.to(click_sp,0.5,{y:click_sp.y-click_sp.height});
 			switch(event.currentTarget)
 			{
 				case click_sp.mc_1:
@@ -389,7 +398,7 @@ package view.group
 		
 		protected function changeBoxHandler():void
 		{
-			/*if(checkbox_1.selected==false&&checkbox_2.selected==false&&checkbox_3.selected==false
+			if(checkbox_1.selected==false&&checkbox_2.selected==false&&checkbox_3.selected==false
 				&&checkbox_4.selected==false&&checkbox_5.selected==false)
 			{
 				checkbox_0.selected=false;
@@ -399,7 +408,7 @@ package view.group
 			}else
 			{
 				checkbox_0.selected=true;
-			}*/
+			}
 		}
 		
 		

@@ -18,9 +18,18 @@ package events.email
 		public static const CLOSE_SEND_EMAIL_EVENT:String = "closeSendEmailEvent";
 		public static const SEND_NEW_EMAIL_EVENT:String = "sendNewEmailEvent";
 		
+		/**
+		 * 删除一封邮件
+		 */	
 		public static const DELETE_ONE_EMAIL_EVENT:String = "deleteOneEmailEvent";
+		/**
+		 * 删除所有已读邮件
+		 */	
 		public static const DELETE_ALL_READ_EMAIL_EVENT:String = "deleteAllReadEmailEvent";
 		
+		/**
+		 * 显示邮件信息
+		 */
 		public static const SHOW_EMAIL_INFOR_EVENT:String = "showEmailInforEvent";
 		/**
 		 * 收取资源或附件
@@ -34,6 +43,16 @@ package events.email
 		 * 从查看界面回复邮件
 		 */		
 		public static const CALL_BACK_EMAIL_EVENT:String = "callBackEmailEvent";
+		
+		/**
+		 *传送的资源数据
+		 */	
+		public static const SEND_SOURCE_DATA_EVENT:String = "sendSourceDataEvent";
+		
+		/**
+		 *显示可选择好友列表
+		 */	
+		public static const SHOW_FRIEND_LIST_EVENT:String = "showFriendListEvent";
 		
 		private var _obj:Object;
 		

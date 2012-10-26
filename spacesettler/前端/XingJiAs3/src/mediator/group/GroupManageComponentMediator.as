@@ -42,8 +42,10 @@ package mediator.group
 		
 		protected function showShenHeHandler(event:GroupShowAndCloseEvent):void
 		{
-			// TODO Auto-generated method stub
-			
+			groupProxy.groupApplyList(function():void
+			{
+				sendNotification(GroupAuditComponentMediator.SHOW_NOTE);
+			});
 		}
 		
 		protected function zhiZaoCompleteHandler(event:GroupManageEvent):void

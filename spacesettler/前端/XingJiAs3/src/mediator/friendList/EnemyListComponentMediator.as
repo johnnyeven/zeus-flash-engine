@@ -1,19 +1,32 @@
 package mediator.friendList
 {
+	import com.greensock.TweenLite;
+	
+	import events.friendList.FriendListEvent;
+	
+	import flash.events.Event;
+	
 	import mediator.BaseMediator;
+	import mediator.WindowMediator;
+	import mediator.allView.XingXingComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.friendList.FriendProxy;
+	import proxy.userInfo.UserInfoProxy;
+	
 	import view.friendList.EnemyListComponent;
+	
+	import vo.allView.FriendInfoVo;
 
 	/**
 	 *显示敌人列表
 	 * @param lw
 	 *
 	 */
-	public class EnemyListComponentMediator extends BaseMediator implements IMediator
+	public class EnemyListComponentMediator extends WindowMediator implements IMediator
 	{
 		public static const NAME:String="EnemyListComponentMediator";
 
@@ -21,9 +34,23 @@ package mediator.friendList
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		private var friendProxy:FriendProxy;
+		private var userInforProxy:UserInfoProxy;
 		public function EnemyListComponentMediator()
 		{
 			super(NAME, new EnemyListComponent());
+			friendProxy = getProxy(FriendProxy);
+			userInforProxy = getProxy(UserInfoProxy);
+			
+			comp.addEventListener("enemyDestoryshangSprite",destoryshangSpriteHandler);
+			comp.addEventListener("enemyDestoryxiaSprite",destoryxiaSpriteHandler);
+			comp.addEventListener(FriendListEvent.CLOSE_ENEMY_LIST_EVENT,closeHandler);
+			comp.addEventListener(FriendListEvent.SEARCH_PLATER_EVENT,searchPlayerHandler);
+			comp.addEventListener(FriendListEvent.RENEW_FRIENF_LIST_EVENT,renewFriendListHandler);
+			
+			comp.addEventListener(FriendListEvent.CHECK_PLAYER_ID_CARD_EVENT,checkPlayerIdCardHandler);
+			comp.addEventListener(FriendListEvent.DELETED_FRIEND_INFOR_EVENT,deletedFriendHandler);
+			comp.addEventListener(FriendListEvent.ATTACK_ENEMY_EVENT,attackEnemyHandler);
 		}
 		
 		/**
@@ -63,6 +90,48 @@ package mediator.friendList
 		{
 			return viewComponent as EnemyListComponent;
 		}
+		
+		private function destoryshangSpriteHandler(event:Event):void
+		{
+			comp.shangSprite.visible = false;
+			TweenLite.to(comp.shangSprite,0.5,{x:0,y:-330});
+		}
+		
+		private function destoryxiaSpriteHandler(event:Event):void
+		{
+			comp.xiaSprite.visible = false;
+			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
+		}
+		
+		private function searchPlayerHandler(event:FriendListEvent):void
+		{
+			sendNotification(SearchPlayerComponentMediator.SHOW_NOTE);
+		}
 
+		private function renewFriendListHandler(event:FriendListEvent):void
+		{
+			//刷新列表
+			friendProxy.getFriendList(userInforProxy.userInfoVO.player_id);
+		}
+		
+		private function checkPlayerIdCardHandler(event:FriendListEvent):void
+		{
+			friendProxy.checkOtherPlayer((event.obj as FriendInfoVo).id,function():void
+			{
+				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
+			});
+		}
+		
+		private function deletedFriendHandler(event:FriendListEvent):void
+		{
+			
+			friendProxy.deletedFriend((event.obj as FriendInfoVo).id);
+		}
+		
+		private function attackEnemyHandler(event:FriendListEvent):void
+		{
+			//查看小行星
+			sendNotification(XingXingComponentMediator.SHOW_NOTE,(event.obj as FriendInfoVo).id);
+		}
 	}
 }

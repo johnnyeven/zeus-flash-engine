@@ -2,10 +2,14 @@ package view.scienceResearch
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Linear;
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.DateFormatter;
 	import com.zn.utils.StringUtil;
 	
+	import enum.ResEnum;
+	
+	import events.buildingView.ConditionEvent;
 	import events.scienceResearch.SciencePopuEvent;
 	import events.scienceResearch.ScienceResearchEvent;
 	
@@ -215,7 +219,25 @@ package view.scienceResearch
 		{
 			if(data.academy_level>buildProxy.getBuild(3).level||data.command_center_level>buildProxy.getBuild(1).level)
 			{
-				dispatchEvent(new SciencePopuEvent(SciencePopuEvent.POPU_DATA_EVENT,_data,true,true));
+				var conditionArr:Array=[];
+				if(data.academy_level>buildProxy.getBuild(3).level)
+				{
+					var obj1:Object=new Object();
+					obj1.imgSource=ResEnum.getConditionIconURL+"6.png";
+					obj1.content=MultilanguageManager.getString("science_build")+buildProxy.getBuild(3).level+"/"+data.academy_level;
+					obj1.btnLabel=MultilanguageManager.getString("up_science");
+					conditionArr.push(obj1);
+				}
+				if(data.command_center_level>buildProxy.getBuild(1).level)
+				{
+					var obj2:Object=new Object();
+					obj2.imgSource=ResEnum.getConditionIconURL+"5.png";
+					obj2.content=MultilanguageManager.getString("center_build")+buildProxy.getBuild(1).level+"/"+data.command_center_level;
+					obj2.btnLabel=MultilanguageManager.getString("up_center");
+					conditionArr.push(obj2);
+				}
+				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
+//				dispatchEvent(new SciencePopuEvent(SciencePopuEvent.POPU_DATA_EVENT,_data,true,true));
 				return;
 			}
 
