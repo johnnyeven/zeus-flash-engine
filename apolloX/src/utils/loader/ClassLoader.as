@@ -16,6 +16,7 @@ package utils.loader
 	import flash.utils.ByteArray;
 	
 	import utils.events.LoaderEvent;
+	import utils.enum.LoaderStatus;
 
 	public class ClassLoader extends ItemLoader
 	{
@@ -65,6 +66,10 @@ package utils.loader
 		//加载
 		override public function load (): void
 		{
+			if(loaderStatus != LoaderStatus.READY)
+			{
+				return;
+			}
 			super.load();
 			var _loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
 			_loader.load(_urlRequest, _loaderContext);
@@ -88,6 +93,38 @@ package utils.loader
 		
 		public function getApplicationDomain (): ApplicationDomain {
 			return _loader.contentLoaderInfo.applicationDomain;
+		}
+		
+		override public function stop(): void
+		{
+			super.stop();
+			if(_loader != null)
+			{
+				try
+				{
+					_loader.close();
+				}
+				catch(err: Error)
+				{
+					
+				}
+			}
+		}
+		
+		override public function pause(): void
+		{
+			super.pause();
+			if(_loader != null)
+			{
+				try
+				{
+					_loader.close();
+				}
+				catch(err: Error)
+				{
+					
+				}
+			}
 		}
 	}
 }

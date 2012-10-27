@@ -46,8 +46,8 @@ package loader
 			_msgText.defaultTextFormat = txtFormat;
 			addChild(_msgText);
 			
-			//loadVersion();
-			test();
+			loadVersion();
+			//test();
 		}
 		
 		private function test(): void
