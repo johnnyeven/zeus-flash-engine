@@ -7,7 +7,10 @@ package utils.loader
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.system.LoaderContext;
+	import flash.system.ApplicationDomain;
 	
+	import utils.enum.LoaderStatus;
 	import utils.events.LoaderEvent;
 
 	public class ImageLoader extends ItemLoader
@@ -63,9 +66,52 @@ package utils.loader
 			dispatchEvent(new LoaderEvent(LoaderEvent.COMPLETE, this));
 		}
 		
+		override public function load(): void
+		{
+			if(loaderStatus != LoaderStatus.READY)
+			{
+				return;
+			}
+			super.load();
+			var _loaderContext: LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
+			_loader.load(_urlRequest, _loaderContext);
+		}
+		
 		public function get image(): Bitmap
 		{
 			return new Bitmap(_bitmapData);
+		}
+		
+		override public function stop(): void
+		{
+			super.stop();
+			if(_loader != null)
+			{
+				try
+				{
+					_loader.close();
+				}
+				catch(err: Error)
+				{
+					
+				}
+			}
+		}
+		
+		override public function pause(): void
+		{
+			super.pause();
+			if(_loader != null)
+			{
+				try
+				{
+					_loader.close();
+				}
+				catch(err: Error)
+				{
+					
+				}
+			}
 		}
 	}
 }

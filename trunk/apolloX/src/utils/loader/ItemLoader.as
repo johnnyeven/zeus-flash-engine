@@ -24,6 +24,8 @@ package utils.loader
 		protected var _urlRequest: URLRequest;
 		protected var _bytesTotal: uint;
 		protected var _bytesLoaded: uint;
+		private static var _currentLoader: ItemLoader;
+		private static var _loaderQueue: Array = new Array();
 		
 		public function ItemLoader(url: String = "", name: String = "", loaderConfig: XML = null)
 		{
@@ -62,6 +64,7 @@ package utils.loader
 			isDispose = true;
 			LoaderPool.instance.dispose(name);
 			LoaderPool.instance.dispose(url);
+			loadNextLoader();
 			_contentLoaded = null;
 			_urlRequest = null;
 			dispatchEvent(new LoaderEvent(LoaderEvent.DISPOSE, this));
@@ -69,11 +72,17 @@ package utils.loader
 		
 		public function load(): void
 		{
+			if(_currentLoader != null && _currentLoader != this)
+			{
+				_currentLoader.pause();
+			}
+			_currentLoader = this;
 			loaderStatus = LoaderStatus.LOADING;
 		}
 		
 		protected function onLoadComplete(evt: Event): void
 		{
+			loadNextLoader();
 			loaderStatus = LoaderStatus.COMPLETE;
 		}
 		
@@ -86,8 +95,43 @@ package utils.loader
 		
 		protected function onLoadIOError(evt: IOErrorEvent): void
 		{
+			loadNextLoader();
 			loaderStatus = LoaderStatus.ERROR;
 			dispatchEvent(new LoaderEvent(LoaderEvent.IO_ERROR, this));
+		}
+		
+		public function loadNextLoader(): void
+		{
+			if(_currentLoader != this)
+			{
+				return;
+			}
+			
+			_currentLoader = null;
+			if(_loaderQueue.length > 0)
+			{
+				var _loader: ItemLoader = _loaderQueue.pop() as ItemLoader;
+				if(_loader.loaderStatus == LoaderStatus.COMPLETE)
+				{
+					loadNextLoader();
+				}
+				else
+				{
+					_loader.load();
+				}
+			}
+		}
+		
+		public function stop(): void
+		{
+			loadNextLoader();
+			loaderStatus = LoaderStatus.READY;
+		}
+		
+		public function pause(): void
+		{
+			_loaderQueue.push(this);
+			loaderStatus = LoaderStatus.READY;
 		}
 
 		public function get bytesLoaded():uint
