@@ -4,10 +4,12 @@ package
 	import flash.events.Event;
 	import flash.system.Security;
 	
+	import utils.GameManager;
+	
 	import view.login.LoginBGComponent;
 	
 	[SWF(width="1028", height="600", backgroundColor="0x000000",frameRate="30")]
-	public class Main extends Sprite
+	public class Main extends GameManager
 	{
 		public function Main()
 		{
@@ -30,6 +32,11 @@ package
 			}
 			//LoginBGComponent.getInstance().destroy();
 			ApplicationFacade.getInstance().start(this);
+		}
+		
+		private function showVersion(): void
+		{
+			
 		}
 	}
 }

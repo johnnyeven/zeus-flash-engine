@@ -21,6 +21,8 @@ package loader
 	
 	import utils.language.LanguageManager;
 	import utils.resource.ResourcePool;
+	import utils.RequestUtils;
+	import utils.VersionUtils;
 	
 	import view.loader.LoaderProgressBarComponent;
 	import view.login.LoginBGComponent;
@@ -74,6 +76,11 @@ package loader
 		
 		private function onVersionLoaded(evt: Event): void
 		{
+			var _loader: URLLoader = evt.target as URLLoader;
+			var _data: XML = XML(_loader.data);
+			RequestUtils.version = _data.version;
+			VersionUtils.initVersionIndex(_data);
+			
 			loadLanguage();
 		}
 		
