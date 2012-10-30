@@ -4,7 +4,7 @@ package utils
 	import flash.display.Stage;
 	import flash.geom.Point;
 	
-	import mediator.StageMediator;
+	import utils.GameManager;
 	
 	import utils.liteui.core.Component;
 
@@ -38,8 +38,7 @@ package utils
 		
 		private static function get stageCenter(): Point
 		{
-			var _stageMediator: StageMediator = ApplicationFacade.getInstance().retrieveMediator(StageMediator.NAME) as StageMediator;
-			var _stage: Stage = _stageMediator.stage;
+			var _stage: Stage = GameManager.container;
 			
 			return new Point(_stage.stageWidth / 2, _stage.stageHeight / 2);
 		}
