@@ -48,9 +48,6 @@ package controller.scene
 		
 		private function onLoadComplete(evt: Event): void
 		{
-			var _startMediator: StartMediator = facade.retrieveMediator(StartMediator.NAME) as StartMediator;
-			_startMediator.removeBg();
-			
 			facade.registerMediator(new Scene1BackgroundMediator());
 			
 			loadControlPanel();

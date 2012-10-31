@@ -38,7 +38,7 @@ package mediator.login
 			switch(notification.getName())
 			{
 				case DESTROY_NOTE:
-					destroy();
+					dispose();
 					break;
 			}
 		}
@@ -73,7 +73,7 @@ package mediator.login
 		{
 			var _loginProxy: LoginProxy = facade.retrieveProxy(LoginProxy.NAME) as LoginProxy;
 			_loginProxy.quickStart();
-			destroy();
+			dispose();
 		}
 		
 		private function accountHandler(): void
@@ -93,9 +93,11 @@ package mediator.login
 			component.closeDoor();
 		}
 		
-		public function destroy(): void
+		override public function dispose(): void
 		{
-			component.dispose();
+			super.dispose();
+			removeBg();
+			LoginBGComponent.getInstance().destroy();
 		}
 	}
 }
