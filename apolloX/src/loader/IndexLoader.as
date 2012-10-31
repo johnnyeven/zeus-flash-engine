@@ -23,6 +23,7 @@ package loader
 	import utils.resource.ResourcePool;
 	import utils.RequestUtils;
 	import utils.VersionUtils;
+	import utils.liteui.component.Label;
 	
 	import view.loader.LoaderProgressBarComponent;
 	import view.login.LoginBGComponent;
@@ -49,17 +50,6 @@ package loader
 			addChild(_msgText);
 			
 			loadVersion();
-			//test();
-		}
-		
-		private function test(): void
-		{
-			ResourcePool.getResourceByLoader("resources/test.swf", "test1", testcallback);
-		}
-		
-		private function testcallback(obj: DisplayObject): void
-		{
-			addChild(obj);
 		}
 		
 		private function loadVersion(): void
@@ -192,6 +182,7 @@ package loader
 			var _loader: LoaderInfo = evt.target as LoaderInfo;
 			var _main: DisplayObject = _loader.content;
 			addChild(_main);
+			_main["init"]();
 			
 			removeChild(_progressBar);
 			_progressBar = null;

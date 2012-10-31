@@ -40,6 +40,7 @@ package proxy
 		private function onGetServerList(protocol: Receive_Server_ServerList): void
 		{
 			sendNotification(PromptMediator.LOADING_HIDE_NOTE);
+			sendNotification(ProgressBarMediator.HIDE_RANDOM_BG);
 			sendNotification(CreateStartMediatorCommand.CREATE_LOGIN_VIEW_NOTE);
 			
 			setData(protocol.ServerList);

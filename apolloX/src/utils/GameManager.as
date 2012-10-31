@@ -28,6 +28,7 @@ package utils
 			{
 				throw new IllegalOperationError("不能实例化GameManager类");
 			}
+			_instance = this;
 			_baseLayer = new Sprite();
 			_viewLayer = new Sprite();
 			_popUpLayer = new Sprite();
@@ -46,6 +47,19 @@ package utils
 			container = stage;
 		}
 		
+		public function addBase(target: DisplayObject): void
+		{
+			_baseLayer.addChild(target);
+		}
+		
+		public function removeBase(target: DisplayObject): void
+		{
+			if(_baseLayer.contains(target))
+			{
+				_baseLayer.removeChild(target);
+			}
+		}
+		
 		public function addInfo(target: DisplayObject): void
 		{
 			_infoLayer.addChild(target);
@@ -61,12 +75,12 @@ package utils
 		
 		public static function get instance(): GameManager
 		{
-			if(_instance == null)
-			{
-				_allowInstance = true;
-				_instance = new GameManager();
-				_allowInstance = false;
-			}
+//			if(_instance == null)
+//			{
+//				_allowInstance = true;
+//				_instance = new GameManager();
+//				_allowInstance = false;
+//			}
 			return _instance;
 		}
 		
