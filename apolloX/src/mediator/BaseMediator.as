@@ -6,6 +6,7 @@ package mediator
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import utils.GameManager;
+	import utils.liteui.core.Component;
 	
 	public class BaseMediator extends Mediator implements IMediator
 	{
@@ -36,6 +37,36 @@ package mediator
 				return;
 			}
 			addComponent();
+		}
+		
+		public function dispose(): void
+		{
+			if(viewComponent != null)
+			{
+				if(_isPopUp)
+				{
+					
+				}
+				else
+				{
+					if(comp is Component)
+					{
+						(comp as Component).dispose();
+					}
+					viewComponent = null;
+				}
+			}
+			facade.removeMediator(getMediatorName());
+			callDestroyCallback();
+		}
+		
+		private function callDestroyCallback(): void
+		{
+			if(onDestroy != null)
+			{
+				onDestroy();
+			}
+			onDestroy = null;
 		}
 		
 		protected function addComponent(): void

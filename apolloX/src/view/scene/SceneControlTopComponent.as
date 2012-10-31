@@ -27,8 +27,6 @@ package view.scene
 			lblResourceDarkMatter = getUI(Label, "txtDarkMatter") as Label;
 			lblResourceDarkCrystal = getUI(Label, "txtDarkCrystal") as Label;
 			
-			lblResourceDarkMatter.color = 0x00FF00;
-			
 			sortChildIndex();
 		}
 	}
