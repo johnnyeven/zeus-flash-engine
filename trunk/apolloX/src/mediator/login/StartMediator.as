@@ -3,17 +3,18 @@ package mediator.login
 	import events.LoginEvent;
 	
 	import mediator.StageMediator;
+	import mediator.BaseMediator;
 	
-	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
-	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import proxy.LoginProxy;
 	
 	import view.login.LoginBGComponent;
 	import view.login.StartComponent;
 	
-	public class StartMediator extends Mediator implements IMediator
+	import utils.GameManager;
+	
+	public class StartMediator extends BaseMediator
 	{
 		public static const NAME: String = "LoginMediator";
 		
@@ -44,7 +45,7 @@ package mediator.login
 		
 		public function addBg(): void
 		{
-			stage.addChild(LoginBGComponent.getInstance());
+			GameManager.instance.addBase(LoginBGComponent.getInstance());
 			LoginBGComponent.getInstance().show();
 		}
 		
@@ -52,7 +53,7 @@ package mediator.login
 		{
 			LoginBGComponent.getInstance().hide(function(): void
 			{
-				stage.removeChild(LoginBGComponent.getInstance());
+				GameManager.instance.removeBase(LoginBGComponent.getInstance());
 			});
 		}
 		
@@ -80,26 +81,20 @@ package mediator.login
 			
 		}
 		
-		protected function get component(): StartComponent
+		public function get component(): StartComponent
 		{
 			return viewComponent as StartComponent;
 		}
 		
-		private function get stage(): StageMediator
+		override public function show(): void
 		{
-			return facade.retrieveMediator(StageMediator.NAME) as StageMediator;
-		}
-		
-		public function show(): void
-		{
-			stage.addChild(component);
+			super.show();
 			component.switchDoorStatus(true);
 			component.closeDoor();
 		}
 		
 		public function destroy(): void
 		{
-			stage.removeChild(component);
 			component.dispose();
 		}
 	}

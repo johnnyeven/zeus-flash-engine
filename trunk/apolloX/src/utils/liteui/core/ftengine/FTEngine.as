@@ -261,6 +261,11 @@ package utils.liteui.core.ftengine
 					trace("FTEngine.convertToXML Error: " + err.message);
 				}
 			}
+			if(_xml.name() == null)
+			{
+				value = "<p><string>" + value + "</string></p>";
+				_xml = XML(value);
+			}
 			return _xml;
 		}
 	}
