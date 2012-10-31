@@ -16,6 +16,7 @@ package utils.liteui.core
 		private var _enabled: Boolean;
 		private var _eventListener: Dictionary;
 		private var _skin: DisplayObjectContainer;
+		private var _changeWatcherList: Array;
 		protected var _filterColor: Number = 0x000000;
 		protected var _filterEnabled: Boolean = true;
 		protected var _skinChildIndex: Dictionary;
@@ -29,6 +30,7 @@ package utils.liteui.core
 			_enabled = true;
 			_skinChildIndex = new Dictionary();
 			_skinChildIndexList = new Array();
+			_changeWatcherList = new Array();
 			this._skin = _skin;
 			if(this._skin != null)
 			{
@@ -139,10 +141,19 @@ package utils.liteui.core
 			{
 				parent.removeChild(this);
 			}
+			removeChangeWatcher();
 			removeEventListeners();
 			removeChildren();
 			
 			_isDispose = true;
+		}
+		
+		public function removeChangeWatcher(): void
+		{
+			while(_changeWatcherList.length > 0)
+			{
+				_changeWatcherList.pop().unwatch();
+			}
 		}
 		
 		public function removeEventListeners(): void
