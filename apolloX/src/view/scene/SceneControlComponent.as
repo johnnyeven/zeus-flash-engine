@@ -5,6 +5,7 @@ package view.scene
 	import flash.utils.getDefinitionByName;
 	
 	import utils.liteui.core.Component;
+	import utils.liteui.component.MessageBox;
 	
 	public class SceneControlComponent extends Component
 	{
@@ -26,6 +27,9 @@ package view.scene
 			_messageContainer = _skin.getChildByName("messageContainer") as MovieClip;
 			
 			sortChildIndex();
+			
+			MessageBox.defaultSkinName = "ui.AlertSkin";
+			MessageBox.show("asdfasfd", "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf", "", true);
 		}
 	}
 }
