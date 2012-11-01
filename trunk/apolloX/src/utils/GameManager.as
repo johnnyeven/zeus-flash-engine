@@ -60,6 +60,19 @@ package utils
 			}
 		}
 		
+		public function addPopUp(target: DisplayObject): void
+		{
+			_popUpLayer.addChild(target);
+		}
+		
+		public function removePopUp(target: DisplayObject): void
+		{
+			if(_popUpLayer.contains(target))
+			{
+				_popUpLayer.removeChild(target);
+			}
+		}
+		
 		public function addInfo(target: DisplayObject): void
 		{
 			_infoLayer.addChild(target);
