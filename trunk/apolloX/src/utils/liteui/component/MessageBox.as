@@ -8,7 +8,7 @@ package utils.liteui.component
 	
 	import utils.StringUtils;
 	import utils.UIUtils;
-	import utils.GameManager;
+	import utils.PopUpManager;
 	import utils.language.LanguageManager;
 	import utils.liteui.core.Component;
 	
@@ -163,7 +163,7 @@ package utils.liteui.component
 			_message.content = content;
 			_message.buttonType = buttonType;
 			UIUtils.center(_message);
-			GameManager.instance.addInfo(_message);
+			PopUpManager.addPopUp(_message, mode);
 			return _message;
 		}
 	}

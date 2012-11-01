@@ -45,6 +45,12 @@ package utils
 		private function onAddToStage(evt: Event): void
 		{
 			container = stage;
+			container.addEventListener(Event.RESIZE, onStageResize);
+		}
+		
+		protected function onStageResize(evt: Event): void
+		{
+			PopUpManager.updateModeTransparencySize();
 		}
 		
 		public function addBase(target: DisplayObject): void
@@ -60,6 +66,19 @@ package utils
 			}
 		}
 		
+		public function addView(target: DisplayObject): void
+		{
+			_viewLayer.addChild(target);
+		}
+		
+		public function removeView(target: DisplayObject): void
+		{
+			if(_viewLayer.contains(target))
+			{
+				_viewLayer.removeChild(target);
+			}
+		}
+		
 		public function addPopUp(target: DisplayObject): void
 		{
 			_popUpLayer.addChild(target);
@@ -70,6 +89,19 @@ package utils
 			if(_popUpLayer.contains(target))
 			{
 				_popUpLayer.removeChild(target);
+			}
+		}
+		
+		public function addToolTip(target: DisplayObject): void
+		{
+			_toolTipLayer.addChild(target);
+		}
+		
+		public function removeToolTip(target: DisplayObject): void
+		{
+			if(_toolTipLayer.contains(target))
+			{
+				_toolTipLayer.removeChild(target);
 			}
 		}
 		
@@ -110,5 +142,32 @@ package utils
 		{
 			return _root;
 		}
+
+		public function get baseLayer(): Sprite
+		{
+			return _baseLayer;
+		}
+
+		public function get popUpLayer():Sprite
+		{
+			return _popUpLayer;
+		}
+
+		public function get viewLayer():Sprite
+		{
+			return _viewLayer;
+		}
+
+		public function get toolTipLayer():Sprite
+		{
+			return _toolTipLayer;
+		}
+
+		public function get infoLayer():Sprite
+		{
+			return _infoLayer;
+		}
+
+
 	}
 }
