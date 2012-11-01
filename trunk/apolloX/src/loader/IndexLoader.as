@@ -23,7 +23,6 @@ package loader
 	import utils.resource.ResourcePool;
 	import utils.RequestUtils;
 	import utils.VersionUtils;
-	import utils.liteui.component.Label;
 	
 	import view.loader.LoaderProgressBarComponent;
 	import view.login.LoginBGComponent;
