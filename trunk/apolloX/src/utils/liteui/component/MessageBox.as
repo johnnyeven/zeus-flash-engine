@@ -139,6 +139,7 @@ package utils.liteui.component
 		
 		public function close(): void
 		{
+			PopUpManager.removePopUp(this);
 			dispatchEvent(new Event(Event.CLOSE));
 			dispose();
 		}

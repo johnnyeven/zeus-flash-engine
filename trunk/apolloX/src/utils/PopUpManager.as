@@ -6,6 +6,8 @@ package utils
 	import flash.filters.BlurFilter;
 	import flash.utils.Dictionary;
 	
+	import org.puremvc.as3.patterns.mediator.Mediator;
+	
 	import utils.GameManager;
 
 	public class PopUpManager
@@ -36,6 +38,25 @@ package utils
 			}
 			
 			GameManager.instance.addPopUp(popUp);
+		}
+		
+		public static function closeAll(zIndex: int): void
+		{
+			var _popUp: Object;
+			var _mediator: Mediator;
+			for(_popUp in popUpIndex)
+			{
+				if(_popUp["mediator"] != null && _popUp["mediator"]["zIndex"] != null)
+				{
+					if(_popUp["mediator"]["zIndex"] >= zIndex)
+					{
+						_mediator = _popUp["mediator"] as Mediator;
+						ApplicationFacade.getInstance().sendNotification("Destroy" + _mediator.getMediatorName());
+					}
+					continue;
+				}
+				removePopUp(_popUp as DisplayObject);
+			}
 		}
 		
 		public static function removePopUp(popUp: DisplayObject): void
