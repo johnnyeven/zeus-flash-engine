@@ -14,6 +14,9 @@ package mediator
 		public var mode: Boolean = false;
 		public var onShow: Function;
 		public var onDestroy: Function;
+		public var zIndex: int;
+		public var width: Number;
+		public var height: Number;
 		
 		public function BaseMediator(mediatorName:String=null, viewComponent:Object=null)
 		{
