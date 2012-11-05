@@ -6,6 +6,7 @@ package mediator
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import utils.GameManager;
+	import utils.PopUpManager;
 	import utils.liteui.core.Component;
 	
 	public class BaseMediator extends Mediator implements IMediator
@@ -76,7 +77,8 @@ package mediator
 		{
 			if(_isPopUp)
 			{
-				
+				PopUpManager.closeAll(zIndex);
+				PopUpManager.addPopUp(comp, mode);
 			}
 			else
 			{

@@ -3,9 +3,9 @@ package utils
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import utils.GameManager;
-	
 	import utils.liteui.core.Component;
 
 	public class UIUtils
@@ -41,6 +41,12 @@ package utils
 			var _stage: Stage = GameManager.container;
 			
 			return new Point(_stage.stageWidth / 2, _stage.stageHeight / 2);
+		}
+		
+		public static function componentCenterInStage(comp: DisplayObject, width: Number = NaN, height: Number = NaN): Point
+		{
+			var _stage: Stage = GameManager.container;
+			var _rect: Rectangle = comp.getRect(comp);
 		}
 	}
 }
