@@ -47,6 +47,11 @@ package utils
 		{
 			var _stage: Stage = GameManager.container;
 			var _rect: Rectangle = comp.getRect(comp);
+			
+			var x: Number = (_stage.stageWidth - _rect.width * comp.scaleX) / 2;
+			var y: Number = (_stage.stageHeight - _rect.height * comp.scaleY) / 2;
+			
+			return new Point(x, y);
 		}
 	}
 }
