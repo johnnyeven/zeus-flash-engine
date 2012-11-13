@@ -7,6 +7,7 @@ package utils.liteui.component
 	import flash.geom.Rectangle;
 	
 	import utils.UIUtils;
+	import utils.events.ViewEvent;
 	import utils.liteui.core.Component;
 	import utils.liteui.core.IViewPort;
 	
@@ -126,12 +127,12 @@ package utils.liteui.component
 			if(_oldMaxWidth != _measureSize.width)
 			{
 				_oldMaxWidth = _measureSize.width;
-				//dispatchEvent();
+				dispatchEvent(new ViewEvent(ViewEvent.MAX_WIDTH_CHANGE));
 			}
 			if(_oldMaxHeight != _measureSize.height)
 			{
 				_oldMaxHeight = _measureSize.height;
-				//dispatchEvent();
+				dispatchEvent(new ViewEvent(ViewEvent.MAX_HEIGHT_CHANGE));
 			}
 		}
 		
