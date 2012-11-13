@@ -29,6 +29,31 @@ package utils
 			target.y = _stageCenter.y - (target.height * target.scaleY) / 2;
 		}
 		
+		public static function getSkinSize(target: DisplayObject): Point
+		{
+			var source: Point = new Point(target.width, target.height);
+			var zero: Point = new Point(0, 0);
+			
+			if(target.parent != null)
+			{
+				source = target.parent.localToGlobal(source);
+				zero = target.parent.localToGlobal(zero);
+			}
+			
+			return source.subtract(zero);
+		}
+		
+		public static function restoreSkinSize(target: DisplayObject): void
+		{
+			var _size: Point = getSkinSize(target);
+			if(_size.x == 0 || _size.y == 0)
+			{
+				return;
+			}
+			target.width = _size.x;
+			target.height = _size.y;
+		}
+		
 		public static function setCommonProperty(target: Component, source: DisplayObject): void
 		{
 			target.name = source.name;

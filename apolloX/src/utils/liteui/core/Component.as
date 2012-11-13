@@ -69,10 +69,15 @@ package utils.liteui.core
 		
 		public function getUI(_componentClass: Class, _skinName: String): Sprite
 		{
-			var _ui: Sprite = new _componentClass(getSkin(_skinName)) as Sprite;
-			addChild(_ui);
-			updateChildByName(_skinName, _ui);
-			return _ui;
+			var _skin: DisplayObject = getSkin(_skinName);
+			if(_skin != null)
+			{
+				var _ui: Sprite = new _componentClass(_skin) as Sprite;
+				addChild(_ui);
+				updateChildByName(_skinName, _ui);
+				return _ui;
+			}
+			return null;
 		}
 		
 		protected function getSkin(_skinName: String): DisplayObject
@@ -82,7 +87,8 @@ package utils.liteui.core
 			{
 				return _child;
 			}
-			throw new Error("getSkin(_skinName): " + _skinName + " 未定义");
+			//throw new Error("getSkin(_skinName): " + _skinName + " 未定义");
+			return null;
 		}
 		
 		protected function onMouseOver(evt: MouseEvent): void
