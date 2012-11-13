@@ -320,6 +320,15 @@ package utils.liteui.component
 			{
 				barPosition = availableSize - barSize;
 			}
+			if(_orientation == ScrollBarOrientation.VERTICAL)
+			{
+				_bar.y = barPosition;
+			}
+			else
+			{
+				_bar.x = barPosition;
+			}
+			updateBarIconPosition();
 		}
 		
 		protected function updateVisible(): void
