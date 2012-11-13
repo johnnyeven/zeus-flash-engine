@@ -280,7 +280,46 @@ package utils.liteui.component
 		
 		protected function updateBarPosition(): void
 		{
+			var barSize: Number;
+			var barPosition: Number;
+			var availableSize: Number;
 			
+			if(_orientation == ScrollBarOrientation.VERTICAL)
+			{
+				barSize = _bar.height;
+				barPosition = _bar.y;
+				
+				if(_downButton != null)
+				{
+					availableSize = height - _downButton.height;
+				}
+				else
+				{
+					availableSize = height;
+				}
+			}
+			else
+			{
+				barSize = _bar.width;
+				barPosition = _bar.x;
+				
+				if(_downButton != null)
+				{
+					availableSize = width - _downButton.width;
+				}
+				else
+				{
+					availableSize = width;
+				}
+			}
+			if(barPosition < 0)
+			{
+				barPosition = 0;
+			}
+			else if(barPosition + barSize > availableSize)
+			{
+				barPosition = availableSize - barSize;
+			}
 		}
 		
 		protected function updateVisible(): void
