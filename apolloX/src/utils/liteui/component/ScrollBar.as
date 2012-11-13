@@ -69,7 +69,10 @@ package utils.liteui.component
 		
 		public function set view(value: IViewPort): void
 		{
-			
+			if(value != null)
+			{
+				
+			}
 		}
 	}
 }
