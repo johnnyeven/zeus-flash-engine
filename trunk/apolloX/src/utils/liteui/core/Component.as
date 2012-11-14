@@ -9,6 +9,7 @@ package utils.liteui.core
 	import flash.utils.getDefinitionByName;
 	
 	import utils.UIUtils;
+	import utils.liteui.layouts.BaseLayout;
 	
 	public class Component extends Sprite
 	{
@@ -21,6 +22,7 @@ package utils.liteui.core
 		protected var _filterEnabled: Boolean = true;
 		protected var _skinChildIndex: Dictionary;
 		protected var _skinChildIndexList: Array;
+		protected var _layout: BaseLayout;
 		
 		public function Component(_skin: DisplayObjectContainer = null)
 		{
@@ -151,6 +153,12 @@ package utils.liteui.core
 			removeEventListeners();
 			removeChildren();
 			
+			if(_layout != null)
+			{
+				_layout.dispose();
+			}
+			_layout = null;
+			
 			_isDispose = true;
 		}
 		
@@ -204,6 +212,16 @@ package utils.liteui.core
 		{
 			_filterEnabled = value;
 			setFilter();
+		}
+
+		public function get layout():BaseLayout
+		{
+			return _layout;
+		}
+
+		public function set layout(value:BaseLayout):void
+		{
+			_layout = value;
 		}
 
 

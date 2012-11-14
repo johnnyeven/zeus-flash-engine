@@ -27,9 +27,6 @@ package view.scene
 			_messageContainer = _skin.getChildByName("messageContainer") as MovieClip;
 			
 			sortChildIndex();
-			
-			MessageBox.defaultSkinName = "ui.AlertSkin";
-			MessageBox.show("asdfasfd", "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf", "", true);
 		}
 	}
 }

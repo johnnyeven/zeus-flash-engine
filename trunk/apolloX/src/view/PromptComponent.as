@@ -16,7 +16,7 @@ package view
 			super();
 			
 			var _class: Class = getDefinitionByName("ui.PromptSkin") as Class;
-			var _skin: MovieClip = new _class();
+			var _skin: Sprite = new _class();
 			addChild(_skin);
 			
 			_textField = _skin.getChildByName("promptTitle") as TextField;
