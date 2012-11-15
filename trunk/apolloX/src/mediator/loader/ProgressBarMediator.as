@@ -47,7 +47,7 @@ package mediator.loader
 					showProgressBar();
 					break;
 				case HIDE_PROGRESSBAR_NOTE:
-					hideProgressBar()
+					hideProgressBar();
 					break;
 				case SET_PROGRESSBAR_TITLE_NOTE:
 					setProgressBarTitle(notification.getBody() as String);

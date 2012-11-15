@@ -83,6 +83,10 @@ package utils.loader
 			{
 				_loader = new ClassLoader(url);
 			}
+			else if(url.search(".xml"))
+			{
+				_loader = new XMLLoader(url);
+			}
 			return _loader;
 		}
 		
@@ -94,6 +98,23 @@ package utils.loader
 				_loader = createLoader(url);
 			}
 			return _loader;
+		}
+		
+		public static function getLoaderClass(className: String): Class
+		{
+			switch(className)
+			{
+				case "BatchLoader":
+					return BatchLoader;
+				case "ImageLoader":
+					return ImageLoader;
+				case "ClassLoader":
+					return ClassLoader;
+				case "XMLLoader":
+					return XMLLoader;
+				default:
+					return null;
+			}
 		}
 	}
 }

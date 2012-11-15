@@ -27,6 +27,7 @@ package controller
 			facade.registerCommand(LoadResourcesCommand.LOAD_RESOURCES_NOTE, LoadResourcesCommand);
 			facade.registerCommand(CreateStartMediatorCommand.CREATE_LOGIN_VIEW_NOTE, CreateStartMediatorCommand);
 			facade.registerCommand(LoadServerListCommand.LOAD_SERVERLIST_NOTE, LoadServerListCommand);
+			facade.registerCommand(LoadResourceConfigCommand.LOAD_CONFIG_NOTE, LoadResourceConfigCommand);
 			facade.registerCommand(LoadSceneResourcesCommand.LOAD_RESOURCES_NOTE, LoadSceneResourcesCommand);
 			
 			var _main: Main = notification.getBody() as Main;
@@ -41,7 +42,8 @@ package controller
 			{
 				trace("Main Loaded");
 			}
-			sendNotification(LoadResourcesCommand.LOAD_RESOURCES_NOTE);
+			//sendNotification(LoadResourcesCommand.LOAD_RESOURCES_NOTE);
+			sendNotification(LoadResourceConfigCommand.LOAD_CONFIG_NOTE);
 		}
 	}
 }
