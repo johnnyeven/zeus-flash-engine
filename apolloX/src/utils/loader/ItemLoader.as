@@ -44,7 +44,22 @@ package utils.loader
 			}
 			else
 			{
-				
+				if(loaderConfig.hasOwnProperty("@name"))
+				{
+					this.name = loaderConfig.@name;
+				}
+				else
+				{
+					this.name = GUIDUtils.create();
+				}
+				if(loaderConfig.hasOwnProperty("@url"))
+				{
+					this.url = loaderConfig.@url;
+				}
+				if(loaderConfig.hasOwnProperty("@version"))
+				{
+					this.version = loaderConfig.@version;
+				}
 			}
 			LoaderPool.instance.addLoader(this);
 			init();
