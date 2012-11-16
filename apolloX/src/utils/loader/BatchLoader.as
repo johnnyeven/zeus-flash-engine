@@ -100,9 +100,9 @@ package utils.loader
 				return;
 			}
 			
-			_currentLoader.addEventListener(LoaderEvent.COMPLETE, onLoadComplete);
-			_currentLoader.addEventListener(LoaderEvent.PROGRESS, onLoadProgress);
-			_currentLoader.addEventListener(LoaderEvent.IO_ERROR, onLoadIOError);
+			_currentLoader.addEventListener(LoaderEvent.COMPLETE, onLoaderComplete, false, 0, true);
+			_currentLoader.addEventListener(LoaderEvent.PROGRESS, onLoaderProgress, false, 0, true);
+			_currentLoader.addEventListener(LoaderEvent.IO_ERROR, onLoaderIOError, false, 0, true);
 			
 			if(_currentLoader.loaderStatus == LoaderStatus.LOADING)
 			{

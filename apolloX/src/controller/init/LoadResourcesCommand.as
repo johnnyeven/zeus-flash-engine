@@ -24,6 +24,7 @@ package controller.init
 		{
 			facade.removeCommand(LOAD_RESOURCES_NOTE);
 			
+			sendNotification(ProgressBarMediator.SHOW_RANDOM_BG);
 			/*
 			var _loader: Loader = new Loader();
 			var _urlRequest: URLRequest = new URLRequest("resources/ui/login/login_ui.swf");
@@ -42,7 +43,7 @@ package controller.init
 		
 		private function onLoadComplete(evt: LoaderEvent): void
 		{
-			sendNotification(ProgressBarMediator.HIDE_PROGRESSBAR_NOTE);
+			//sendNotification(ProgressBarMediator.HIDE_PROGRESSBAR_NOTE);
 			sendNotification(LoadServerListCommand.LOAD_SERVERLIST_NOTE);
 		}
 		
