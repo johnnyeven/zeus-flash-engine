@@ -6,6 +6,7 @@ package utils.loader
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	
+	import utils.enum.LoaderStatus;
 	import utils.events.LoaderEvent;
 
 	public class ResourceLoadManager
@@ -57,10 +58,45 @@ package utils.loader
 			}
 			_showLoaderBarIndex[url] = showLoaderBar;
 			
-			_loader.addEventListener(LoaderEvent.COMPLETE, onLoadCompelete);
-			_loader.addEventListener(LoaderEvent.PROGRESS, onLoadProgress);
-			_loader.addEventListener(LoaderEvent.IO_ERROR, onLoadIOError);
-			_loader.load();
+			if(_loader.loaderStatus == LoaderStatus.COMPLETE)
+			{
+				resetIndex(url);
+				if(completeCallback != null)
+				{
+					if(_loader is BatchLoader)
+					{
+						completeCallback(new LoaderEvent(LoaderEvent.COMPLETE, _loader, _loader.bytesLoaded, _loader.bytesTotal, (_loader as BatchLoader).loaderIndex, (_loader as BatchLoader).loaderCount));
+					}
+					else
+					{
+						completeCallback(new LoaderEvent(LoaderEvent.COMPLETE, _loader, _loader.bytesLoaded, _loader.bytesTotal));
+					}
+				}
+			}
+			else if(_loader.loaderStatus != LoaderStatus.LOADING)
+			{
+				_loader.addEventListener(LoaderEvent.COMPLETE, onLoadCompelete);
+				_loader.addEventListener(LoaderEvent.PROGRESS, onLoadProgress);
+				_loader.addEventListener(LoaderEvent.IO_ERROR, onLoadIOError);
+				
+				if(showLoaderBar)
+				{
+					ApplicationFacade.getInstance().sendNotification(SHOW_PROGRESSBAR_NOTE);
+					ApplicationFacade.getInstance().sendNotification(SET_PROGRESSBAR_TITLE_NOTE, title);
+				}
+				_loader.load();
+			}
+			else
+			{
+				if(_loader is BatchLoader)
+				{
+					progressCallback(new LoaderEvent(LoaderEvent.COMPLETE, _loader, _loader.bytesLoaded, _loader.bytesTotal, (_loader as BatchLoader).loaderIndex, (_loader as BatchLoader).loaderCount));
+				}
+				else
+				{
+					progressCallback(new LoaderEvent(LoaderEvent.COMPLETE, _loader, _loader.bytesLoaded, _loader.bytesTotal));
+				}
+			}
 		}
 		
 		private static function resetIndex(key: String): void
@@ -68,6 +104,7 @@ package utils.loader
 			delete _completeCallbackIndex[key];
 			delete _progressCallbackIndex[key];
 			delete _errorCallbackIndex[key];
+			delete _showLoaderBarIndex[key]
 		}
 		
 		private static function removeListener(_loader: ItemLoader): void
