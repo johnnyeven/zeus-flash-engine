@@ -24,6 +24,11 @@ package events.group
 		 */		
 		public static const BUCHONG_EVENT:String="buchong_event";
 		
+		/**
+		 *查看军团成员的军官证
+		 */		
+		public static const CHENK_ID_CARD_BY_ARMY_GROUP_EVENT:String = "checkIdCardByArmyGroupEvent";
+		
 		private var _groupName:String;
 		private var _id:String;
 

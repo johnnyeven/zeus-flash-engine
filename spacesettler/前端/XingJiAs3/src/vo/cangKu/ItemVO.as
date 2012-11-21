@@ -21,11 +21,6 @@ package vo.cangKu
         public var in_using:int;
 
         /**
-         * 道具标识
-         */
-        public var key:String;
-
-        /**
          * 暗能水晶消耗
          */
         public var dark_crystal:int;

@@ -18,6 +18,8 @@ package view.cryStalSmelter
 	import ui.components.Window;
 	import ui.core.Component;
 	
+	import utils.GlobalUtil;
+	
 	import vo.BuildInfoVo;
 	
 	/**
@@ -62,14 +64,27 @@ package view.cryStalSmelter
 			var buildInfoVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.KUANGCHANG);
 			cwList.push(BindingUtils.bindProperty(levelLabel,"text",buildInfoVO,"level"));
 			var userInforProxy:UserInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
-			cwList.push(BindingUtils.bindProperty(shuiJingOutPutLabel,"text",userInforProxy,["userInfoVO","crystal_output"]));
-			cwList.push(BindingUtils.bindProperty(shuiJinngTotalLabel,"text",userInforProxy,["userInfoVO","crystal"]));
-			cwList.push(BindingUtils.bindProperty(anWuZhiTotalLabel,"text",userInforProxy,["userInfoVO","broken_crysta"]));
+			cwList.push(BindingUtils.bindSetter(shuiJingOutPutLabelChange,userInforProxy,["userInfoVO","crystal_output"]));
+			cwList.push(BindingUtils.bindSetter(shuiJinngTotalLabelChange,userInforProxy,["userInfoVO","crystal"]));
+			cwList.push(BindingUtils.bindSetter(anWuZhiTotalLabelChange,userInforProxy,["userInfoVO","broken_crysta"]));
 			
 			smeltBtn.addEventListener(MouseEvent.CLICK,smeltBtn_clickHAndler);
 			close_button.addEventListener(MouseEvent.CLICK,closeButton_clickHAndler);
 			info_button.addEventListener(MouseEvent.CLICK,infoBtn_clickHandler);
         }
+		
+		private function shuiJingOutPutLabelChange(value:*):void
+		{
+			shuiJingOutPutLabel.text=int(value).toString();
+		}
+		private function shuiJinngTotalLabelChange(value:*):void
+		{
+			GlobalUtil.resLabelChange(shuiJinngTotalLabel,value);
+		}
+		private function anWuZhiTotalLabelChange(value:*):void
+		{
+			GlobalUtil.resLabelChange(anWuZhiTotalLabel,value);
+		}
 		
 		protected function infoBtn_clickHandler(event:MouseEvent):void
 		{

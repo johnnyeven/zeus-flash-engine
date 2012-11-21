@@ -20,6 +20,8 @@ package view.ranking
 		public var zongBangText:Label;
 		public var riBangText:Label;
 		
+		
+		public var backMc:Sprite;
 		/**
 		 *排行第一版面的点击ITEM 
 		 * @param skin
@@ -34,6 +36,7 @@ package view.ranking
 			junTuanMC=getSkin("juntuan_mc");
 			geRenMC=getSkin("geren_mc");
 			yaoSaiMC=getSkin("yaosai_mc");
+			backMc=getSkin("backMc");
 			
 			titleText=createUI(Label,"title_tf");
 			timeText=createUI(Label,"shijian_tf");
@@ -45,6 +48,7 @@ package view.ranking
 			junTuanMC.visible=false;
 			geRenMC.visible=false;
 			yaoSaiMC.visible=false;
+			backMc.visible=false;
 		}
 		
 		public function showPve():void
@@ -54,7 +58,8 @@ package view.ranking
 			junTuanMC.visible=false;
 			geRenMC.visible=false;
 			yaoSaiMC.visible=false;	
-			titleText.text="PVE";
+			backMc.visible=true;	
+			titleText.text="PVP";
 		}
 		
 		public function showCaiFu():void

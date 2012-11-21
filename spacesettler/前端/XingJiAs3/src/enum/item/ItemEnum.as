@@ -11,12 +11,12 @@ package enum.item
 		/**
 		 * 战车
 		 */
-        public static const Chariot:String = "Chariot";
-
+		public static const Chariot:String = "Chariot";
+		
 		/**
 		 * 挂件
 		 */
-        public static const TankPart:String = "TankPart";
+		public static const TankPart:String = "TankPart";
 
 		/**
 		 * 商城物品
@@ -36,16 +36,21 @@ package enum.item
 		/**
 		 * 水晶
 		 */
-		public static const CRYSTAL:String = "Crystal";
+		public static const CRYSTAL:String = "crystal";
 		
 		/**
 		 * 氢氚
 		 */
-		public static const TRITIUM:String = "Tritium";
+		public static const TRITIUM:String = "tritium";
 		
 		/**
 		 * 暗物质
 		 */
-		public static const BROKENCRYSTAL:String = "BrokenCrystal";
+		public static const BROKENCRYSTAL:String = "brokenCrystal";
+		
+		/**
+		 * 捐献暗物质type
+		 */
+		public static const BROKENCRYSTAL_TYPE:String = "dark_matter";
     }
 }

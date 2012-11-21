@@ -111,7 +111,7 @@ package view.email
 						}
 						case ItemEnum.item:
 						{
-							sourceImage.source = EmailTypeEnum.getItemImageByEmailType(_data.attachment_type);
+							sourceImage.source = EmailTypeEnum.getVipImageByEmailKey(_data.key);
 							break;
 						}
 						case ItemEnum.CRYSTAL:
@@ -130,7 +130,7 @@ package view.email
 							break;
 						}
 					}
-					sourceCountLabel.text = _data.attachment_count +"";
+					sourceCountLabel.text = "X" + _data.attachment_count +"";
 					if(_data.receive_attachment)
 					{
 						tipsLabel.visible = true;

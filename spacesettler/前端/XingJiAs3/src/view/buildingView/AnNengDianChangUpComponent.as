@@ -144,7 +144,7 @@ package view.buildingView
 			xiaoGuoLabel.text=curViewInfoVO.DianNengTG+"/h --> "+nextViewInfoVO.DianNengTG+"/h";
 			
 			if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || nextViewInfoVO.shuiJinXH>userInfoVO.crystal ||
-				nextViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>centerBuild.level)
+				nextViewInfoVO.chuanQinXH>userInfoVO.tritium || nextViewInfoVO.command_center_level>centerBuild.level)
 			{
 				conditionBtn.visible=true;
 				conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
@@ -155,7 +155,7 @@ package view.buildingView
 			{
 				var obj1:Object=new Object();
 				obj1.imgSource=ResEnum.getConditionIconURL+"1.png";
-				obj1.content=MultilanguageManager.getString("broken_crysta")+userInfoVO.broken_crysta+"/"+nextViewInfoVO.anWuZhiXH;
+				obj1.content=MultilanguageManager.getString("broken_crysta")+int(userInfoVO.broken_crysta)+"/"+nextViewInfoVO.anWuZhiXH;
 				obj1.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj1);
 			}
@@ -163,7 +163,7 @@ package view.buildingView
 			{
 				var obj2:Object=new Object();
 				obj2.imgSource=ResEnum.getConditionIconURL+"2.png";
-				obj2.content=MultilanguageManager.getString("crystal")+userInfoVO.crystal+"/"+nextViewInfoVO.shuiJinXH;
+				obj2.content=MultilanguageManager.getString("crystal")+int(userInfoVO.crystal)+"/"+nextViewInfoVO.shuiJinXH;
 				obj2.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj2);
 			}
@@ -171,15 +171,15 @@ package view.buildingView
 			{
 				var obj3:Object=new Object();
 				obj3.imgSource=ResEnum.getConditionIconURL+"3.png";
-				obj3.content=MultilanguageManager.getString("tritium")+userInfoVO.tritium+"/"+nextViewInfoVO.chuanQinXH;
+				obj3.content=MultilanguageManager.getString("tritium")+int(userInfoVO.tritium)+"/"+nextViewInfoVO.chuanQinXH;
 				obj3.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj3);
 			}
-			if(curViewInfoVO.limit>centerBuild.level)
+			if(nextViewInfoVO.command_center_level>centerBuild.level)
 			{
 				var obj4:Object=new Object();
 				obj4.imgSource=ResEnum.getConditionIconURL+"5.png";
-				obj4.content=MultilanguageManager.getString("center_build")+centerBuild.level+"/"+curViewInfoVO.limit;
+				obj4.content=MultilanguageManager.getString("center_build")+centerBuild.level+"/"+nextViewInfoVO.command_center_level;
 				obj4.btnLabel=MultilanguageManager.getString("up_center");
 				conditionArr.push(obj4);
 			}

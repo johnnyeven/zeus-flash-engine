@@ -26,5 +26,10 @@ package enum
 		 *战场战斗
 		 */		
 		public static const FIGHT_BATTLE:int=4;
+		
+		/**
+		 *军团战场
+		 */		
+		public static const GROUP_FIGHT:int=5;
 	}
 }

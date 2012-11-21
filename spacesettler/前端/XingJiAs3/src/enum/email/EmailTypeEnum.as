@@ -82,6 +82,16 @@ package enum.email
 		}
 		
 		/**
+		 * 根据附件类型和key 获取   VIP  类型小图标
+		 */
+		public static function getVipImageByEmailKey(key:String):String
+		{
+			var vipImage:String = "";
+			vipImage = ResEnum.parentURL + "email/equipSmallImage/" + key+".png";
+			return vipImage;
+		}
+		
+		/**
 		 * 根据资源类型和数量   计算出花费钱的数量
 		 */
 		public static function getSourceCostBySourceCount(sourceCount:int,sourceType:String):int

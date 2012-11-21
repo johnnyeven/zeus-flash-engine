@@ -16,8 +16,6 @@ package view.friendList
 	
 	public class FriendItem extends Component
 	{
-		public var topSprite:Sprite;
-		public var buttonSprite:Sprite;
 		
 		public var playerNameLabel:Label;
 		public var ageLevelLabel:Label;
@@ -29,8 +27,6 @@ package view.friendList
 		{
 			super(ClassUtil.getObject("view.friendList.friendItem"));
 			
-			topSprite = getSkin("topSprite");
-			buttonSprite = getSkin("buttonSprite");
 			playerNameLabel = createUI(Label,"playerNameLabel");
 			ageLevelLabel = createUI(Label,"ageLevelLabel");
 			lastLoginLabel = createUI(Label,"lastLoginLabel");

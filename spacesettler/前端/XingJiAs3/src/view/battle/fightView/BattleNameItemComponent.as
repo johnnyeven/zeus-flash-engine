@@ -52,7 +52,7 @@ package view.battle.fightView
 			}
 		}
 		
-		public function set PH(value:Number):void
+		public function set HP(value:Number):void
 		{
 			progressBar.percent=value;
 		}

@@ -8,6 +8,8 @@ package view.factory
 	import ui.components.LoaderImage;
 	import ui.core.Component;
 	
+	import vo.cangKu.BaseItemVO;
+	
     public class FactoryItem_3Component extends Component
     {
 		public var level_lable:Label;
@@ -24,7 +26,7 @@ package view.factory
 		
 		public var mask_mc:Sprite;
 
-		
+		public var baseVo:BaseItemVO;
         public function FactoryItem_3Component()
         {
             super(ClassUtil.getObject("view.factory.FactoryItem_3"));
@@ -74,12 +76,14 @@ package view.factory
 		{
 			mask_mc.visible=false;
 			this.mouseEnabled=true;
+			this.mouseChildren=true;
 		}
 		
 		public function canNotUse():void
 		{
 			mask_mc.visible=true;
 			this.mouseEnabled=false;
+			this.mouseChildren=false;
 		}
     }
 }

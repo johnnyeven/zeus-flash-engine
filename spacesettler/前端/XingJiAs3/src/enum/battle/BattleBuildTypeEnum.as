@@ -92,22 +92,22 @@ package enum.battle
 			{
 				case JIA_Xie:
 				{
-					return MultilanguageManager.getString("battleJiXiePaoTaInfo");
+					return MultilanguageManager.getString("battleJiXieDescrip");
 					break;
 				}
 				case JI_GUANG:
 				{
-					return MultilanguageManager.getString("battleJiGuangPaoTaInfo");
+					return MultilanguageManager.getString("battleJiGuangDescrip");
 					break;
 				}
 				case DIAN_CI:
 				{
-					return MultilanguageManager.getString("battleDianCiPaoTaInfo");
+					return MultilanguageManager.getString("battleDianCiDescrip");
 					break;
 				}
 				case AN_NENG:
 				{
-					return MultilanguageManager.getString("battleAnNengPaoTaInfo");
+					return MultilanguageManager.getString("battleAnNengDescrip");
 					break;
 				}
 			}

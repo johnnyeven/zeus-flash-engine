@@ -123,7 +123,10 @@ package mediator.login
 
 			destoryCallback = function():void
 			{
-				sendNotification(PkComponentMediator.SHOW_NOTE);
+				loginProxy.regist(function():void
+				{
+					sendNotification(DESTROY_NOTE);
+				});
 			};
 			sendNotification(DESTROY_NOTE);
 		}

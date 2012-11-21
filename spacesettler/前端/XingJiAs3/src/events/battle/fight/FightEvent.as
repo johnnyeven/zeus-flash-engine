@@ -1,11 +1,13 @@
 package events.battle.fight
 {
 	import flash.events.Event;
+	
+	import view.battle.fight.FightZhanCheComponent;
 
 	public class FightEvent extends Event
 	{
 		public static const FAIL_EVENT:String = "failEvent";
-
+		
 		public function FightEvent(type:String)
 		{
 			super(type,false,false);

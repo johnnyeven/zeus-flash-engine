@@ -1,11 +1,15 @@
 package view.mainView
 {
+    import com.greensock.TweenLite;
+    import com.zn.utils.ClassUtil;
     import com.zn.utils.DateFormatter;
     import com.zn.utils.StringUtil;
     
+    import enum.FontEnum;
     import enum.chat.ChannelEnum;
     
     import events.friendList.FriendListEvent;
+    import events.talk.ChatEvent;
     import events.talk.TalkEvent;
     
     import flash.display.DisplayObjectContainer;
@@ -15,10 +19,14 @@ package view.mainView
     import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.events.TextEvent;
+    import flash.geom.Point;
     import flash.net.registerClassAlias;
+    import flash.system.System;
     import flash.text.TextField;
     import flash.ui.Keyboard;
     import flash.utils.getDefinitionByName;
+    
+    import mediator.mainView.MainViewMediator;
     
     import mx.binding.utils.BindingUtils;
     
@@ -34,6 +42,7 @@ package view.mainView
     import ui.layouts.HTileLayout;
     import ui.layouts.VLayout;
     import ui.layouts.VTileLayout;
+    import ui.managers.SystemManager;
     import ui.utils.DisposeUtil;
     
     import vo.chat.ChatItemVO;
@@ -57,9 +66,9 @@ package view.mainView
 		/**
 		 * 私聊输入框
 		 */
-//		public var privateSprivate:Component;
-//		public var nameTxt:TextInput;
-//		public var inforTxt:TextInput;
+		public var privateSprivate:Component;
+		public var nameLabel:Label;
+		public var inforTxt:TextInput;
 
         /**
          * 发送按钮
@@ -91,6 +100,10 @@ package view.mainView
          */
         public var privateChatBtn:Button;
 
+		/**
+		 * 私聊提示元件
+		 */
+		public var privateChatTips:MovieClip;
         /**
          * 超链接按钮
          */
@@ -159,18 +172,33 @@ package view.mainView
 		private var groupBoolean:Boolean = true;
 		private var privateBoolean:Boolean = true;
 		
-		//超练接中点击的对象
-		private var _currentTarget:Object;
+		//选中的对象
+		private var _currentTarget:ChatInforIten;
 		
 		//私聊对象的名字
 		private var _privateChatName:String;
 
-
+		private var mainMediater:MainViewMediator;
+		private var shangBiaoSprivate:Sprite;
+		private var seletedSkinSprite:Sprite;
+		private var chatSelectedComponent:ChatSelectedComponent;
+		//聊天框上遮罩
+		private var shangSprite:Sprite;
+		//聊天框下遮罩
+		private var xiaSprite:Sprite;
+		//聊天框右遮罩
+//		private var rightSprite:Sprite;
+		//举报按钮
+		private var juBaoBtn:Sprite;
+		/**
+		 * 选中的表情
+		 */		
+		private var selectedFace:String;
         public function ChatViewComponent(skin:DisplayObjectContainer)
         {
             super(skin);
-
-            var num:String
+			
+            var num:String;
             for (var i:int = 0; i < VIP_COUNT; i++)
             {
                 num = String(i);
@@ -181,6 +209,11 @@ package view.mainView
             userInforProxy = ApplicationFacade.getProxy(UserInfoProxy);
 
             chatText = createUI(TextInput, "liaotian_tf");
+			privateSprivate = createUI(Component,"privateSprivate");
+			nameLabel = privateSprivate.createUI(Label,"nameLabel");
+			inforTxt = privateSprivate.createUI(TextInput,"inforTxt");
+			privateSprivate.sortChildIndex();
+			
 			
             sendBtn = createUI(Button, "fasong_btn");
             friendBtn = createUI(Button, "haoyou_btn");
@@ -193,8 +226,9 @@ package view.mainView
             upBtn = getSkin("up_btn");
             downBtn = getSkin("down_btn");
             faceBtn = getSkin("biaoqing_mc");
-            var biaoqing_mc:Sprite = getSkin("biaoqing_mc");
-
+			faceBtn.mouseEnabled = true;
+			faceBtn.buttonMode = true;
+           
             allShowSprite = createUI(Component, "allShowSprite");
             vScrollBar = allShowSprite.createUI(VScrollBar, "vScrollBar");
             allShowSprite.sortChildIndex();
@@ -202,14 +236,25 @@ package view.mainView
             partShowSprite = createUI(Component, "partShowSprite");
             partShowSprite.sortChildIndex();
 
+			
+			//私聊提示元件
+			privateChatTips = ClassUtil.getObject("mainView.chat.PrivateChatTipsSkin") as MovieClip;
+			privateChatTips.x = privateChatBtn.x+ privateChatBtn.width/2;
+			privateChatTips.y = privateChatBtn.y - privateChatTips.height;
+			this.addChild(privateChatTips);
+			privateChatTips.visible = false;
+			
             sortChildIndex();
 
             chatText.color = 0xFFFFFF;
-            chatText.label.fontName = "微软雅黑";
+            chatText.label.fontName = FontEnum.WEI_RUAN_YA_HEI;
             chatText.addEventListener(TextEvent.TEXT_INPUT, textChange_handler);
             chatText.addEventListener(KeyboardEvent.KEY_UP, keyUp_clickHandler);
-//			allShowContainer.layout = new VTileLayout(allShowContainer);
-//			partShowContainer.layout = new VTileLayout(partShowContainer);
+			
+			inforTxt.color = 0xFFFFFF;
+			inforTxt.label.fontName = FontEnum.WEI_RUAN_YA_HEI;
+			inforTxt.addEventListener(TextEvent.TEXT_INPUT, ptivateTextChange_handler);
+			inforTxt.addEventListener(KeyboardEvent.KEY_UP, privateKeyUp_clickHandler);
 
 			container_all_word = new Container(null);
 			container_all_word.contentWidth = 364;
@@ -277,15 +322,11 @@ package view.mainView
 			container_part_private.y = 5;
 			partShowSprite.addChild(container_part_private);
 
-//			partScrollBar.height = 60;
-//           partScrollBar.viewport = container_part;
-//            partScrollBar.autoScroll = true;
-//			partScrollBar.visible = false;
-
-            biaoqing_mc.visible = downBtn.visible = allShowSprite.visible = false;
+            downBtn.visible = allShowSprite.visible = false;
             upBtn.mouseEnabled = downBtn.mouseEnabled = true;
             chatText.mouseEnabled = true;
-
+			faceBtn.addEventListener(MouseEvent.CLICK,faceBtn_clickHandler);
+			
             upBtn.addEventListener(MouseEvent.CLICK, upBtn_clickHandler);
             downBtn.addEventListener(MouseEvent.CLICK, downBtn_clickHandler);
             friendBtn.addEventListener(MouseEvent.CLICK, friendBtn_clickHandler);
@@ -319,19 +360,30 @@ package view.mainView
         {
             if (value.length > 0)
             {
+				//私聊来信提示
+				if(channel == ChannelEnum.CHANNEL_PRIVATE)
+				{
+					if((value[0] as ChatItemVO).myID == userInforProxy.userInfoVO.player_id)
+					{
+						privateChatTips.visible = false;
+					}
+					else
+					{
+						privateChatTips.visible = true;
+					}
+					
+				}
                 for (var i:int = 0; i < value.length; i++)
                 {
                     var itemVo:ChatItemVO = (value[i] as ChatItemVO);
-                    var itemLabel:Label = new Label();
-					itemLabel.color = 0xFFFFFF;
-					itemLabel.fontName = "微软雅黑";
-					itemLabel.mouseChildren = itemLabel.mouseEnabled = true;
-                    itemLabel.textHeight = 12
-                    itemLabel.text = setString(itemVo,channel);
-					
-					allContainerAddData(itemLabel,channel);
-                    //超链接
-                    itemLabel.addEventListener(TextEvent.LINK, itemLabel_linkClickHandler);
+					var chatInforItem:ChatInforIten = new ChatInforIten();
+					chatInforItem.mouseChildren = chatInforItem.mouseEnabled = chatInforItem.buttonMode = true;
+//					chatInforItem._channel = channel;
+					itemVo.mySetChannel = channel;
+					chatInforItem.data = itemVo;
+					allContainerAddData(chatInforItem,channel);
+                    //选择条目
+					chatInforItem.addEventListener(MouseEvent.CLICK, chatInforItem_ClickHandler);
                 }
                 var arr:Array = [];
                 if (value.length < 5)
@@ -351,16 +403,14 @@ package view.mainView
 					}
 						
                     var chatItemVo:ChatItemVO = (arr[j] as ChatItemVO);
-                    var partItemLabel:Label = new Label();
-					partItemLabel.color = 0xFFFFFF;
-					partItemLabel.fontName = "微软雅黑";
-					partItemLabel.mouseChildren = partItemLabel.mouseEnabled = true;
-                    partItemLabel.textHeight = 12;
-                    partItemLabel.text = setString(chatItemVo,channel);
-					
-					partContainerAddData(partItemLabel,channel);
-                    //超链接
-                    partItemLabel.addEventListener(TextEvent.LINK, itemLabel_linkClickHandler);
+                    var partItem:ChatInforIten = new ChatInforIten();
+					partItem.mouseChildren = partItem.mouseEnabled = buttonMode = true;
+					chatItemVo.mySetChannel = channel;
+					partItem.data = chatItemVo;
+//					partItem.channel = channel;
+					partContainerAddData(partItem,channel);
+                    //选择条目
+					partItem.addEventListener(MouseEvent.CLICK, chatInforItem_ClickHandler);
                 }
             }
 
@@ -388,23 +438,41 @@ package view.mainView
             if (chatString == "" || chatString == "请在聊天框或好友列表中选择私聊对象！")
                 return;
             dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
-			chatText.text = "";
+			chatText.clean();
+			inforTxt.clean();
         }
 
         private function textChange_handler(event:TextEvent):void
         {
-            chatString = chatText.text;
+//            chatString = chatText.text;
+			chatString = chatText.createXML(chatText.text);
         }
-
+		
+		private function ptivateTextChange_handler(event:TextEvent):void
+		{
+//			chatString = inforTxt.text;
+			chatString = inforTxt.createXML(inforTxt.text);
+		}
+		
         private function keyUp_clickHandler(event:KeyboardEvent):void
         {
-            if (event.charCode == Keyboard.ENTER && chatString != "")
+           if (event.charCode == Keyboard.ENTER && chatString != "")
 			{
 				dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
 			    chatText.text = "";
 			}
                 
         }
+		
+		private function privateKeyUp_clickHandler(event:KeyboardEvent):void
+		{
+			if (event.charCode == Keyboard.ENTER && chatString != "")
+			{
+				dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
+				inforTxt.text = "";
+			}
+			
+		}
 
         private function wordBtn_clickHandler(event:MouseEvent):void
         {
@@ -437,6 +505,8 @@ package view.mainView
 			//点击其他按钮恢复输如框
 			privateChatName = "";
 			chatText.text = "";
+			chatText.visible = true;
+			privateSprivate.visible = false;
 			chatText.mouseEnabled = true;
         }
 
@@ -471,6 +541,8 @@ package view.mainView
 			//点击其他按钮恢复输如框
 			privateChatName = "";
 			chatText.text = "";
+			chatText.visible = true;
+			privateSprivate.visible = false;
 			chatText.mouseEnabled = true;
                 
         }
@@ -512,12 +584,16 @@ package view.mainView
 			//点击其他按钮恢复输如框
 			privateChatName = "";
 			chatText.text = "";
+			chatText.visible = true;
+			privateSprivate.visible = false;
 			chatText.mouseEnabled = true;
-                
         }
 
         private function privateChatBtn_clickHandler(event:MouseEvent):void
         {
+			//查看私聊来信后提示消失
+			privateChatTips.visible = false;
+			privateChatBtn.selected=true;
 			if(privateBoolean)
 			{
 				wordBoolean = true;
@@ -548,7 +624,8 @@ package view.mainView
 			//私聊通道的控制
 			if(privateChatName)
 			{
-				chatText.text = "";
+				chatText.visible = false;
+				privateSprivate.visible = true;
 				chatText.mouseEnabled = true;
 			}
 			else
@@ -558,10 +635,16 @@ package view.mainView
 			}
         }
 
-        private function itemLabel_linkClickHandler(event:TextEvent):void
+        private function chatInforItem_ClickHandler(event:MouseEvent):void
         {
-			currentTarget = event.currentTarget as Label;
-            dispatchEvent(new TextEvent(TextEvent.LINK, true, true, event.text));
+			event.stopImmediatePropagation();
+			if((event.currentTarget as ChatInforIten).isLink == true)
+			{
+				(event.currentTarget as ChatInforIten).isLink = false;
+				return;
+			}
+				
+			currentTarget = event.currentTarget as ChatInforIten;
         }
 
         private function hyperlinkBtn_clickHandler(event:MouseEvent):void
@@ -594,16 +677,119 @@ package view.mainView
 			_count = value;
 		}
 		
-		public function get currentTarget():Object
+		public function get currentTarget():ChatInforIten
 		{
 			return _currentTarget;
 		}
 		
-		public function set currentTarget(value:Object):void
+		public function set currentTarget(value:ChatInforIten):void
 		{
+			
+			if(chatSelectedComponent)
+				return;
 			_currentTarget = value;
+            //系统消息不容许选择
+			if(_currentTarget.data.system)
+				return;
+			//动画的调用
+			setMovieClip();
 		}
 		
+		private function setMovieClip():void
+		{
+			mainMediater = ApplicationFacade.getInstance().getMediator(MainViewMediator);
+			mainMediater.comp.mouseChildren = true;
+			shangBiaoSprivate = ClassUtil.getObject("mainView.chat.shangBiaoSprivate") as Sprite;
+			juBaoBtn = ClassUtil.getObject("view.mainView.chat.JuBaoBtnSkin") as Sprite;
+			juBaoBtn.mouseEnabled = true;
+			juBaoBtn.buttonMode = true;
+			seletedSkinSprite = ClassUtil.getObject("mainView.chat.selectedSkin") as Sprite;
+			chatSelectedComponent = new ChatSelectedComponent();
+			//私聊的单独处理
+			chatSelectedComponent.selectedChannel = channelSelected;
+			//将选中元件的坐标原点转化为全局坐标
+			var point:Point = new Point();
+			point = currentTarget.localToGlobal(point);
+			//将聊天框的坐标转化为全局坐标
+			var thisPoint:Point = new Point();
+			thisPoint = this.localToGlobal(thisPoint);
+			seletedSkinSprite.x = point.x - 4;
+			seletedSkinSprite.y = point.y - 4;
+			//选择框自适应（根据信息内容）
+			seletedSkinSprite.height = currentTarget.inforLabel.height +12;
+			seletedSkinSprite.width=currentTarget.width;
+			mainMediater.comp.addChild(seletedSkinSprite);
+			
+			juBaoBtn.x = seletedSkinSprite.x + seletedSkinSprite.width - juBaoBtn.width;
+			juBaoBtn.y = seletedSkinSprite.y + seletedSkinSprite.height;
+			//聊天框上遮罩
+			shangSprite = new Sprite();
+			shangSprite.graphics.beginFill(0x000000,0.5);
+			shangSprite.graphics.drawRect(0,0,this.width,seletedSkinSprite.y-thisPoint.y);
+			shangSprite.graphics.endFill();
+			shangSprite.x = 0;
+			shangSprite.y = this.y;
+			shangSprite.mouseEnabled = true;
+			//聊天框下遮罩
+			xiaSprite = new Sprite();
+			xiaSprite.graphics.beginFill(0x000000,0.5);
+			xiaSprite.graphics.drawRect(0,0,this.width,(mainMediater.comp.height-seletedSkinSprite.y-seletedSkinSprite.height));
+			xiaSprite.graphics.endFill();
+			xiaSprite.x = 0;
+			xiaSprite.y = point.y + currentTarget.height;
+			xiaSprite.mouseEnabled = true;
+			//聊天框右遮罩
+//			rightSprite = new Sprite();
+//			rightSprite.graphics.beginFill(0x999999,0.5);
+//			rightSprite.graphics.drawRect(0,0,(mainMediater.comp.width - seletedSkinSprite.width),seletedSkinSprite.height-4.5);
+//			rightSprite.graphics.endFill();
+//			rightSprite.x = seletedSkinSprite.x + seletedSkinSprite.width;
+//			rightSprite.y = seletedSkinSprite.y;
+//			rightSprite.mouseEnabled = true;
+			
+			shangSprite.addEventListener(MouseEvent.CLICK,mainMediater_clickHandler);
+			xiaSprite.addEventListener(MouseEvent.CLICK,mainMediater_clickHandler);
+//			rightSprite.addEventListener(MouseEvent.CLICK,mainMediater_clickHandler);
+			juBaoBtn.addEventListener(MouseEvent.CLICK,mainMediater_clickHandler);
+			mainMediater.addEventListener(MouseEvent.CLICK,mainMediater_clickHandler);
+			mainMediater.comp.addChild(shangSprite);
+			mainMediater.comp.addChild(xiaSprite);
+//			mainMediater.comp.addChild(rightSprite);
+			//上标
+			shangBiaoSprivate.x = seletedSkinSprite.x + 50;
+			shangBiaoSprivate.y = seletedSkinSprite.y - shangBiaoSprivate.height;
+			mainMediater.comp.addChild(shangBiaoSprivate);
+			mainMediater.comp.addChild(chatSelectedComponent);
+			mainMediater.comp.addChild(juBaoBtn);
+			
+			chatSelectedComponent.x = point.x;
+			chatSelectedComponent.y = 150;
+			var y:Number = seletedSkinSprite.y - chatSelectedComponent.height - shangBiaoSprivate.height;
+			TweenLite.to(chatSelectedComponent,1,{y:y});
+			chatSelectedComponent.data = currentTarget.data;
+			//自己不能举报自己
+			if(currentTarget.data.myID == userInforProxy.userInfoVO.player_id)
+			{
+				juBaoBtn.visible = false;
+			}
+			else
+			{
+				juBaoBtn.visible = true;
+			}
+			
+		}
+		
+		public function mainMediater_clickHandler(event:MouseEvent):void
+		{
+			mainMediater.comp.removeChild(shangBiaoSprivate);
+			mainMediater.comp.removeChild(chatSelectedComponent);
+			chatSelectedComponent = null;
+			mainMediater.comp.removeChild(shangSprite);
+			mainMediater.comp.removeChild(xiaSprite);
+//			mainMediater.comp.removeChild(rightSprite);
+			mainMediater.comp.removeChild(seletedSkinSprite);
+			mainMediater.comp.removeChild(juBaoBtn);
+		}
 		/**
 		 * 外部控制私聊
 		 * 
@@ -621,6 +807,7 @@ package view.mainView
 		public function set privateChatName(value:String):void
 		{
 			_privateChatName = value;
+			nameLabel.text = _privateChatName;
 		}
 
 		//根据选择的频道显示对应频道界面
@@ -669,34 +856,34 @@ package view.mainView
 		}
 		
 		//向对应的显示框中添加数据
-		private function allContainerAddData(itemLabel:Label,channel:String):void
+		private function allContainerAddData(item:ChatInforIten,channel:String):void
 		{
 			switch(channel)
 			{
 				case ChannelEnum.CHANNEL_WORLD:
 				{
-					container_all_word.add(itemLabel);
+					container_all_word.add(item);
 					container_all_word.layout.update();
 					container_all_word.layout.vGap = DISTANCE_COUNT;
 					break;
 				}
 				case ChannelEnum.CHANNEL_CAMP:
 				{
-					container_all_camp.add(itemLabel);
+					container_all_camp.add(item);
 					container_all_camp.layout.update();
 					container_all_camp.layout.vGap = DISTANCE_COUNT;
 					break;
 				}
 				case ChannelEnum.CHANNEL_ARMY_GROUP:
 				{
-					container_all_group.add(itemLabel);
+					container_all_group.add(item);
 					container_all_group.layout.update();
 					container_all_group.layout.vGap = DISTANCE_COUNT;
 					break;
 				}
 				case ChannelEnum.CHANNEL_PRIVATE:
 				{
-					container_all_private.add(itemLabel);
+					container_all_private.add(item);
 					container_all_private.layout.update();
 					container_all_private.layout.vGap = DISTANCE_COUNT;
 					break;
@@ -705,34 +892,34 @@ package view.mainView
 		}
 		
 		//向对应的显示框中添加数据
-		private function partContainerAddData(partItemLabel:Label,channel:String):void
+		private function partContainerAddData(partItem:ChatInforIten,channel:String):void
 		{
 			switch(channel)
 			{
 				case ChannelEnum.CHANNEL_WORLD:
 				{
-					container_part_word.add(partItemLabel);
+					container_part_word.add(partItem);
 					container_part_word.layout.update();
 					container_part_word.layout.vGap = DISTANCE_COUNT;
 					break;
 				}
 				case ChannelEnum.CHANNEL_CAMP:
 				{
-					container_part_camp.add(partItemLabel);
+					container_part_camp.add(partItem);
 					container_part_camp.layout.update();
 					container_part_camp.layout.vGap = DISTANCE_COUNT;
 					break;
 				}
 				case ChannelEnum.CHANNEL_ARMY_GROUP:
 				{
-					container_part_group.add(partItemLabel);
+					container_part_group.add(partItem);
 					container_part_group.layout.update();
 					container_part_group.layout.vGap = DISTANCE_COUNT;
 					break;
 				}
 				case ChannelEnum.CHANNEL_PRIVATE:
 				{
-					container_part_private.add(partItemLabel);
+					container_part_private.add(partItem);
 					container_part_private.layout.update();
 					container_part_private.layout.vGap = DISTANCE_COUNT;
 					break;
@@ -770,7 +957,87 @@ package view.mainView
 			return container;
 		}
 		
+		//加入军团或退出军团时都要清理聊天数据
+		public function deletedData():void
+		{
+			while(container_all_word.num >0)
+			{
+				DisposeUtil.dispose(container_all_word.removeAt(0));
+			}
+			while(container_all_camp.num >0)
+			{
+				DisposeUtil.dispose(container_all_camp.removeAt(0));
+			}
+			while(container_all_group.num >0)
+			{
+				DisposeUtil.dispose(container_all_group.removeAt(0));
+			}
+			while(container_all_private.num >0)
+			{
+				DisposeUtil.dispose(container_all_private.removeAt(0));
+			}
+			
+			while(container_part_word.num >0)
+			{
+				DisposeUtil.dispose(container_part_word.removeAt(0));
+			}
+			while(container_part_camp.num >0)
+			{
+				DisposeUtil.dispose(container_part_camp.removeAt(0));
+			}while(container_part_group.num >0)
+			{
+				DisposeUtil.dispose(container_part_group.removeAt(0));
+			}while(container_part_private.num >0)
+			{
+				DisposeUtil.dispose(container_part_private.removeAt(0));
+			}
+		}
+		
+		//退出军团后聊天按钮的切换
+		public function changeArmyGroupBtn():void
+		{
+			wordBtn_clickHandler(null);
+		}
 
+		private var chatFaceComponent:ChatFaceComponent;
+		//聊天表情选择面板
+		private function faceBtn_clickHandler(event:MouseEvent):void
+		{
+			if(chatFaceComponent)
+			{
+				chatFaceComponent.visible = true;
+			}
+			else
+			{
+				chatFaceComponent = new ChatFaceComponent();
+				chatFaceComponent.mouseEnabled = chatFaceComponent.mouseChildren = true;
+				chatFaceComponent.x = event.target.x - 95;
+				chatFaceComponent.y = event.target.y - chatFaceComponent.height -40;
+	//			SystemManager.instance.addInfo(chatFaceComponent);
+				addChild(chatFaceComponent);
+			}
+				 
+			chatFaceComponent.addEventListener(ChatEvent.SELECTED_CHAT_FACE,chatFaceHandler);
+			chatFaceComponent.addEventListener("closeBtnInChatFace",closeBtnInChatFaceHandler);
+		}
+		
+		private function chatFaceHandler(event:ChatEvent):void
+		{
+			selectedFace = event.obj as String;
+			if(_channelSelected == ChannelEnum.CHANNEL_PRIVATE)
+			{
+				inforTxt.insertGraphics("FACE_"+selectedFace);
+			}
+			else
+			{
+				chatText.insertGraphics("FACE_"+selectedFace);
+			}
+			chatFaceComponent.visible = false;
+		}
+		private function closeBtnInChatFaceHandler(event:Event):void
+		{
+			chatFaceComponent.visible = false;
+		}
         /***********************************************************
          *
          * 功能方法
@@ -837,7 +1104,7 @@ package view.mainView
                 }
                 else
                 {
-                    if (data.playerID == userInforProxy.userInfoVO.player_id)
+                    if (data.myID == userInforProxy.userInfoVO.player_id)
                     {
                         timeStr = DateFormatter.formatterTime(data.timeStamp/1000);
                         str = "<p color = '0xd1e4ff'><s>{0}</s><s>[</s><s>{1}</s><s>]</s></p>";

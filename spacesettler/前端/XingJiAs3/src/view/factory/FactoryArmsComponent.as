@@ -11,6 +11,7 @@ package view.factory
 	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.utils.clearInterval;
 	
 	import ui.components.Button;
 	import ui.components.Container;
@@ -87,6 +88,7 @@ package view.factory
 			if(array.length==0)
 			{
 				tishi_mc_1.visible=true;
+				vsBar.visible=false;
 				return;
 			}else
 			{
@@ -101,7 +103,7 @@ package view.factory
 			{
 				var zhancheVo:ZhanCheInfoVO=array[i] as ZhanCheInfoVO;
 				var item:FactoryItem_3Component=new FactoryItem_3Component();
-				
+				item.baseVo=zhancheVo;
 				item.title_lable.text=zhancheVo.name+"战车";
 				item.level_lable.text=zhancheVo.level.toString()+"级";
 				item.item_sp.source=ResEnum.senceEquipment+zhancheVo.item_type+"_"+zhancheVo.category+".png";
@@ -147,6 +149,7 @@ package view.factory
 			if(array.length==0)
 			{
 				tishi_mc_2.visible=true;
+				vsBar.visible=false;
 				return;
 			}else
 			{
@@ -164,7 +167,7 @@ package view.factory
 					return;
 				
 				var item:FactoryItem_3Component=new FactoryItem_3Component();
-				
+				item.baseVo=guajianVo;
 				item.title_lable.text=guajianVo.name;
 				item.level_lable.text=guajianVo.level.toString();
 				item.item_sp.source=ResEnum.senceEquipment+guajianVo.item_type+"_"+guajianVo.category+".png";
@@ -193,6 +196,25 @@ package view.factory
 			vsBar.viewport=container;
 		}
 		
+		public function searchContainer(str:String,callBack:Function):void
+		{ 
+			var invertID:int=interval(function():void
+			{
+				for(var i:int=0;i<container.num;i++)
+				{
+					var item:FactoryItem_3Component=container.getAt(i) as FactoryItem_3Component;
+					if(item.baseVo.name==str)
+					{
+						if(callBack!=null)
+						{
+							clearInterval(invertID);
+							callBack(item);
+						}
+						break;
+					}
+				}
+			},1000);
+		}
 		
 		
     }

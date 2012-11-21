@@ -87,7 +87,7 @@ package mediator.mainSence
 		 * @return
 		 *
 		 */
-		protected function get comp():MainSenceComponent
+		public function get comp():MainSenceComponent
 		{
 			return viewComponent as MainSenceComponent;
 		}

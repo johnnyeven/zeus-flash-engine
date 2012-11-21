@@ -11,5 +11,9 @@ package enum.battle
 		 *锁定 
 		 */		
 		public static const LOCK:int=1;
+		
+		public static const TYPE:int=0;
+		
+		public static const TIMEOUT:int=0;
 	}
 }

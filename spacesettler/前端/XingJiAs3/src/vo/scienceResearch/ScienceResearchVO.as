@@ -15,6 +15,8 @@ package vo.scienceResearch
 		
 		public static const FIELD_SCIENCE_TYPE:String="science_type";
 		
+		public static const SPEEDCOST:int=1;
+		
 		/**
 		 * 科技ID
 		 */	
@@ -124,5 +126,10 @@ package vo.scienceResearch
 		 *图纸研究的当前科技等级 
 		 */		
 		public var currentLevel:int=0;
+		
+		/**
+		 *所有科技等级 
+		 */		
+		public var allLevel:int=0;
 	}
 }

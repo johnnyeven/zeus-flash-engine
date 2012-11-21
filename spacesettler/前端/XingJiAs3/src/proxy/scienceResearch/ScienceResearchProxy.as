@@ -5,7 +5,10 @@ package proxy.scienceResearch
 	import com.zn.utils.DateFormatter;
 	import com.zn.utils.ObjectUtil;
 	
+	import controller.task.TaskCompleteCommand;
+	
 	import enum.BuildTypeEnum;
+	import enum.TaskEnum;
 	import enum.command.CommandEnum;
 	import enum.science.ScienceEnum;
 	
@@ -43,6 +46,9 @@ package proxy.scienceResearch
 		
 		public var totalLevel:int;
 		
+		private var _obj:Object;
+		
+		private var type:int;
 		public function ScienceResearchProxy(data:Object=null)
 		{
 			super(NAME, data);
@@ -51,6 +57,8 @@ package proxy.scienceResearch
 			
 			Protocol.registerProtocol(CommandEnum.researchUp, researchUpResult);
 			Protocol.registerProtocol(CommandEnum.researchReturn, researchReturnResult);
+			
+			Protocol.registerProtocol(CommandEnum.speedResearchUp,speedResearchUpResult);
 		}
 		
 		public function getScienceResearchInfor(callBack:Function = null):void
@@ -72,6 +80,7 @@ package proxy.scienceResearch
 				_scienceResearchCallBack = null;
 				return ;
 			}
+			_obj=data;
 			changeData(data);
 			
 			if(_scienceResearchCallBack!= null)
@@ -88,17 +97,37 @@ package proxy.scienceResearch
 		
 		private function researchUpResult(data:Object):void
 		{
+			if(data.hasOwnProperty("error"))
+			{
+				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.error));
+				return ;
+			}			
+			
+			changeData(data);
+		}
+		
+		public function speedResearchUp(eventID:String):void
+		{
+//			var id:String = userInforProxy.userInfoVO.id;
+			var obj:Object = {research_event_id:eventID};
+			ConnDebug.send(CommandEnum.speedResearchUp,obj);
+		}
+		
+		private function speedResearchUpResult(data:Object):void
+		{
 			if(data.hasOwnProperty("errors"))
 			{
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
 				return ;
 			}
 			
+			userInforProxy.userInfoVO.dark_crystal=data.dark_crystal;
 			changeData(data);
 		}
 		
 		public function researchReturn(scienceType:int):void
 		{
+			type=scienceType;
 			var id:String = userInforProxy.userInfoVO.id;
 			var obj:Object = {base_id:id,science_type:scienceType};
 			ConnDebug.send(CommandEnum.researchReturn,obj,ConnDebug.HTTP,URLRequestMethod.GET);
@@ -113,6 +142,14 @@ package proxy.scienceResearch
 			}
 			
 			changeData(data);
+			
+			var userProxy:UserInfoProxy=getProxy(UserInfoProxy)
+			if(type==ScienceEnum.NENG_YUAN_KE_JI&&userProxy.userInfoVO.index==TaskEnum.index15||
+				type==ScienceEnum.JI_XIE_KE_JI&&userProxy.userInfoVO.index==TaskEnum.index16||
+				type==ScienceEnum.CAI_JI_KE_JI&&userProxy.userInfoVO.index==TaskEnum.index17)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
 		} 
 		
 	/***********************************************************
@@ -129,19 +166,19 @@ package proxy.scienceResearch
 		private function getResearchCountByAcademyLevel(academyLevel:int):int
 		{
 			var researchCount:int;
-			if(academyLevel>=1 && academyLevel<=10)
+			if(academyLevel>=1 && academyLevel<11)
 			{
 				researchCount = 3;
 			}
-			else if(academyLevel>10 &&　academyLevel<=20)
+			else if(academyLevel>=11 &&　academyLevel<21)
 			{
 				researchCount = 6;
 			}
-			else if(academyLevel>20 && academyLevel<=30)
+			else if(academyLevel>=21 && academyLevel<31)
 			{
 				researchCount = 9;
 			}
-			else if(academyLevel>30 && academyLevel<=40)
+			else if(academyLevel>=31 && academyLevel<41)
 			{
 				researchCount = 12;
 			}
@@ -170,6 +207,7 @@ package proxy.scienceResearch
 			
 			var techDicObj:Object=ObjectUtil.CreateDic(scienceInforArr,"type");
 
+			totalLevel=0;
 			for(var i:int = 1;i<=researchCount;i++)
 			{
 				scienceResearchVO = new ScienceResearchVO();
@@ -183,6 +221,7 @@ package proxy.scienceResearch
 					scienceResearchVO.science_type = techObj.type;
 					if(techObj.event)
 					{
+						scienceResearchVO.eventID=techObj.event.id;
 						scienceResearchVO.current_time = techObj.event.current_time;
 						scienceResearchVO.start_time =techObj.event.start_time;
 						scienceResearchVO.finish_time = techObj.event.finish_time;

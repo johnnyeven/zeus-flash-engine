@@ -157,7 +157,7 @@ package mediator.factory
 		 * @return
 		 *
 		 */
-		protected function get comp():FactoryChangeComponent
+		public function get comp():FactoryChangeComponent
 		{
 			return viewComponent as FactoryChangeComponent;
 		}

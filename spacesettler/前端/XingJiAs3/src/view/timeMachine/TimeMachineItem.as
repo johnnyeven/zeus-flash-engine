@@ -98,7 +98,7 @@ package view.timeMachine
 				buildNameTxt.text = ScienceEnum.getResearchNameByResearchType(_data.building_type);
 			}
 			
-			var str:String = "<p><s>{0}级</s><s>-</s><s>{1}级</s></p>";
+			var str:String = "<p><s>等级{0}</s><s>-</s><s>等级{1}</s></p>";
 			str = StringUtil.formatString(str,_data.level,_data.level+1);
 			buildLevelTxt.text = str;
 			

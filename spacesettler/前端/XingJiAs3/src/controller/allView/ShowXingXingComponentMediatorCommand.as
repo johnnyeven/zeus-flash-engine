@@ -12,6 +12,9 @@ package controller.allView
     import org.puremvc.as3.patterns.command.SimpleCommand;
     
     import proxy.allView.AllViewProxy;
+    import proxy.userInfo.UserInfoProxy;
+    
+    import view.allView.XingXingComponent;
 
     /**
      *行星要塞
@@ -39,6 +42,11 @@ package controller.allView
 			if(_isLoading)
 				return ;
 			var playerID:String = notification.getBody() as String;
+			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
+			if(playerID==userProxy.userInfoVO.player_id)
+				XingXingComponent.IS_MINE=true;
+			else
+				XingXingComponent.IS_MINE=false;
 			var allViewProxy:AllViewProxy = getProxy(AllViewProxy);
 			allViewProxy.viewXingXing(playerID,function():void
 			{

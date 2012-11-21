@@ -9,20 +9,30 @@ package controller.init
     import controller.allView.ShowRongYuComponentMediatorCommand;
     import controller.allView.ShowXingXingComponentMediatorCommand;
     import controller.battle.ShowBattleBuildInfoComponentMediatorCommand;
+    import controller.battle.ShowBattleBuyComponentMediatorCommand;
     import controller.battle.ShowBattleEditMediatorCommand;
     import controller.battle.ShowBattleMediatorCommand;
+    import controller.battle.ShowBattleRevivePanelComponentMediatorCommand;
     import controller.battle.ShowBottomViewComponentMediatorCommand;
+    import controller.battle.ShowGoToManageComponentMediatorCommand;
     import controller.battle.ShowTimeViewComponentMediatorCommand;
+    import controller.battle.ShowbattleEditorConditionComponentMediatorCommand;
     import controller.battle.fight.FightCreateFeiJiCommand;
+    import controller.battle.fight.FightDropHonorCommand;
     import controller.battle.fight.FightExplodeCommand;
     import controller.battle.fight.FightFireCommand;
     import controller.battle.fight.FightHitCommand;
     import controller.battle.fight.FightItemCommand;
     import controller.battle.fight.FightLockCommand;
     import controller.battle.fight.FightMoveCommand;
+    import controller.battle.fight.FightNewPlayerCommand;
+    import controller.battle.fight.FightResurgenceCommand;
+    import controller.battle.fight.ShowBattleFailPanelComponentMediatorCommand;
     import controller.battle.fight.ShowBattleFightViewComponentMediatorCommand;
     import controller.battle.fight.ShowBattleTiShiPanelComponentMediatorCommand;
+    import controller.battle.fight.ShowBattleVictoryPanelComponentMediatorCommand;
     import controller.battleEnter.ShowBattleEnterComponentMediatorCommand;
+    import controller.battleEnter.ShowPrompt_weiXiuComponentMediatorCommand;
     import controller.buildingView.ShowCangKuCreateComponentMediatorCommand;
     import controller.buildingView.ShowCangKuInfoComponentMediatorCommand;
     import controller.buildingView.ShowCangKuUpComponentMediatorCommand;
@@ -50,6 +60,7 @@ package controller.init
     import controller.cangKu.ShowChaKanTuZhiViewComponentMediatorCommand;
     import controller.cangKu.ShowChaKanZhanCheViewMediatorCommand;
     import controller.cangKu.ShowDonateViewComponentMediatorCommand;
+    import controller.cangKu.ShowDonateview_1ComponentMediatorCommand;
     import controller.crystalMelter.ShowCrystalSmelterFunctionComponentMediatorCommand;
     import controller.email.ShowEmailComponentMediatorCommand;
     import controller.email.ShowSendEmailComponentMediatorCommand;
@@ -66,15 +77,25 @@ package controller.init
     import controller.friendList.ShowFriendListComponentMediatorCommand;
     import controller.friendList.ShowSearchPlayerComponentMediatorCommand;
     import controller.friendList.ShowViewIdCardComponentMediatorCommand;
+    import controller.giftBag.ShowGiftBagViewComponentMediatorCommand;
+    import controller.giftBag.ShowGiftDetileInfoViewComponentMediatorCommand;
     import controller.group.ShowGroupAuditComponentMediatorCommand;
     import controller.group.ShowGroupComponentMediatorCommand;
     import controller.group.ShowGroupManageComponentMediatorCommand;
     import controller.group.ShowGroupMemberComponentMediatorCommand;
     import controller.group.ShowGroupMemberManageComponentMediatorCommand;
     import controller.group.ShowNotJoinGroupComponentMediatorCommand;
+    import controller.groupFight.ShowGroupFightComponentMediatorCommand;
+    import controller.groupFight.ShowGroupFightMapComponentMediatorCommand;
+    import controller.groupFight.ShowGroupFightMenuComponentMediatorCommand;
+    import controller.groupFight.ShowGroupFightShowComponentMediatorCommand;
+    import controller.groupFight.tiShi.ShowGroupFightOneComponentMediatorCommand;
+    import controller.groupFight.tiShi.ShowGroupFightThreeComponentMediatorCommand;
+    import controller.groupFight.tiShi.ShowGroupFightTwoComponentMediatorCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.mainView.ShowMainViewMediatorCommand;
     import controller.plantioid.ShowPlantioidComponentMediatorCommand;
+    import controller.plantioid.ShowPlantioidTiShiComponentMediatorCommand;
     import controller.ranking.ShowRankingCommonComponentMediatorCommand;
     import controller.ranking.ShowRankingComponentMediatorCommand;
     import controller.ranking.ShowrankingPvpComponentMediatorCommand;
@@ -88,7 +109,14 @@ package controller.init
     import controller.systemView.ShowAccountNumberBoundaryComponentMediatorCommand;
     import controller.systemView.ShowHelpBoundaryComponentMediatorCommand;
     import controller.systemView.ShowOptionBoundaryComponentMediatorCommand;
+    import controller.systemView.ShowSystemPassWordComponentMediatorCommand;
     import controller.systemView.ShowsystemComponentMediatorCommand;
+    import controller.task.ShowtaskGideComponentMediatorCommand;
+    import controller.task.ShowtaskMilitaryComponentMediatorCommand;
+    import controller.task.ShowtaskViewComponentMediatorCommand;
+    import controller.task.TaskCommand;
+    import controller.task.TaskCompleteCommand;
+    import controller.task.TaskGideCommand;
     import controller.timeMachine.ShowTimeMachineComponentMediatorCommand;
     import controller.timeMachine.ShowTimeMachineInforComponentMediatorCommand;
     
@@ -96,13 +124,19 @@ package controller.init
     import mediator.allView.RongYuComponentMediator;
     import mediator.allView.XingXingComponentMediator;
     import mediator.battle.BattleBuildInfoComponentMediator;
+    import mediator.battle.BattleBuyComponentMediator;
     import mediator.battle.BattleEditMediator;
     import mediator.battle.BattleEditSelectorViewComponentMediator;
+    import mediator.battle.BattleFailPanelComponentMediator;
     import mediator.battle.BattleFightMediator;
     import mediator.battle.BattleFightViewComponentMediator;
+    import mediator.battle.BattleRevivePanelComponentMediator;
     import mediator.battle.BattleTiShiPanelComponentMediator;
+    import mediator.battle.BattleVictoryPanelComponentMediator;
     import mediator.battle.BottomViewComponentMediator;
+    import mediator.battle.GoToManageComponentMediator;
     import mediator.battle.TimeViewComponentMediator;
+    import mediator.battle.battleEditorConditionComponentMediator;
     import mediator.battleEnter.BattleEnterComponentMediator;
     import mediator.buildingView.CangKuCreateComponentMediator;
     import mediator.buildingView.CangKuInfoComponentMediator;
@@ -132,6 +166,7 @@ package controller.init
     import mediator.cangKu.ChaKanTuZhiViewComponentMediator;
     import mediator.cangKu.ChaKanZhanCheViewComponentMediator;
     import mediator.cangKu.DonateViewComponentMediator;
+    import mediator.cangKu.Donateview_1ComponentMediator;
     import mediator.cangKu.WuPingChaKanMenuViewComponentMediator;
     import mediator.crystalSmelter.CrystalSmelterFunctionComponentMediator;
     import mediator.email.EmailComponentMediator;
@@ -149,17 +184,29 @@ package controller.init
     import mediator.friendList.FriendListComponentMediator;
     import mediator.friendList.SearchPlayerComponentMediator;
     import mediator.friendList.ViewIdCardComponentMediator;
+    import mediator.giftBag.GiftBagViewComponentMediator;
+    import mediator.giftBag.GiftDetileInfoViewComponentMediator;
     import mediator.group.GroupAuditComponentMediator;
     import mediator.group.GroupComponentMediator;
     import mediator.group.GroupManageComponentMediator;
     import mediator.group.GroupMemberComponentMediator;
     import mediator.group.GroupMemberManageComponentMediator;
     import mediator.group.NotJoinGroupComponentMediator;
+    import mediator.groupFight.GroupFightComponentMediator;
+    import mediator.groupFight.GroupFightMapComponentMediator;
+    import mediator.groupFight.GroupFightMenuComponentMediator;
+    import mediator.groupFight.GroupFightShowComponentMediator;
+    import mediator.groupFight.tiShi.GroupFightOneComponentMediator;
+    import mediator.groupFight.tiShi.GroupFightThreeComponentMediator;
+    import mediator.groupFight.tiShi.GroupFightTwoComponentMediator;
+    import mediator.login.StartComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.mainView.MainViewMediator;
     import mediator.plantioid.PlantioidComponentMediator;
+    import mediator.plantioid.PlantioidTiShiComponentMediator;
     import mediator.prompt.GroupPopComponentMediator;
     import mediator.prompt.MoneyAlertComponentMediator;
+    import mediator.prompt.PromptWeiXiuMediator;
     import mediator.ranking.RankingCommonComponentMediator;
     import mediator.ranking.RankingComponentMediator;
     import mediator.ranking.rankingPvpComponentMediator;
@@ -174,6 +221,10 @@ package controller.init
     import mediator.systemView.HelpBoundaryComponentMediator;
     import mediator.systemView.OptionBoundaryComponentMediator;
     import mediator.systemView.SystemComponentMediator;
+    import mediator.systemView.SystemPassWordComponentMediator;
+    import mediator.task.TaskViewComponentMediator;
+    import mediator.task.taskGideComponentMediator;
+    import mediator.task.taskMilitaryComponentMediator;
     import mediator.timeMachine.TimeMachineComponentMediator;
     import mediator.timeMachine.TimeMachineInforComponentMediator;
     
@@ -192,14 +243,18 @@ package controller.init
     import proxy.factory.FactoryProxy;
     import proxy.friendList.FriendProxy;
     import proxy.group.GroupProxy;
+    import proxy.groupFight.GroupFightProxy;
     import proxy.packageView.PackageViewProxy;
     import proxy.plantioid.PlantioidProxy;
     import proxy.rankingProxy.RankingProxy;
     import proxy.scienceResearch.ScienceResearchProxy;
     import proxy.shangCheng.ShopProxy;
     import proxy.task.TaskProxy;
+    import proxy.taskGift.GiftBagProxy;
     import proxy.timeMachine.TimeMachineProxy;
     import proxy.userInfo.UserInfoProxy;
+    
+    import view.battle.build.battleEditorConditionComponent;
 
     /**
      *初始化
@@ -256,8 +311,8 @@ package controller.init
 			
 			var userInfoProxy:UserInfoProxy =ApplicationFacade.getProxy(UserInfoProxy);
 			userInfoProxy.updateServerData();
-			var taskProxy:TaskProxy=getProxy(TaskProxy);
-			taskProxy.getFreshmanTask();
+//			var taskProxy:TaskProxy=getProxy(TaskProxy);
+//			taskProxy.getFreshmanTask();
 			
 			var chatProxy:ChatProxy=getProxy(ChatProxy);
 			chatProxy.connect();
@@ -281,6 +336,7 @@ package controller.init
 			facade.registerProxy(new UserInfoProxy());
 			facade.registerProxy(new BuildProxy());
 			facade.registerProxy(new TaskProxy());
+			facade.registerProxy(new GiftBagProxy());
 			//总览
 			facade.registerProxy(new AllViewProxy());
 			//仓库
@@ -309,6 +365,8 @@ package controller.init
 			facade.registerProxy(new BattleProxy());
 			//军工厂
 			facade.registerProxy(new FactoryProxy());
+			//军团战
+			facade.registerProxy(new GroupFightProxy());
         }
 
         /**
@@ -322,7 +380,9 @@ package controller.init
 			facade.registerMediator(new WuPingChaKanMenuViewComponentMediator());
 			facade.registerMediator(new GroupPopComponentMediator());
 			facade.registerMediator(new BattleEditSelectorViewComponentMediator());
-//			facade.registerMediator(new BuyPromptComponentMediator());
+			
+//			//新手任务
+//			facade.registerMediator(new TaskViewComponentMediator());
         }
 
         /**
@@ -374,6 +434,21 @@ package controller.init
 			facade.registerCommand(ViewEmailComponentMediator.SHOW_NOTE,ShowViewEmailComponentMediatorCommand);
 			//资源库存量
 			facade.registerCommand(SourceSendComponentMediator.SHOW_NOTE,ShowSourceSendComponentMediatorCommand);
+			//查看礼包
+			facade.registerCommand(GiftBagViewComponentMediator.SHOW_NOTE,ShowGiftBagViewComponentMediatorCommand);
+			//礼包详细信息
+			facade.registerCommand(GiftDetileInfoViewComponentMediator.SHOW_NOTE,ShowGiftDetileInfoViewComponentMediatorCommand);
+			
+			//任务command
+			facade.registerCommand(TaskGideCommand.TASKGIDE_COMMAND,TaskGideCommand);
+			facade.registerCommand(TaskCommand.ADDTASKINFO_COMMAND,TaskCommand);
+			facade.registerCommand(TaskCompleteCommand.TASKCOMPLETE_COMMAND,TaskCompleteCommand);
+			//任务面板
+			facade.registerCommand(TaskViewComponentMediator.SHOW_NOTE,ShowtaskViewComponentMediatorCommand);
+			//指引箭头
+			facade.registerCommand(taskGideComponentMediator.SHOW_NOTE,controller.task.ShowtaskGideComponentMediatorCommand);
+			//用户注册
+			facade.registerCommand(taskMilitaryComponentMediator.SHOW_NOTE,ShowtaskMilitaryComponentMediatorCommand);
 			
 			//查看仓库
 			facade.registerCommand(CangkuPackageViewComponentMediator.SHOW_NOTE,ShowCangkuPackageViewComponentMediatorCommand);
@@ -387,6 +462,8 @@ package controller.init
 			facade.registerCommand(ChaKanDaoJuViewComponentMediator.SHOW_NOTE,ShowChaKanDaoJuViewComponentMediatorCommand);
 			//捐献
 			facade.registerCommand(DonateViewComponentMediator.SHOW_NOTE,ShowDonateViewComponentMediatorCommand);
+			//暗物质捐献
+			facade.registerCommand(Donateview_1ComponentMediator.SHOW_NOTE,ShowDonateview_1ComponentMediatorCommand);
 			
 			//氚氢厂建造
 			facade.registerCommand(ChuanQinCreateComponentMediator.SHOW_NOTE, ShowChuanQinCreateComponentMediatorCommand);
@@ -455,15 +532,19 @@ package controller.init
 			facade.registerCommand(ShangChengComponentMediator.SHOW_NOTE,ShowShangChengComponentMediatorCommand);
 			//
 			facade.registerCommand(BuyPromptComponentMediator.SHOW_NOTE,ShowBuyPromptComponentMediatorCommand);
-			
-			//小行星带
-			facade.registerCommand(PlantioidComponentMediator.SHOW_NOTE,ShowPlantioidComponentMediatorCommand);
-			
-			
 			//赠送弹出好友列表
 			facade.registerCommand(FriendGiveComponentMediator.SHOW_NOTE,ShowfriendGiveComponentMediatorCommand);
+						
+			//小行星带
+			facade.registerCommand(PlantioidComponentMediator.SHOW_NOTE,ShowPlantioidComponentMediatorCommand);
+			//小行星带强制攻击面板
+			facade.registerCommand(PlantioidTiShiComponentMediator.SHOW_NOTE,ShowPlantioidTiShiComponentMediatorCommand);
+			
+			
 			//系统菜单
 			facade.registerCommand(SystemComponentMediator.SHOW_NOTE,ShowsystemComponentMediatorCommand);
+			//系统修改密码
+			facade.registerCommand(SystemPassWordComponentMediator.SHOW_NOTE,ShowSystemPassWordComponentMediatorCommand);
 			//系统选项菜单
 			facade.registerCommand(OptionBoundaryComponentMediator.SHOW_NOTE,ShowOptionBoundaryComponentMediatorCommand);
 			//系统帮助菜单
@@ -504,11 +585,26 @@ package controller.init
 			//改装界面
 			facade.registerCommand(FactoryChangeComponentMediator.SHOW_NOTE,controller.factory.ShowFactoryChangeComponentMediatorCommand);
 			
+			////////////////////////////////////////////军团战///////////////////////////////////////////////////////////
+			//主行星
+			facade.registerCommand(GroupFightComponentMediator.SHOW_NOTE,ShowGroupFightComponentMediatorCommand);
+			//下面菜单
+			facade.registerCommand(GroupFightMenuComponentMediator.SHOW_NOTE,ShowGroupFightMenuComponentMediatorCommand);
+			//上方信息显示
+			facade.registerCommand(GroupFightShowComponentMediator.SHOW_NOTE,ShowGroupFightShowComponentMediatorCommand);
+			//小地图
+			facade.registerCommand(GroupFightMapComponentMediator.SHOW_NOTE,ShowGroupFightMapComponentMediatorCommand);
+			//三个提示框
+			facade.registerCommand(GroupFightThreeComponentMediator.SHOW_NOTE,ShowGroupFightThreeComponentMediatorCommand);
+			facade.registerCommand(GroupFightTwoComponentMediator.SHOW_NOTE,ShowGroupFightTwoComponentMediatorCommand);
+			facade.registerCommand(GroupFightOneComponentMediator.SHOW_NOTE,ShowGroupFightOneComponentMediatorCommand);
+			
 			////////////////////////////////////////////战场///////////////////////////////////////////////////////////
 			
 			//战场入口
 			facade.registerCommand(BattleEnterComponentMediator.SHOW_NOTE, ShowBattleEnterComponentMediatorCommand);
-			
+			//维修提示
+			facade.registerCommand(PromptWeiXiuMediator.SHOW_NOTE,ShowPrompt_weiXiuComponentMediatorCommand);
 			//战场
 			facade.registerCommand(BattleFightMediator.SHOW_NOTE, ShowBattleMediatorCommand);
 			
@@ -530,11 +626,31 @@ package controller.init
 			//战场时间面板
 			facade.registerCommand(TimeViewComponentMediator.SHOW_NOTE, ShowTimeViewComponentMediatorCommand);
 			
+			//失败面板
+			facade.registerCommand(BattleFailPanelComponentMediator.SHOW_NOTE, ShowBattleFailPanelComponentMediatorCommand);
+			
+			//胜利面板
+			facade.registerCommand(BattleVictoryPanelComponentMediator.SHOW_NOTE, ShowBattleVictoryPanelComponentMediatorCommand);
+			
+			//提示是否对星球进行管理
+			facade.registerCommand(GoToManageComponentMediator.SHOW_NOTE,ShowGoToManageComponentMediatorCommand);
+			
+			//玩家竞争购买要塞
+			facade.registerCommand(BattleBuyComponentMediator.SHOW_NOTE,ShowBattleBuyComponentMediatorCommand);
+			//复活
+			facade.registerCommand(BattleRevivePanelComponentMediator.SHOW_NOTE, ShowBattleRevivePanelComponentMediatorCommand);
+			
+			//复活Command
+			facade.registerCommand(FightResurgenceCommand.FIGHT_RESURGENCE_COMMAND, FightResurgenceCommand);
+			
 			//战车移动
 			facade.registerCommand(FightMoveCommand.FIGHT_MOVE_COMMAND, FightMoveCommand);
 			
 			//开火
 			facade.registerCommand(FightFireCommand.FIGHT_FIRE_COMMAND, FightFireCommand);
+			
+			//新角色进入房间
+			facade.registerCommand(FightNewPlayerCommand.FIGHT_NEWPLAYER_COMMAND, FightNewPlayerCommand);
 			
 			//锁定
 			facade.registerCommand(FightLockCommand.FIGHT_LOCK_COMMAND, FightLockCommand);
@@ -550,6 +666,12 @@ package controller.init
 			
 			//伤害
 			facade.registerCommand(FightHitCommand.FIGHT_HIT_COMMAND, FightHitCommand);
+			
+			//获得荣誉  
+			facade.registerCommand(FightDropHonorCommand.FIGHT_DROP_HONOR_COMMAND, FightDropHonorCommand);
+			
+			//战场编辑条件弹出框
+			facade.registerCommand(battleEditorConditionComponentMediator.SHOW_NOTE,ShowbattleEditorConditionComponentMediatorCommand);
         }
     }
 }

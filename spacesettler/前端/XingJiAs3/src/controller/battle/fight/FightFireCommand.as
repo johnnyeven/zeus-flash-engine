@@ -3,8 +3,10 @@ package controller.battle.fight
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.DateFormatter;
 	import com.zn.utils.EnterFrameUtil;
+	import com.zn.utils.SoundUtil;
 	import com.zn.utils.StringUtil;
 	
+	import enum.SoundEnum;
 	import enum.battle.FightVOTypeEnum;
 	
 	import flash.display.DisplayObject;
@@ -69,18 +71,48 @@ package controller.battle.fight
 				//设置开火冷却时间
 				buildVO.attackCoolEndTime=DateFormatter.currentTimeM + buildVO.currentAttackCoolDown;
 
+				switch(buildVO.attackType)
+				{
+					case 1:
+						SoundUtil.play(SoundEnum.ammunition_fire,false);
+						break;
+					case 2:
+						SoundUtil.play(SoundEnum.electric_fire,false);
+						break;
+					case 3:
+						SoundUtil.play(SoundEnum.laser_fire,false);
+						break;
+					case 4:
+						SoundUtil.play(SoundEnum.nuclear_fire,false);
+						break;
+				}
 				//开火特效
 				className=StringUtil.formatString("battle.FireEffect_{0}_1", buildVO.attackType);
 				
 			}
-			else if (voObj.voType == FightVOTypeEnum.guaJia)
+			else if (voObj is CHARIOT)
 			{
-				var tankpartVO:TANKPART=voObj as TANKPART;
-				var chariotVO:Object=FightDataUtil.getVO(tankpartVO.chariotId.toString());
+				var tankpartVO:TANKPART=FightDataUtil.getVO(fireVO.guaJianID) as TANKPART;
+				var chariotVO:Object=FightDataUtil.getVO(fireVO.id.toString());
 
 				//设置开火冷却时间
 				tankpartVO.attackCoolEndTime=DateFormatter.currentTimeM + tankpartVO.attackCoolDown;
 
+				switch(tankpartVO.attackType)
+				{
+					case 1:
+						SoundUtil.play(SoundEnum.ammunition_fire,false);
+						break;
+					case 2:
+						SoundUtil.play(SoundEnum.electric_fire,false);
+						break;
+					case 3:
+						SoundUtil.play(SoundEnum.laser_fire,false);
+						break;
+					case 4:
+						SoundUtil.play(SoundEnum.nuclear_fire,false);
+						break;
+				}
 				// 开火特效
 				className=StringUtil.formatString("battle.FireEffect_{0}_{1}", tankpartVO.attackType, tankpartVO.caliber);
 			}
@@ -118,15 +150,21 @@ package controller.battle.fight
 			//开火完成，发送爆炸信息
 
 			//判断是否控制权是否在我
-			var voObj:Object=FightDataUtil.getVO(fireVO.id);
+			var voObj:Object=FightDataUtil.getVO(fireVO.hitID);
+			var myID:String=FightDataUtil.getMyChariot().id.toString();
 			
-			if(voObj.myAttackID==FightDataUtil.getMyChariot().id)
+			if(voObj && (voObj.myAttackID==myID || myID==fireVO.hitID))
 			{
 				var explodeVO:FightExplodeVO=FightUtil.getExplodeVO(fireVO);
+				if(explodeVO)
+				{
+					BattleProxy(getProxy(BattleProxy)).attacked(explodeVO);
+	//				//通知爆炸控制器
+					sendNotification(FightExplodeCommand.FIGHT_EXPLODE_COMMAND, explodeVO);
+				}
+					
 	
-				BattleProxy(getProxy(BattleProxy)).attacked(explodeVO);
-//				//通知爆炸控制器
-				sendNotification(FightExplodeCommand.FIGHT_EXPLODE_COMMAND, explodeVO);
+				
 			}
 		}
 	}

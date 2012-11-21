@@ -208,7 +208,7 @@ package mediator.factory
 		 * @return
 		 *
 		 */
-		protected function get comp():FactoryMakeAndServiceComponent
+		public function get comp():FactoryMakeAndServiceComponent
 		{
 			return viewComponent as FactoryMakeAndServiceComponent;
 		}

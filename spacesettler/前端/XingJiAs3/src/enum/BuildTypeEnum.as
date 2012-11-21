@@ -206,21 +206,20 @@ package enum
         /**
          * 根据建筑等级获取 消耗暗能水晶数
          */
-        public static function getCrystalCountByBuildLevel(level:int):int
+        public static function getCrystalCountByBuildLevel(level:int,shiDai:int=0):int
         {
             var crystalCount:int;
-            var userInfoVo:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 
-            if (level >= 0 && level < 10 || userInfoVo.level == 1)
+            if (level >= 0 && level < 10 || shiDai == 1)
             {
                 crystalCount = 2
             }
-            else if (level >= 10 && level < 30 || userInfoVo.level == 2)
+            else if (level >= 10 && level < 30 || shiDai == 2)
             {
                 crystalCount = 4
 
             }
-            else if (level >= 30 && level < 40 || userInfoVo.level == 3)
+            else if (level >= 30 && level < 40 || shiDai == 3)
             {
                 crystalCount = 8
             }

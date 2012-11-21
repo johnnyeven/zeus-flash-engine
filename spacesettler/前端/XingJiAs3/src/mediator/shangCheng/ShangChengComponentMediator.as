@@ -1,6 +1,10 @@
 package mediator.shangCheng
 {
 	
+	import com.zn.utils.SoundUtil;
+	
+	import enum.SoundEnum;
+	
 	import events.allView.AllViewEvent;
 	import events.allView.FriendGiveEvent;
 	import events.allView.ShopEvent;
@@ -57,7 +61,7 @@ package mediator.shangCheng
 		protected function showFriendCompHandler(event:FriendGiveEvent):void
 		{
 			
-			var data:Object={arr:event.arr,text:event.text,num:event.num,titleText:event.titleText}
+			var data:Object={arr:event.arr,text:event.text,num:event.num,titleText:event.titleText,source:event.source};
 			sendNotification(FriendGiveComponentMediator.SHOW_NOTE,data);
 		}
 		
@@ -69,6 +73,7 @@ package mediator.shangCheng
 		
 		protected function buyDarkCrystalHandler(event:ShopEvent):void
 		{
+			SoundUtil.play(SoundEnum.store_buy,false,false);
 			shopProxy.buyCrystal(userProxy.userInfoVO.player_id,event.resourceName);
 		}
 		
@@ -80,7 +85,7 @@ package mediator.shangCheng
 		protected function buyResourceHandler(event:ShopEvent):void
 		{
 			shopProxy.buyResource(event.resourceName,event.num,userProxy.userInfoVO.player_id);
-			
+			shopProxy.mediatorLevel = level;
 		}
 		
 		/**
@@ -116,10 +121,15 @@ package mediator.shangCheng
 		 * @return
 		 *
 		 */
-		protected function get comp():view.shangCheng.ShangChengComponent
+		public function get comp():view.shangCheng.ShangChengComponent
 		{
 			return viewComponent as ShangChengComponent;
 		}
 
+		//界面显示层级控制
+		public function setmediatorLevel(mediatorLevel:int):void
+		{
+			level = mediatorLevel +1;
+		}
 	}
 }

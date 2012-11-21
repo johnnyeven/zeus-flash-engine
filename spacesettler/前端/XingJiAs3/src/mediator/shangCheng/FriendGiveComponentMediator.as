@@ -10,6 +10,7 @@ package mediator.shangCheng
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.friendList.FriendProxy;
 	import proxy.shangCheng.ShopProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -17,7 +18,7 @@ package mediator.shangCheng
 
 	public class FriendGiveComponentMediator extends BaseMediator implements IMediator
 	{
-		public static const NAME:String="friendGiveComponentMediator";
+		public static const NAME:String="FriendGiveComponentMediator";
 
 		public static const SHOW_NOTE:String="show" + NAME + "Note";
 
@@ -25,14 +26,18 @@ package mediator.shangCheng
 		
 		private var shopProxy:ShopProxy;
 		private var userProxy:UserInfoProxy;
+		private var friendProxy:FriendProxy;
 		public function FriendGiveComponentMediator()
 		{
 			super(NAME, new FriendGiveComponent());
 			
 			shopProxy=getProxy(ShopProxy);
 			userProxy=getProxy(UserInfoProxy);
+			friendProxy=getProxy(FriendProxy);
 			
 			this.popUpEffect=CENTER;
+			comp.med=this;
+			level=3;
 			
 			comp.addEventListener(FriendGiveEvent.CLOSE_FRIENDGIVE,closeFriendGiveHandler);
 			comp.addEventListener(FriendGiveEvent.SURE_BTN_CLICK,doGiveHandler);
@@ -41,13 +46,17 @@ package mediator.shangCheng
 		protected function doGiveHandler(event:FriendGiveEvent):void
 		{
 			//TODO:GX 完善赠送
-//			shopProxy.buyItem(userProxy.userInfoVO.player_id,event.num,event.text);
-//			sendNotification(DESTROY_NOTE);
+			shopProxy.buyItemFriend(userProxy.userInfoVO.player_id,event.num,event.text);
+			sendNotification(DESTROY_NOTE);
 		}
 		
-		public function setFriendConst(arr:Array,text:String,num:int,titleText:String):void
+		public function setFriendConst(arr:Array,text:String,num:String,titleText:String,source:String):void
 		{
-			comp.setFriendConst(arr,text,num,titleText);
+			friendProxy.getFriendList(userProxy.userInfoVO.player_id,function():void
+			{
+				comp.setFriendConst(friendProxy.friendArr,text,num,titleText,source);
+			});
+			
 		}
 		
 		protected function closeFriendGiveHandler(event:FriendGiveEvent):void

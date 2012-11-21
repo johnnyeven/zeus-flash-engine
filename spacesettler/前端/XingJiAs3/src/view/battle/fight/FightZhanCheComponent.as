@@ -5,13 +5,14 @@ package view.battle.fight
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.PointUtil;
 	import com.zn.utils.RotationUtil;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-
+	
 	import ui.core.Component;
+	import ui.utils.DisposeUtil;
 
 	/**
 	 *战车
@@ -20,6 +21,8 @@ package view.battle.fight
 	 */
 	public class FightZhanCheComponent extends Component
 	{
+		public static const RANGE:int=200;
+		
 		public var itemVO:CHARIOT;
 
 		public var zhanCheSP:Sprite;
@@ -35,14 +38,21 @@ package view.battle.fight
 
 		public var moveTweenLite:TweenLite;
 
+		private var _defenseMC:MovieClip;
+		
+		//检测战车移动的下一个点替用的对象
+		public var disPlayObj:DisplayObject;
+		
 		public function FightZhanCheComponent(zhanCheVO:CHARIOT)
 		{
 			super(null);
 
+			cacheAsBitmap=true;
+			
 			this.itemVO=zhanCheVO;
 			zhanCheSP=ClassUtil.getObject("battle.zhanChe_" + zhanCheVO.category);
 			addChild(zhanCheSP);
-
+	
 			paoTaMC=zhanCheSP.getChildByName("taMC") as MovieClip;
 			zhanCheMC=zhanCheSP.getChildByName("zhanChe") as MovieClip;
 
@@ -81,7 +91,8 @@ package view.battle.fight
 				r=0;
 
 			var flagStr:String="d" + r;
-			zhanCheMC.gotoAndStop(flagStr);
+			if (zhanCheMC)
+				zhanCheMC.gotoAndStop(flagStr);
 
 			//            var np:Point = nextMovePoint;
 			//            sp.graphics.clear();
@@ -110,7 +121,33 @@ package view.battle.fight
 				r=0;
 
 			var flagStr:String="d" + r;
-			paoTaMC.gotoAndStop(flagStr);
+			if (paoTaMC)
+				paoTaMC.gotoAndStop(flagStr);
 		}
+		
+		/**
+		 *获取随机坐标 
+		 * @return 
+		 * 
+		 */
+		public function getAreaRangePoint():Point
+		{
+			var x:Number=Math.random()*RANGE-RANGE*0.5;
+			var y:Number=Math.random()*RANGE-RANGE*0.5;
+			return new Point(x,y);
+		}
+
+		public function get defenseMC():MovieClip
+		{
+			return _defenseMC;
+		}
+
+		public function set defenseMC(value:MovieClip):void
+		{
+			DisposeUtil.dispose(value);
+			
+			_defenseMC = value;
+		}
+
 	}
 }

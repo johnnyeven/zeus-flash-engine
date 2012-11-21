@@ -1,7 +1,7 @@
 package mediator.login
 {
-	
-	
+
+
 	import events.login.PkEvent;
 	
 	import mediator.BaseMediator;
@@ -31,12 +31,12 @@ package mediator.login
 		public function PkComponentMediator()
 		{
 			super(NAME, new PkComponent());
-			height = Main.HEIGHT;
+			height=Main.HEIGHT;
 			popUpEffect=UP;
-			comp.addEventListener(PkEvent.BACK_EVENT,backHandler);
-			comp.addEventListener(PkEvent.START_EVENT,startHandler);
+			comp.addEventListener(PkEvent.BACK_EVENT, backHandler);
+			comp.addEventListener(PkEvent.START_EVENT, startHandler);
 		}
-		
+
 		/**
 		 *添加要监听的消息
 		 * @return
@@ -71,32 +71,45 @@ package mediator.login
 		 * @return
 		 *
 		 */
-		protected function get comp():PkComponent
+		public function get comp():PkComponent
 		{
 			return viewComponent as PkComponent;
 		}
-		
+
 		private function backHandler(event:PkEvent):void
 		{
-			destoryCallback = function():void
+			destoryCallback=function():void
 			{
-			   sendNotification(NameInforComponentMediator.SHOW_NOTE);
+				sendNotification(StartComponentMediator.SHOW_NOTE);
 			};
 			sendNotification(DESTROY_NOTE);
 		}
 
 		private function startHandler(event:PkEvent):void
 		{
-			mouseEnabled = false;
-			var loginProxy:LoginProxy = getProxy(LoginProxy);
+			mouseEnabled=false;
+			var loginProxy:LoginProxy=getProxy(LoginProxy);
 			loginProxy.camp=comp.campID;
-				
-			   loginProxy.regist(function():void
-			   {
-				   sendNotification(DESTROY_NOTE);
-			   });			
+
+			if(LoginProxy.lastSenceMedClass==StartComponentMediator)
+				loginProxy.startLogin(disposeMed);
+			else
+			{
+				destoryCallback = function():void
+				{
+					sendNotification(RegistComponentMediator.SHOW_NOTE);
+				};
+			}
+			
+			LoginProxy.lastSenceMedClass=PkComponentMediator;
+			sendNotification(DESTROY_NOTE);
 		}
 		
+		public function disposeMed():void
+		{
+			sendNotification(DESTROY_NOTE);
+		}
+
 		public function set mouseEnabled(value:Boolean):void
 		{
 			comp.mouseChildren=comp.mouseEnabled=value;

@@ -8,6 +8,7 @@ package view.friendList
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.text.TextField;
 	
 	import mx.binding.utils.BindingUtils;
@@ -38,21 +39,32 @@ package view.friendList
 		
 		public var vScrollBar:VScrollBar; //拖动条
 		
-		public var xiaSprite:Component;
-		public var buttonSprite:Component;
-		public var noCheckBtn:Button;
-		public var addFriendBtn:Button;
-		//已经加为了好友的查看
-		public var hasCheckBtn:Button;
-		
-		public var maskSprite:Sprite;
-		
 		private var container:Container;
 		private var friendProxy:FriendProxy;
 		
 		//当前选中元件
 		private var _currentSelected:FriendItem;
 		private var currentCount:int = 0;
+		
+		public var researchShangComponent:ResearchShangComponent;
+		
+		public var researchXiaComponent:ResearchXiaComponent;
+		/**
+		 * 上标
+		 */		
+		private var shangBiaoSprivate:Sprite;
+		/**
+		 * 下标
+		 */		
+		private var xiaBiaoSprivate:Sprite;
+		/**
+		 *聊天框上遮罩 
+		 */		
+		private var shangSprite:Sprite;
+		/**
+		 *聊天框下遮罩 
+		 */		
+		private var xiaSprite:Sprite;
 		
         public function SearchPlayerComponent()
         {
@@ -61,31 +73,24 @@ package view.friendList
 			
 			container = new Container(null);
 			container.contentWidth = 325;
-			container.contentHeight = 450;
+			container.contentHeight = 380;
 			container.layout = new HTileLayout(container);
 			container.x = 12;
-			container.y = 40;
+			container.y = 85;
 			addChild(container);
 			
 			vScrollBar = createUI(VScrollBar, "vScrollBar");
 			vScrollBar.viewport = container;
+			addChild(vScrollBar);
+			vScrollBar.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
+			vScrollBar.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
+			container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
+			container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
 			closeBtn = createUI(Button,"closeBtn");
 			searchBtn = createUI(Button,"searchBtn");
 			playerNameTxt = getSkin("playerNameTxt");
 			playerNameTxt.mouseEnabled = true;
-			
-			xiaSprite = createUI(Component,"xiaSprite");
-			buttonSprite = xiaSprite.createUI(Component,"buttonSprite");
-			noCheckBtn = buttonSprite.createUI(Button,"noCheckBtn");
-			addFriendBtn = buttonSprite.createUI(Button,"addFriendBtn");
-			buttonSprite.sortChildIndex();
-			hasCheckBtn = xiaSprite.createUI(Button,"hasCheckBtn");
-			xiaSprite.sortChildIndex();
-			
-			maskSprite = getSkin("maskSprite");
-			xiaSprite.visible = false;
-			xiaSprite.addEventListener(MouseEvent.CLICK,xiaSprite_clickHandler);
-			xiaSprite.buttonMode = true;
+			playerNameTxt.addEventListener(MouseEvent.CLICK,playerNameTxt_clickHandler);
 			sortChildIndex();
 			
 			removeCWList();
@@ -93,11 +98,6 @@ package view.friendList
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,close_handler);
 			searchBtn.addEventListener(MouseEvent.CLICK,searchBtn_clickHandler);
-			//查看军官证
-			noCheckBtn.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler);
-			hasCheckBtn.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler);
-			//添加好友
-			addFriendBtn.addEventListener(MouseEvent.CLICK,addFriendBtn_clickHandler);
         }
 		
 		private function itemVOListChange(value:*):void
@@ -128,16 +128,6 @@ package view.friendList
 			currentSelected = (event.currentTarget as FriendItem);
 		}
 		
-		private function xiaSprite_clickHandler(event:MouseEvent):void
-		{
-			if( xiaSprite.visible == true)
-			{
-				_currentSelected.buttonSprite.visible = false;
-				_currentSelected.topSprite.visible = false;
-				dispatchEvent(new Event("search_destoryxiaSprite"));
-			}
-		}
-		
 		protected function searchBtn_clickHandler(event:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
@@ -156,50 +146,115 @@ package view.friendList
 
 		public function set currentSelected(value:FriendItem):void
 		{
-			if(currentSelected)
-			{
-				currentSelected.topSprite.visible = false;
-				currentSelected.buttonSprite.visible = false;
-				TweenLite.to(xiaSprite,0.5,{x:0,y:500});
-				xiaSprite.visible = false;
-			}
+			if(researchXiaComponent || researchShangComponent)
+				return;
 			_currentSelected = value;
+			//将选中元件的坐标原点转化为全局坐标
+			var point:Point = new Point();
+			point = _currentSelected.localToGlobal(point);
 			if(currentCount<1)
 			{
-				currentSelected.buttonSprite.visible = true;
-				//根据此变量控制不同的按钮显示
-				if(_currentSelected.data.isMyFriend == false)
-				{
-					buttonSprite.visible = true;
-					hasCheckBtn.visible = false;
-				}
-				else
-				{
-					buttonSprite.visible = false;
-					hasCheckBtn.visible = true;
-				}
-				xiaSprite.visible = true;
-				xiaSprite.mask = maskSprite;
-				TweenLite.to(xiaSprite,0.5,{x:0,y:currentSelected.y+currentSelected.height});
+				//聊天框上遮罩
+				shangSprite = new Sprite();
+				shangSprite.graphics.beginFill(0,0.5);
+				shangSprite.graphics.drawRect(0,0,this.width,(point.y-_currentSelected.height/2));
+				shangSprite.graphics.endFill();
+				shangSprite.x = 0;
+				shangSprite.y = 0;
+				shangSprite.mouseEnabled = true;
+				this.addChild(shangSprite);
+				shangSprite.addEventListener(MouseEvent.CLICK,xiaRemove_clickHandler);
+				//聊天框下遮罩
+				xiaSprite = new Sprite();
+				xiaSprite.graphics.beginFill(0,0.5);
+				xiaSprite.graphics.drawRect(0,0,this.width,(this.height - point.y - _currentSelected.height/2-10));
+				xiaSprite.graphics.endFill();
+				xiaSprite.x = 0;
+				xiaSprite.y = point.y + _currentSelected.height/2;
+				xiaSprite.mouseEnabled = true;
+				this.addChild(xiaSprite);
+				xiaSprite.addEventListener(MouseEvent.CLICK,xiaRemove_clickHandler);
 				
+				xiaBiaoSprivate = ClassUtil.getObject("xiaBiaoSprivate") as Sprite;
+				researchXiaComponent = new ResearchXiaComponent();
+				researchXiaComponent.data = currentSelected.data;
+				researchXiaComponent.x = 0;
+				researchXiaComponent.y = this.height;
+				this.addChild(xiaBiaoSprivate);
+				this.addChild(researchXiaComponent);
+				xiaBiaoSprivate.x = 70;
+				xiaBiaoSprivate.y = point.y + _currentSelected.height/2;
+				TweenLite.to(researchXiaComponent,0.5,{x:0,y:xiaBiaoSprivate.y + xiaBiaoSprivate.height});
 			}
 			else
 			{
-				currentSelected.topSprite.visible = true;
+				//聊天框上遮罩
+				shangSprite = new Sprite();
+				shangSprite.graphics.beginFill(0,0.5);
+				shangSprite.graphics.drawRect(0,0,this.width,(point.y-_currentSelected.height/2));
+				shangSprite.graphics.endFill();
+				shangSprite.x = 0;
+				shangSprite.y = 0;
+				shangSprite.mouseEnabled = true;
+				this.addChild(shangSprite);
+				shangSprite.addEventListener(MouseEvent.CLICK,shangRemove_clickHandler);
+				//聊天框下遮罩
+				xiaSprite = new Sprite();
+				xiaSprite.graphics.beginFill(0,0.5);
+				xiaSprite.graphics.drawRect(0,0,this.width,(this.height - point.y - _currentSelected.height/2-10));
+				xiaSprite.graphics.endFill();
+				xiaSprite.x = 0;
+				xiaSprite.y = point.y + _currentSelected.height/2;
+				xiaSprite.mouseEnabled = true;
+				this.addChild(xiaSprite);
+				xiaSprite.addEventListener(MouseEvent.CLICK,shangRemove_clickHandler);
+				
+				shangBiaoSprivate = ClassUtil.getObject("shangBiaoSprivate") as Sprite;
+				researchShangComponent = new ResearchShangComponent();
+				researchShangComponent.data = currentSelected.data;
+				researchShangComponent.x = 0;
+				researchShangComponent.y = 0;
+				this.addChild(shangBiaoSprivate);
+				this.addChild(researchShangComponent);
+				shangBiaoSprivate.x = 70;
+				shangBiaoSprivate.y = point.y - shangBiaoSprivate.height-_currentSelected.height/2;
+				TweenLite.to(researchShangComponent,0.5,{x:0,y:shangBiaoSprivate.y-shangBiaoSprivate.height-10});
 			}
 		}
 		
-		private function checkBtn_clickHandler(event:MouseEvent):void
+		public function xiaRemove_clickHandler(event:MouseEvent):void
 		{
-			event.stopImmediatePropagation();
-			dispatchEvent(new FriendListEvent(FriendListEvent.SEARCH_CHECK_PLAYER_ID_CARD_EVENT,currentSelected.data,true));
+			this.removeChild(shangSprite);
+			this.removeChild(xiaSprite);
+			this.removeChild(xiaBiaoSprivate);
+			this.removeChild(researchXiaComponent);
+			researchXiaComponent = null;
+			
 		}
 		
-		private function addFriendBtn_clickHandler(event:MouseEvent):void
+		public function shangRemove_clickHandler(event:MouseEvent):void
 		{
-			event.stopImmediatePropagation();
-			dispatchEvent(new FriendListEvent(FriendListEvent.SEARCH_ADD_FRIEND_EVENT,currentSelected.data,true));
+			
+			this.removeChild(shangSprite);
+			this.removeChild(xiaSprite);
+			this.removeChild(shangBiaoSprivate);
+			this.removeChild(researchShangComponent);
+			researchShangComponent = null;
 		}
-
+		
+		private function playerNameTxt_clickHandler(evemt:MouseEvent):void
+		{
+			playerNameTxt.text = "";
+		}
+		
+		protected function mouseOutHandler(event:MouseEvent):void
+		{
+			vScrollBar.alpahaTweenlite(0);
+		}
+		
+		protected function mouseOverHandler(event:MouseEvent):void
+		{
+			vScrollBar.alpahaTweenlite(1);
+		}
     }
 }

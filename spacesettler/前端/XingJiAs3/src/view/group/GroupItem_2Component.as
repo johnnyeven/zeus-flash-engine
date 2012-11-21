@@ -16,6 +16,10 @@ package view.group
 	 */	
     public class GroupItem_2Component extends Component
     {
+		public var vip1:Sprite;
+		public var vip2:Sprite;
+		public var vip3:Sprite;
+		
 		/**
 		 *可控数量 
 		 */		
@@ -40,14 +44,10 @@ package view.group
 		 *用户名 
 		 */		
 		public var userName:Label;
-		
-		/**
-		 *vip 
-		 */		
-		public var vip:Sprite;
 
 		public var back:Sprite;		
 		public var currtentVo:GroupMemberListVo;
+		private var _data:GroupMemberListVo;
 		
         public function GroupItem_2Component()
         {
@@ -59,12 +59,41 @@ package view.group
 			job=createUI(Label,"zhiwu_tf");
 			userName=createUI(Label,"username_tf");
 			
-			vip=getSkin("vip_mc");
 			back=getSkin("back_mc");
 			back.visible=false;
-			vip.visible=false;
+			vip1=getSkin("vip1");
+			vip2=getSkin("vip2");
+			vip3=getSkin("vip3");
+			vip1.visible=vip2.visible=vip3.visible=false;
 			
 			sortChildIndex();
         }
+		
+		public function myVipShow(level:int):void
+		{
+			if(level==1)
+			{
+				vip1.visible=true;
+			}
+			if(level==2)
+			{
+				vip2.visible=true;
+			}
+			if(level==3)
+			{
+				vip3.visible=true;
+			}
+		}
+
+		public function get data():GroupMemberListVo
+		{
+			return _data;
+		}
+
+		public function set data(value:GroupMemberListVo):void
+		{
+			_data = value;
+		}
+
     }
 }

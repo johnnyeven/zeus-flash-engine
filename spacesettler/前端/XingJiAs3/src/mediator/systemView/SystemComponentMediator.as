@@ -1,6 +1,8 @@
 package mediator.systemView
 {
 	
+	import com.zn.utils.URLFunc;
+	
 	import events.system.SystemEvent;
 	
 	import flash.events.Event;
@@ -38,7 +40,7 @@ package mediator.systemView
 		
 		protected function loginOutHandler(event:Event):void
 		{
-			// TODO: gx 登出			
+			URLFunc.openHTML(URLFunc.getURL());
 		}
 		
 		protected function optionBtn_clickHandler(event:SystemEvent):void

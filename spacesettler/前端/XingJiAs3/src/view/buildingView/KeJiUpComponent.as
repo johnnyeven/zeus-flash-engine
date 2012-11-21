@@ -18,6 +18,8 @@ package view.buildingView
     import flash.events.Event;
     import flash.events.MouseEvent;
     
+    import mediator.scienceResearch.ScienceResearchComponentMediator;
+    
     import mx.binding.utils.BindingUtils;
     
     import proxy.BuildProxy;
@@ -30,7 +32,10 @@ package view.buildingView
     import ui.components.ProgressBar;
     import ui.core.Component;
     
+    import view.scienceResearch.ScienceResearchComponent;
+    
     import vo.BuildInfoVo;
+    import vo.scienceResearch.ScienceResearchVO;
     import vo.userInfo.UserInfoVO;
     import vo.viewInfo.ViewInfoVO;
 
@@ -77,7 +82,7 @@ package view.buildingView
         private var _tweenLite:Object;
 
 		public var conditionArr:Array;
-		
+		private var _hasPower:Boolean=true;
         public function KeJiUpComponent(skin:DisplayObjectContainer)
         {
             super(skin);			
@@ -108,7 +113,7 @@ package view.buildingView
 			conditionBtn=spComp.createUI(Button,"conditionBtn");
 			conditionBtn.visible=false;
             sortChildIndex();
-
+			
 //			keYanButton.addEventListener(MouseEvent.CLICK,keYanButton_clickHandler);
             upLevelButton.addEventListener(MouseEvent.CLICK, upLevelButton_clickHandler);
             closeButton.addEventListener(MouseEvent.CLICK, closeButton_clickHandler);
@@ -122,7 +127,12 @@ package view.buildingView
 			if(conditionBtn.visible==true)
 				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 			else
-            	dispatchEvent(new Event(BuildEvent.UP_EVENT));
+			{
+				if(_hasPower)
+	            	dispatchEvent(new Event(BuildEvent.UP_EVENT));
+				else
+					dispatchEvent(new ConditionEvent(ConditionEvent.POWERPROMT_EVENT));
+			}
         }
 
         protected function closeButton_clickHandler(event:MouseEvent):void
@@ -143,7 +153,8 @@ package view.buildingView
 			var centerBuild:BuildInfoVo=buildProxy.getBuild(BuildTypeEnum.CENTER);
 			
 			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
-			var totalLevel:int=ScienceResearchProxy(ApplicationFacade.getProxy(ScienceResearchProxy)).totalLevel;
+			var scienceProxy:ScienceResearchProxy=ApplicationFacade.getProxy(ScienceResearchProxy);
+			var totalLevel:int=scienceProxy.totalLevel;
 			
 			if(_buildVO.level>=40)
 			{
@@ -160,8 +171,8 @@ package view.buildingView
             xiaoGuo1Label.text = curViewInfoVO.DianNengXH + "/h --> " + nextViewInfoVO.DianNengXH + "/h";
 
 			if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || nextViewInfoVO.shuiJinXH>userInfoVO.crystal ||
-				nextViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>centerBuild.level || 
-				nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply || nextViewInfoVO.all_subjects_level>totalLevel)
+				nextViewInfoVO.chuanQinXH>userInfoVO.tritium || nextViewInfoVO.command_center_level>centerBuild.level || 
+				nextViewInfoVO.all_subjects_level>totalLevel)// || nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply
 			{
 				conditionBtn.visible=true;
 				conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
@@ -172,7 +183,7 @@ package view.buildingView
 			{
 				var obj1:Object=new Object();
 				obj1.imgSource=ResEnum.getConditionIconURL+"1.png";
-				obj1.content=MultilanguageManager.getString("broken_crysta")+userInfoVO.broken_crysta+"/"+nextViewInfoVO.anWuZhiXH;
+				obj1.content=MultilanguageManager.getString("broken_crysta")+int(userInfoVO.broken_crysta)+"/"+nextViewInfoVO.anWuZhiXH;
 				obj1.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj1);
 			}
@@ -180,7 +191,7 @@ package view.buildingView
 			{
 				var obj2:Object=new Object();
 				obj2.imgSource=ResEnum.getConditionIconURL+"2.png";
-				obj2.content=MultilanguageManager.getString("crystal")+userInfoVO.crystal+"/"+nextViewInfoVO.shuiJinXH;
+				obj2.content=MultilanguageManager.getString("crystal")+int(userInfoVO.crystal)+"/"+nextViewInfoVO.shuiJinXH;
 				obj2.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj2);
 			}
@@ -188,23 +199,24 @@ package view.buildingView
 			{
 				var obj3:Object=new Object();
 				obj3.imgSource=ResEnum.getConditionIconURL+"3.png";
-				obj3.content=MultilanguageManager.getString("tritium")+userInfoVO.tritium+"/"+nextViewInfoVO.chuanQinXH;
+				obj3.content=MultilanguageManager.getString("tritium")+int(userInfoVO.tritium)+"/"+nextViewInfoVO.chuanQinXH;
 				obj3.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj3);
 			}
-			if(nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply)
+			if((nextViewInfoVO.DianNengXH-curViewInfoVO.DianNengXH)>(userInfoVO.current_power_supply-userInfoVO.current_power_consume))
 			{
 				var obj4:Object=new Object();
 				obj4.imgSource=ResEnum.getConditionIconURL+"4.png";
-				obj4.content=MultilanguageManager.getString("power_supply")+userInfoVO.current_power_supply+"/"+nextViewInfoVO.DianNengXH;
+				obj4.content=MultilanguageManager.getString("power_supply")+(userInfoVO.current_power_supply-userInfoVO.current_power_consume)+"/"+nextViewInfoVO.DianNengXH;
 				obj4.btnLabel=MultilanguageManager.getString("produce_click");
-				conditionArr.push(obj4);
+//				conditionArr.push(obj4);
+				_hasPower=false;
 			}
-			if(curViewInfoVO.limit>centerBuild.level)
+			if(nextViewInfoVO.command_center_level>centerBuild.level)
 			{
 				var obj5:Object=new Object();
 				obj5.imgSource=ResEnum.getConditionIconURL+"5.png";
-				obj5.content=MultilanguageManager.getString("center_build")+centerBuild.level+"/"+curViewInfoVO.limit;
+				obj5.content=MultilanguageManager.getString("center_build")+centerBuild.level+"/"+nextViewInfoVO.command_center_level;
 				obj5.btnLabel=MultilanguageManager.getString("up_center");
 				conditionArr.push(obj5);
 			}

@@ -105,21 +105,68 @@ package vo.userInfo
         /**
          *电量百分比
          */
-        public var power:Number;
-
+        public var power:Number;		
+        
         /**
-         *当前能量供应
+         *军官证号
          */
+        public var officer_id:String;
+        
+        /**
+         *buff1
+         */
+        public var buff1:BuffVo;
+		
+        /**
+         *buff2
+         */
+        public var buff2:BuffVo;
+		
+        /**
+         *buff3
+         */
+        public var buff3:BuffVo;
+		
         private var _current_power_supply:int;
 
-        /**
-         *当前能量损耗
-         */
+       
         private var _current_power_consume:int;
 		
 		private var _legion_id:String;
 		private var _junXian:String;
 
+		/**
+		 *新手任务
+		 * 索引
+		 */
+		public var index:int;
+		/**
+		 *新手任务
+		 * 是否完成
+		 */
+		public var is_finished:Boolean;
+		/**
+		 *新手任务
+		 * 是否获取任务奖励
+		 */
+		public var is_rewarded:Boolean;
+		
+		/**
+		 *礼包
+		 * 是否已接受每日奖励
+		 */
+		public var received_daily_rewards:String="";
+		/**
+		 *礼包
+		 * 是否已接受连续奖励
+		 */
+		public var received_continuous_rewards:String="";
+		/**
+		 *礼包
+		 * 是否已接受在线奖励
+		 */
+		public var received_online_rewards:String="";
+		
 		/**
 		 *军团ID 
 		 */
@@ -127,6 +174,10 @@ package vo.userInfo
 		{
 			return _legion_id;
 		}
+		/**
+		 *军团名字
+		 */
+		public var legion_name:String
 
 		/**
 		 * @private
@@ -136,7 +187,9 @@ package vo.userInfo
 			_legion_id = value;
 		}
 
-
+		/**
+		 *当前能量供应
+		 */
         public function get current_power_supply():int
         {
             return _current_power_supply;
@@ -149,7 +202,10 @@ package vo.userInfo
 
             updatePower();
         }
-
+		
+		/**
+		 *当前能量损耗
+		 */
         public function get current_power_consume():int
         {
             return _current_power_consume;
@@ -186,7 +242,7 @@ package vo.userInfo
         public function set crystal(value:Number):void
         {
 			_crystal=value;
-            _crystal = Math.min(value, crystal_volume);
+//            _crystal = Math.min(value, crystal_volume);
         }
 
         public function get tritium():Number
@@ -197,7 +253,7 @@ package vo.userInfo
         public function set tritium(value:Number):void
         {
 			_tritium=value;
-            _tritium = Math.min(value, tritium_volume);
+//            _tritium = Math.min(value, tritium_volume);
         }       
 
 	  

@@ -1,10 +1,12 @@
 package vo.battle
 {
     import com.zn.utils.DateFormatter;
-
+    
     import enum.battle.BattleBuildTypeEnum;
-
+    
     import ui.vo.ValueObject;
+    
+    import vo.scienceResearch.ScienceResearchVO;
 
     /**
      *战场建筑
@@ -161,6 +163,10 @@ package vo.battle
          */
         public var des:String;
 
+		/**
+		 *科研数据
+		 */
+		public var scienceResearchVO:ScienceResearchVO;
         public function get xy():String
         {
             return x + "." + y;

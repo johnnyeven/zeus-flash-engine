@@ -1,5 +1,6 @@
 package enum.battle
 {
+	import enum.ResEnum;
 
 	/**
 	 *战场BUFF物品类型
@@ -39,6 +40,11 @@ package enum.battle
 		 */
 		public static const liaoJi:int=6;
 
+		/**
+		 *荣誉 
+		 */		
+		public static const honor:int=7;
+		
 		public static function setItemType(buffVO:BUFFER_DEF):void
 		{
 			if (buffVO.type == 0)
@@ -61,6 +67,8 @@ package enum.battle
 			}
 			else if (buffVO.type == 2)
 				buffVO.itemType=liaoJi;
+			
+			buffVO.iconURL=ResEnum.fightBuffItemIcon + buffVO.itemType + ".png";
 		}
 	}
 }

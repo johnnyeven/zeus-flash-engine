@@ -25,7 +25,7 @@ package mediator.battle
     import vo.GlobalData;
 
     /**
-     *战场
+     *战场编辑
      * @author zn
      *
      */
@@ -66,6 +66,7 @@ package mediator.battle
             {
                 case DESTROY_NOTE:
                 {
+					Main.addBG();
                     //销毁对象
                     destroy();
                     ScreenUtils.removeScreenScroll();
@@ -90,8 +91,8 @@ package mediator.battle
         {
             super.showComplete();
 
-            ScreenUtils.normalW = comp.width;
-            ScreenUtils.normalH = comp.height;
+            ScreenUtils.normalW = comp.buildSp.width;
+            ScreenUtils.normalH = comp.buildSp.height;
             ScreenUtils.addScreenScroll(comp, true);
 
             GlobalData.currentSence = SenceTypeEnum.EDIT_BATTLE;

@@ -3,27 +3,27 @@ package view.mainSence
     import com.greensock.loading.BinaryDataLoader;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-
+    
     import enum.BuildTypeEnum;
     import enum.MainSenceEnum;
-
+    
     import events.buildEvent.BuildCompleteEvent;
     import events.buildingView.AddSelectorViewEvent;
     import events.buildingView.AddViewEvent;
-
+    
     import flash.display.Shape;
     import flash.display.Sprite;
     import flash.events.MouseEvent;
     import flash.geom.Point;
-
+    
     import mx.binding.utils.BindingUtils;
-
+    
     import proxy.BuildProxy;
     import proxy.userInfo.UserInfoProxy;
-
+    
     import ui.components.LoaderImage;
     import ui.core.Component;
-
+    
     import vo.BuildInfoVo;
 
     /**
@@ -42,6 +42,8 @@ package view.mainSence
         public var dengGuangSp:Sprite;
 
         public var guanDaoSp:Sprite;
+		
+		
 
         public var jiDiSp:Sprite;
 
@@ -56,6 +58,7 @@ package view.mainSence
         public var keJiSp:Sprite;
 
         public var junGongChangSp:Sprite;
+		
 
         public var shiJianJiQiSp:Sprite;
 
@@ -69,20 +72,30 @@ package view.mainSence
 
         public var buildCompDic:Object = {};
 
+		public var chuanQiZhiYinSp:Sprite;			
+		public var kuangChangZhiShiSp:Sprite;		
+		public var keJiZhiYinSp:Sprite;		
+		public var junGongChangZhiYinSp:Sprite;		
         public function MainSenceComponent()
         {
             _userInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
             super(ClassUtil.getObject("MainSence_" + _userInfoProxy.userInfoVO.camp));
 			
             jiDiSp = getSkin("sprite_1");
-            chuanQinSp = getSkin("sprite_2");
+			chuanQinSp = getSkin("sprite_2");
             anNengDianChangSp = getSkin("sprite_3");
             cangKuSp = getSkin("sprite_4");
             kuangChangSp = getSkin("sprite_5");
             keJiSp = getSkin("sprite_6");
             junGongChangSp = getSkin("sprite_7");
             shiJianJiQiSp = getSkin("sprite_8");
-
+			
+			chuanQiZhiYinSp = chuanQinSp.getChildByName("chuanQiZhiYinSp") as Sprite;
+			kuangChangZhiShiSp = kuangChangSp.getChildByName("kuangChangZhiShiSp") as Sprite;
+			keJiZhiYinSp = keJiSp.getChildByName("keJiZhiYinSp") as Sprite;
+			junGongChangZhiYinSp = junGongChangSp.getChildByName("junGongChangZhiYinSp") as Sprite;
+			
+			
             sortChildIndex();
 
             addMouseClick(jiDiSp);
@@ -265,6 +278,15 @@ package view.mainSence
                 }
             }
         }
+		
+		private function buildClear(sp:Sprite):void
+		{
+			while(sp.numChildren>0)
+			{
+				sp.removeChildAt(0);
+			}
+			
+		}
 
         private function buildListChange(value:Array):void
         {
@@ -280,21 +302,43 @@ package view.mainSence
                     buildComp.buildInfoVo = buildInfoVo;
 
                     if (buildInfoVo.type == BuildTypeEnum.CENTER)
-                        jiDiSp.addChild(buildComp);
+					{
+//						buildClear(jiDiSp);
+                        jiDiSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.CHUANQIN)
-                        chuanQinSp.addChild(buildComp);
+					{
+//						buildClear(chuanQinSp);
+                        chuanQinSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.DIANCHANG)
-                        anNengDianChangSp.addChild(buildComp);
+					{
+//						buildClear(anNengDianChangSp);
+                        anNengDianChangSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.CANGKU)
-                        cangKuSp.addChild(buildComp);
+					{
+//						buildClear(cangKuSp);
+                        cangKuSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.KUANGCHANG)
-                        kuangChangSp.addChild(buildComp);
+					{
+//						buildClear(kuangChangSp);
+                        kuangChangSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.KEJI)
-                        keJiSp.addChild(buildComp);
+					{
+//						buildClear(keJiSp);
+                        keJiSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.JUNGONGCHANG)
-                        junGongChangSp.addChild(buildComp);
+					{
+//						buildClear(junGongChangSp);
+                        junGongChangSp.addChild(buildComp);						
+					}
                     else if (buildInfoVo.type == BuildTypeEnum.SHIJINMAC)
                     {
+//						buildClear(shiJianJiQiSp);
                         shiJianJiQiSp.addChild(buildComp);
                         addMouseClick(shiJianJiQiSp);
                     }

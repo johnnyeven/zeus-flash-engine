@@ -2,16 +2,21 @@ package events.factory
 {
 	import flash.events.Event;
 	
+	import view.factory.FactoryItem_1Component;
+	
+	import vo.factory.DrawListVo;
+	
 	public class FactoryItemEvent extends Event
 	{
 		
 		public static const ZHIZAO_COMPLETE_EVENT:String="zhizao_complete_event";
 		
+		public var item:FactoryItem_1Component;
 		
-		
-		public function FactoryItemEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function FactoryItemEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false,item:FactoryItem_1Component=null)
 		{
 			super(type, bubbles, cancelable);
+			this.item=item;
 		}
 	}
 }

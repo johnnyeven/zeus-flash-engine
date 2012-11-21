@@ -2,7 +2,10 @@ package mediator.battleEnter
 {
     import com.greensock.TweenLite;
     import com.greensock.easing.Linear;
-    
+    import com.zn.multilanguage.MultilanguageManager;
+    import com.zn.utils.SoundUtil;
+    import enum.factory.FactoryEnum;
+    import enum.SoundEnum;
     import events.battle.BattleEnterEvent;
     
     import flash.events.Event;
@@ -10,11 +13,18 @@ package mediator.battleEnter
     import mediator.BaseMediator;
     import mediator.battle.BattleFightMediator;
     import mediator.battle.BottomViewComponentMediator;
+    import mediator.factory.FactoryMakeAndServiceComponentMediator;
+    import mediator.prompt.PromptSureMediator;
+    import mediator.prompt.PromptWeiXiuMediator;
+    import mediator.shangCheng.ShangChengComponentMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
     
     import proxy.battle.BattleProxy;
+    import proxy.factory.FactoryProxy;
+    import proxy.plantioid.PlantioidProxy;
+    import proxy.userInfo.UserInfoProxy;
     
     import ui.managers.SystemManager;
     
@@ -44,6 +54,7 @@ package mediator.battleEnter
 			height=Main.HEIGHT;
 
             comp.addEventListener(BattleEnterEvent.BATTLE_ENTER_EVENT, battleEnterHandler);
+			comp.addEventListener("selectedZhanCheTips",selectedZhanCheTipsHandler);
         }
 
         /**
@@ -67,6 +78,8 @@ package mediator.battleEnter
             {
                 case DESTROY_NOTE:
                 {
+					SoundUtil.stop(SoundEnum.plane_fly);
+					SoundUtil.play(SoundEnum.plane_flying,false);
                     //销毁对象
                     destroy();
                     break;
@@ -97,11 +110,60 @@ package mediator.battleEnter
         protected function battleEnterHandler(event:BattleEnterEvent):void
         {
             var battleProxy:BattleProxy = getProxy(BattleProxy);
-            battleProxy.enterBattle(event.selectedZhanChe.id, function():void
-            {
-                sendNotification(BattleFightMediator.SHOW_NOTE);
-                sendNotification(DESTROY_NOTE);
-            });
+			var factoryProxy:FactoryProxy = getProxy(FactoryProxy);
+			var userProxy:UserInfoProxy = getProxy(UserInfoProxy);
+			if(event.selectedZhanChe.current_endurance>0)
+			{ 
+				battleProxy.enterBattle(event.selectedZhanChe.id, function():void
+	            {
+	                sendNotification(BattleFightMediator.SHOW_NOTE,PlantioidProxy.selectedVO.map_type);
+	                sendNotification(DESTROY_NOTE);
+	            });				
+			}else
+			{
+				var obj:Object={};
+				obj.showLable=MultilanguageManager.getString("naijiuweiling");
+				obj.mediatorLevel = level;
+				obj.okCallBack = function():void
+				{
+					//判断资源是否足够维修
+					if(event.selectedZhanChe.repair_cost_broken_crystal >userProxy.userInfoVO.broken_crysta)
+					{
+						var obj:Object = {infoLable:MultilanguageManager.getString("notEnoughSourceTitle"),showLable:MultilanguageManager.getString("notEnoughSourceInfor"),mediatorLevel:level+2,
+							              okCallBack:function():void
+						                  {
+											  var shangChengObj:Object ={mediatorLevel:level+2} 
+											  sendNotification(ShangChengComponentMediator.SHOW_NOTE,shangChengObj);
+						                  } };    
+						sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+					}
+					else
+					{
+						factoryProxy.repair(event.selectedZhanChe.id,function():void
+						{
+							//更新战车数据
+							var battleProxy:BattleProxy = getProxy(BattleProxy);
+							battleProxy.getAllZhanCheList(function():void
+							{
+								comp.infoComp.setZhanCheList(battleProxy.allZhanCheList);
+							   //提示维修完成
+							    var obj:Object = {infoLable:MultilanguageManager.getString("wei_Xiu_Wan_Cheng_Title"),showLable:MultilanguageManager.getString("wei_Xiu_Wan_Cheng_Title_Infor")};
+							    sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+							});
+	                       
+						});
+					}
+					
+				};
+				sendNotification(PromptWeiXiuMediator.SHOW_NOTE,obj);
+			}
+           
         }
+		
+		private function selectedZhanCheTipsHandler(event:Event):void
+		{
+			var obj:Object = {infoLable:MultilanguageManager.getString("enterBattleTitle"),showLable:MultilanguageManager.getString("enterBattleInfor"),mediatorLevel:level};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+		}
     }
 }

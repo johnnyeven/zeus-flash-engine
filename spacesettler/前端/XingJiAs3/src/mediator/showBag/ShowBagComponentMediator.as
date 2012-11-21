@@ -1,11 +1,14 @@
 package mediator.showBag
 {
+	import com.zn.multilanguage.MultilanguageManager;
+	
 	import events.showBag.ShowBagEvent;
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
 	import mediator.email.SendEmailComponentMediator;
 	import mediator.mainView.ChatViewMediator;
+	import mediator.prompt.PromptSureMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -26,11 +29,6 @@ package mediator.showBag
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 		
-		/**
-		 *是否是邮件信息 
-		 */		
-		public static const IS_EMAIL_NOTE:String = "is" + NAME + "emailNote";
-
 		private var isEmailInfor:Boolean = false;
 		public function ShowBagComponentMediator()
 		{
@@ -48,7 +46,7 @@ package mediator.showBag
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [DESTROY_NOTE,IS_EMAIL_NOTE];
+			return [DESTROY_NOTE];
 		}
 
 		/**
@@ -66,10 +64,6 @@ package mediator.showBag
 					destroy();
 					break;
 				}
-				case IS_EMAIL_NOTE:
-				{
-					isEmailInfor = true;
-				}
 			}
 		}
 
@@ -83,11 +77,27 @@ package mediator.showBag
 			return viewComponent as ShowBagComponent;
 		}
 		
+		public function isEmail(bool:Boolean):void
+		{
+			isEmailInfor = bool;
+		}
+		
 		private function dataHandler(event:ShowBagEvent):void
 		{
 			if(isEmailInfor)
 			{
-				sendNotification(SendEmailComponentMediator.SELECTED_ITEM_DATA,event.baseItemVO);
+				if(event.baseItemVO.key)
+				{
+					//vip道具不能邮寄给别人
+					var obj:Object = {infoLable:MultilanguageManager.getString("showBagTitle"),showLable:MultilanguageManager.getString("showBagInfor"),mediatorLevel:level};
+					sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+					return;
+				}
+				else
+				{
+					sendNotification(SendEmailComponentMediator.SELECTED_ITEM_DATA,event.baseItemVO);
+				}
+				
 			}
 			else
 			{

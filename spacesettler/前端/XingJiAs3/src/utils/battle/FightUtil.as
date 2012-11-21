@@ -5,17 +5,22 @@ package utils.battle
 	import com.zn.utils.PointUtil;
 	import com.zn.utils.RandomUtil;
 	import com.zn.utils.RotationUtil;
-
+	
 	import enum.battle.FightVOTypeEnum;
-
+	
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.geom.Point;
-
+	
 	import mediator.battle.BattleFightMediator;
-
+	
+	import proxy.battle.BattleProxy;
+	
+	import view.battle.fight.BattleFightComponent;
+	import view.battle.fight.FightFeiJiComponent;
+	
 	import vo.battle.fight.FightExplodeItemVO;
 	import vo.battle.fight.FightExplodeVO;
 	import vo.battle.fight.FightFireVO;
@@ -36,8 +41,8 @@ package utils.battle
 		public static function getNextMovePoint(x:Number, y:Number, rotation:Number, len:Number=80):Point
 		{
 			var r:Number=RotationUtil.toRadian(rotation);
-			var nx:Number=Math.cos(r) * length;
-			var ny:Number=-Math.sin(r) * length;
+			var nx:Number=Math.cos(r) * len;
+			var ny:Number=-Math.sin(r) * len;
 
 			var p:Point=new Point(x + nx, y + ny);
 			return p;
@@ -101,6 +106,8 @@ package utils.battle
 		{
 			var fightMed:BattleFightMediator=ApplicationFacade.getInstance().getMediator(BattleFightMediator);
 			var voObj:Object=FightDataUtil.getVO(fireVO.id);
+			if(!voObj)	
+				return null;
 			var comp:*=fightMed.comp.getCompByID(fireVO.id);
 
 			var explodeVO:FightExplodeVO=new FightExplodeVO();
@@ -109,24 +116,27 @@ package utils.battle
 			explodeVO.startX=fireVO.endX;
 			explodeVO.startY=fireVO.endY;
 
-			var type:int
-
 			if (voObj.voType == FightVOTypeEnum.building)
 			{
 				//建筑
 				explodeVO.minAttack=(voObj as FORTBUILDING).currentMinAttack;
 				explodeVO.maxAttack=(voObj as FORTBUILDING).currentMaxAttack;
-				type == FightExplodeItemVO.BUILDING;
+				explodeVO.attackArea=voObj.explodeArea;
 			}
 			else
 			{
+				var tankpartVO:TANKPART;
+				if (voObj.voType == FightVOTypeEnum.xiaoFeiJi)
+					tankpartVO=(voObj as CHARIOT).tankparts[0];
+				else
+					tankpartVO=FightDataUtil.getVO(fireVO.guaJianID) as TANKPART;
+				
 				//挂件战车
 				explodeVO.minAttack=0;
-				explodeVO.maxAttack=(voObj as TANKPART).attack;
-				type == FightExplodeItemVO.CHARIOT;
+				explodeVO.maxAttack=tankpartVO.attack;
+				explodeVO.attackArea=tankpartVO.explodeArea;
+				explodeVO.guaJianID=tankpartVO.id.toString();
 			}
-
-			explodeVO.attackArea=voObj.explodeArea;
 
 			//计算打中对象
 			var compList:Array=fightMed.comp.allCompList;
@@ -137,7 +147,7 @@ package utils.battle
 			{
 				itemComp=compList[i];
 				itemVO=itemComp["itemVO"];
-				
+
 				if (voObj.gid == itemVO.gid ||
 					voObj.id == itemVO.id ||
 					itemVO.voType == FightVOTypeEnum.item)
@@ -148,7 +158,12 @@ package utils.battle
 				{
 					explodeItemVO=new FightExplodeItemVO();
 					explodeItemVO.hitID=itemVO.id;
-					explodeItemVO.type=type;
+					
+					if(itemVO.voType==FightVOTypeEnum.building)
+						explodeItemVO.type=FightExplodeItemVO.BUILDING;
+					else
+						explodeItemVO.type=FightExplodeItemVO.CHARIOT;
+					
 					explodeItemVO.attackType=voObj.attackType;
 					explodeItemVO.hitX=itemComp.x;
 					explodeItemVO.hitY=itemComp.y;

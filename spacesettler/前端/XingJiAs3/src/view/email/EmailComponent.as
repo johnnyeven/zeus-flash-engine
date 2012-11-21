@@ -41,6 +41,7 @@ package view.email
 		public var emailCountLabel:Label;
 		
 		private var container:Container;
+		public var noEmailTipsLabel:Label;
 		
 		private var currentCount:int = 0;
 		private var isDelete:Boolean;
@@ -75,6 +76,8 @@ package view.email
 			deleteSuccessBtn = createUI(Button,"deleteSuccessBtn");
 			deleteAllBtn = createUI(Button,"deleteAllBtn");
 			emailCountLabel = createUI(Label,"emailCountLabel");
+			noEmailTipsLabel = createUI(Label,"noEmailTipsLabel");
+			noEmailTipsLabel.visible = false;
 			emailCountLabel.text = "";
 			sortChildIndex();
 			
@@ -105,6 +108,7 @@ package view.email
 			 arr = value as Array;
 			 if(arr.length>0)
 			 {
+				 noEmailTipsLabel.visible = false;
 //				 emailCountLabel.text = (arr[0] as EmailItemVO).mails_count +"/" +(arr[0] as EmailItemVO).mails_count +"";
 			    for (var i:int = 0; i < arr.length; i++)
 				{
@@ -120,6 +124,10 @@ package view.email
 				container.layout.update();
 				
 				vScrollBar.update();
+			 }
+			 else
+			 {
+				 noEmailTipsLabel.visible = true; 
 			 }
 			
 		}

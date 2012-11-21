@@ -84,7 +84,7 @@ package mediator.login
 		{
 			destoryCallback = function():void
 			{
-				sendNotification(StartComponentMediator.SHOW_NOTE);
+				sendNotification(PkComponentMediator.SHOW_NOTE);
 			};
 			sendNotification(DESTROY_NOTE);
 		}
@@ -116,17 +116,23 @@ package mediator.login
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registAgainEmpty"));
 				return;
 			}
+			
+			
 			// ok
 			var loginProxy:LoginProxy = getProxy(LoginProxy);
-			loginProxy.userName = event.userName;
-			loginProxy.passWord = event.passWord;
-			loginProxy.passAgainWord = event.passAgainWord;
-			
-			destoryCallback = function():void
+			loginProxy.web_check_account(event.userName,event.passWord,function():void
 			{
-				sendNotification(NameInforComponentMediator.SHOW_NOTE);
-			};
-			sendNotification(DESTROY_NOTE);
+				loginProxy.userName = event.userName;
+				loginProxy.passWord = event.passWord;
+				loginProxy.passAgainWord = event.passAgainWord;
+				
+				destoryCallback = function():void
+				{
+					sendNotification(NameInforComponentMediator.SHOW_NOTE);
+				};
+				sendNotification(DESTROY_NOTE);
+			});
+			
 		}
 	}
 }

@@ -103,12 +103,7 @@ package view.group
 				item.currtentVo=memberVo;
 				item.junXian.text=memberVo.military_rank.toString();
 				if(memberVo.vip_level>0)
-				{
-					item.vip.visible=true;
-				}else
-				{
-					item.vip.visible=false;					
-				}
+					item.myVipShow(memberVo.vip_level);
 				item.tongGuoBtn.addEventListener(MouseEvent.CLICK,tongGuoHandler);
 				item.juJueBtn.addEventListener(MouseEvent.CLICK,juJueHandler);
 				

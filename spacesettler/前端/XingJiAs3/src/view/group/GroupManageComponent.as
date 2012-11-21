@@ -114,6 +114,7 @@ package view.group
 			shenhe_btn.addEventListener(MouseEvent.CLICK,shenHeHandler);
 			zhizao_btn.addEventListener(MouseEvent.CLICK,zhiZaoHandler);
 			gonggao_tf.addEventListener(Event.CHANGE,textChangeHandler);
+			
         }
 		
 		protected function textChangeHandler(event:Event):void
@@ -157,6 +158,13 @@ package view.group
 			str=gonggao_tf.text;
 			tishi_tf.text="你还可以输入"+surplusByte.toString()+"个字";
 			hs_der.addEventListener(Event.CHANGE,changeHandler);
+			checkbox_1.addEventListener(Event.CHANGE,checkBoxChangeHandler);
+			checkbox_2.addEventListener(Event.CHANGE,checkBoxChangeHandler);
+		}
+		
+		protected function checkBoxChangeHandler(event:Event):void
+		{
+			dispatchEvent(new GroupManageEvent(GroupManageEvent.GENGAI_EVENT,verification,forbid_getting_warship,desc));
 		}
 		
 		protected function changeHandler(event:Event):void
@@ -178,6 +186,7 @@ package view.group
 			if(_timer)
 			{
 				_timer.stop();
+				_timer.reset();
 				_timer.removeEventListener(TimerEvent.TIMER,timerHandler);
 				_timer=null;					
 			}
@@ -219,14 +228,14 @@ package view.group
 		protected function timerHandler(event:TimerEvent):void
 		{
 			num--;
-			time_tf.text=num.toString()+"秒";
 			if(num<=0)
 			{
-				isNomal();
-				timerComplete();
 				stopTimer();
+//				isNomal();
+				timerComplete();
 				stopTweenLite();
 			}
+			time_tf.text=num.toString()+"秒";
 		}
 		
 		protected function closeHandler(event:MouseEvent):void

@@ -74,7 +74,7 @@ package mediator.email
 				}
 				case receive_attachment:
 				{
-					
+					comp.receive_attachment();
 					break;
 				}
 			}

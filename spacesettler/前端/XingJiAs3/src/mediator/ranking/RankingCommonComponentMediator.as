@@ -8,11 +8,13 @@ package mediator.ranking
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.friendList.ViewIdCardComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.friendList.FriendProxy;
 	import proxy.rankingProxy.RankingProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -28,6 +30,7 @@ package mediator.ranking
 		
 		private var rankProxy:RankingProxy;
 		private var userProxy:UserInfoProxy;
+		private var friendProxy:FriendProxy;
 
 		public function RankingCommonComponentMediator()
 		{
@@ -39,6 +42,7 @@ package mediator.ranking
 			
 			rankProxy=getProxy(RankingProxy);
 			userProxy=getProxy(UserInfoProxy);
+			friendProxy=getProxy(FriendProxy);
 			
 			comp.addEventListener(RankingEvent.CLOSE,closeHandler);
 			comp.addEventListener(RankingEvent.DAYLIST_FORTERESS,dayForteress);
@@ -52,7 +56,8 @@ package mediator.ranking
 			
 			comp.addEventListener(RankingEvent.DAYLIST_GROUP,dayGroup);
 			comp.addEventListener(RankingEvent.LIST_GROUP,listGroup);
-		}		
+			comp.addEventListener(RankingEvent.SHOW_JUNGUANZHENG_EVENT,showJunGuanZheng);
+		}				
 		
 		public function showPage(obj:Object):void
 		{
@@ -191,6 +196,14 @@ package mediator.ranking
 		{
 			sendNotification(DESTROY_NOTE);
 			//			sendNotification(RankingComponentMediator.SHOW_NOTE);
+		}		
+		
+		protected function showJunGuanZheng(event:RankingEvent):void
+		{
+			friendProxy.checkOtherPlayer(event.type,function():void
+			{
+				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
+			});
 		}
 
 	}

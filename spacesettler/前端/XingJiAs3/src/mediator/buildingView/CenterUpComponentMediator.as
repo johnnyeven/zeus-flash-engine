@@ -15,6 +15,7 @@ package mediator.buildingView
 	
 	import mediator.BaseMediator;
 	import mediator.prompt.MoneyAlertComponentMediator;
+	import mediator.prompt.PromptSureMediator;
 	import mediator.scienceResearch.ScienceResearchComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -62,6 +63,7 @@ package mediator.buildingView
 			comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 			comp.addEventListener(AddViewEvent.ADDKEJICREATEVIEW_EVENT,enterKeJiViewHandler);
 			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,addConditionViewHandler);
+			comp.addEventListener(ConditionEvent.POWERPROMT_EVENT,powerPromtHandler);
 		}
 		
 		protected function closeHandler(event:AddViewEvent):void
@@ -112,7 +114,7 @@ package mediator.buildingView
 			return viewComponent as CenterUpComponent;
 		}
 		
-		protected function upHandler(event:Event):void
+		protected function upHandler(event:Event=null):void
 		{
 			
 			if(_keJiBuild)
@@ -169,6 +171,18 @@ package mediator.buildingView
 //			{
 //				sendNotification(KeJiCreateComponentMediator.SHOW_NOTE);
 //			}
+		}
+		
+		protected function powerPromtHandler(event:Event):void
+		{
+			var obj:Object={};
+			obj.infoLable=MultilanguageManager.getString("NOT_ENOUGH_POWER");
+			obj.showLable=MultilanguageManager.getString("notEnoughInfo");
+			obj.okCallBack=function ():void
+			{
+				upHandler();
+			}
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 		}
 	}
 }

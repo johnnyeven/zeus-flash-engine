@@ -25,6 +25,7 @@ package controller.shangCheng
 		public static var loadCompleteCallBack:Function;
 		
 		private var shopProxy:ShopProxy;
+		private var mediatorLevel:int = 1;
         public function ShowShangChengComponentMediatorCommand()
         {
             super();
@@ -39,12 +40,18 @@ package controller.shangCheng
         {
 			if(_isLoading)
 				return ;
+			if(notification.getBody() &&notification.getBody().mediatorLevel)
+			{
+				mediatorLevel = notification.getBody().mediatorLevel;
+			}
+			
 			shopProxy=getProxy(ShopProxy);
 			shopProxy.getContentInfoResult(function():void
 			{ 
 				var med:ShangChengComponentMediator = getMediator(ShangChengComponentMediator);
 	          	if (med)
 	            {
+					med.setmediatorLevel(mediatorLevel);
 					callShow(med);
 	            }
 	            else
@@ -69,7 +76,7 @@ package controller.shangCheng
 
             //注册界面的中介
             facade.registerMediator(med);
-			
+			med.setmediatorLevel(mediatorLevel);
 			_isLoading=false;
 			
 			callShow(med);

@@ -1,42 +1,52 @@
 package view.battle.fight
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
+	import com.zn.utils.ArrayUtil;
 	import com.zn.utils.BitmapUtil;
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.DateFormatter;
 	import com.zn.utils.PointUtil;
 	import com.zn.utils.StringUtil;
-
+	
 	import enum.battle.BattleBuildTypeEnum;
+	import enum.battle.BattleScaleEnum;
+	import enum.battle.FightBuffItemTypeEnum;
 	import enum.battle.FightVOTypeEnum;
-
+	
 	import events.battle.fight.FightEvent;
 	import events.battle.fight.FightFeiJiZiBaoEvent;
 	import events.battle.fight.FightFireEvent;
+	import events.battle.fight.FightItemEvent;
 	import events.battle.fight.FightLockEvent;
 	import events.battle.fight.FightZhanCheMoveEvent;
-
+	
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.GradientType;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
-
+	
 	import proxy.battle.BattleProxy;
 	import proxy.plantioid.PlantioidProxy;
-
+	
 	import ui.core.Component;
 	import ui.managers.SystemManager;
 	import ui.utils.DisposeUtil;
-
+	
 	import utils.battle.FightDataUtil;
 	import utils.battle.FightUtil;
-
+	
 	import vo.battle.fight.FightExplodeItemVO;
 	import vo.battle.fight.FightExplodeVO;
 	import vo.battle.fight.FightFireVO;
+	import vo.battle.fight.FightHonorVO;
 	import vo.battle.fight.FightItemVO;
 	import vo.battle.fight.FightLockVO;
 	import vo.battle.fight.FightMoveVO;
@@ -90,6 +100,8 @@ package view.battle.fight
 
 		public var mouseClickEffectMC:MovieClip;
 
+		public var fogShape:Shape=new Shape();
+
 		public var startPoint:Point;
 
 		private var _plantioidProxy:PlantioidProxy;
@@ -101,15 +113,47 @@ package view.battle.fight
 		public var buildCompList:Array=[];
 
 		public var compIDDic:Object={};
+		
+		public var disposeZhanCheVODIC:Object={};
 
 		public var feiJiCompList:Array=[];
 
+		public static var daFeiJiCompList:Array=[];
+		public static var liaoJiCompList:Array=[];
+
 		public var isExit:Boolean=false;
 
+		public var myZhanCheComp:FightZhanCheComponent;
+
+		private var _currentSelectedBuild:FightBuildComponent;
+		/**
+		 *建筑被选中的特效 
+		 */		
+		private var buildSelectedEffect:MovieClip;
+		public var isClickBuild:Boolean = false;
+		//保存战车的临时数据
+		private var point:Point;
+		private var lockArea:Number;
+		private var nextPointsprite:Sprite;
+		//战车下一个点是否与建筑有碰撞
+		private var isBuildHitNextPoint:Boolean = false;
+		/**
+		 * 与战车下一个点碰撞的建筑
+		 */		
+		private var buildHitNextPointObj:DisplayObject;
+		/**
+		 * 战车死亡前的数据
+		 */		
+		public var distoryZhanCheVo:Object;
 		public function BattleFightComponent(skin:DisplayObjectContainer)
 		{
 			super(skin);
-
+			
+			nextPointsprite = new Sprite();
+			nextPointsprite.graphics.beginFill(0xffffff,0);
+			nextPointsprite.graphics.drawCircle(0,0,20);
+			nextPointsprite.graphics.endFill();
+			
 			bgSp=getSkin("bg");
 			feiJiCenterSp=getSkin("feiJiCenterSp");
 
@@ -125,6 +169,7 @@ package view.battle.fight
 			DisposeUtil.dispose(startSp);
 
 			buildSp=getSkin("buildSp");
+			buildSelectedEffect = ClassUtil.getObject("battle.BuildSelectedEffectSkin") as MovieClip;
 //			buildSp.mouseEnabled=true;
 
 			mouseClickEffectMC=ClassUtil.getObject("fight.MoveClickEffectSkin");
@@ -140,6 +185,13 @@ package view.battle.fight
 			addChild(mouseClickEffectMC);
 			addChild(effectSp);
 
+			//将建筑选中特效添加到特效层
+			effectSp.addChild(buildSelectedEffect);
+			buildSelectedEffect.visible = false;
+			addChild(fogShape);
+			mask=fogShape;
+			fogShape.cacheAsBitmap=cacheAsBitmap=true;
+			
 			_plantioidProxy=ApplicationFacade.getProxy(PlantioidProxy);
 			_battleProxy=ApplicationFacade.getProxy(BattleProxy);
 
@@ -148,15 +200,25 @@ package view.battle.fight
 			initDropItem();
 			sortBuild();
 
+			drawFog(myZhanCheComp);
+			
 			moveRangeSp.addEventListener(MouseEvent.CLICK, moveSp_clickHandler);
 			moveRangeSp.mouseEnabled=true;
 
+			//组件缩放
+//			this.scaleX = BattleScaleEnum.battleScaleNumber;
+//			this.scaleY = BattleScaleEnum.battleScaleNumber;
 			//开始每帧检查
 			startCheck();
 		}
 
 		public override function dispose():void
 		{
+			isExit=true;
+			mouseChildren=mouseEnabled=false;
+			stopCheck();
+			stopMove(myZhanCheComp);
+			
 			mouseClickEffectMC.removeEventListener(Event.COMPLETE, mouseClickEffectMC_completeHandler);
 			SystemManager.rootStage.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			allCompList=null;
@@ -165,7 +227,7 @@ package view.battle.fight
 			super.dispose();
 		}
 
-		private function initBuild():void
+		public function initBuild():void
 		{
 			//生成建筑
 			var fortPlayer1:PLAYER1=FightDataUtil.getFortPlayer1();
@@ -213,6 +275,9 @@ package view.battle.fight
 					buildSp.addChild(zhanCheComp);
 				}
 			}
+			
+			myZhanCheComp= compIDDic[FightDataUtil.getMyChariot().id];
+			
 		}
 
 		/**
@@ -240,26 +305,125 @@ package view.battle.fight
 		}
 
 		/**
+		 *绘制迷雾(战车存在）
+		 *
+		 */
+		public function drawFog(zhanCheDisplayObject:DisplayObject):void
+		{
+			var p:Point=new Point(zhanCheDisplayObject.x, zhanCheDisplayObject.y);
+
+			var x:Number=p.x;
+			var y:Number=p.y;
+			var r:Number=zhanCheDisplayObject["itemVO"].lockArea;
+			var start:Number=136;
+			var alpha:Number=0.3;
+			var size:Number=r * 2;
+			var tx:Number =x - r;
+			var ty:Number= y - r;
+
+			//保存战车当前数据
+			point = p;
+			lockArea = zhanCheDisplayObject["itemVO"].lockArea;
+			fogShape.graphics.clear();
+
+			var matrix:Matrix=new Matrix();
+			matrix.createGradientBox(size, size, 0, tx, ty);
+			fogShape.graphics.beginGradientFill(GradientType.RADIAL, [0xFF0000, 0x0000FF], [1, 0], [start, 255], matrix);
+			fogShape.graphics.drawCircle(x, y, r);
+
+			fogShape.graphics.beginFill(0xFFFFFF, alpha);
+			fogShape.graphics.drawRect(0, 0, bgSp.width, bgSp.height);
+			fogShape.graphics.endFill();
+		}
+
+		/**
+		 *绘制迷雾(战车不存在）
+		 *
+		 */
+		private function noZhanCheCompDrawFog(p:Point,lockArea:Number):void
+		{
+			var x:Number=p.x;
+			var y:Number=p.y;
+			var r:Number=lockArea;
+			var start:Number=136;
+			var alpha:Number=0.3;
+			var size:Number=r * 2;
+			var tx:Number =x - r;
+			var ty:Number= y - r;
+			
+			fogShape.graphics.clear();
+			
+			var matrix:Matrix=new Matrix();
+			matrix.createGradientBox(size, size, 0, tx, ty);
+			fogShape.graphics.beginGradientFill(GradientType.RADIAL, [0xFF0000, 0x0000FF], [1, 0], [start, 255], matrix);
+			fogShape.graphics.drawCircle(x, y, r);
+			
+			fogShape.graphics.beginFill(0xFFFFFF, alpha);
+			fogShape.graphics.drawRect(0, 0, bgSp.width, bgSp.height);
+			fogShape.graphics.endFill();
+		}
+		
+		/**
+		 *检查动作
+		 *
+		 */
+		public function checkDo():void
+		{
+			var obj:DisplayObject;
+
+			if(myZhanCheComp["itemVO"].currentEndurance>0)
+			{
+			//循环所有对象
+			for (var i:int=0; i < allCompList.length; i++)
+			{
+				obj=allCompList[i];
+				if (obj == myZhanCheComp)
+					continue;
+
+				if (isExit)
+					return;
+
+				//检查是否显示
+				checkVisible(obj);
+				
+				//检查移动
+				checkMove(obj);
+
+				//自动锁定
+				checkAutoLock(obj);
+
+				//如果是物品，检查物品
+				checkItem(obj);
+
+				//检查攻击(其他对象)
+				checkObjAttack(obj);
+			}
+
+			//检查战车攻击
+			checkZhanCheAttack();
+
+			sortAir();
+			
+			//战车存在绘制迷雾
+			drawFog(myZhanCheComp);
+			}
+			else
+			{
+				//战车不存在绘制迷雾
+				noZhanCheCompDrawFog(point,lockArea);
+			}
+			    
+		}
+		
+		/**
 		 *建筑被点击
 		 * @param event
 		 *
 		 */
 		protected function build_clickHandler(event:MouseEvent):void
 		{
-			//置战车攻击目标为这个建筑
-			var buildComp:FightBuildComponent=event.currentTarget as FightBuildComponent;
-
-			var chariot:CHARIOT=FightDataUtil.getMyChariot();
-			chariot.myAttackID=buildComp.itemVO.id.toString();
-
-			//锁定建筑
-			var lockVO:FightLockVO=new FightLockVO();
-			lockVO.lockID=chariot.id.toString();
-			lockVO.lockedID=chariot.myAttackID;
-			dispatchEvent(new FightLockEvent(FightLockEvent.LOCK_EVENT, lockVO));
-
-			//移动战车到这个建筑
-			zhanCheMoveTo(new Point(buildComp.x, buildComp.y));
+			currentSelectedBuild = event.currentTarget as FightBuildComponent;
+			isClickBuild = true;
 		}
 
 		/**
@@ -317,7 +481,12 @@ package view.battle.fight
 			//移动战车
 			var p:Point=globalToLocal(new Point(event.stageX, event.stageY));
 			playeClickEffectMC(p);
-			zhanCheMoveTo(p);
+		    zhanCheMoveTo(p);
+			//将建筑的选择特效取消
+			buildSelectedEffect.visible = false;
+			//取消选中对象
+			myZhanCheComp["itemVO"].currentSelectedID = null;
+			isClickBuild = false;
 		}
 
 		private function playeClickEffectMC(p:Point):void
@@ -344,24 +513,33 @@ package view.battle.fight
 		{
 			//判断战车下一个点是否可移动，不能移动返回
 
-			var zhanCheComp:FightZhanCheComponent=myZhanCheComp();
-
-			var startP:Point=new Point(zhanCheComp.x, zhanCheComp.y);
-			zhanCheComp.zhanCheRotation=PointUtil.getRotaion(startP, endP);
-
+			var startP:Point=new Point(myZhanCheComp.x, myZhanCheComp.y);
+			myZhanCheComp.zhanCheRotation=PointUtil.getRotaion(startP, endP);
+			var nextPoint:Point = FightUtil.getNextMovePoint(myZhanCheComp.x,myZhanCheComp.y,myZhanCheComp.zhanCheRotation);
+			nextPoint = localToGlobal(nextPoint);
+			nextPoint = myZhanCheComp.globalToLocal(nextPoint);
+			myZhanCheComp.addChild(nextPointsprite);
+			nextPointsprite.x = nextPoint.x;
+			nextPointsprite.y = nextPoint.y;
+			if(buildHitNextPointObj && !buildHitNextPointObj.hitTestObject(nextPointsprite))
+			{
+				isBuildHitNextPoint = false;
+			}
 			endP=FightUtil.getMoveEndPoint(startP, endP, moveBitmapData);
 			//发送战车移动事件
 
 			var fightMoveVO:FightMoveVO=new FightMoveVO();
-			fightMoveVO.id=zhanCheComp.itemVO.id.toString();
-			fightMoveVO.startX=zhanCheComp.x;
-			fightMoveVO.startY=zhanCheComp.y;
-			fightMoveVO.angle=zhanCheComp.zhanCheRotation;
-			fightMoveVO.moveSpeed=zhanCheComp.itemVO.myMoveSpeed;
+			fightMoveVO.id=myZhanCheComp.itemVO.id.toString();
+			fightMoveVO.startX=myZhanCheComp.x;
+			fightMoveVO.startY=myZhanCheComp.y;
+			fightMoveVO.angle=myZhanCheComp.zhanCheRotation;
+			fightMoveVO.moveSpeed=myZhanCheComp.itemVO.myMoveSpeed;
 			fightMoveVO.endX=endP.x;
 			fightMoveVO.endY=endP.y;
 
-			dispatchEvent(new FightZhanCheMoveEvent(FightZhanCheMoveEvent.ZHAN_CHE_MOVE_EVENT, fightMoveVO));
+			//战车下一个点是否与建筑有碰撞,有碰撞则战车不移动
+			if(!isBuildHitNextPoint)
+			     dispatchEvent(new FightZhanCheMoveEvent(FightZhanCheMoveEvent.ZHAN_CHE_MOVE_EVENT, fightMoveVO));
 		}
 
 		/**
@@ -397,49 +575,12 @@ package view.battle.fight
 
 		public function stopCheck():void
 		{
-			SystemManager.rootStage.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+//			SystemManager.rootStage.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 
 		protected function enterFrameHandler(event:Event):void
 		{
 			checkDo();
-		}
-
-		/**
-		 *检查动作
-		 *
-		 */
-		public function checkDo():void
-		{
-			var obj:DisplayObject;
-
-			var zhanCheComp:FightZhanCheComponent=myZhanCheComp();
-
-			//循环所有对象
-			for (var i:int=0; i < allCompList.length; i++)
-			{
-				obj=allCompList[i];
-				if (obj == zhanCheComp)
-					continue;
-
-				if (isExit)
-					return;
-
-				//检查移动
-				checkMove(obj);
-
-				//自动锁定
-				checkAutoLock(obj);
-
-				//如果是物品，检查物品
-				checkItem(obj);
-
-				// 检查攻击
-				checkObjAttack(obj);
-			}
-
-			//检查战车攻击
-			checkZhanCheAttack();
 		}
 
 		/**
@@ -452,7 +593,7 @@ package view.battle.fight
 			if (isExit)
 				return;
 
-			var zhanCheComp:FightZhanCheComponent=myZhanCheComp();
+			var zhanCheComp:FightZhanCheComponent=myZhanCheComp;
 
 			var voObj:Object=obj["itemVO"];
 
@@ -460,7 +601,6 @@ package view.battle.fight
 			if (voObj.voType == FightVOTypeEnum.building ||
 				voObj.voType == FightVOTypeEnum.zhanChe ||
 				voObj.voType == FightVOTypeEnum.daFeiJi ||
-				voObj.voType == FightVOTypeEnum.liaoJi ||
 				voObj.voType == FightVOTypeEnum.xiaoFeiJi)
 			{
 				lock(obj, zhanCheComp);
@@ -470,14 +610,52 @@ package view.battle.fight
 				voObj.voType == FightVOTypeEnum.daFeiJi ||
 				voObj.voType == FightVOTypeEnum.xiaoFeiJi)
 			{
-				//战车主动锁定
-				lock(zhanCheComp, obj);
+				//计算锁定物体距离
+				var dis:Number;
+				var zhanCheObj:Object=zhanCheComp["itemVO"];
+				dis=PointUtil.getDis(zhanCheComp, obj);
+				//如果战车有选中的建筑物，就不在自动锁定了
+				if(!zhanCheObj.currentSelectedID)
+				{
+					//战车主动锁定
+ 					lock(zhanCheComp, obj);
+				}
+				
+				if(voObj.voType == FightVOTypeEnum.building && zhanCheObj.lockArea >= dis)
+				{
+					if(obj && (( obj.x != buildSelectedEffect.x && obj.y != buildSelectedEffect.y)||(buildSelectedEffect.visible == false)))
+					{
+						//建筑上没有选中特效,并且选择特效没显示才显示范围内特效
+						(obj as FightBuildComponent).setBuildRangeEffectVisible = true;
+					}
+					else
+					{
+						//建筑被打爆了，特效消失
+						(obj as FightBuildComponent).setBuildRangeEffectVisible = false;
+					}
+				}
+				else if(voObj.voType == FightVOTypeEnum.building && zhanCheObj.lockArea < dis)
+				{
+					//建筑处于战车锁定范围外，取消建筑特效
+					(obj as FightBuildComponent).setBuildRangeEffectVisible = false;
+				}
+			}
+
+			if (voObj.voType != FightVOTypeEnum.liaoJi)
+			{
+				var liaoJiComp:FightFeiJiComponent=liaoJiCompList[i];
+				for (var i:int=0; i < liaoJiCompList.length; i++)
+				{
+					liaoJiComp=liaoJiCompList[i];
+					if (liaoJiComp.itemVO.gid != obj["itemVO"].gid)
+						lock(liaoJiComp, obj);
+				}
 			}
 		}
 
 		private function lock(zhuDong:DisplayObject, beiDong:DisplayObject):Boolean
 		{
-			if (zhuDong == beiDong)
+			if (zhuDong == beiDong || isExit == true)
 				return false;
 
 			var lockVO:FightLockVO;
@@ -497,8 +675,9 @@ package view.battle.fight
 			//计算锁定物体距离
 			var dis:Number;
 
-			if ((!lockedObj && !StringUtil.isEmpty(voObj.myAttackID)) ||
-				oldDis > voObj.lockArea)
+			if (voObj.voType != FightVOTypeEnum.xiaoFeiJi &&
+				((!lockedObj && !StringUtil.isEmpty(voObj.myAttackID)) ||
+				oldDis > voObj.lockArea))
 			{
 				//取消锁定
 				oldDis=NaN;
@@ -515,10 +694,12 @@ package view.battle.fight
 
 			if (voObj.lockArea >= dis &&
 				(isNaN(oldDis) || dis < oldDis) &&
-				voObj.myAttackID != beiDong["itemVO"].id)
+				voObj.myAttackID != beiDong["itemVO"].id && 
+				voObj.gid!=beiDong["itemVO"].gid)
 			{
 				//锁定对象
-//				voObj.myAttackID=beiDong["itemVO"].id;
+				voObj.myAttackID=beiDong["itemVO"].id;
+//				myZhanCheComp.itemVO.myAttackID = beiDong["itemVO"].id;
 
 				//发送锁定事件
 				lockVO=new FightLockVO();
@@ -527,10 +708,30 @@ package view.battle.fight
 				dispatchEvent(new FightLockEvent(FightLockEvent.LOCK_EVENT, lockVO));
 				return true;
 			}
-
 			return false;
 		}
 
+		/**
+		 * 检查是否显示
+		 * @param obj
+		 * 
+		 */
+		private function checkVisible(displayObj:DisplayObject):void
+		{
+			var voObj:Object=displayObj["itemVO"];
+			if(voObj.voType==FightVOTypeEnum.building && 
+				(voObj.type==BattleBuildTypeEnum.JI_DI || 
+				voObj.type==BattleBuildTypeEnum.CAI_JI))
+				return ;
+			
+			var dis:Number=PointUtil.getDis(displayObj,myZhanCheComp);
+			//TODO LW:此处距离增加了100（建筑显示出来了才能开火）
+			if(dis<(myZhanCheComp.itemVO.lockArea+150))
+				displayObj.visible=true;
+			else
+				displayObj.visible=false;
+		}
+		
 		/**
 		 *检查移动
 		 * @param obj
@@ -540,14 +741,57 @@ package view.battle.fight
 		{
 			if (isExit)
 				return;
-			var zhanCheComp:FightZhanCheComponent=myZhanCheComp();
+//			var tankpartVO:TANKPART=FightDataUtil.getMyCanAttackTankPart();
 
-			var tankpartVO:TANKPART=FightDataUtil.getMyCanAttackTankPart();
+			var voObj:Object=obj["itemVO"];
 
 			//如果战车进入可攻击范围，停止移动	
 			//tankpartVO && tankpartVO.myAttackArea > PointUtil.getDis(zhanCheComp, obj)))
-			if (obj is FightBuildComponent && obj.hitTestObject(zhanCheComp))
-				stopMove(zhanCheComp);
+			//TODO LW:碰撞检测
+//			myZhanCheComp.zhanCheRotation=PointUtil.getRotaion(startP, endP);
+			var nextPoint:Point = FightUtil.getNextMovePoint(myZhanCheComp.x,myZhanCheComp.y,myZhanCheComp.zhanCheRotation);
+			nextPoint = localToGlobal(nextPoint);
+			nextPoint = myZhanCheComp.globalToLocal(nextPoint);
+			myZhanCheComp.addChild(nextPointsprite);
+			nextPointsprite.x = nextPoint.x;
+			nextPointsprite.y = nextPoint.y;
+			if(voObj.voType == FightVOTypeEnum.building && obj.hitTestObject(nextPointsprite))
+			{
+					isBuildHitNextPoint = true;
+					buildHitNextPointObj = obj;
+					//如果战车下一个点与建筑碰创，战车停止移动
+					stopMove(myZhanCheComp);
+					
+			}
+			if (isClickBuild && voObj.voType == FightVOTypeEnum.building && obj.hitTestObject(myZhanCheComp))
+			{
+			    stopMove(myZhanCheComp);
+			}
+			else if (voObj.voType == FightVOTypeEnum.liaoJi)
+			{
+				//僚机移动
+				var ownID:String=voObj.ownID;
+				if (ownID == myZhanCheComp.itemVO.id.toString())
+				{
+					if ((obj as FightFeiJiComponent).feiJiMoveTO(myZhanCheComp, true))
+					{
+						var fightMoveVO:FightMoveVO=new FightMoveVO();
+						fightMoveVO.id=voObj.id;
+						fightMoveVO.startX=obj.x;
+						fightMoveVO.startY=obj.y;
+						fightMoveVO.moveSpeed=voObj.myMoveSpeed;
+						fightMoveVO.endX=myZhanCheComp.x;
+						fightMoveVO.endY=myZhanCheComp.y;
+
+						dispatchEvent(new FightZhanCheMoveEvent(FightZhanCheMoveEvent.ZHAN_CHE_MOVE_EVENT, fightMoveVO));
+					}
+				}
+			}
+			else if (voObj.voType == FightVOTypeEnum.xiaoFeiJi)
+			{
+				//小飞机移动
+				(obj as FightFeiJiComponent).feiJiMoveTO(getCompByID(voObj.myAttackID));
+			}
 		}
 
 		/**
@@ -564,22 +808,25 @@ package view.battle.fight
 
 			if (voObj.voType == FightVOTypeEnum.item && !voObj.isPick)
 			{
-				var zhanCheComp:FightZhanCheComponent=myZhanCheComp();
-				if (PointUtil.getDis(zhanCheComp, obj) < 100)
+				var buffVO:BUFFER_DEF=voObj as BUFFER_DEF;
+				var myPlayerID:String=FightDataUtil.getMyPlayer().id.toString();
+
+				var des:Number = PointUtil.getDis(myZhanCheComp, obj);
+				if (des < 100 )
 				{
 					voObj.isPick=true;
-
+					
 					var fightItemVO:FightItemVO=new FightItemVO();
 					fightItemVO.index=voObj.index;
 					fightItemVO.uid=voObj.uid;
-					fightItemVO.pickID=zhanCheComp.itemVO.id.toString();
+					fightItemVO.pickID=myZhanCheComp.itemVO.id.toString();
 
 					//发送事件
 					dispatchEvent(new FightItemEvent(FightItemEvent.FIGHT_ITEM_EVENT, fightItemVO));
 				}
 			}
 		}
-
+		
 		public function stopMove(zhanCheComp:FightZhanCheComponent):void
 		{
 			zhanCheComp.stopMove();
@@ -597,12 +844,13 @@ package view.battle.fight
 			//建筑攻击
 			var voObj:Object=obj["itemVO"];
 
-			if (voObj.voType == FightVOTypeEnum.building)
+			if (voObj.voType == FightVOTypeEnum.building &&
+				voObj.type != BattleBuildTypeEnum.CAI_JI)
 			{
 				//基地耐久小于5%，不攻击
 				var buildingVO:FORTBUILDING=voObj as FORTBUILDING;
 				if (buildingVO.type == BattleBuildTypeEnum.JI_DI &&
-					buildingVO.currentEndurance <= buildingVO.totalEndurance)
+					buildingVO.currentEndurance <= buildingVO.totalEndurance * 0.05)
 					return;
 
 				if (isFire(obj, voObj, voObj.myAttackID))
@@ -616,24 +864,25 @@ package view.battle.fight
 			{
 				//自爆小飞机
 				var hitObj:DisplayObject=compIDDic[voObj.myAttackID];
-				if (hitObj && hitObj.hitTestObject(obj))
+				if (hitObj && hitObj.x == obj.x && hitObj.y == obj.y)
 				{
 					voObj.isExplode=true;
 
 					var fireVO:FightFireVO=new FightFireVO();
 					fireVO.id=voObj.id;
-					fireVO.endX=voObj.x;
-					fireVO.endY=voObj.y;
+					fireVO.endX=obj.x;
+					fireVO.endY=obj.y;
 
 					//撞上，小飞机爆炸
 					var explodeVO:FightExplodeVO=FightUtil.getExplodeVO(fireVO);
-
-					dispatchEvent(new FightFeiJiZiBaoEvent(FightFeiJiZiBaoEvent.FIGHT_FEI_JI_ZI_BAO_EVENT, explodeVO));
+					if(explodeVO)
+						dispatchEvent(new FightFeiJiZiBaoEvent(FightFeiJiZiBaoEvent.FIGHT_FEI_JI_ZI_BAO_EVENT, explodeVO));
 				}
 			}
-			else if (voObj.voType == FightVOTypeEnum.daFeiJi)
+			else if (voObj.voType == FightVOTypeEnum.daFeiJi ||
+				voObj.voType == FightVOTypeEnum.liaoJi)
 			{
-				//大飞机
+				//大飞机或者僚机
 				var tankpartVO:TANKPART=(voObj as CHARIOT).tankparts[0];
 
 				if (isFire(obj, tankpartVO, voObj.myAttackID))
@@ -663,7 +912,7 @@ package view.battle.fight
 				return false;
 
 			var hitObj:DisplayObject=compIDDic[myAttackID];
-			if (hitObj["itemVO"].isDispose)
+			if (!hitObj || hitObj["itemVO"].isDispose)
 				return false;
 
 			//检查是否冷却过了，是否可以进行攻击
@@ -678,12 +927,21 @@ package view.battle.fight
 
 			// 发送开火事件
 			var fireVO:FightFireVO=new FightFireVO();
-			fireVO.id=voObj.id;
 			fireVO.startX=obj.x;
 			fireVO.startY=obj.y;
 			fireVO.endX=hitObj.x;
 			fireVO.endY=hitObj.y;
 			fireVO.rotation=obj["tankPartRotaion"];
+
+			if (voObj.voType == FightVOTypeEnum.building)
+				fireVO.id=voObj.id;
+			else if (voObj.voType == FightVOTypeEnum.guaJia)
+			{
+				fireVO.id=(voObj as TANKPART).chariotId.toString();
+				fireVO.guaJianID=voObj.id;
+			}
+
+			fireVO.hitID=myAttackID;
 
 			dispatchEvent(new FightFireEvent(FightFireEvent.FIGHT_FIRE_EVENT, fireVO));
 
@@ -700,24 +958,17 @@ package view.battle.fight
 				return;
 
 			//检查战车攻击
-			var zhanCheComp:FightZhanCheComponent=myZhanCheComp();
 
 			//检查挂件是否都冷却过了，是否可以进行攻击
 			var tankpartVO:TANKPART=FightDataUtil.getMyCanAttackTankPart();
 			if (tankpartVO == null)
 				return;
 
-			if (isFire(zhanCheComp, tankpartVO, zhanCheComp.itemVO.myAttackID))
+			if (isFire(myZhanCheComp, tankpartVO, myZhanCheComp.itemVO.myAttackID))
 			{
 				//设置开火冷却时间
 				tankpartVO.attackCoolEndTime=DateFormatter.currentTimeM + tankpartVO.attackCoolDown;
 			}
-		}
-
-		public function myZhanCheComp():FightZhanCheComponent
-		{
-			var chariotVO:CHARIOT=FightDataUtil.getMyChariot();
-			return compIDDic[chariotVO.id];
 		}
 
 		/**
@@ -748,37 +999,107 @@ package view.battle.fight
 //			}
 //
 //			obj.visible=false;
-
-
-			if (obj == myZhanCheComp())
+            
+			//判断打爆的建筑
+			var buildVO:Object = obj["itemVO"];
+			if(buildVO.voType == FightVOTypeEnum.building)
 			{
-				return;
-				//战斗失败
-				mouseChildren=mouseEnabled=false;
-				stopCheck();
-				stopMove(myZhanCheComp());
-				dispatchEvent(new FightEvent(FightEvent.FAIL_EVENT));
+				if(obj.x == buildSelectedEffect.x && obj.y == buildSelectedEffect.y)
+				{
+					//建筑物被打爆了，选中特效消失
+					buildSelectedEffect.visible = false;
+				}
+				//如果战车选中的建筑物被打爆了，战车选中ID被清空
+				if(buildVO.id == myZhanCheComp["itemVO"].currentSelectedID)
+					myZhanCheComp["itemVO"].currentSelectedID = null;
+			}
+			var zhanCheVO:Object=obj["itemVO"];
+			if(zhanCheVO.voType==FightVOTypeEnum.zhanChe)
+			{
+				distoryZhanCheVo = zhanCheVO;
+				disposeZhanCheVODIC[zhanCheVO.id]=zhanCheVO;
+				zhanCheVO.x=obj.x;
+				zhanCheVO.y=obj.y;
 			}
 
-			var index:int;
-			index=allCompList.indexOf(obj);
-			if (index != -1)
-				allCompList.splice(index, 1);
-
-			index=buildCompList.indexOf(obj);
-			if (index != -1)
-				buildCompList.splice(index, 1);
-
+			ArrayUtil.removeObj(allCompList, obj);
+			ArrayUtil.removeObj(buildCompList, obj);
+			ArrayUtil.removeObj(liaoJiCompList, obj);
+			ArrayUtil.removeObj(feiJiCompList, obj);
+			
 			delete compIDDic[obj["itemVO"].id];
 			delete FightDataUtil.dataDic[obj["itemVO"].id];
 			delete FightDataUtil.dataDic[obj["itemVO"].uid];
 
+			if (obj == myZhanCheComp)
+			{
+				//战斗失败
+				mouseChildren=mouseEnabled=false;
+				stopCheck();
+				stopMove(myZhanCheComp);
+				isExit=true;
+				
+				dispatchEvent(new FightEvent(FightEvent.FAIL_EVENT));
+			}
 			DisposeUtil.dispose(obj);
 		}
 
 		public function getCompByID(id:String):DisplayObject
 		{
 			return compIDDic[id] as DisplayObject;
+		}
+
+		/**
+		 *当前选中的建筑（锁定的建筑） 
+		 */
+		public function get currentSelectedBuild():FightBuildComponent
+		{
+			return _currentSelectedBuild;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set currentSelectedBuild(value:FightBuildComponent):void
+		{
+			if(_currentSelectedBuild)
+			{
+				//设置建筑的选中效果
+				if(buildSelectedEffect.visible == true)
+					buildSelectedEffect.visible = false;
+			}
+			//设置战车攻击目标为这个建筑
+			_currentSelectedBuild = value;
+			buildSelectedEffect.x = _currentSelectedBuild.x;
+			buildSelectedEffect.y = _currentSelectedBuild.y;
+			//设置建筑的选中效果
+			buildSelectedEffect.visible = true;
+			var chariot:CHARIOT=FightDataUtil.getMyChariot();
+			//战车攻击对象的ID
+			chariot.myAttackID=_currentSelectedBuild.itemVO.id.toString();
+			//当前选中建筑的ID
+			chariot.currentSelectedID = _currentSelectedBuild.itemVO.id.toString();
+			//锁定建筑
+			var lockVO:FightLockVO=new FightLockVO();
+			lockVO.lockID=chariot.id.toString();
+			lockVO.lockedID=chariot.currentSelectedID;
+			dispatchEvent(new FightLockEvent(FightLockEvent.LOCK_EVENT, lockVO));
+			
+			//点击建筑后，战车的移动(战车不能跑到建筑的下面去了)
+			//计算锁定物体距离
+			var dis:Number;
+			var voObj:Object=myZhanCheComp["itemVO"];
+			dis=PointUtil.getDis(myZhanCheComp, _currentSelectedBuild);
+			if (voObj.lockArea >= dis)
+			{
+				//如果战车进入可攻击范围，停止移动	
+				stopMove(myZhanCheComp);
+			}
+			else
+			{
+				//移动战车到这个建筑
+				zhanCheMoveTo(new Point(_currentSelectedBuild.x, _currentSelectedBuild.y));
+			}
 		}
 	}
 }

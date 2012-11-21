@@ -51,7 +51,7 @@ package controller.shangCheng.shangChengView
             {
                 //加载界面SWF
 				_isLoading=true;
-                ResLoader.load("shangCheng.swf", MultilanguageManager.getString(""), loaderComplete,true);
+                ResLoader.load("zh_CN/shangCheng.swf", MultilanguageManager.getString(""), loaderComplete,true);
             }
         }
 
@@ -66,7 +66,7 @@ package controller.shangCheng.shangChengView
 
             //注册界面的中介
             facade.registerMediator(med);
-			
+			med.setFriendConst(obj.arr,obj.text,obj.num,obj.titleText,obj.source);
 			_isLoading=false;
 			
 			callShow(med);
@@ -74,7 +74,7 @@ package controller.shangCheng.shangChengView
 		
 		private function callShow(med:FriendGiveComponentMediator):void
 		{
-			med.setFriendConst(obj.arr,obj.text,obj.num,obj.titleText);
+			med.setFriendConst(obj.arr,obj.text,obj.num,obj.titleText,obj.source);
 			if (loadCompleteCallBack!=null)
 			{
 				loadCompleteCallBack(med);

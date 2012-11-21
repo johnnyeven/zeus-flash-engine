@@ -3,6 +3,9 @@ package proxy.shangCheng
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.net.Protocol;
     
+    import controller.task.TaskCompleteCommand;
+    
+    import enum.TaskEnum;
     import enum.command.CommandEnum;
     
     import mediator.prompt.PromptMediator;
@@ -31,6 +34,10 @@ package proxy.shangCheng
 
         private var userInfoProxy:UserInfoProxy;
 
+		/**
+		 *控制兑换成功提示界面的层级 
+		 */		
+		public var mediatorLevel:int;
         public function ShopProxy(data:Object = null)
         {
             super(NAME, data);
@@ -137,10 +144,24 @@ package proxy.shangCheng
          * @return
          *
          */
-        public function buyItem(playerid:String, itemtype:String, friendid:String = ""):void
+        public function buyItem(playerid:String, itemtype:String, friendid:String =null):void
         {
 //            var obj:Object = { player_id: playerid, item_type: itemtype, friend_id: friendid };
 			var obj:Object = { player_id: playerid, item_type: itemtype};
+            if (!Protocol.hasProtocolFunction(CommandEnum.buyItem, buyItemRrsult))
+                Protocol.registerProtocol(CommandEnum.buyItem, buyItemRrsult);
+            ConnDebug.send(CommandEnum.buyItem, obj);
+        }
+		
+        /**
+         * 购买道具赠送朋友
+         * @param playerid
+         * @return
+         *
+         */
+        public function buyItemFriend(playerid:String, itemtype:String, friendid:String):void
+        {
+            var obj:Object = { player_id: playerid, item_type: itemtype, friend_id: friendid };
             if (!Protocol.hasProtocolFunction(CommandEnum.buyItem, buyItemRrsult))
                 Protocol.registerProtocol(CommandEnum.buyItem, buyItemRrsult);
             ConnDebug.send(CommandEnum.buyItem, obj);
@@ -164,6 +185,11 @@ package proxy.shangCheng
             userInfoProxy.userInfoVO.crystal = data.base.resources.crystal;
             userInfoProxy.userInfoVO.tritium = data.base.resources.tritium;
             userInfoProxy.userInfoVO.dark_crystal = data.dark_crystal;
+			
+			if(userInfoProxy.userInfoVO.index==TaskEnum.index23)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
 
         }
 
@@ -205,6 +231,7 @@ package proxy.shangCheng
 			var obj:Object={};
 			obj.infoLable=MultilanguageManager.getString("duiHuan");
 			obj.showLable=MultilanguageManager.getString("buySuccess");
+			obj.mediatorLevel = mediatorLevel;
 			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 		}
     }

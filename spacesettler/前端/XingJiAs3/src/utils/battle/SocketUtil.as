@@ -35,21 +35,26 @@ package utils.battle
          */
         public static function readIdType(by:ByteArray):String
         {
-            var h:int;
-            var l:int;
-
-            if (by.endian == Endian.LITTLE_ENDIAN)
-            {
-                l = by.readInt();
-                h = by.readInt();
-            }
-            else
-            {
-                h = by.readInt();
-                l = by.readInt();
-            }
-
-            return (new Int64(l,h)).toString();
+            return readIdTypeInt64(by).toString();
         }
+		
+		public static function readIdTypeInt64(by:ByteArray):Int64
+		{
+			var h:int;
+			var l:int;
+			
+			if (by.endian == Endian.LITTLE_ENDIAN)
+			{
+				l = by.readInt();
+				h = by.readInt();
+			}
+			else
+			{
+				h = by.readInt();
+				l = by.readInt();
+			}
+			
+			return new Int64(l,h);
+		}
     }
 }

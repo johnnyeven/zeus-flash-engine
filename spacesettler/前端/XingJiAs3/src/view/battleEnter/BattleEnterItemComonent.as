@@ -68,7 +68,7 @@ package view.battleEnter
             levelLabel.text = itemVO.level + "";
             pingFenLabel.text = itemVO.value + "";
             gongJiLabel.text = itemVO.attack + "";
-            naiJiuLabel.text = itemVO.endurance + "";
+            naiJiuLabel.text = itemVO.current_endurance + "";
             image.source = itemVO.iconURL;
         }
     }

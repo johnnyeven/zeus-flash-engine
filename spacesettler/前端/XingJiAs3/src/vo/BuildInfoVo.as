@@ -4,6 +4,8 @@ package vo
     import com.greensock.easing.Linear;
     import com.zn.utils.StringUtil;
     
+    import enum.BuildTypeEnum;
+    
     import flash.events.Event;
     
     import proxy.BuildProxy;
@@ -41,7 +43,7 @@ package vo
         /**
          * 建筑事件
          */
-        public var eventID:String;
+        public var eventID:String=null;
 
         /**
          * 当前服务器时间
@@ -73,7 +75,7 @@ package vo
             _timeTweenLite = TweenLite.to(this, disTime, { current_time: finish_time, ease: Linear.easeNone, onComplete: function():void
 			{
 				var buildProxy:BuildProxy=ApplicationFacade.getProxy(BuildProxy);
-				buildProxy.updateBuilder();
+				buildProxy.updateBuilder(type);
 			}});
         }
 
@@ -112,18 +114,29 @@ package vo
 		public function get speedCount():int
 		{
 			var userInfoVo:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
-			
-			if(level>=0&&level<10||userInfoVo.level==1)
+			if(type!=BuildTypeEnum.CENTER)
 			{
-				_speedCount=2
-			}else if(level>=10&&level<30||userInfoVo.level==2)
+				if(level>=0&&level<10)
+				{
+					_speedCount=2
+				}else if(level>=10&&level<30)
+				{
+					_speedCount=4
+				
+				}else if(level>=30&&level<40)
+				{
+					_speedCount=8
+				}
+			}else
 			{
-				_speedCount=4
-			
-			}else if(level>=30&&level<40||userInfoVo.level==3)
-			{
-				_speedCount=8
+				if(userInfoVo.level==1)
+					_speedCount=2;
+				if(userInfoVo.level==2)
+					_speedCount=4;
+				if(userInfoVo.level==3)
+					_speedCount=8;
 			}
+			
 			return _speedCount;
 		}
     }

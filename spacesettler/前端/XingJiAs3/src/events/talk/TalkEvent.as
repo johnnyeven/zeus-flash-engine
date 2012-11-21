@@ -25,6 +25,10 @@ package events.talk
 		public static const CHECK_ID_CARD_EVENT:String = "checkIdCardEvent";
 		
 		public static const PRIVATE_TALK_EVENT:String = "privateTalkEvent";
+		/**
+		 *复制聊天内容到Windos剪切板 
+		 */		
+		public static const COPY_INFOR_EVENT:String = "copyInforEvent";
 			
 		private var _talk:String;
 		private var _channel:String;

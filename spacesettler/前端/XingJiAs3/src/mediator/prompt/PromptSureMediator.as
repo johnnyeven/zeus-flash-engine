@@ -69,8 +69,12 @@ package mediator.prompt
 					var obj:Object = note.getBody();
 					comp.infoTF.text = obj.infoLable;
 					comp.showTF.text = obj.showLable;
+					if(obj.mediatorLevel)
+					{
+					  level = obj.mediatorLevel +1;
+					}
 					okCallBack = obj.okCallBack;
-					show();
+					show(); 
 					break;
 				}
 			}

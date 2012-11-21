@@ -13,11 +13,15 @@ package view.shangCheng
     import flash.events.MouseEvent;
     import flash.text.TextField;
     
+    import mx.binding.utils.BindingUtils;
+    
     import proxy.friendList.FriendProxy;
     import proxy.shangCheng.ShopProxy;
+    import proxy.userInfo.UserInfoProxy;
     
     import ui.components.Button;
     import ui.components.Container;
+    import ui.components.Label;
     import ui.components.LoaderImage;
     import ui.components.VScrollBar;
     import ui.core.Component;
@@ -83,8 +87,10 @@ package view.shangCheng
          *拖动条
          */
         public var vsBar:VScrollBar;
+		
+		public var moneyTf:Label;
 
-        private var ziYuanComp:ZiYuanComponent;
+        public var ziYuanComp:ZiYuanComponent;
 
         private var shuiJingPanelComp:ShuiJingPanelComponent;
 
@@ -98,6 +104,8 @@ package view.shangCheng
 
         private var friendProxy:FriendProxy;
 		
+		private var userProxy:UserInfoProxy;
+		
 		public var tuzhiComp:TuZhiComponent;
 		
         public function ShangChengComponent()
@@ -105,6 +113,9 @@ package view.shangCheng
             super(ClassUtil.getObject("view.allView.ShangChengSkin"));
             shopProxy = ApplicationFacade.getProxy(ShopProxy);
             friendProxy = ApplicationFacade.getProxy(FriendProxy);
+			userProxy = ApplicationFacade.getProxy(UserInfoProxy);
+			
+			moneyTf = createUI(Label, "moneyTf");
 
             anNengShuiJingBtn = createUI(Button, "anneng_btn");
             ziYuanDuiHuanBtn = createUI(Button, "ziyuan_btn");
@@ -137,6 +148,8 @@ package view.shangCheng
             daoJuSprite.addChild(container);
 
             sortChildIndex();
+			
+			cwList.push(BindingUtils.bindProperty(moneyTf,"text",userProxy,["userInfoVO","dark_crystal"]));
 
             anNengShuiJingBtn.mouseEnabled = false;
             ziYuanDuiHuanBtn.mouseEnabled = true;
@@ -180,11 +193,11 @@ package view.shangCheng
 				if(shopinfovo.recipe_id)
 				{
 					
-					tuzhiComp.wuPingImg.source=ResEnum.senceEquipment + shopinfovo.item_type + "_" + shopinfovo.category + ".png";//
+					tuzhiComp.source=tuzhiComp.wuPingImg.source=ResEnum.senceEquipment + shopinfovo.item_type + "_" + shopinfovo.category + ".png";//
 				}
 				else
 				{
-					tuzhiComp.wuPingImg.source= ResEnum.getShopItemURL + shopinfovo.vip_level + ".png";
+					tuzhiComp.source=tuzhiComp.wuPingImg.source= ResEnum.getShopItemURL + shopinfovo.vip_level + ".png";
 					var imgW:Number=tuzhiComp.wuPingImg.sp.width;
 					var imgH:Number=tuzhiComp.wuPingImg.sp.height;
 					tuzhiComp.wuPingImg.x += 10;
@@ -280,7 +293,8 @@ package view.shangCheng
                 if (tuzhiComp.giveBtn == event.currentTarget as Button)
                 {
 
-                    dispatchEvent(new FriendGiveEvent(FriendGiveEvent.SHOW_FRIENDGIVE, friendProxy.friendArr, tuzhiComp.moneyText.text, i + 1, tuzhiComp.titleText.text));
+                    dispatchEvent(new FriendGiveEvent(FriendGiveEvent.SHOW_FRIENDGIVE, friendProxy.friendArr, 
+								tuzhiComp.moneyText.text,tuzhiComp.dyData["index"], tuzhiComp.titleText.text,tuzhiComp.source));
                 }
             }
 

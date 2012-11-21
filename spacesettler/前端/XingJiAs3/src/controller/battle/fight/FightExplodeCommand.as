@@ -3,29 +3,32 @@ package controller.battle.fight
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.EnterFrameUtil;
 	import com.zn.utils.RandomUtil;
+	import com.zn.utils.SoundUtil;
 	import com.zn.utils.StringUtil;
-
+	
+	import enum.SoundEnum;
 	import enum.battle.FightVOTypeEnum;
-
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
-
+	import flash.media.Sound;
+	
 	import mediator.battle.BattleFightMediator;
-
+	
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.command.SimpleCommand;
-
+	
 	import ui.utils.DisposeUtil;
-
+	
 	import utils.battle.FightDataUtil;
 	import utils.battle.FightUtil;
-
+	
 	import view.battle.fight.FightBuildComponent;
 	import view.battle.fight.FightDropNumComponent;
 	import view.battle.fight.FightFeiJiComponent;
 	import view.battle.fight.FightZhanCheComponent;
-
+	
 	import vo.battle.fight.FightExplodeItemVO;
 	import vo.battle.fight.FightExplodeVO;
 	import vo.battle.fight.FightFireVO;
@@ -64,26 +67,30 @@ package controller.battle.fight
 			if (!voObj)
 				return;
 
-			if (voObj.voType == FightVOTypeEnum.guaJia)
+			if (voObj is CHARIOT)
 			{
+				SoundUtil.play(SoundEnum.explode,false,false);
 				//挂件攻击
-				var tankpartVO:TANKPART=voObj as TANKPART;
-				var chariotVO:CHARIOT=FightDataUtil.getVO(tankpartVO.chariotId.toString()) as CHARIOT;
+				var tankpartVO:TANKPART;
+				var chariotVO:CHARIOT=voObj as CHARIOT;
 
 				if (chariotVO.voType == FightVOTypeEnum.xiaoFeiJi)
 				{
+					tankpartVO=chariotVO.tankparts[0];
 					//小飞机自爆
 					className=StringUtil.formatString("battle.feiJDisposeEffect_{0}", RandomUtil.getRangeInt(0, 2));
 					disposeEffect(className, fightMed.comp.getCompByID(chariotVO.id.toString()));
 				}
 				else
 				{
+					tankpartVO=FightDataUtil.getVO(_explodeVO.guaJianID) as TANKPART;
 					className=StringUtil.formatString("battle.explodeEffect_{0}", tankpartVO.attackType);
 					showEffect(className);
 				}
 			}
 			else if (voObj.voType == FightVOTypeEnum.building)
 			{
+				SoundUtil.play(SoundEnum.explode,false,false);
 				//炮塔
 				className=StringUtil.formatString("battle.explodeEffect_{0}", voObj.attackType);
 				showEffect(className);

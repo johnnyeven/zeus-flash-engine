@@ -8,6 +8,7 @@ package view.ranking
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
+	import ui.components.Label;
 	import ui.core.Component;
 	
 	import vo.ranking.RankingUserVo;
@@ -20,6 +21,8 @@ package view.ranking
 		public var item_2:RankingItemComponent;
 		public var item_1:RankingItemComponent;
 		public var closeBtn:Button;
+		public var tiShiTf:Label;
+		
 
 		/**
 		 *排行主体Ui level1 
@@ -35,20 +38,21 @@ package view.ranking
 			item_4=createUI(RankingItemComponent,"item_4");
 			item_5=createUI(RankingItemComponent,"item_5");
 			closeBtn=createUI(Button,"close_btn");
+			tiShiTf=createUI(Label,"tiShiTf");
 			
 			item_1.showCaiFu();
 			item_2.showYaoSai();
 			item_3.showJunTuan();
 			item_4.showGeRen();
 			item_5.showPve();
-			
+			item_5.visible=false;
 			closeBtn.addEventListener(MouseEvent.CLICK,doCloseHandler);
 			item_1.addEventListener(MouseEvent.CLICK,doShowCaiFuHandler);
 			item_2.addEventListener(MouseEvent.CLICK,doShowYaoSaiHandler);
 			item_3.addEventListener(MouseEvent.CLICK,doShowJunTuanHandler);
 			item_4.addEventListener(MouseEvent.CLICK,doShowGeRenHandler);
 			item_5.addEventListener(MouseEvent.CLICK,doShowPveHandler);
-
+			item_5.mouseEnabled=item_5.mouseEnabled=false;
         }
 		
 		public function upData(rankVo:RankingUserVo):void

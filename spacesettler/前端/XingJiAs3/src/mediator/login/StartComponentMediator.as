@@ -3,6 +3,9 @@
 	
 	import com.zn.utils.ClassUtil;
 	
+	import enum.RecordEnum;
+	import enum.TaskEnum;
+	
 	import events.login.StartLoginEvent;
 	
 	import flash.display.Sprite;
@@ -18,6 +21,8 @@
 	import proxy.login.LoginProxy;
 	
 	import ui.components.Window;
+	
+	import utils.GlobalUtil;
 	
 	import view.login.StartComponent;
 
@@ -105,10 +110,15 @@
 		
 		private function startLoginHandler(event:StartLoginEvent):void
 		{
-			loginProxy.startLogin(function():void
+			LoginProxy.lastSenceMedClass=StartComponentMediator;
+			destoryCallback = function():void
 			{
-				sendNotification(DESTROY_NOTE);
-			});
+				sendNotification(PkComponentMediator.SHOW_NOTE);
+			};
+			sendNotification(DESTROY_NOTE);
+			TaskEnum.IS_SPEED_LOGIN=true;
+			
+			GlobalUtil.recordLog(RecordEnum.quick_start);
 		}
 		
 		private function accountHandler(event:StartLoginEvent):void
@@ -129,7 +139,8 @@
 			loginProxy.email = "";
 			destoryCallback = function():void
 			{
-				sendNotification(RegistComponentMediator.SHOW_NOTE);
+				LoginProxy.lastSenceMedClass=null;
+				sendNotification(PkComponentMediator.SHOW_NOTE);
 			};
 			sendNotification(DESTROY_NOTE);
 		}

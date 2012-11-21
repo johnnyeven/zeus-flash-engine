@@ -11,11 +11,14 @@ package view.group
 	import flash.events.MouseEvent;
 	
 	import proxy.group.GroupProxy;
+	import proxy.groupFight.GroupFightProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.components.Button;
 	import ui.components.Label;
 	import ui.core.Component;
+	
+	import vo.group.GroupListVo;
 	
     public class GroupComponent extends Component
     {
@@ -74,6 +77,11 @@ package view.group
 		 * 公告
 		 */		
 		public var gongGaoText:Label;
+		
+		public var star1:Sprite;
+		public var star2:Sprite;
+		public var star3:Sprite;
+		public var star4:Sprite;
 
 		public var downMc:Sprite;
 		public var upMc:Sprite;
@@ -81,14 +89,13 @@ package view.group
 		
 		private var _current_warship:int=1;
 		
-		private var groupProxy:GroupProxy;
 		private var userProxy:UserInfoProxy;
         public function GroupComponent()
         {
             super(ClassUtil.getObject("view.group.GroupSkin"));
 			
-			groupProxy=ApplicationFacade.getProxy(GroupProxy);
 			userProxy=ApplicationFacade.getProxy(UserInfoProxy);
+			
 			
 			buChongZhanJiBtn=createUI(Button,"buchongzhanji_btn");
 			chaKanTuanYuanBtn=createUI(Button,"chakantuanyuan_btn");
@@ -107,12 +114,18 @@ package view.group
 			timeText=createUI(Label,"time_tf");
 			gongGaoText=createUI(Label,"gonggao_tf");
 			
+			star1=getSkin("star1");
+			star2=getSkin("star2");
+			star3=getSkin("star3");
+			star4=getSkin("star4");
+			
 			downMc=getSkin("down_mc");
 			upMc=getSkin("up_mc");
 			
 			
 			sortChildIndex();
-			upData();
+			
+			star1.alpha=star2.alpha=star3.alpha=star4.alpha=0.5;
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closeClickHandler);
 			chaKanTuanYuanBtn.addEventListener(MouseEvent.CLICK,lookMemberHandler);
@@ -130,9 +143,18 @@ package view.group
 			dispatchEvent(new GroupEvent(GroupEvent.BUCHONG_EVENT));
 		}
 		
-		public function upData():void
+		public function upData(groupInfoVo:GroupListVo,bool1:Boolean,bool2:Boolean,bool3:Boolean,bool4:Boolean):void
 		{
-			if(groupProxy.groupInfoVo.username==userProxy.userInfoVO.nickname)
+			if(bool1)
+				star1.alpha=1;
+			if(bool2)
+				star2.alpha=1;
+			if(bool3)
+				star3.alpha=1;
+			if(bool4)
+				star4.alpha=1;
+			
+			if(groupInfoVo.username==userProxy.userInfoVO.nickname)
 			{
 				isGroupLeader();
 			}else
@@ -140,18 +162,18 @@ package view.group
 				notGroupLeader();
 			}
 			
-			moneyText.text=groupProxy.groupInfoVo.dark_crystal.toString();
-			chengyuanNumText.text=groupProxy.groupInfoVo.peopleNum.toString();
-			controlledNumText.text=groupProxy.groupInfoVo.max_warship.toString();
-			jobText.text=groupProxy.groupInfoVo.job;
-			current_warship=groupProxy.groupInfoVo.current_warship;
-			junTuanZhangText.text=groupProxy.groupInfoVo.username;
-			topText.text="top"+groupProxy.groupInfoVo.rank;
-			groupNameText.text=groupProxy.groupInfoVo.groupname;
-			timeText.text="["+DateFormatter.formatterTimeNYR(groupProxy.groupInfoVo.current_time)+"]";
-			if(groupProxy.groupInfoVo.desc!="")
+			moneyText.text=groupInfoVo.dark_crystal.toString();
+			chengyuanNumText.text=groupInfoVo.peopleNum.toString();
+			controlledNumText.text=groupInfoVo.max_warship.toString();
+			jobText.text=groupInfoVo.job;
+			current_warship=groupInfoVo.current_warship;
+			junTuanZhangText.text=groupInfoVo.username;
+			topText.text="top"+groupInfoVo.rank;
+			groupNameText.text=groupInfoVo.groupname;
+			timeText.text="["+DateFormatter.formatterTimeNYR(groupInfoVo.current_time)+"]";
+			if(groupInfoVo.desc!="")
 			{
-				gongGaoText.text=groupProxy.groupInfoVo.desc;
+				gongGaoText.text=groupInfoVo.desc;
 			}else
 			{
 				gongGaoText.text=MultilanguageManager.getString("gonggao");

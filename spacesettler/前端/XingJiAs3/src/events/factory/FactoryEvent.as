@@ -112,6 +112,7 @@ package events.factory
 			
 		
 		private var _item:FactoryItem_1Component;
+		
 
 		private var _type:String;
 		public function FactoryEvent(type:String,item:FactoryItem_1Component=null,qiangHuatype:String=null)

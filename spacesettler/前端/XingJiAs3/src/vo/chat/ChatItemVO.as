@@ -11,19 +11,34 @@ package vo.chat
 	public class ChatItemVO extends ValueObject
 	{
 		/**
-		 *玩家ID
+		 *玩家自己ID
 		 */	
-		public var playerID:String = "";
+		public var myID:String = "";
 		
 		/**
-		 *玩家名字
+		 *玩家自己名字
 		 */	
-		public var playerName:String = "";
+		public var myName:String = "";
 		
 		/**
 		 *玩家VIP
 		 */	
-		public var vipLv:int;
+		public var myVIP:int;
+		
+		/**
+		 *其他玩家ID
+		 */	
+		public var otherID:String = "";
+		
+		/**
+		 *其他玩家名字
+		 */	
+		public var otherName:String = "";
+		
+		/**
+		 *其他玩家VIP
+		 */	
+		public var otherVIP:int;
 		
 		/**
 		 *军团ID 
@@ -34,6 +49,10 @@ package vo.chat
 		 *聊天频道
 		 */		
 		public var channel:String;
+		/**
+		 *当前自己设置的通道
+		 */		
+		public var mySetChannel:String;
 		
 		/**
 		 *时间戳

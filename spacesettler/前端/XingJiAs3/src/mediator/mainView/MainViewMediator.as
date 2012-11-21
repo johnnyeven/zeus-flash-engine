@@ -1,15 +1,19 @@
 package mediator.mainView
 {
+    import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.StringUtil;
     
     import controller.EnterMainSenceViewCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.plantioid.ShowPlantioidComponentMediatorCommand;
+    import controller.task.TaskCommand;
     
+    import enum.BuildTypeEnum;
     import enum.SenceTypeEnum;
     
     import events.buildingView.ZhuJiDiEvent;
     import events.friendList.FriendListEvent;
+    import events.talk.ChatEvent;
     import events.talk.TalkEvent;
     
     import flash.events.Event;
@@ -22,10 +26,13 @@ package mediator.mainView
     import mediator.cangKu.CangkuPackageViewComponentMediator;
     import mediator.email.EmailComponentMediator;
     import mediator.friendList.EnemyListComponentMediator;
+    import mediator.friendList.ViewIdCardComponentMediator;
+    import mediator.giftBag.GiftBagViewComponentMediator;
     import mediator.group.GroupComponentMediator;
     import mediator.group.NotJoinGroupComponentMediator;
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.plantioid.PlantioidComponentMediator;
+    import mediator.prompt.PromptCloseMediator;
     import mediator.ranking.RankingComponentMediator;
     import mediator.shangCheng.ShangChengComponentMediator;
     import mediator.systemView.SystemComponentMediator;
@@ -35,13 +42,16 @@ package mediator.mainView
     
     import proxy.BuildProxy;
     import proxy.allView.AllViewProxy;
+    import proxy.friendList.FriendProxy;
     import proxy.group.GroupProxy;
     import proxy.rankingProxy.RankingProxy;
+    import proxy.taskGift.GiftBagProxy;
     import proxy.userInfo.UserInfoProxy;
     
     import view.mainView.MainViewComponent;
     
     import vo.GlobalData;
+    import vo.userInfo.UserInfoVO;
 
     /**
      *游戏主界面
@@ -63,6 +73,21 @@ package mediator.mainView
         public static const HIDE_RIGHT_VIEW_NOTE:String = "HIDE_RIGHT_VIEW_NOTE" + NAME;
 		
         public static const SHOW_RIGHT_VIEW_NOTE:String = "SHOW_RIGHT_VIEW_NOTE" + NAME;
+
+        public static const HIDE_RENWU_VIEW_NOTE:String = "HIDE_RENWU_VIEW_NOTE" + NAME;
+		
+        public static const SHOW_RENWU_VIEW_NOTE:String = "SHOW_RENWU_VIEW_NOTE" + NAME;
+		/**
+		 * 新邮件提示
+		 */		
+		public static const SHOW_NEW_EMAIL_TIPS_NOTE:String = "showNewEmailTips" + NAME +"Note";
+		/**
+		 * 礼包提示
+		 */		
+		public static const SHOW_GIFT_TIPS_NOTE:String = "showGiftTips" + NAME +"Note";
+		
+		public static const SET_PLANEBTN_NOTE:String = "setPlaneBtn" + NAME +"Note";
+		
 		
         private var allViewProxy:AllViewProxy;
 
@@ -85,6 +110,13 @@ package mediator.mainView
 			buildProxy = getProxy(BuildProxy);
             id = userInforProxy.userInfoVO.id;
 
+			if(userInforProxy.userInfoVO.received_daily_rewards!="" && userInforProxy.userInfoVO.received_daily_rewards=="false")
+				comp.prompComp.gift.visible = true;
+			if(userInforProxy.userInfoVO.received_continuous_rewards!="" && userInforProxy.userInfoVO.received_continuous_rewards=="false")
+				comp.prompComp.gift.visible = true;
+			if(userInforProxy.userInfoVO.received_online_rewards!="" && userInforProxy.userInfoVO.received_online_rewards=="false")
+				comp.prompComp.gift.visible = true;
+			
             comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT, rongYuHandler);
             comp.addEventListener(ZhuJiDiEvent.SYSTEM_EVENT, systemHandler);
             comp.addEventListener(ZhuJiDiEvent.ALLVIEW_EVENT, zhongLanHandler);
@@ -97,12 +129,19 @@ package mediator.mainView
 			comp.addEventListener(ZhuJiDiEvent.GROUP_EVENT,groupHandler);
 			
 			comp.addEventListener(FriendListEvent.ENEMY_LIST_EVENT,enemyListHandler);
-			comp.addEventListener(ZhuJiDiEvent.EMAIL_EVENT,emailHAndler);
+			comp.addEventListener(FriendListEvent.CHECK_PLAYER_ID_CARD_EVENT,showCardHandler);
 			
+			comp.addEventListener(ZhuJiDiEvent.JOB_EVENT,jobHandler);
+			comp.addEventListener(ZhuJiDiEvent.EMAIL_EVENT,emailHAndler);
+			comp.addEventListener(ZhuJiDiEvent.GIFT_EVENT,giftHandler);
+			
+			comp.prompComp.visible=true;
 			//查看军官证
 			comp.addEventListener(TalkEvent.CHECK_ID_CARD_EVENT,checkIdCardHandler);
 			//私聊
-			comp.addEventListener(TalkEvent.PRIVATE_TALK_EVENT,privateTalkHandler);
+			comp.addEventListener(ChatEvent.PRIVATE_CHAT_BY_CHAT_COMPONENT,privateTalkHandler);
+			//复制聊天信息到剪切板
+			comp.addEventListener(TalkEvent.COPY_INFOR_EVENT,copyHandler);
         }
 		
         /**
@@ -114,7 +153,10 @@ package mediator.mainView
         {
             return [ DESTROY_NOTE,HIDE_RIGHT_VIEW_NOTE,
                      SHOW_TOP_VIEW_NOTE, HIDE_TOP_VIEW_NOTE,
-					 SHOW_RIGHT_VIEW_NOTE];
+					 SHOW_RIGHT_VIEW_NOTE,SET_PLANEBTN_NOTE,
+					 SHOW_NEW_EMAIL_TIPS_NOTE,
+					 SHOW_GIFT_TIPS_NOTE,HIDE_RENWU_VIEW_NOTE,
+					 SHOW_RENWU_VIEW_NOTE];
         }
 
         /**
@@ -133,7 +175,7 @@ package mediator.mainView
                 }
                 case SHOW_TOP_VIEW_NOTE:
                 {
-                    comp.topComp.visible = true;
+                    comp.topComp.visible = true;					
                     break;
                 }
                 case HIDE_TOP_VIEW_NOTE:
@@ -151,6 +193,31 @@ package mediator.mainView
                     comp.controlComp.visible = true;
                     break;
                 }
+				case SHOW_NEW_EMAIL_TIPS_NOTE:
+				{
+					comp.prompComp.mail.visible = true;
+					break;
+				}
+				case SHOW_GIFT_TIPS_NOTE:
+				{
+					comp.prompComp.gift.visible = true;
+					break;
+				}
+				case HIDE_RENWU_VIEW_NOTE:
+				{
+					comp.prompComp.visible=false;
+					break;
+				}
+				case SHOW_RENWU_VIEW_NOTE:
+				{
+					comp.prompComp.visible=true;
+					break;
+				}
+				case SET_PLANEBTN_NOTE:
+				{
+					comp.controlComp.setPlaneBtn();
+					break;
+				}
             }
         }
 
@@ -181,6 +248,7 @@ package mediator.mainView
 		
         public override function show():void
         {
+			Main.removeBG();
             MainMediator(getMediator(MainMediator)).component.addView(uiComp);
         }
 
@@ -203,13 +271,24 @@ package mediator.mainView
         {
             if (GlobalData.currentSence == SenceTypeEnum.PLANT)
                 return;
-
+			sendNotification(HIDE_RENWU_VIEW_NOTE);
             sendNotification(PlantioidComponentMediator.SHOW_NOTE);
 			buildProxy.isBuild=false;
         }
 
         protected function cangKuHandler(event:Event):void
         {
+			if(!buildProxy.hasBuild(BuildTypeEnum.CANGKU))
+			{
+				var obj:Object={}
+				obj.showLable=MultilanguageManager.getString("notHasCangKu");
+				sendNotification(PromptCloseMediator.SHOW_NOTE,obj);
+				return;
+			}
+
+			var userID:String=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO.player_id;
+//			var giftProxy:giftBagProxy=getProxy(giftBagProxy);
+//			giftProxy.checkReward(userID);
             sendNotification(CangkuPackageViewComponentMediator.SHOW_NOTE);
         }
 
@@ -223,6 +302,9 @@ package mediator.mainView
         {
             if (GlobalData.currentSence == SenceTypeEnum.MAIN)
                 return;
+			
+			Main.addBG();
+			sendNotification(SHOW_RENWU_VIEW_NOTE);
             sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
         }
 		
@@ -253,9 +335,25 @@ package mediator.mainView
 			sendNotification(EnemyListComponentMediator.SHOW_NOTE,userInforProxy.userInfoVO.player_id);
 		}
 		
+		protected function jobHandler(event:Event):void
+		{
+			var userInfoVO:UserInfoVO=userInforProxy.userInfoVO;
+			var obj:Object={index:userInfoVO.index, isFinished:userInfoVO.is_finished ,isRewarded:userInfoVO.is_rewarded};
+			sendNotification(TaskCommand.ADDTASKINFO_COMMAND,obj);
+		}
+		
 		private function emailHAndler(event:ZhuJiDiEvent):void
 		{
 			sendNotification(EmailComponentMediator.SHOW_NOTE);
+		}
+		
+		private function giftHandler(event:ZhuJiDiEvent):void
+		{
+			var giftProxy:GiftBagProxy=getProxy(GiftBagProxy);
+			giftProxy.checkReward(function ():void
+			{
+				sendNotification(GiftBagViewComponentMediator.SHOW_NOTE);
+			});
 		}
 		
 		private function checkIdCardHandler(event:TalkEvent):void
@@ -263,9 +361,24 @@ package mediator.mainView
 			sendNotification(ChatViewMediator.SHOW_CHECKID,event.talk);
 		}
 		
-		private function privateTalkHandler(event:TalkEvent):void
+		private function privateTalkHandler(event:ChatEvent):void
 		{
-			sendNotification(ChatViewMediator.SHOW_PRIVATE_TALK,event.talk);
+			sendNotification(ChatViewMediator.SHOW_PRIVATE_TALK,event.obj);
+		}
+		
+		private function showCardHandler(evnet:FriendListEvent):void
+		{
+			var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
+			var friendProxy:FriendProxy=getProxy(FriendProxy);
+			friendProxy.checkOtherPlayer(userInfoVO.player_id,function():void
+			{
+				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
+			});
+		}
+
+		private function copyHandler(event:TalkEvent):void
+		{
+			sendNotification(ChatViewMediator.SHOW_COPY_INFOR,event.talk);
 		}
 		
     }

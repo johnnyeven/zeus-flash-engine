@@ -5,7 +5,9 @@
 
     <!-- 获取服务器列表 -->
     <serverList channel="1">
-    	<url>http://42.121.82.226/UserAgent/websrv/servers/server_list</url>
+    	<url>http://42.120.32.1/UserAgent/websrv/servers/server_list</url>
     	<game_id>B</game_id>
+    	
+    	<recordURL>http://42.120.32.1/UserAgent/websrv/logging/track</recordURL>
     </serverList>
 </config>

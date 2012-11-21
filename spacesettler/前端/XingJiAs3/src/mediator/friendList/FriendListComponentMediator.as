@@ -40,6 +40,8 @@ package mediator.friendList
 		public function FriendListComponentMediator()
 		{
 			super(NAME, new FriendListComponent());
+			comp.med=this;
+			level = 1;
 			friendProxy = getProxy(FriendProxy);
 			userInforProxy = getProxy(UserInfoProxy);
 			
@@ -47,8 +49,6 @@ package mediator.friendList
 			comp.addEventListener(FriendListEvent.SEARCH_PLATER_EVENT,searchPlayerHandler);
 			comp.addEventListener(FriendListEvent.RENEW_FRIENF_LIST_EVENT,renewFriendListHandler);
 			
-			comp.addEventListener("destoryshangSprite",destoryshangSpriteHandler);
-			comp.addEventListener("destoryxiaSprite",destoryxiaSpriteHandler);
 			comp.addEventListener(FriendListEvent.CHECK_PLAYER_ID_CARD_EVENT,checkPlayerIdCardHandler);
 			comp.addEventListener(FriendListEvent.DELETED_FRIEND_INFOR_EVENT,deletedFriendHandler);
 			comp.addEventListener(FriendListEvent.CHAT_WITH_FRIEND_EVENT,privateChatWithFriendHandler);
@@ -111,6 +111,7 @@ package mediator.friendList
 		
 		private function searchPlayerHandler(event:FriendListEvent):void
 		{
+			friendProxy.searchPlayerList.length = 0;
 			sendNotification(SearchPlayerComponentMediator.SHOW_NOTE);
 		}
 		
@@ -120,20 +121,16 @@ package mediator.friendList
 			friendProxy.getFriendList(userInforProxy.userInfoVO.player_id);
 		}
 		
-		private function destoryshangSpriteHandler(event:Event):void
-		{
-			comp.shangSprite.visible = false;
-			TweenLite.to(comp.shangSprite,0.5,{x:0,y:-330});
-		}
-		
-		private function destoryxiaSpriteHandler(event:Event):void
-		{
-			comp.xiaSprite.visible = false;
-			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
-		}
-		
 		private function checkPlayerIdCardHandler(event:FriendListEvent):void
 		{
+			if((event.obj as FriendInfoVo).componentInforType == "shangComponentSkin")
+			{
+				comp.shangRemove_clickHandler(null);
+			}
+			else if((event.obj as FriendInfoVo).componentInforType == "xiaComponentSkin")
+			{
+				comp.xiaRemove_clickHandler(null);
+			}
 			friendProxy.checkOtherPlayer((event.obj as FriendInfoVo).id,function():void
 			{
 				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
@@ -142,12 +139,27 @@ package mediator.friendList
 		
 		private function deletedFriendHandler(event:FriendListEvent):void
 		{
-			
+			if((event.obj as FriendInfoVo).componentInforType == "shangComponentSkin")
+			{
+				comp.shangRemove_clickHandler(null);
+			}
+			else if((event.obj as FriendInfoVo).componentInforType == "xiaComponentSkin")
+			{
+				comp.xiaRemove_clickHandler(null);
+			}
 			friendProxy.deletedFriend((event.obj as FriendInfoVo).id);
 		}
 		
 		private function privateChatWithFriendHandler(event:FriendListEvent):void
 		{
+			if((event.obj as FriendInfoVo).componentInforType == "shangComponentSkin")
+			{
+				comp.shangRemove_clickHandler(null);
+			}
+			else if((event.obj as FriendInfoVo).componentInforType == "xiaComponentSkin")
+			{
+				comp.xiaRemove_clickHandler(null);
+			}
 			//私聊
 			sendNotification(ChatViewMediator.SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST,event.obj);
 		}

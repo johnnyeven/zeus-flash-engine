@@ -5,6 +5,7 @@ package view.scienceResearch
 	import events.scienceResearch.ScienceResearchEvent;
 	
 	import flash.events.MouseEvent;
+	import flash.utils.clearInterval;
 	
 	import mx.binding.utils.BindingUtils;
 	
@@ -62,7 +63,7 @@ package view.scienceResearch
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closeBtn_clickHAndler);
         }
-		
+
 		private function setData(arr:Array):void
 		{
 			while(container.num)
@@ -83,5 +84,27 @@ package view.scienceResearch
 		{
 		  dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.CLOSE_EVENT,0));
 		}
+		
+		public function searchContainer(str:String,callBack:Function):void
+		{ 
+			var invertID:int=interval(function():void
+			{
+				for(var i:int=0;i<container.num;i++)
+				{
+					var item:ScienceResearchItem=container.getAt(i) as ScienceResearchItem;
+					if(item.data.scienceName==str)
+					{
+						if(callBack!=null)
+						{
+							clearInterval(invertID);
+							callBack(item);
+						}
+						break;
+					}
+				}
+			},1000);
+		}
+		
+		
 	}
 }

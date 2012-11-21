@@ -3,6 +3,9 @@ package proxy.crystalSmelter
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	
+	import controller.task.TaskCompleteCommand;
+	
+	import enum.TaskEnum;
 	import enum.command.CommandEnum;
 	
 	import mediator.prompt.PromptMediator;
@@ -45,6 +48,10 @@ package proxy.crystalSmelter
 			}
 			
 			userInforProxy.updateServerData(data);
+			if(userInforProxy.userInfoVO.index==TaskEnum.index5)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
 		}
 	}
 }

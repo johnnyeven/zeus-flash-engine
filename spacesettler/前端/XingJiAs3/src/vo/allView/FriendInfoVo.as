@@ -12,6 +12,18 @@ package vo.allView
 	public class FriendInfoVo extends ValueObject
 	{
 		/**
+		 *从上元件或下元件发送的消息
+		 */
+		public var componentInforType:String = "";
+		/**
+		 *好友标记
+		 */
+		public var isMyFriend:Boolean = false;
+		/**
+		 *敌人标记
+		 */
+		public var isMyEnemy:Boolean = false;
+		/**
 		 *好友ID 
 		 */		
 		public var id:String;
@@ -30,6 +42,15 @@ package vo.allView
 		 *好友的VIP等级 
 		 */		
 		public var vip_level:int=0;
+		
+		/**
+		 *VIP开始时间
+		 */		
+		public var vip_start_at:String;
+		/**
+		 *VIP过期时间
+		 */		
+		public var vip_expired_at:String;
 		
 		/**
 		 *科技时代
@@ -138,11 +159,6 @@ package vo.allView
 		public var total_orders:int;
 		
 		/**
-		 *
-		 */		
-		public var vip_expired_at:int;
-		
-		/**
 		 *军衔
 		 */		
 		public var military_rank:int;
@@ -246,12 +262,6 @@ package vo.allView
 		 *玩家军团信息
 		 */		
 		public var groupListVO:GroupListVo = new GroupListVo();
-		
-		/**
-		 *是否是我的好友
-		 */	
-		public var isMyFriend:Boolean = false;
-		
 		
 		public function FriendInfoVo()
 		{

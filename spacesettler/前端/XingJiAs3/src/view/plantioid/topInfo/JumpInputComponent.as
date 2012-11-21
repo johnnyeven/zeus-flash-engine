@@ -2,7 +2,7 @@ package view.plantioid.topInfo
 {
     import flash.display.DisplayObjectContainer;
     import flash.text.TextField;
-
+    
     import ui.core.Component;
 
     /**
@@ -31,7 +31,7 @@ package view.plantioid.topInfo
 
 		public function get enterX():int
 		{
-			return int(xTF.text);
+			return Math.max(1,int(xTF.text));
 		}
 
 		public function set enterX(value:int):void
@@ -41,7 +41,7 @@ package view.plantioid.topInfo
 
 		public function get enterY():int
 		{
-			return int(yTF.text);
+			return Math.max(1,int(yTF.text));
 		}
 
 		public function set enterY(value:int):void

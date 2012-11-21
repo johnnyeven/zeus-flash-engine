@@ -98,7 +98,7 @@ package mediator.buildingView
 		 * @return
 		 *
 		 */
-		protected function get comp():CreateViewComponent
+		public function get comp():CreateViewComponent
 		{
 			return viewComponent as CreateViewComponent;
 		}

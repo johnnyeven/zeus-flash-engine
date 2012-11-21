@@ -3,9 +3,13 @@ package proxy.group
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	
+	import controller.task.TaskCompleteCommand;
+	
+	import enum.TaskEnum;
 	import enum.command.CommandEnum;
 	
 	import mediator.group.GroupComponentMediator;
+	import mediator.mainView.ChatViewMediator;
 	import mediator.prompt.PromptMediator;
 	import mediator.prompt.PromptSureMediator;
 	
@@ -305,6 +309,8 @@ package proxy.group
 			auditArr=list;
 			//控制军团的聊天(聊天是单独的服务器）
 //			chatProxy.loginChat();
+			groupInfoVo.peopleNum+=1;
+			sendNotification(GroupComponentMediator.CHANGE_NOTE);
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -340,7 +346,8 @@ package proxy.group
 			}
 			
 			memberArr=list;
-			
+			groupInfoVo.peopleNum=memberArr.length;
+			sendNotification(GroupComponentMediator.CHANGE_NOTE);
 			//控制军团的聊天(聊天是单独的服务器）
 //			chatProxy.loginChat();
 			if(callBcakFunction!=null)
@@ -368,7 +375,6 @@ package proxy.group
 				callBcakFunction=null;
 				return;
 			}
-			
 			groupInfoVo.current_time=data.current_time;
 			
 			groupInfoVo.broken_crystal=data.legion.broken_crystal;
@@ -402,10 +408,12 @@ package proxy.group
 				
 //			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userProxy.userInfoVO.legion_id=data.legion.id;
+			userProxy.userInfoVO.dark_crystal=data.dark_crystal;
+			serach();
 			
-			sendNotification(GroupComponentMediator.CHANGE_NOTE);
 			//控制军团的聊天(聊天是单独的服务器）
-//			chatProxy.loginChat();
+//			sendNotification(ChatViewMediator.ADD_INTO_ARMY_GROUP);
+//			chatProxy.connect();
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -475,7 +483,10 @@ package proxy.group
 			}
 			
 			//控制军团的聊天(聊天是单独的服务器）
+			sendNotification(ChatViewMediator.ADD_INTO_ARMY_GROUP);
 			chatProxy.connect();
+			serach();
+			
 		}
 		//解散和退出军团 数据处理
 		private function dissMissAndQuitGroupReputation(data:*):void
@@ -492,7 +503,9 @@ package proxy.group
 			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userProxy.userInfoVO.legion_id=null;
 			//控制军团的聊天(聊天是单独的服务器）
+			sendNotification(ChatViewMediator.GO_OUT_ARMY_GROUP);
 			chatProxy.connect();
+			
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -500,6 +513,14 @@ package proxy.group
 			}
 			
 			
+		}
+		
+		private function serach():void
+		{
+			if(userProxy.userInfoVO.index==TaskEnum.index25)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
 		}
 	}
 }

@@ -3,6 +3,8 @@ package events.buildingView
 	import flash.events.Event;
 	import flash.geom.Point;
 	
+	import view.buildingView.SelectorViewComponent;
+	
 	/**
 	 *登陆
 	 * @author zn
@@ -24,13 +26,15 @@ package events.buildingView
 		public static const LEFT_EVEMT:String = "leftEvent";
 		public static const CLOSE_EVENT:String = "CloseEvent";
 
+		public static const SEND_STAR_EVENT:String = "send_star_event";
 		private var _buildType:int;
 		
-		
-		public function AddViewEvent(type:String,buildType:int=0)
+		private var _comp:SelectorViewComponent;
+		public function AddViewEvent(type:String,buildType:int=0,comp:SelectorViewComponent=null)
 		{
 			super(type, false, false);
 			_buildType=buildType;
+			_comp=comp;
 		}
 
 		public override function clone():Event
@@ -47,6 +51,17 @@ package events.buildingView
 		{
 			return _buildType;
 		}
+
+		public function get comp():SelectorViewComponent
+		{
+			return _comp;
+		}
+
+		public function set comp(value:SelectorViewComponent):void
+		{
+			_comp = value;
+		}
+
 
 	}
 }

@@ -31,6 +31,8 @@
     <loaderAllView>正在加载总览界面</loaderAllView>
     <loaderRongYu>正在加载荣誉界面</loaderRongYu>
     <NOT_ENOUGH_POWER>电能不足</NOT_ENOUGH_POWER>
+    <PACKAGE_FULL_FOR_UPGRADE>包满了升级</PACKAGE_FULL_FOR_UPGRADE>
+    <notEnoughInfo>升级该建筑后会导致你的电量不足，电量不足将会使你的基地和要塞的采集功能停止运作，是否还要升级？</notEnoughInfo>
     <INSUFFICIENT_RESOURCES>资源不足</INSUFFICIENT_RESOURCES>
     <NOT_REACHED_BUILDING_UPGRADE_CONDITIONS>没有达到升级条件，无法进行升级</NOT_REACHED_BUILDING_UPGRADE_CONDITIONS>
     <WRONG_QUERY_TYPE>查询类型错误，请重试</WRONG_QUERY_TYPE>
@@ -76,6 +78,7 @@
     <ACCOUNT_UPDATE_FAILED>更新账户失败</ACCOUNT_UPDATE_FAILED>
     <INVALID_BUILDING_ID>建筑ID错误</INVALID_BUILDING_ID>
     <ITEM_ALREADY_IN_USE>物品已使用</ITEM_ALREADY_IN_USE>
+    <ACCOUNT_ERROR_DUPLICATE>用户名已经被使用！</ACCOUNT_ERROR_DUPLICATE>
     
 	<!--—————————————————————————————————————————————-->
     <buildSelectorFieldUp>升级</buildSelectorFieldUp>
@@ -102,6 +105,7 @@
     <useItemclose>图纸学习条件不足！</useItemclose>
     <useItem>道具使用成功！</useItem>
     <addItem>仓库空间购买成功！</addItem>
+    <notHasCangKu>未修建仓库，请先修建仓库再使用此功能！</notHasCangKu>
 	
     <timeMiao>秒</timeMiao>
     <speedTimeInfo>使用时间机器完成本任务需花费</speedTimeInfo>
@@ -113,16 +117,43 @@
 	<buySuccess>兑换成功！</buySuccess>
 	
 	<numOfYaoSai>要塞</numOfYaoSai>
+	<buffType1>水晶产量增加</buffType1>
+	<buffType2>氚气产量增加</buffType2>
+	<buffType3>暗物质产量增加</buffType3>
+	<buffType>增益类型：</buffType>
+	
+    <!--———————————————————————条件不足 ——————————————————————-->
+    <broken_crysta>暗物质：</broken_crysta>
+    <crystal>水晶矿：</crystal>
+    <tritium>氚气：</tritium>
+    <power_supply>电能：</power_supply>
+    <center_build>基地中心：</center_build>
+    <science>科技：</science>
+    <science_build>科技中心：</science_build>
+    <buy_click>点击兑换</buy_click>
+    <up_science>点击升级</up_science>
+    <up_center>升级基地</up_center>
+    <produce_click>点击生产</produce_click>
+    <build_click>点击建造</build_click>
+    <study_click>点击研究</study_click>
+    <ji_guang_ke_ji>激光科技：</ji_guang_ke_ji>
+    <dian_ci_ke_ji>电磁科技：</dian_ci_ke_ji>
+    <an_neng_ke_ji>暗能科技：</an_neng_ke_ji>
+    <shuijingbuzu>水晶数量不足无法熔炼！</shuijingbuzu>
+    
+    
+    <dark_crystal>暗能水晶</dark_crystal>
+    
     <!--———————————————————————小行星 ——————————————————————-->
     <plantStateNormalStr>正常</plantStateNormalStr>
     <plantStateBaoFuStr>不可攻击</plantStateBaoFuStr>
     <plantStateBaoFuZhong>保护中</plantStateBaoFuZhong>
     <plantStateKeGongJi>可攻击</plantStateKeGongJi>
     <plantStateKeZhanLing>可占领</plantStateKeZhanLing>
-
-
     <timeXiaoShi>小时</timeXiaoShi>
-
+    <plantioidSwicthPointXY>切换坐标</plantioidSwicthPointXY>
+	<plantJumpMaxTips>该区域还未被探测,将跳转到已探测的最大区域</plantJumpMaxTips>
+	<plantDragInfoTips>按鼠标左键拖拽，移动可视区域</plantDragInfoTips>
     <!--———————————————————————挂件描述——————————————————————-->
     <guanJianDes_value>评分</guanJianDes_value>
     <guanJianDes_level>等级</guanJianDes_level>
@@ -181,6 +212,28 @@
 	<jiesanchenggong>解散军团成功！</jiesanchenggong>
 	<jiesanchenggong>解散军团成功！</jiesanchenggong>
 	<desc>这家伙很懒，什么也没留下</desc>
+	<lingqu>领取成功</lingqu>
+	<lingquNum>此次领取军团战舰</lingquNum>
+	<NOT_ALLOWED_TO_GET_WARSHIP>军团禁止领取战舰！</NOT_ALLOWED_TO_GET_WARSHIP>
+
+	<bunengtichu>军团长不能踢除自己！</bunengtichu>
+	<bunengjiangji>军团长不能降级，请先让出军团！</bunengjiangji>
+
+	<armyGroupTitle>警告</armyGroupTitle>
+	<armyGroupInfor>自己不能给自己发邮件！</armyGroupInfor>
+
+	<!--———————————————————————军团战 ——————————————————————-->
+	<wuziyuan>此星球无资源</wuziyuan>
+	<wurenzhanling>此星球无人占领</wurenzhanling>
+	<NO_WARSHIP_ON_PLANET>舰队不足</NO_WARSHIP_ON_PLANET>
+	<tishi>我军</tishi>
+	<tishi1>架战机对</tishi1>
+	<tishi2>行星发起了攻击，击毁敌机</tishi2>
+	<tishi3>架！我军损失战机</tishi3>
+	<tishi4>架！</tishi4>
+	<tishi5>成功占领该行星！</tishi5>
+	<naijiuweiling>战车已经损毁，无法进入战场</naijiuweiling>
+	
 	
 	<!--———————————————————————军工厂 ——————————————————————-->
 	<huishou>战车回收</huishou>
@@ -191,19 +244,57 @@
 	<!--———————————————————————聊天 ——————————————————————-->
 	<CC_ERROR_INVALID_CHECKSUM>无效的校验</CC_ERROR_INVALID_CHECKSUM>
 	<CC_ERROR_INVALID_DIGIEST>无效的数据</CC_ERROR_INVALID_DIGIEST>
+	<titleInChat>重要提示</titleInChat>
+	<inforInChat>您暂未加入军团，请加入后再试！</inforInChat>
+	<canNotCharTips>发送消息太快，请稍后再试</canNotCharTips>
 	
+	<!--———————————————————————邮件 ——————————————————————-->
+	<titleInEmail>警告</titleInEmail>
+	<titleTextNull>邮件标题不能为空！</titleTextNull>
+	<senderLabelNull>发件人名字不能为空！</senderLabelNull>
+	<receiverLabelNull>收件人名字不能为空！</receiverLabelNull>
+	<contentTxtNull>邮件内容不能为空！</contentTxtNull>
+	<successSendEmailTitle>发送成功！</successSendEmailTitle>
+	<successSendEmailInfor>邮件发送成功！</successSendEmailInfor>
+	<scienceLevelTitle>警告</scienceLevelTitle>
+	<scienceLevelInfor>传送附件需要星域通讯科技达到10级！</scienceLevelInfor>
+	<sourceNotEnoughTitle>警告</sourceNotEnoughTitle>
+    <crystalSourceNotEnough>水晶不足！</crystalSourceNotEnough>
+    <tritiumSourceNotEnough>氢氚不足！</tritiumSourceNotEnough>
+    <brokenCrystalSourceNotEnough>暗物质不足！</brokenCrystalSourceNotEnough>
+    <showBagTitle>提示</showBagTitle>
+    <showBagInfor>VIP道具不能邮寄给别人！</showBagInfor>
+    <!--———————————————————————好友和敌人列表 ——————————————————————-->
+    <makeFriendTitle>重要提示</makeFriendTitle>
+    <makeFriendInfor>添加好友成功！</makeFriendInfor>
+    <removeFriendTitle>重要提示</removeFriendTitle>
+    <removeFriendInfor>成功移除该好友！</removeFriendInfor>
 	<!--———————————————————————战场 ——————————————————————-->
+	<enterBattleTitle>重要提示</enterBattleTitle>
+	<enterBattleInfor>请选择一辆战车！</enterBattleInfor>
+	<wei_Xiu_Wan_Cheng_Title>重要提示</wei_Xiu_Wan_Cheng_Title>
+	<wei_Xiu_Wan_Cheng_Title_Infor>战车已修复，快快进入战斗吧！</wei_Xiu_Wan_Cheng_Title_Infor>
+	<notEnoughSourceTitle>重要提示</notEnoughSourceTitle>
+	<notEnoughSourceInfor>暗物质不足,请进行兑换！</notEnoughSourceInfor>
 	<battleJiDi>要塞中心</battleJiDi>
 	<battleCaiKuang>采矿厂</battleCaiKuang>
-	<battleJiXiePaoTa>机械炮塔</battleJiXiePaoTa>
+	<battleJiXiePaoTa>加农炮塔</battleJiXiePaoTa>
 	<battleJiGuangPaoTa>激光炮塔</battleJiGuangPaoTa>
 	<battleDianCiPaoTa>电磁炮塔</battleDianCiPaoTa>
 	<battleAnNengPaoTa>暗能炮塔</battleAnNengPaoTa>
+	<battleTiShi1>时间快要结束，请抓紧时间</battleTiShi1>
 	
 	<battleCaiChu>拆除</battleCaiChu>
 	<battleXingXi>信息</battleXingXi>
 	<battleJiXiePaoTaInfo>机械炮塔</battleJiXiePaoTaInfo>
+	<battleJiXieDescrip>加农炮塔是以实弹做为主要攻击手段的初级防御性炮塔。用于小行星要塞防御，修建不需要花费资源，防御、攻击性能随基地时代等级的提升而加强。</battleJiXieDescrip>
 	<battleJiGuangPaoTaInfo>激光炮塔</battleJiGuangPaoTaInfo>
+	<battleJiGuangDescrip>激光炮塔是以激光做为主要攻击手段的中级防御性炮塔。用于小行星要塞防御，修建需要花费少量资源，防御、攻击性能随基地时代等级的提升而加强。</battleJiGuangDescrip>
 	<battleDianCiPaoTaInfo>电磁炮塔</battleDianCiPaoTaInfo>
+	<battleDianCiDescrip>电磁炮塔是以电磁做为主要攻击手段的高级防御性炮塔。用于小行星要塞防御，修建需要花费一定资源，防御、攻击性能随基地时代等级的提升而加强。</battleDianCiDescrip>
 	<battleAnNengPaoTaInfo>暗能炮塔</battleAnNengPaoTaInfo>
+	<battleAnNengDescrip>暗能炮塔是以暗能做为主要攻击手段的特级防御性炮塔。用于小行星要塞防御，修建需要花费较多资源，防御、攻击性能随基地时代等级的提升而加强。</battleAnNengDescrip>
+	
+	<noNumber>[无]</noNumber>
+	<yaoSaiBelong>[您获得了该要塞的归属权]</yaoSaiBelong>
 </root>

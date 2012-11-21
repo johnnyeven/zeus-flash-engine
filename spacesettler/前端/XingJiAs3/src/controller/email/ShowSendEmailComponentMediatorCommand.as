@@ -10,6 +10,8 @@ package controller.email
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.scienceResearch.ScienceResearchProxy;
 
     /**
      * 发送新邮件
@@ -36,18 +38,23 @@ package controller.email
         {
 			if(_isLoading)
 				return ;
-			
-            var med:SendEmailComponentMediator = getMediator(SendEmailComponentMediator);
-            if (med)
-            {
-				callShow(med);
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("email.swf", MultilanguageManager.getString(""), loaderComplete,true);
-            }
+			var scienceResearchProxy:ScienceResearchProxy;
+			scienceResearchProxy= getProxy(ScienceResearchProxy);
+			scienceResearchProxy.getScienceResearchInfor(function():void
+			{
+				var med:SendEmailComponentMediator = getMediator(SendEmailComponentMediator);
+	            if (med)
+	            {
+					callShow(med);
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("email.swf", MultilanguageManager.getString(""), loaderComplete,true);
+	            }
+			});
+           
         }
 
         /**

@@ -1,5 +1,8 @@
 package mediator.scienceResearch
 {
+	import com.zn.multilanguage.MultilanguageManager;
+	
+	import events.buildingView.BuildEvent;
 	import events.buildingView.ConditionEvent;
 	import events.scienceResearch.SciencePopuEvent;
 	import events.scienceResearch.ScienceResearchEvent;
@@ -7,6 +10,7 @@ package mediator.scienceResearch
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
 	import mediator.buildingView.ConditionViewCompMediator;
+	import mediator.prompt.MoneyAlertComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -15,6 +19,8 @@ package mediator.scienceResearch
 	import proxy.scienceResearch.ScienceResearchProxy;
 	
 	import view.scienceResearch.ScienceResearchComponent;
+	
+	import vo.scienceResearch.ScienceResearchVO;
 
 	/**
 	 *科研
@@ -41,7 +47,7 @@ package mediator.scienceResearch
 			comp.addEventListener(ScienceResearchEvent.INFOR_EVENT,inforHandler);
 			comp.addEventListener(ScienceResearchEvent.RESEARCH_EVENT,researchHAndler);
 			comp.addEventListener(ScienceResearchEvent.GET_DATA_RESULT,getDataHandler);
-			
+			comp.addEventListener(ScienceResearchEvent.SPEED_EVENT,researchSpeedHandler);
 //			comp.addEventListener(SciencePopuEvent.POPU_DATA_EVENT,popuHandler);
 			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,addConditionViewHandler);
 		}
@@ -79,7 +85,7 @@ package mediator.scienceResearch
 		 * @return
 		 *
 		 */
-		protected function get comp():ScienceResearchComponent
+		public function get comp():ScienceResearchComponent
 		{
 			return viewComponent as ScienceResearchComponent;
 		}
@@ -91,8 +97,7 @@ package mediator.scienceResearch
 		}
 		
 		private function researchHAndler(event:ScienceResearchEvent):void
-		{
-			
+		{			
 			scienceResearchProxy.researchUp(event.scienceType);
 		}
 		
@@ -104,6 +109,15 @@ package mediator.scienceResearch
 		private function getDataHandler(event:ScienceResearchEvent):void
 		{
 			scienceResearchProxy.researchReturn(event.scienceType);
+		}
+		
+		private function researchSpeedHandler(event:ScienceResearchEvent):void
+		{
+			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+				count: ScienceResearchVO.SPEEDCOST, okCallBack: function():void
+				{
+					scienceResearchProxy.speedResearchUp(event.eventID);
+				}});
 		}
 		
 		private function addConditionViewHandler(event:ConditionEvent):void

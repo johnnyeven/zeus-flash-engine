@@ -7,6 +7,7 @@ package proxy.timeMachine
 	import enum.BuildTypeEnum;
 	import enum.EventTypeEnum;
 	import enum.command.CommandEnum;
+	import enum.science.ScienceEnum;
 	
 	import flash.net.URLRequestMethod;
 	
@@ -84,6 +85,13 @@ package proxy.timeMachine
 		
 		public function timeMachineInfor(data:Object):void
 		{
+			if (data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				_timeMachineCallBackFunction=null;
+				return;
+			}
+			
 			//建筑事件
 			var buildingsEventsArr:Array = data.base.building_events;
 			//科技事件
@@ -102,10 +110,21 @@ package proxy.timeMachine
 				if(timeMachine.type == EventTypeEnum.BUILDINGEVENTSTYPE)
 				{
 					timeMachine.building_type = totalEventsArr[i].building_type;
+					if(timeMachine.building_type!=BuildTypeEnum.CENTER)
+					{
+						timeMachine.crystalCount = BuildTypeEnum.getCrystalCountByBuildLevel(totalEventsArr[i].level);
+						timeMachine.totalCrystal += BuildTypeEnum.getCrystalCountByBuildLevel(totalEventsArr[i].level);
+					}else
+					{
+						timeMachine.crystalCount = BuildTypeEnum.getCrystalCountByBuildLevel(0,totalEventsArr[i].level);
+						timeMachine.totalCrystal += BuildTypeEnum.getCrystalCountByBuildLevel(0,totalEventsArr[i].level);
+					}
 				}
 				else if(timeMachine.type == EventTypeEnum.RESEARCHEVENTSTYPE)
 				{
 					timeMachine.building_type = totalEventsArr[i].science_type;
+					timeMachine.crystalCount = ScienceEnum.MONEY;
+					timeMachine.totalCrystal += ScienceEnum.MONEY;
 				}
 				timeMachine.level = totalEventsArr[i].level;
 				timeMachine.current_time = totalEventsArr[i].current_time;
@@ -114,8 +133,7 @@ package proxy.timeMachine
 				timeMachine.finishTime = (timeMachine.finish_time - timeMachine.current_time)*1000 + DateFormatter.currentTime;
 				timeMachine.upTotalTome = timeMachine.finish_time - timeMachine.start_time;
 				timeMachine.remainingTime = timeMachine.upTotalTome - (timeMachine.current_time - timeMachine.start_time);
-				timeMachine.crystalCount = BuildTypeEnum.getCrystalCountByBuildLevel(totalEventsArr[i].level);
-				timeMachine.totalCrystal += BuildTypeEnum.getCrystalCountByBuildLevel(totalEventsArr[i].level);
+				
 				arr.push(timeMachine);
 			}
 			timeMachineList = arr;

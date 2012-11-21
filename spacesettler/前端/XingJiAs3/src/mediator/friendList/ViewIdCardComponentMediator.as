@@ -2,6 +2,10 @@ package mediator.friendList
 {
 	import events.friendList.FriendListEvent;
 	
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import flash.utils.setTimeout;
+	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
 	import mediator.allView.XingXingComponentMediator;
@@ -29,9 +33,13 @@ package mediator.friendList
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
 		private var friendProxy:FriendProxy;
+		private var obj:Object;
 		public function ViewIdCardComponentMediator()
 		{
 			super(NAME, new ViewIdCardComponent());
+			comp.med=this;
+			level=3;
+			
 			friendProxy = getProxy(FriendProxy);
 			comp.addEventListener("closeIDCardComponent",closeHandler);
 			comp.addEventListener(FriendListEvent.CHECK_FORT_BY_ID_CARD_EVENT,checkFortHandler);
@@ -89,11 +97,15 @@ package mediator.friendList
 
 		private function sendEmailHandler(event:FriendListEvent):void
 		{
+			obj=event.obj;
 			//显示界面
 			sendNotification(SendEmailComponentMediator.SHOW_NOTE);
-			//传送数据
-			sendNotification(SendEmailComponentMediator.SEND_EMAIL_DATA_BY_ID_CARD,event.obj);
-			
+			setTimeout(sendMes,500);
+		}
+		
+		protected function sendMes():void
+		{
+			sendNotification(SendEmailComponentMediator.SEND_EMAIL_DATA_BY_ID_CARD,obj);
 		}
 	}
 }

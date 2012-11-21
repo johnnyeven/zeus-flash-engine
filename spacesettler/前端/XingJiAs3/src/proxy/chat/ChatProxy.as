@@ -171,9 +171,9 @@ package proxy.chat
 			var chatVO:ChatVO = new ChatVO();
 			var chatItemVO:ChatItemVO = new ChatItemVO();
 			
-			chatItemVO.playerID = SocketUtil.readIdType(pg.body);
+			chatItemVO.myID = SocketUtil.readIdType(pg.body);
 			chatItemVO.channel =  SocketUtil.readIdType(pg.body);
-			chatItemVO.timeStamp = Number(SocketUtil.readIdType(pg.body));
+			chatItemVO.timeStamp = SocketUtil.readIdTypeInt64(pg.body).high;
 			
 			chatItemVO.strLength = pg.body.readUnsignedInt();
 			
@@ -192,7 +192,15 @@ package proxy.chat
 			var xml:XML = new XML(strXml);
 			var userData:String = xml.a.@value[0];
 			var dataObj:Object = JSON.parse(userData);
-
+			//玩家自己的数据
+			chatItemVO.myVIP = dataObj.myVIP;
+			chatItemVO.myName = dataObj.myName;
+			chatItemVO.myID = dataObj.myID;
+			//别人的数据
+			chatItemVO.otherID = dataObj.otherID;
+			chatItemVO.otherName= dataObj.otherName;
+			chatItemVO.otherVIP = dataObj.otherVIP;
+			
 			chatVO.channel = chatItemVO.channel;
 			if(int(chatVO.channel) > 10)
 			{
@@ -250,7 +258,8 @@ package proxy.chat
 			}
 			//获取本地时间
 			var dateData:Date = new Date();
-			var date:Date = new Date(null,null,null,dateData.hours,dateData.seconds,dateData.minutes,dateData.milliseconds);
+//			var date:Date = new Date(null,null,null,dateData.hours,dateData.minutes,dateData.seconds,dateData.milliseconds);
+			var date:Date = new Date();
 			var time:Number = date.time;
 			
 			var body:ByteArray = ClientSocket.getBy();
@@ -354,7 +363,7 @@ package proxy.chat
 			chatItemVO.type = obj.type;
 			
 			chatVO.wordList.push(chatItemVO);
-			sendNotification(ChatViewMediator.INFOR_NOTE,chatVO);
+//			sendNotification(ChatViewMediator.INFOR_NOTE,chatVO);
 		}
 		
 		/***********************************************************

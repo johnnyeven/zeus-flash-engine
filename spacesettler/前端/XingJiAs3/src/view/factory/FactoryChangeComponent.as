@@ -65,6 +65,7 @@ package view.factory
 		public var mcUp:Component;
 		public var menuLine:MovieClip;
 		
+		public var zhiYinSp:Sprite;
 		//弹出点击按钮
 		public var jiaZaiBtn:Button
 		public var chaKanBtn:Button
@@ -76,6 +77,8 @@ package view.factory
 		public var change_btn:Button;
 		public var info_btn:Button;
 		public var close_btn:Button;
+		
+		public var currtentBtn:Button;
 
 		private var zhancheVo:ZhanCheInfoVO;
 		private var menuMask:Sprite;
@@ -109,6 +112,7 @@ package view.factory
 			
 			qiangHua=getSkin("qianghua_mc");
 			mc=getSkin("mc");
+			zhiYinSp=getSkin("zhiYinSp");
 			
 			item_1_1=createUI(FactoryClickSpComponent,"item_1_1");
 			item_1_2=createUI(FactoryClickSpComponent,"item_1_2");
@@ -143,6 +147,7 @@ package view.factory
 			item_3_1.visible=false;
 			item_3_2.visible=false;
 			item_3_3.visible=false;
+			zhiYinSp.visible=false;
 			
 			arr[6]=item_1_1;
 			arr[7]=item_1_2;
@@ -209,7 +214,7 @@ package view.factory
 			tf_2.text=str2+"%";
 			tf_3.text=str3+"%";
 			tf_4.text=str4+"%";
-			isNumOne=false;
+			
 		}
 		
 		private function addClick(item:FactoryClickSpComponent):void
@@ -219,6 +224,7 @@ package view.factory
 		
 		protected function itemClickHandler(event:MouseEvent):void
 		{
+			isNumOne=false;
 			var item:FactoryClickSpComponent=event.currentTarget as FactoryClickSpComponent;
 			var rect:Rectangle=item.getRect(item);
 			
@@ -356,6 +362,7 @@ package view.factory
 		private function newMcUpOne():void
 		{
 			mcUp = new Component(ClassUtil.getObject("up_menu_1"))//加载
+			currtentBtn=jiaZaiBtn;
 			jiaZaiBtn = mcUp.createUI(Button, "jiazai_btn");
 			mcUp.sortChildIndex();
 		}
@@ -394,6 +401,7 @@ package view.factory
 		
 		protected function qiangHuaClickHandler(event:MouseEvent):void
 		{
+			isNumOne=true;
 			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT));
 		}
 		
@@ -427,6 +435,7 @@ package view.factory
 						item.isLoader=true;
 						item.item_sp.visible=true;
 					}
+					zhiYinSp.visible=item_3_1.visible;
 				}				
 			}
 		}

@@ -6,6 +6,8 @@ package view.battle.fight
 	import com.zn.utils.PointUtil;
 	import com.zn.utils.RandomUtil;
 
+	import enum.battle.FightVOTypeEnum;
+
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
 
@@ -20,7 +22,7 @@ package view.battle.fight
 		public static const XIAO_FEI_JI:int=14;
 		public static const LIAO_JI:int=15;
 
-		public static var feiJiList:Array=[];
+		public var relativeZhanChePoint:Point;
 
 		/**
 		 *大飞机移动路径
@@ -29,15 +31,13 @@ package view.battle.fight
 
 		public var oldTargetPoint:Point;
 
-		public var gid:uint;
-
 		public var movePathIndex:int=0;
 
 		public function FightFeiJiComponent(zhanCheVO:CHARIOT)
 		{
 			super(zhanCheVO);
 			buttonMode=true;
-			feiJiList.push(this);
+			cacheAsBitmap=true;
 		}
 
 		/**
@@ -45,23 +45,38 @@ package view.battle.fight
 		 * @param obj
 		 *
 		 */
-		public function feiJiMoveTO(obj:DisplayObject):void
+		public function feiJiMoveTO(obj:DisplayObject, isLiaoJi:Boolean=false):Boolean
 		{
-			var p:Point=new Point(obj.x, obj.y);
-			if (oldTargetPoint && oldTargetPoint.equals(p))
-				return;
+			if (!obj)
+				return false;
+
+			var centerP:Point=new Point(obj.x, obj.y);
+			var p:Point=centerP.clone();
+			if (isLiaoJi && obj is FightZhanCheComponent)
+			{
+				p.x+=relativeZhanChePoint.x;
+				p.y+=relativeZhanChePoint.y;
+			}
+
+			if (oldTargetPoint && oldTargetPoint.equals(centerP))
+				return false;
 
 			var dis:Number=PointUtil.getDis(this, obj);
 			var time:Number=dis / itemVO.myMoveSpeed;
-			moveTweenLite=TweenLite.to(this, time, {x: obj.x, y: obj.y, ease: Linear.easeNone});
-			oldTargetPoint=p;
+			moveTweenLite=TweenLite.to(this, time, {x: p.x, y: p.y, ease: Linear.easeNone});
+			oldTargetPoint=centerP;
 
-			//调整角度
-			zhanCheRotation=PointUtil.getRotaion(new Point(x, y), p);
+			if (!isLiaoJi)
+			{
+				//调整角度
+				zhanCheRotation=PointUtil.getRotaion(new Point(x, y), centerP);
+			}
+			return true;
 		}
 
 		public function movePath(init:Boolean=false):void
 		{
+			//TODO:LW  大飞机的运动路径有问题
 			if (movePathIndex >= movePathList.length)
 				movePathIndex=0;
 
@@ -69,7 +84,7 @@ package view.battle.fight
 
 			if (init)
 			{
-				var objDic:Object=ObjectUtil.CreateDic(feiJiList, "movePathIndex");
+				var objDic:Object=ObjectUtil.CreateDic(BattleFightComponent.daFeiJiCompList, "movePathIndex");
 				do
 				{
 					movePathIndex=RandomUtil.getRangeInt(0, movePathList.length - 1);
@@ -95,6 +110,15 @@ package view.battle.fight
 		{
 			movePathIndex++;
 			movePath();
+		}
+
+
+		public override function set tankPartRotaion(value:Number):void
+		{
+			super.tankPartRotaion=value;
+
+			if (itemVO && itemVO.voType == FightVOTypeEnum.liaoJi)
+				zhanCheRotation=value;
 		}
 	}
 }

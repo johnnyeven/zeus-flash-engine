@@ -19,6 +19,8 @@ package view.factory
 	import ui.components.ProgressBar;
 	import ui.core.Component;
 	
+	import vo.cangKu.GuaJianInfoVO;
+	import vo.cangKu.ZhanCheInfoVO;
 	import vo.factory.DrawListVo;
 	
     public class FactoryItem_1Component extends Component
@@ -67,6 +69,9 @@ package view.factory
 		public var sprite2:Component;
 		
 		public var bar:ProgressBar;
+		
+		public var zhancheVo:ZhanCheInfoVO;
+		public var guajianVo:GuaJianInfoVO;
 
 		private var _tweenLite:TweenLite;
 		private var _timer:Timer;
@@ -166,6 +171,7 @@ package view.factory
 				stopTweenLite();
 			}else if(time>0)			
 			{		
+				isMake();
 				stopTimer();
 				num=time/1000;
 				bar.percent=percent;
@@ -180,8 +186,7 @@ package view.factory
 		
 		public function timerComplete():void
 		{
-			FactoryEnum.CURRENT_DRAWVO=_drawVo;
-			dispatchEvent(new FactoryItemEvent(FactoryItemEvent.ZHIZAO_COMPLETE_EVENT,true,false));
+			dispatchEvent(new FactoryItemEvent(FactoryItemEvent.ZHIZAO_COMPLETE_EVENT,true,false,this));
 		}
 		
 		protected function timerHandler(event:TimerEvent):void

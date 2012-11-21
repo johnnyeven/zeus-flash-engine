@@ -21,7 +21,7 @@ package mediator.battle
 	import view.battle.bottomView.BottomViewComponent;
 
 	/**
-	 *模板 
+	 *战场编辑底部面板
 	 * @author zn
 	 * 
 	 */

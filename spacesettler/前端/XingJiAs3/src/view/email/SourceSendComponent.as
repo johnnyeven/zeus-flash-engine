@@ -37,7 +37,6 @@ package view.email
 		public var okBtn:Button;
 		public var sourceImage:LoaderImage;
 		public var countTxt:TextField;
-		public var tipsLabel:Label;
 		public var costLabel:Label;
 		
 		private var container:Container;
@@ -46,6 +45,8 @@ package view.email
 		private var _currendSelected:SourceItem;
 		//是否是第一次输入值
 		private var isFirst:Boolean = true;
+		private var str:String ="";  
+		private var sourceIsEnough:Boolean = true;
         public function SourceSendComponent()
         {
             super(ClassUtil.getObject("view.email.SourceSendSkin"));
@@ -65,12 +66,8 @@ package view.email
 			countTxt = getSkin("countTxt");
 			countTxt.mouseEnabled = true;
 			countTxt.restrict = "0-9";
-			countTxt.addEventListener(TextEvent.TEXT_INPUT,countTxt_changeHAndler);
-//			countTxt.visible = false;
-			tipsLabel = createUI(Label,"tipsLabel");
-//			tipsLabel.visible = true;
-//			tipsLabel.mouseEnabled = true;
-//			tipsLabel.addEventListener(MouseEvent.CLICK,tipsLabel_clickHandler);
+			countTxt.addEventListener(Event.CHANGE,countTxt_changeHAndler);
+			countTxt.addEventListener(MouseEvent.CLICK,countTxt_clickHandler);
 			costLabel = createUI(Label,"costLabel");
 			costLabel.text = "0";
 			
@@ -143,18 +140,63 @@ package view.email
 			     sourceImage.source = EmailTypeEnum.getSourceImageByEmailType(_currendSelected.data.attachment_type);
 		}
 		
-		private function countTxt_changeHAndler(event:TextEvent):void
+		private function countTxt_changeHAndler(event:Event):void
 		{
 //			countTxt.visible = true;
-			tipsLabel.visible = false;
-			_currendSelected.data.attachment_count = int(countTxt.text);
-			_currendSelected.data.costMoney = EmailTypeEnum.getSourceCostBySourceCount(int(countTxt.text),_currendSelected.data.attachment_type);
+			sourceIsEnough = true;
+			str = countTxt.text;
+			_currendSelected.data.attachment_count = int(str);
+			_currendSelected.data.costMoney = EmailTypeEnum.getSourceCostBySourceCount(int(str),_currendSelected.data.attachment_type);
 			costLabel.text = _currendSelected.data.costMoney +"";
+			if(_currendSelected.data.attachment_type == ItemEnum.CRYSTAL)
+			{
+				if(_currendSelected.data.attachment_count > userInforProxy.userInfoVO.crystal)
+				{
+					dispatchEvent(new Event("crystalSourceNotEnough"));
+					sourceIsEnough = false;
+					countTxt.text = "";
+					str = "";
+					costLabel.text = "0";
+				}
+			}
+			else if(_currendSelected.data.attachment_type == ItemEnum.TRITIUM)
+			{
+				if(_currendSelected.data.attachment_count > userInforProxy.userInfoVO.tritium)
+				{
+					dispatchEvent(new Event("tritiumSourceNotEnough"));
+					sourceIsEnough = false;
+					countTxt.text = "";
+					str = "";
+					costLabel.text = "0";
+				}
+			}
+			else if(_currendSelected.data.attachment_type == ItemEnum.BROKENCRYSTAL)
+			{
+				if(_currendSelected.data.attachment_count > userInforProxy.userInfoVO.broken_crysta || userInforProxy.userInfoVO.broken_crysta<(_currendSelected.data.attachment_count+_currendSelected.data.costMoney))
+				{
+					dispatchEvent(new Event("brokenCrystalSourceNotEnough"));
+					sourceIsEnough = false;
+					countTxt.text = "";
+					str = "";
+					costLabel.text = "0";
+				}
+			}
 			
+			//钱不够
+			if(_currendSelected.data.costMoney > userInforProxy.userInfoVO.broken_crysta)
+			{
+				dispatchEvent(new Event("brokenCrystalSourceNotEnough"));
+				sourceIsEnough = false;
+				countTxt.text = "";
+				str = "";
+				costLabel.text = "0";
+			}
 		}
 		
 		private function okBtn_clickHandler(event:MouseEvent):void
 		{
+			if(sourceIsEnough == false)
+				return;
 			dispatchEvent(new EmailEvent(EmailEvent.SEND_SOURCE_DATA_EVENT,_currendSelected.data));
 		}
 		
@@ -163,10 +205,9 @@ package view.email
 			dispatchEvent(new Event("closeSendSourceComponent"));
 		}
 		
-		private function tipsLabel_clickHandler(event:MouseEvent):void
+		private function countTxt_clickHandler(event:MouseEvent):void
 		{
-			countTxt.visible = true;
-			tipsLabel.visible = false;
+			countTxt.text = "";
 		}
 	}
 }

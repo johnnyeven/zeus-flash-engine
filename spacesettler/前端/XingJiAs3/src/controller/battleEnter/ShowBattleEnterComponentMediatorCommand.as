@@ -4,13 +4,16 @@ package controller.battleEnter
     import com.zn.loading.LoaderEvent;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
-
+    import com.zn.utils.SoundUtil;
+    
+    import enum.SoundEnum;
+    
     import mediator.BaseMediator;
     import mediator.battleEnter.BattleEnterComponentMediator;
-
+    
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
-
+    
     import proxy.battle.BattleProxy;
 
     /**
@@ -76,6 +79,7 @@ package controller.battleEnter
 
         private function callShow(med:BaseMediator):void
         {
+			SoundUtil.play(SoundEnum.plane_fly,false);
             if (loadCompleteCallBack != null)
             {
                 loadCompleteCallBack(med);

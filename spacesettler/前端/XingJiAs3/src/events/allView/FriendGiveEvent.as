@@ -12,15 +12,17 @@ package events.allView
 		
 		private var _arr:Array=[];
 		private var _text:String;
-		private var _num:int;
+		private var _num:String;
 		private var _titleText:String;
-		public function FriendGiveEvent(type:String=null,arr:Array=null,text:String=null,num:int=0,titleText:String=null)
+		private var _source:String;
+		public function FriendGiveEvent(type:String=null,arr:Array=null,text:String=null,num:String=null,titleText:String=null,source:String=null)
 		{
 			super(type,false,false);
 			_arr=arr;
 			_text=text;
 			_num=num;
 			_titleText=titleText;
+			_source=source;
 		}
 
 		public function get arr():Array
@@ -43,12 +45,12 @@ package events.allView
 			_text = value;
 		}
 
-		public function get num():int
+		public function get num():String
 		{
 			return _num;
 		}
 
-		public function set num(value:int):void
+		public function set num(value:String):void
 		{
 			_num = value;
 		}
@@ -61,6 +63,16 @@ package events.allView
 		public function set titleText(value:String):void
 		{
 			_titleText = value;
+		}
+
+		public function get source():String
+		{
+			return _source;
+		}
+
+		public function set source(value:String):void
+		{
+			_source = value;
 		}
 
 

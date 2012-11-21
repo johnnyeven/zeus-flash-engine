@@ -22,18 +22,31 @@ package events.scienceResearch
 		public static const POPU_UP_EVENT:String = "popuUpEvent";
 		
 		public static const POPU_CLOSE_EVENT:String = "popuCloseEvent";
+		
+		public static const SPEED_EVENT:String="speedEvent";
 		/**
 		 *研究完成后的数据更新 
 		 */		
 		public static const GET_DATA_RESULT:String = "getDataResult";
 		
 		private var _scienceType:int;
-		
-		public function ScienceResearchEvent(type:String, scienceType:int,bubbles:Boolean=false, cancelable:Boolean=false)
+		private var _eventID:String;
+		public function ScienceResearchEvent(type:String, scienceType:int=0,eventID:String="",bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			
 			_scienceType = scienceType;
+			_eventID=eventID;
+		}
+
+		public function get eventID():String
+		{
+			return _eventID;
+		}
+
+		public function set eventID(value:String):void
+		{
+			_eventID = value;
 		}
 
 		public function get scienceType():int

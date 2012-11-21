@@ -9,12 +9,14 @@ package view.scienceResearch
 	
 	import enum.ResEnum;
 	
+	import events.buildingView.BuildEvent;
 	import events.buildingView.ConditionEvent;
 	import events.scienceResearch.SciencePopuEvent;
 	import events.scienceResearch.ScienceResearchEvent;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -51,6 +53,9 @@ package view.scienceResearch
 		public var tritiumLabel:Label;
 		public var commandLabel:Label;
 		public var timeLabel:Label;
+		/**
+		 *研究BTN 
+		 */		
 		public var researchBtn:Button;
 		
 		public var researchUPSprite:Component;
@@ -58,6 +63,7 @@ package view.scienceResearch
 		public var levelChangeLabel:Label;
 		public var upTimeLabel:Label;
 		public var progressBar:ProgressBar;
+		public var speedBtn:Button;
 		
 		public var fullLevelSprite:Component;
 		public var inforNameLabel:Label;
@@ -98,6 +104,7 @@ package view.scienceResearch
 			upTimeLabel.text = "";
 			progressBar = researchUPSprite.createUI(ProgressBar,"progressBar");
 			progressBar.percent = 0;
+			speedBtn=researchUPSprite.createUI(Button,"speedBtn");
 			researchUPSprite.sortChildIndex();
 			
 			fullLevelSprite = createUI(Component,"fullLevelSprite");
@@ -106,11 +113,13 @@ package view.scienceResearch
 			sortChildIndex();
 			
 			timer = new Timer(1000);
+			speedBtn.visible = false;
 			inforSprite.visible = false;
 			researchUPSprite.visible = false;
 			fullLevelSprite.visible = false;
 			inforBtn.addEventListener(MouseEvent.CLICK,inforBtn_clickHAndler);
 			researchBtn.addEventListener(MouseEvent.CLICK,researchBtn_clickHAndler);
+			speedBtn.addEventListener(MouseEvent.CLICK, speedBtn_clickHandler);
 		}
 		
 			
@@ -126,6 +135,9 @@ package view.scienceResearch
 			if(_data.current_time &&_data.current_time >0)
 			{
 				isUp = true;
+				
+				
+				
 				timer.addEventListener(TimerEvent.TIMER,timerHandler);
 				timer.start();
 			}
@@ -133,6 +145,7 @@ package view.scienceResearch
 			{
 				isUp = false;
 			}
+			removeCWList();
 			if(!isUp)
 			{
 				if(_data.level >= 40)
@@ -152,10 +165,12 @@ package view.scienceResearch
 			{
 				inforSprite.visible = false;
 				researchUPSprite.visible = true;
+				speedBtn.visible=false;
+				cwList.push(BindingUtils.bindSetter(remainTimeChange, _data, "current_time"));
+				
 				fullLevelSprite.visible = false;
 			}
 		
-			removeCWList();
 			
 			nameIconURL.source = _data.scienceIconURL;
 			cwList.push(BindingUtils.bindProperty(levelLabel,"text",_data,"level"));
@@ -164,7 +179,7 @@ package view.scienceResearch
 			cwList.push(BindingUtils.bindSetter(function():void
 			{
 				var strName:String = "<p><s>研究</s><s>{0}</s><s>级</s><s>{1}</s><s>需要消耗：</s></p>";
-				strName = StringUtil.formatString(strName,_data.level,_data.scienceName);
+				strName = StringUtil.formatString(strName,(_data.level+1),_data.scienceName);
 				levelNameLabel.text = strName;
 			},_data,"level"));
 			
@@ -193,17 +208,28 @@ package view.scienceResearch
 			},_data,"level"));
 			cwList.push(BindingUtils.bindProperty(inforNameLabel,"text",_data,"scienceName"));
 	
+//			speedBtn.visible=false;
+//			cwList.push(BindingUtils.bindSetter(remainTimeChange, _data, "current_time"));
+			
 			progressBar.percent = (_data.current_time-_data.start_time)/(_data.finish_time-_data.start_time);
 			stopTweenLite();
 			_tweenLite = TweenLite.to(progressBar, _data.remainTime/1000, { percent: 1, ease: Linear.easeNone });
 			upTimeLabel.text = DateFormatter.formatterTimeSFM(_data.remainTime/1000);
 		}
 		
+		public function remainTimeChange(value:int):void
+		{
+			if (_data.remainTime/1000 > 10)
+				speedBtn.visible = true;
+			else
+				speedBtn.visible = false;
+		}
+		
 		private function timerHandler(event:TimerEvent):void
 		{
 			if(_data.remainTime/1000 <= 0)
 			{
-				dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.GET_DATA_RESULT,_data.science_type,true,true));
+				dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.GET_DATA_RESULT,_data.science_type,"",true,true));
 				timer.stop();
 			}
 			
@@ -212,7 +238,7 @@ package view.scienceResearch
 
 		protected function inforBtn_clickHAndler(event:MouseEvent):void
 		{
-			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.INFOR_EVENT,_data.science_type,true,true));
+			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.INFOR_EVENT,_data.science_type,"",true,true));
 		}
 		
 		private function researchBtn_clickHAndler(event:MouseEvent):void
@@ -241,7 +267,12 @@ package view.scienceResearch
 				return;
 			}
 
-			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.RESEARCH_EVENT,_data.science_type,true,true));
+			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.RESEARCH_EVENT,_data.science_type,"",true,true));
+		}
+		
+		private function speedBtn_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.SPEED_EVENT,0,_data.eventID,true,true));
 		}
 		
 		public override function dispose():void

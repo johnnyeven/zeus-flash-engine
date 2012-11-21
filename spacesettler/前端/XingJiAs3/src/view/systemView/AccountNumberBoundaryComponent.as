@@ -87,7 +87,7 @@ package view.systemView
 			
 			fanHuiBtn.addEventListener(MouseEvent.CLICK,doCloseHandler);
 			mailBtn.addEventListener(MouseEvent.CLICK,mailBtn_clickHandler);
-			
+			passWordBtn.addEventListener(MouseEvent.CLICK,passWordBtn_clickHandler);
 			if(LoginProxy.selectedServerVO)
 			{
 				fuWuQiTf.text=LoginProxy.selectedServerVO.server_name;
@@ -105,6 +105,11 @@ package view.systemView
 				mailTf_1.text=_loginProxy.email;
 			}
         }
+		
+		protected function passWordBtn_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new SystemEvent(SystemEvent.PASSWORD_EVENT));
+		}
 		
 		protected function mailBtn_clickHandler(event:MouseEvent):void
 		{

@@ -86,7 +86,7 @@ package mediator.prompt
          * @return
          *
          */
-        protected function get comp():MoneyAlertComponent
+        public function get comp():MoneyAlertComponent
         {
             return viewComponent as MoneyAlertComponent;
         }
