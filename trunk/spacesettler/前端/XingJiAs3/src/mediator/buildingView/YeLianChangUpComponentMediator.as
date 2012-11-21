@@ -14,6 +14,7 @@ package mediator.buildingView
     
     import mediator.BaseMediator;
     import mediator.prompt.MoneyAlertComponentMediator;
+    import mediator.prompt.PromptSureMediator;
     
     import org.puremvc.as3.interfaces.IMediator;
     import org.puremvc.as3.interfaces.INotification;
@@ -51,6 +52,7 @@ package mediator.buildingView
             comp.addEventListener(BuildEvent.INFO_EVENT, infoHandler);
 			
 			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,addConditionViewHandler);
+			comp.addEventListener(ConditionEvent.POWERPROMT_EVENT,powerPromtHandler);
         }
 		
 		private function formatStr(str:String):String
@@ -92,7 +94,7 @@ package mediator.buildingView
          * @return
          *
          */
-        protected function get comp():YeLianChangUpComponent
+        public function get comp():YeLianChangUpComponent
         {
             return viewComponent as YeLianChangUpComponent;
         }
@@ -102,7 +104,7 @@ package mediator.buildingView
 			sendNotification(DESTROY_NOTE);
 		}
 
-        protected function upHandler(event:Event):void
+        protected function upHandler(event:Event=null):void
         {
             var buildProxy:BuildProxy = getProxy(BuildProxy);
             buildProxy.upBuild(BuildTypeEnum.KUANGCHANG, function():void
@@ -137,6 +139,18 @@ package mediator.buildingView
 		protected function addConditionViewHandler(event:ConditionEvent):void
 		{
 			sendNotification(ConditionViewCompMediator.SHOW_NOTE,event.conditionArr);
+		}
+		
+		protected function powerPromtHandler(event:Event):void
+		{
+			var obj:Object={};
+			obj.infoLable=MultilanguageManager.getString("NOT_ENOUGH_POWER");
+			obj.showLable=MultilanguageManager.getString("notEnoughInfo");
+			obj.okCallBack=function ():void
+			{
+				upHandler();
+			}
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 		}
     }
 }

@@ -73,5 +73,11 @@ package vo.battle
 		 */		
 		public var room_will_shutdown_at:int;
 		
+		
+		public function get roomTime():int
+		{
+			var time:int=room_will_shutdown_at-room_startup;
+			return time;
+		}
     }
 }

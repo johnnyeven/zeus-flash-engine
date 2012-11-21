@@ -97,7 +97,7 @@ package mediator.factory
 		 * @return
 		 *
 		 */
-		protected function get comp():FactoryArmsComponent
+		public function get comp():FactoryArmsComponent
 		{
 			return viewComponent as FactoryArmsComponent;
 		}

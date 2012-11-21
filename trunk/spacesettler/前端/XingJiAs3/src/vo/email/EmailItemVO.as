@@ -60,6 +60,11 @@ package vo.email
 		public var attachment_type:String = "";
 		
 		/**
+		 * 道具标识(VIP标识)
+		 */
+		public var key:String;
+		
+		/**
 		 *分类
 		 */
 		public var category:int;

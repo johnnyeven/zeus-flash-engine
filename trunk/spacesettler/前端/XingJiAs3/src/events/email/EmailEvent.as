@@ -53,6 +53,15 @@ package events.email
 		 *显示可选择好友列表
 		 */	
 		public static const SHOW_FRIEND_LIST_EVENT:String = "showFriendListEvent";
+		/**
+		 *显示可选择军团成员列表
+		 */	
+		public static const SHOW_ARMY_GROUP_LIST_EVENT:String = "showArmyGroupListEvent";
+		
+		/**
+		 *将军团成员信息发给邮件
+		 */	
+		public static const SEND_ARMY_GROUP_INFOR_TO_EMAIL_EVENT:String = "sendArmyGroupInforToEmailEvent";
 		
 		private var _obj:Object;
 		

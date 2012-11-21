@@ -6,6 +6,8 @@
 
 	<!--<ZipLoader name="configList.zip" url="config/zh_CN/configList.zip" version="1"/> -->
 
+	<!--<SoundLoader name="config" url="config/config.xml" version="1"/> -->
+
 	<LoaderMax name="preLoader">
 		<XMLLoader name="connectionConfig.xml"
 				   url="config/zh_CN/connectionConfig.xml"
@@ -253,8 +255,45 @@
 					   url="zh_CN/email.swf"
 					   version="1"/>
 
+			<!-- 礼包 -->
+			<SWFLoader name="giftBag.swf"
+					   url="zh_CN/giftBag.swf"
+					   version="1"/>
+
 		</LoaderMax>
 
+            <!-- 战场地图1 -->
+			<SWFLoader name="battleMap_1.swf"
+					   url="zh_CN/images/battleMap/battleMap_1.swf"
+					   version="1"/>
+			<!-- 战场地图2 -->
+			<SWFLoader name="battleMap_2.swf"
+					   url="zh_CN/images/battleMap/battleMap_2.swf"
+					   version="1"/>
+		    <!-- 战场地图3 -->
+			<SWFLoader name="battleMap_3.swf"
+					   url="zh_CN/images/battleMap/battleMap_3.swf"
+					   version="1"/>
+		     <!-- 战场地图4 -->
+			<SWFLoader name="battleMap_4.swf"
+					   url="zh_CN/images/battleMap/battleMap_4.swf"
+					   version="1"/>
+			 <!-- 战场地图5 -->
+			<SWFLoader name="battleMap_5.swf"
+					   url="zh_CN/images/battleMap/battleMap_5.swf"
+					   version="1"/>
+			 <!-- 战场地图6 -->
+			<SWFLoader name="battleMap_6.swf"
+					   url="zh_CN/images/battleMap/battleMap_6.swf"
+					   version="1"/>
+		    <!-- 战场地图7 -->
+			<SWFLoader name="battleMap_7.swf"
+					   url="zh_CN/images/battleMap/battleMap_7.swf"
+					   version="1"/>
+			 <!-- 战场地图8 -->
+			<SWFLoader name="battleMap_8.swf"
+					   url="zh_CN/images/battleMap/battleMap_8.swf"
+					   version="1"/>
 		<!-- 战场-->
 		<LoaderMax name="battle">
 			<!-- 战场建筑 -->
@@ -278,11 +317,7 @@
 					   url="zh_CN/images/battleBuild/build_icon.swf"
 					   version="1"/>
 
-			<!-- 战场地图1 -->
-			<SWFLoader name="battleMap_1.swf"
-					   url="zh_CN/images/battleMap/battleMap_1.swf"
-					   version="1"/>
-
+		
 			<!-- 战场 -->
 			<SWFLoader name="battle.swf"
 					   url="zh_CN/battle.swf"
@@ -354,6 +389,78 @@
 		<SWFLoader name="battleEnter.swf"
 				   url="zh_CN/battleEnter.swf"
 				   version="1"/>
+
+		<!-- 军团战 -->
+		<SWFLoader name="groupFight.swf"
+				   url="zh_CN/groupFight.swf"
+				   version="1"/>
+
+		<!-- 声音 -->
+		<LoaderMax name="sound">
+			<SoundLoader name="ammunition_fire"
+						 url="zh_CN/sound/ammunition_fire.mp3"
+						 version="1"/>		
+			
+			<SoundLoader name="battle_bg_music"
+						 url="zh_CN/sound/battle_bg_music.mp3"
+						 version="1"/>
+			
+			<SoundLoader name="battle_failed"
+						 url="zh_CN/sound/battle_failed.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="bg_music"
+						 url="zh_CN/sound/bg_music.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="button"
+						 url="zh_CN/sound/button.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="electric_fire"
+						 url="zh_CN/sound/electric_fire.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="explode"
+						 url="zh_CN/sound/explode.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="group_bg_music"
+						 url="zh_CN/sound/group_bg_music.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="laser_fire"
+						 url="zh_CN/sound/laser_fire.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="laser_fire2"
+						 url="zh_CN/sound/laser_fire2.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="nuclear_fire"
+						 url="zh_CN/sound/nuclear_fire.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="plane_fly"
+						 url="zh_CN/sound/plane_fly.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="plane_flying"
+						 url="zh_CN/sound/plane_flying.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="pve_victory"
+						 url="zh_CN/sound/pve_victory.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="scan_star"
+						 url="zh_CN/sound/scan_star.mp3"
+						 version="1"/>
+						 
+			<SoundLoader name="store_buy"
+						 url="zh_CN/sound/store_buy.mp3"
+						 version="1"/>
+		</LoaderMax>
 	</LoaderMax>
 
 </root>

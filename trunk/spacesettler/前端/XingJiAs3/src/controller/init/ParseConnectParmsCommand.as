@@ -49,6 +49,7 @@ package controller.init
             var connectionXML:XML= configXML.serverList.(@channel == GlobalData.channel)[0];
 			CommandEnum.get_server_list=connectionXML.url;
 			GlobalData.game_id=connectionXML.game_id;
+			CommandEnum.recordURL=connectionXML.recordURL;
 			
 			showLogin();
         }

@@ -81,7 +81,8 @@ package proxy.allView
 			allViewVO.playerNameTxt = data.nickname;
 			allViewVO.rongYuTxt = data.prestige;
 			allViewVO.keJiShiDaiTxt = data.age_level;
-			allViewVO.junTuanTxt = data.name
+			allViewVO.junTuanTxt = data.name;
+			allViewVO.scienceLvTxt=data.academy_level;
 			allViewVO.startCountTxt = data.fort_count;
 			allViewVO.junXianTxt = userInforProxy.userInfoVO.junXian;
 //			allViewVO.junXianLvTxt = data.military_rank;

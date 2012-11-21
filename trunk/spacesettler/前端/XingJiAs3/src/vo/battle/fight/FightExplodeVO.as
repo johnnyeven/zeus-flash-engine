@@ -35,6 +35,8 @@ package vo.battle.fight
 		 * 被攻击的对象
 		 */
 		public var hitList:Array=[];
+		
+		public var guaJianID:String="";
 
 		public function toBy():ByteArray
 		{
@@ -59,6 +61,8 @@ package vo.battle.fight
 				body.writeBytes(itemVO.toBy());
 			}
 
+			SocketUtil.writeIdType(guaJianID, body);
+			
 			return body;
 		}
 
@@ -84,6 +88,8 @@ package vo.battle.fight
 				itemVO.toObj(by);
 				hitList.push(itemVO);
 			}
+			
+			guaJianID=SocketUtil.readIdType(by);
 		}
 	}
 }

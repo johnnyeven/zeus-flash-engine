@@ -2,9 +2,11 @@ package view.battle.fight
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Linear;
-
+	
+	import enum.FontEnum;
+	
 	import flash.display.DisplayObjectContainer;
-
+	
 	import ui.components.Label;
 	import ui.core.Component;
 
@@ -25,9 +27,9 @@ package view.battle.fight
 		{
 			super(null);
 			label=new Label();
-			label.autoSize=true;
-			label.color=0xFF0000;
+			label.autoSize=true;			
 			label.size=14;
+			label.fontName=FontEnum.WEI_RUAN_YA_HEI;
 			addChild(label);
 		}
 
@@ -48,8 +50,14 @@ package view.battle.fight
 		public function set num(value:Number):void
 		{
 			_num=value;
-
-			label.text=value + "";
+			if(value<0)
+			{
+				label.color=0xFF0000;
+			}else
+			{
+				label.color=0x00FF00;
+			}
+			label.text=int(value) + "";
 		}
 
 		public function start():void

@@ -266,7 +266,8 @@ package proxy.rankingProxy
 			myRankingArr.length=0;
 			
 			var list:Array=[];
-			for(var i:int;i<data.ranks.length;i++)
+			
+			for(var i:int=0;i<data.ranks.length;i++)
 			{
 				var rankingVo:RankingVo=new RankingVo();
 				rankingVo.id=data.ranks[i].id;
@@ -278,20 +279,23 @@ package proxy.rankingProxy
 				list.push(rankingVo);
 			}
 			rankingArr=list;
-			
-			var list1:Array=[];
-			for(var j:int;j<data.my_ranks_around.length;j++)
+			if(data.my_ranks_around)
 			{
-				var rankingVo1:RankingVo=new RankingVo();
-				rankingVo1.id=data.my_ranks_around[j].id;
-				rankingVo1.nickname=data.my_ranks_around[j].name;
-				rankingVo1.vip_level=data.my_ranks_around[j].president_vip_level;
-				rankingVo1.legion_name=data.my_ranks_around[j].president;
-				rankingVo1.rank=data.my_ranks_around[j].rank;
-				rankingVo1.show=data.my_ranks_around[j].prestige;
-				list1.push(rankingVo1);
+				var list1:Array=[];
+				for(var j:int=0;j<data.my_ranks_around.length;j++)
+				{
+					var rankingVo1:RankingVo=new RankingVo();
+					rankingVo1.id=data.my_ranks_around[j].id;
+					rankingVo1.nickname=data.my_ranks_around[j].name;
+					rankingVo1.vip_level=data.my_ranks_around[j].president_vip_level;
+					rankingVo1.legion_name=data.my_ranks_around[j].president;
+					rankingVo1.rank=data.my_ranks_around[j].rank;
+					rankingVo1.show=data.my_ranks_around[j].prestige;
+					list1.push(rankingVo1);
+				}
+				myRankingArr=list1;
 			}
-			myRankingArr=list1;
+			
 			
 			if(callBcakFunction!=null)
 			{
@@ -310,7 +314,7 @@ package proxy.rankingProxy
 			myRankingArr.length=0;
 			
 			var list:Array=[];
-			for(var i:int;i<data.ranks.length;i++)
+			for(var i:int=0;i<data.ranks.length;i++)
 			{
 				var rankingVo:RankingVo=new RankingVo();
 				rankingVo.id=data.ranks[i].id;
@@ -330,7 +334,7 @@ package proxy.rankingProxy
 			rankingArr=list;
 			
 			var list1:Array=[];
-			for(var j:int;j<data.my_ranks_around.length;j++)
+			for(var j:int=0;j<data.my_ranks_around.length;j++)
 			{
 				var rankingVo1:RankingVo=new RankingVo();
 				rankingVo1.id=data.my_ranks_around[j].id;

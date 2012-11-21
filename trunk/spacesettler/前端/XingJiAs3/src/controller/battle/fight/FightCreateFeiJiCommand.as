@@ -1,12 +1,11 @@
 package controller.battle.fight
 {
-	import com.zn.utils.RandomUtil;
 	import com.zn.utils.RotationUtil;
 	
 	import enum.battle.FightVOTypeEnum;
 	
+	import flash.display.DisplayObject;
 	import flash.geom.Point;
-	import flash.ui.Mouse;
 	
 	import mediator.battle.BattleFightMediator;
 	
@@ -15,12 +14,10 @@ package controller.battle.fight
 	
 	import proxy.battle.BattleProxy;
 	
-	import utils.battle.CalculateUtil;
 	import utils.battle.FightDataUtil;
 	
 	import view.battle.fight.BattleFightComponent;
 	import view.battle.fight.FightFeiJiComponent;
-	import view.battle.fight.FightZhanCheComponent;
 
 	/**
 	 *生成小飞机
@@ -71,6 +68,8 @@ package controller.battle.fight
 		{
 			var player1:PLAYER1=notification.getBody() as PLAYER1;
 
+			var myID:String=FightDataUtil.getMyChariot().id.toString();
+
 			var feiJiComp:FightFeiJiComponent;
 
 			var fightComp:BattleFightComponent=fightMed.comp;
@@ -78,32 +77,54 @@ package controller.battle.fight
 			var allChariotIDList:Array=FightDataUtil.getAllPlayerChariotID();
 			var battleProxy:BattleProxy=getProxy(BattleProxy);
 			var controlID:String;
-			
+
 			var chariots:Array=player1.chariots;
-			var zhanCheVO:CHARIOT;
+			var feiJiVO:CHARIOT;
+
 			for (var i:int=0; i < chariots.length; i++)
 			{
-				zhanCheVO=chariots[i];
-				
-				feiJiComp=new FightFeiJiComponent(zhanCheVO);
+				feiJiVO=chariots[i];
+
+				feiJiComp=new FightFeiJiComponent(feiJiVO);
 				feiJiComp.x=Math.random() * (Main.WIDTH + 200) - 100;
 				feiJiComp.y=-Math.random() * 100;
 
 				fightComp.feiJiCompList.push(feiJiComp);
 				fightComp.allCompList.push(feiJiComp);
-				fightComp.compIDDic[zhanCheVO.id]=feiJiComp;
+				fightComp.compIDDic[feiJiVO.id]=feiJiComp;
 
 				fightComp.airSp.addChild(feiJiComp);
-				feiJiComp.gid=player1.gid;
+				feiJiVO.gid=player1.gid;
 
 				//如果是大飞机，设置大飞机移动
-				if (zhanCheVO.voType==FightVOTypeEnum.daFeiJi)
-					feiJiComp.movePath();
-				else if (zhanCheVO.voType==FightVOTypeEnum.xiaoFeiJi)
+				if (feiJiVO.voType == FightVOTypeEnum.daFeiJi)
+				{
+					BattleFightComponent.daFeiJiCompList.push(feiJiComp);
+					feiJiComp.movePath(true);
+				}
+				else if (feiJiVO.voType == FightVOTypeEnum.xiaoFeiJi)
 				{
 					//获取飞机控制权
-					controlID=allChariotIDList[RandomUtil.getRangeInt(0,allChariotIDList.length-1)];
-					battleProxy.getContorl(controlID);
+
+					//计算离小飞机最近的战车
+					var zhanCheObj:DisplayObject;
+					var feiJiP:Point=new Point(feiJiComp.x, feiJiComp.y);
+					var minDis:Number;
+					var minID:String;
+					var dis:Number;
+					for (var j:int=0; j < allChariotIDList.length; j++)
+					{
+						zhanCheObj=fightMed.comp.getCompByID(allChariotIDList[j]);
+						dis=Point.distance(feiJiP, new Point(zhanCheObj.x, zhanCheObj.y));
+						if (isNaN(minDis) || dis < minDis)
+						{
+							minDis=dis;
+							minID=allChariotIDList[j];
+						}
+					}
+
+					if (minID == myID)
+						battleProxy.getContorl(feiJiVO.id.toString());
 				}
 			}
 		}

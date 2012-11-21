@@ -10,6 +10,7 @@ package view.shangCheng.shangChengView
 	
 	import ui.components.Button;
 	import ui.components.Container;
+	import ui.components.LoaderImage;
 	import ui.components.VScrollBar;
 	import ui.core.Component;
 	import ui.layouts.HTileLayout;
@@ -21,7 +22,7 @@ package view.shangCheng.shangChengView
 		/**
 		 *显示赠送的物品图 
 		 */		
-		public var titleSp:Sprite;
+		public var titleSp:LoaderImage;
 		
 		/**
 		 *显示赠送的物品名称 
@@ -59,14 +60,13 @@ package view.shangCheng.shangChengView
 		public var vsBar:VScrollBar;
 		
 		private var _arr:Array=[];
-		private var type:int;
+		private var type:String;
 		private var container:Container;
         public function FriendGiveComponent()
         {
             super(ClassUtil.getObject("view.allView.friendGiveSkin"));
 			
 			
-			titleSp=getSkin("tubiao_sprite");
 			titleTf=getSkin("title_tf");
 			moneyTf=getSkin("money_tf");
 			showTf=getSkin("xianshi_tf");
@@ -75,6 +75,7 @@ package view.shangCheng.shangChengView
 			okBtn=createUI(Button,"ok_btn");
 			closeBtn=createUI(Button,"close_btn");
 			vsBar=createUI(VScrollBar,"vs_bar");
+			titleSp=createUI(LoaderImage,"tubiao_sprite");
 			
 			sortChildIndex();
 			
@@ -87,16 +88,13 @@ package view.shangCheng.shangChengView
 		private function addContainer():void
 		{
 			container=new Container(null);
-			container.contentWidth=520;
-			container.contentHeight=370;			
+			container.contentWidth=243;
+			container.contentHeight=209;			
 			container.layout=new HTileLayout(container);
 			container.layout.vGap=2;
 			container.x=0;
 			container.y=0;
-			container.width=243;
-			container.height=209;
 			vsBar.viewport=container;
-			vsBar.visible=false;
 			sprite.addChild(container);
 		}
 		
@@ -118,8 +116,9 @@ package view.shangCheng.shangChengView
 			}
 		}
 		
-		public function setFriendConst(arr:Array,text:String,num:int,titleText:String):void
+		public function setFriendConst(arr:Array,text:String,num:String,titleText:String,source:String):void
 		{
+			titleSp.source=source;
 			_arr=arr;
 			type=num;
 			moneyTf.text=text;
@@ -136,8 +135,8 @@ package view.shangCheng.shangChengView
 					friendItem.usernamePt=firendVo.nickname;
 				}
 				//itemArr.push(friendItem);
-				friendItem.addEventListener(MouseEvent.DOUBLE_CLICK,doChangeNameHandler);
-				container.addChild(friendItem);
+				friendItem.addEventListener(MouseEvent.CLICK,doChangeNameHandler);
+				container.add(friendItem);
 			}
 			container.layout.update();
 			vsBar.update();

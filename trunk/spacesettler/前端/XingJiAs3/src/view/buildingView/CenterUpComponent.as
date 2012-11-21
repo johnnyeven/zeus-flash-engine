@@ -110,6 +110,7 @@ package view.buildingView
 		private var allViewProxy:AllViewProxy;
 		
 		public var conditionArr:Array;
+		private var _hasPower:Boolean=true;
 		
         public function CenterUpComponent(skin:DisplayObjectContainer)
         {			
@@ -200,7 +201,12 @@ package view.buildingView
 			if(conditionBtn.visible==true)
 				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 			else
-            	dispatchEvent(new Event(BuildEvent.UP_EVENT));
+			{
+				if(_hasPower)
+            		dispatchEvent(new Event(BuildEvent.UP_EVENT));
+				else
+					dispatchEvent(new ConditionEvent(ConditionEvent.POWERPROMT_EVENT));
+			}
         }
 
         protected function closeButton_clickHandler(event:MouseEvent):void
@@ -306,8 +312,7 @@ package view.buildingView
 			if(_keJiBuild)
 			{
 				if(nextViewInfoVO.anWuZhiXH>userInfoVO.broken_crysta || nextViewInfoVO.shuiJinXH>userInfoVO.crystal ||
-					nextViewInfoVO.chuanQinXH>userInfoVO.tritium || curViewInfoVO.limit>_keJiBuild.level ||
-					nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply)
+					nextViewInfoVO.chuanQinXH>userInfoVO.tritium || nextViewInfoVO.limit>_keJiBuild.level)// ||nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply
 				{
 					conditionBtn.visible=true;
 					conditionBtn.addEventListener(MouseEvent.CLICK,conditionBtn_clickHandler);
@@ -324,7 +329,7 @@ package view.buildingView
 			{
 				var obj1:Object=new Object();
 				obj1.imgSource=ResEnum.getConditionIconURL+"1.png";
-				obj1.content=MultilanguageManager.getString("broken_crysta")+userInfoVO.broken_crysta+"/"+nextViewInfoVO.anWuZhiXH;
+				obj1.content=MultilanguageManager.getString("broken_crysta")+int(userInfoVO.broken_crysta)+"/"+nextViewInfoVO.anWuZhiXH;
 				obj1.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj1);
 			}
@@ -332,7 +337,7 @@ package view.buildingView
 			{
 				var obj2:Object=new Object();
 				obj2.imgSource=ResEnum.getConditionIconURL+"2.png";
-				obj2.content=MultilanguageManager.getString("crystal")+userInfoVO.crystal+"/"+nextViewInfoVO.shuiJinXH;
+				obj2.content=MultilanguageManager.getString("crystal")+int(userInfoVO.crystal)+"/"+nextViewInfoVO.shuiJinXH;
 				obj2.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj2);
 			}
@@ -340,31 +345,32 @@ package view.buildingView
 			{
 				var obj3:Object=new Object();
 				obj3.imgSource=ResEnum.getConditionIconURL+"3.png";
-				obj3.content=MultilanguageManager.getString("tritium")+userInfoVO.tritium+"/"+nextViewInfoVO.chuanQinXH;
+				obj3.content=MultilanguageManager.getString("tritium")+int(userInfoVO.tritium)+"/"+nextViewInfoVO.chuanQinXH;
 				obj3.btnLabel=MultilanguageManager.getString("buy_click");
 				conditionArr.push(obj3);
 			}
-			if(_keJiBuild && curViewInfoVO.limit>_keJiBuild.level)
+			if(_keJiBuild && nextViewInfoVO.limit>_keJiBuild.level)
 			{
 				var obj4:Object=new Object();
 				obj4.imgSource=ResEnum.getConditionIconURL+"6.png";
-				obj4.content=MultilanguageManager.getString("science_build")+_keJiBuild.level+"/"+curViewInfoVO.limit;
+				obj4.content=MultilanguageManager.getString("science_build")+_keJiBuild.level+"/"+nextViewInfoVO.limit;
 				obj4.btnLabel=MultilanguageManager.getString("up_science");
 				conditionArr.push(obj4);
 			}
-			if(nextViewInfoVO.DianNengXH>userInfoVO.current_power_supply)
+			if((nextViewInfoVO.DianNengXH-curViewInfoVO.DianNengXH)>(userInfoVO.current_power_supply-userInfoVO.current_power_consume))
 			{
 				var obj5:Object=new Object();
 				obj5.imgSource=ResEnum.getConditionIconURL+"4.png";
-				obj5.content=MultilanguageManager.getString("power_supply")+userInfoVO.current_power_supply+"/"+nextViewInfoVO.DianNengXH;
+				obj5.content=MultilanguageManager.getString("power_supply")+(userInfoVO.current_power_supply-userInfoVO.current_power_consume)+"/"+nextViewInfoVO.DianNengXH;
 				obj5.btnLabel=MultilanguageManager.getString("produce_click");
-				conditionArr.push(obj5);
+//				conditionArr.push(obj5);
+				_hasPower=false;
 			}
 			if(!_keJiBuild)
 			{
 				var obj6:Object=new Object();
 				obj6.imgSource=ResEnum.getConditionIconURL+"6.png";
-				obj6.content=MultilanguageManager.getString("science_build")+"0/"+nextViewInfoVO.limit;
+				obj6.content=MultilanguageManager.getString("science_build")+"0/1";
 				obj6.btnLabel=MultilanguageManager.getString("build_click");
 				conditionArr.push(obj6);
 			}

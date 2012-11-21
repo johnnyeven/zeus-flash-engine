@@ -6,6 +6,9 @@ package proxy.packageView
     import com.zn.utils.StringUtil;
     import com.zn.utils.XMLUtil;
     
+    import controller.task.TaskCompleteCommand;
+    
+    import enum.TaskEnum;
     import enum.command.CommandEnum;
     import enum.factory.FactoryEnum;
     import enum.item.ItemEnum;
@@ -95,7 +98,6 @@ package proxy.packageView
         private function packageViewResult(data:Object):void
         {
             Protocol.deleteProtocolFunction(CommandEnum.getPackageInfo, packageViewResult);
-			Protocol.deleteProtocolFunction(CommandEnum.useItem, packageViewResult);
 			Protocol.deleteProtocolFunction(CommandEnum.destroyItem, packageViewResult);
 			Protocol.deleteProtocolFunction(CommandEnum.addSpace, packageViewResult);
 			Protocol.deleteProtocolFunction(CommandEnum.groupDonate, packageViewResult);
@@ -113,12 +115,16 @@ package proxy.packageView
 				userProxy.userInfoVO.vip_level=data.vip_level;
 			if(data.dark_crystal)
 				userProxy.userInfoVO.dark_crystal=data.dark_crystal;
+			if(data.base)
+				userProxy.userInfoVO.broken_crysta=data.base.resources.broken_crystal;
             itemVOList = [];
 			guaJianList.length=0;
 
             var zhanCheInfoVO:ZhanCheInfoVO;
             var guaJianVO:GuaJianInfoVO;
             var itemVO:ItemVO;
+			
+			
 
             for each (var objItem:Object in data["package"])
             {
@@ -200,7 +206,7 @@ package proxy.packageView
 		 * @param callBack  返回函数
 		 * 
 		 */		
-		public function groupDonate(legion_id:String,id:String,count:int,type:String,callBack:Function=null):void
+		public function groupDonate(legion_id:String,type:String,id:String=null,count:int=0,callBack:Function=null):void
 		{
 			if (!Protocol.hasProtocolFunction(CommandEnum.groupDonate, packageViewResult))
 				Protocol.registerProtocol(CommandEnum.groupDonate, packageViewResult);
@@ -222,14 +228,43 @@ package proxy.packageView
         public function useItem(id:String, callBack:Function = null):void
 		{
 			_packageViewViewCallBack = callBack;
-			if (!Protocol.hasProtocolFunction(CommandEnum.useItem, packageViewResult))
-				Protocol.registerProtocol(CommandEnum.useItem, packageViewResult);
+			if (!Protocol.hasProtocolFunction(CommandEnum.useItem, useItemResult))
+				Protocol.registerProtocol(CommandEnum.useItem, useItemResult);
 			
 			var playerID:String = UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO.player_id;
 			
 			var obj:Object = {player_id:playerID, item_id: id };
 			ConnDebug.send(CommandEnum.useItem, obj, ConnDebug.HTTP, URLRequestMethod.POST);
 		}
+		
+		private function useItemResult(data:Object):void
+		{
+			Protocol.deleteProtocolFunction(CommandEnum.useItem, useItemResult);
+			if (data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				_packageViewViewCallBack = null;
+				return;
+			}
+			
+			packageViewResult(data);
+			
+			
+			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);			
+			
+			if(userProxy.userInfoVO.index==TaskEnum.index18)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
+			userProxy.updateInfo();
+			
+			if (_packageViewViewCallBack != null)
+				_packageViewViewCallBack();
+			_packageViewViewCallBack = null;
+			
+		}
+		
+		
 
         /**
          *销毁道具
@@ -413,10 +448,11 @@ package proxy.packageView
         {
             var xml:XML;
             if (rootXML == packageXML)
-                xml = rootXML.fight.(category == itemVO.category && enhanced == itemVO.enhanced && type == itemVO.type)[0];
+                xml = rootXML.fight.(itemType==itemVO.item_type&&category == itemVO.category && enhanced == itemVO.enhanced && type == itemVO.type)[0];
             else if (rootXML == tuZhiXML)
             {
-                xml = rootXML.recipes.(category == itemVO.category && enhanced == itemVO.enhanced && type == itemVO.type)[0];
+				var itemvo:ItemVO=itemVO as ItemVO;				
+                xml = rootXML.recipes.(itemType==itemvo.recipe_type &&category == itemvo.category && enhanced == itemvo.enhanced && type == itemvo.type)[0];
             }
 			
             if (xml != null)
@@ -553,6 +589,36 @@ package proxy.packageView
             return itemInfoVO;
         }
 
+		/**
+		 * 通过ID获取物品信息
+		 * @param id
+		 * @return 
+		 * 
+		 */			
+		public function getDaoJuVOByID(category:String,callBack:Function):void
+		{
+			var itemInfoVO:ItemVO = new ItemVO();
+			
+			itemInfoVO.category = int(category);
+	
+			var contentProxy:ContentProxy = getProxy(ContentProxy);
+			if (contentProxy.contentData.items[itemInfoVO.category])
+			{
+				var cObj:Object = contentProxy.contentData.items[itemInfoVO.category];
+				
+				itemInfoVO.key = cObj.key;
+				itemInfoVO.name = cObj.name;
+				itemInfoVO.description = cObj.description;
+				itemInfoVO.vip_level=cObj.property.vip_level;
+				itemInfoVO.item_type = cObj.type;
+			}
+			
+			chakanVO = itemInfoVO;
+			
+			if(callBack != null)
+				callBack();
+			callBack = null;
+		}
         /**
          *设置战车详细信息
          * @param itemVO

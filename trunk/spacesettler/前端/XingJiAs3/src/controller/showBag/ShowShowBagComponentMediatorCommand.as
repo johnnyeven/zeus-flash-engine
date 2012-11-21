@@ -24,6 +24,7 @@ package controller.showBag
 		
 		public static var loadCompleteCallBack:Function;
 		
+		private var isEmail:Boolean = false;
         public function ShowShowBagComponentMediatorCommand()
         {
             super();
@@ -38,13 +39,15 @@ package controller.showBag
         {
 			if(_isLoading)
 				return ;
-			
+			if(notification.getBody())
+			     isEmail = notification.getBody().isEmail as Boolean;
 			var packageProxy:PackageViewProxy=getProxy(PackageViewProxy);
 			packageProxy.packageViewView(function():void
 			{
 				 var med:ShowBagComponentMediator = getMediator(ShowBagComponentMediator);
 	            if (med)
 	            {
+					med.isEmail(isEmail);
 					callShow(med);
 	            }
 	            else
@@ -67,7 +70,7 @@ package controller.showBag
 
             //注册界面的中介
             facade.registerMediator(med);
-			
+			med.isEmail(isEmail);
 			_isLoading=false;
 			
 			callShow(med);

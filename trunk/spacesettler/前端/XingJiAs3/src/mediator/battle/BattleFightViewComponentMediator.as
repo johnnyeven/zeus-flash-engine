@@ -7,6 +7,7 @@ package mediator.battle
 	import events.battle.fight.FightViewEvent;
 	
 	import flash.events.Event;
+	import flash.geom.Point;
 	
 	import mediator.BaseMediator;
 	import mediator.mainView.MainViewMediator;
@@ -69,6 +70,8 @@ package mediator.battle
 		protected function backHandler(event:FightViewEvent):void
 		{
 			sendNotification(BattleFightMediator.DESTROY_NOTE);
+			//默认显示小行星带
+			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
 		}		
 		
 		/**
@@ -104,10 +107,19 @@ package mediator.battle
 		 * @return
 		 *
 		 */
-		protected function get comp():BattleFightViewComponent
+		public function get comp():BattleFightViewComponent
 		{
 			return viewComponent as BattleFightViewComponent;
 		}
 
+		/**
+		 *获取荣誉label坐标 
+		 * @return 
+		 * 
+		 */
+		public function getHonrPoint():Point
+		{
+			return new Point(Main.WIDTH*0.5);
+		}
 	}
 }

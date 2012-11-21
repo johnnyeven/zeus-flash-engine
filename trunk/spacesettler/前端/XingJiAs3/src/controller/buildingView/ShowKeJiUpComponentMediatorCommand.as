@@ -12,6 +12,8 @@ package controller.buildingView
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.scienceResearch.ScienceResearchProxy;
 
     /**
      *显示界面命令
@@ -37,17 +39,21 @@ package controller.buildingView
 			if(_isLoading)
 				return ;
 			
-            var med:KeJiUpComponentMediator = getMediator(KeJiUpComponentMediator);
-            if (med)
-            {
-                med.show();
-            }
-            else
-            {
-                //加载界面SWF
-				_isLoading=true;
-                ResLoader.load("keJi_view", MultilanguageManager.getString(""), loaderComplete, true);
-            }
+			var scienceResearchProxy:ScienceResearchProxy = getProxy(ScienceResearchProxy);
+			scienceResearchProxy.getScienceResearchInfor(function():void
+			{
+	            var med:KeJiUpComponentMediator = getMediator(KeJiUpComponentMediator);
+	            if (med)
+	            {
+	                med.show();
+	            }
+	            else
+	            {
+	                //加载界面SWF
+					_isLoading=true;
+	                ResLoader.load("keJi_view", MultilanguageManager.getString(""), loaderComplete, true);
+	            }
+			});
         }
 
         /**

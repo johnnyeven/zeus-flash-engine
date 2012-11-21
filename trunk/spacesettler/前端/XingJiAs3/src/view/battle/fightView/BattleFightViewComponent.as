@@ -15,6 +15,8 @@ package view.battle.fightView
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import proxy.battle.BattleProxy;
+	
 	import ui.components.Button;
 	import ui.components.Container;
 	import ui.components.Label;
@@ -30,12 +32,13 @@ package view.battle.fightView
     public class BattleFightViewComponent extends Component
     {
 		public static const MAXNUM:int=44;
-		public static const FIVEXSEX:int=300;
 		
 		//玩家panel
 		public var sp:Sprite;
 		public var container:Container;
 		public var player:BattleNameItemComponent;
+		private var _curPlayer:BattleNameItemComponent;
+		private var _player1:PLAYER1;
 		//护盾和能量显示
 		public var overMc:MovieClip;
 		public var timeLabel:Label;
@@ -83,12 +86,14 @@ package view.battle.fightView
 		private var tank2:TANKPART;//第二个挂件
 		private var tank3:TANKPART;//第三个挂件
 		private var timer:Timer;
+		private var shiJiantimer:Timer;
 		private var timeNum:Number;
+		private var battleProxy:BattleProxy;
         public function BattleFightViewComponent()
         {
             super(ClassUtil.getObject("battle.BattleFightViewSkin"));
 			sp=getSkin("playerContainer");
-			
+			battleProxy=ApplicationFacade.getProxy(BattleProxy);
 			myCar=FightDataUtil.getMyChariot();
 			
 			scoreLabel=createUI(Label,"scoreLabel");
@@ -125,24 +130,48 @@ package view.battle.fightView
 			overMc=getSkin("overMc");
 			
 			sortChildIndex();
-			timer=new Timer(100);
-			timer.start();
-			timer.addEventListener(TimerEvent.TIMER,timerHandler);
-			backBtn.addEventListener(MouseEvent.CLICK,backClickHandler);
-			
-			overMc.visible=false;
-			timeNum=FIVEXSEX;
-			upData();
-			attackCd();
-			overMc.addEventListener(Event.COMPLETE,playCompleteHandler);
 			
 			container=new Container(null);
 			container.layout=new VLayout(container);
 			container.contentWidth=150;
 			container.contentHeight=500;
-			addItem();
+			upDataItem();
 			sp.addChild(container);
+			
+			timer=new Timer(100);
+			shiJiantimer=new Timer(1000);
+			timer.start();
+			shiJiantimer.start();
+			timer.addEventListener(TimerEvent.TIMER,timerHandler);
+			shiJiantimer.addEventListener(TimerEvent.TIMER,shiJiantimerHandler);
+			backBtn.addEventListener(MouseEvent.CLICK,backClickHandler);
+			
+			overMc.visible=false;
+			timeNum=battleProxy.roomVO.roomTime;
+			upData();
+			attackCd();
+			overMc.addEventListener(Event.COMPLETE,playCompleteHandler);
         }
+		
+		protected function shiJiantimerHandler(event:TimerEvent):void
+		{
+			timeLabel.text=DateFormatter.formatterTime(timeNum);
+			if(timeNum<=0)
+			{
+				overMc.visible=true;
+				overMc.play();
+				stopTimer();
+			}
+			if(timeNum==20)
+			{
+				dispatchEvent(new FightViewEvent(FightViewEvent.GAME_EVENT));
+			}
+			if(timeNum==15)
+			{
+				dispatchEvent(new FightViewEvent(FightViewEvent.GAME_COMPLETE_EVENT));
+			}
+			timeNum-=1;
+		}
 		
 		private function removeAllItem():void
 		{
@@ -150,24 +179,25 @@ package view.battle.fightView
 				dispose();
 		}
 		
-		public function addItem():void
+		public function upDataItem():void
 		{
 			removeAllItem();
 			
-			var arr:Array=FightDataUtil.getPlayerList();
-			var player1:PLAYER1;
+			var arr:Array=FightDataUtil.getPlayerList();//_playerArr
 			var len:int=arr.length;
 			var isVip:Boolean;
 			
 			for(var i:int=0;i<len;i++)
 			{
-				player1=arr[i];
+				_player1=arr[i];
 				player=new BattleNameItemComponent();
-				isVip=player1.players[0].playerType==1?false:true;
-				player.setValue(isVip,player1.players[0].nickname);
-				player.PH=player1.chariots[0].currentEndurance;
+				_curPlayer=player;
+				isVip=_player1.players[0].playerType==1?false:true;
+				player.setValue(isVip,_player1.players[0].nickname);
+//				player.HP=_player1.chariots[0].currentEndurance;
 				container.add(player);
 			}
+			
 			container.layout.update();
 		}
 		
@@ -178,6 +208,7 @@ package view.battle.fightView
 		
 		protected function timerHandler(event:TimerEvent):void
 		{
+			_curPlayer.HP=_player1.chariots[0].currentEndurance/_player1.chariots[0].totalEndurance;//更新玩家面板的血量条
 			myCar=FightDataUtil.getMyChariot();	
 			attackCd();
 		}
@@ -196,6 +227,12 @@ package view.battle.fightView
 				timer.removeEventListener(TimerEvent.TIMER,timerHandler);
 				timer=null;				
 			}
+			if(shiJiantimer!=null)
+			{
+				shiJiantimer.stop();
+				shiJiantimer.removeEventListener(TimerEvent.TIMER,shiJiantimerHandler);
+				shiJiantimer=null;				
+			}
 		}
 		
 		protected function backClickHandler(event:MouseEvent):void
@@ -203,23 +240,10 @@ package view.battle.fightView
 			dispatchEvent(new FightViewEvent(FightViewEvent.RETURN_EVENT));
 		}
 		public function attackCd():void
-		{		
-			timeLabel.text=DateFormatter.formatterTime(timeNum);
-			if(timeNum<=0)
-			{
-				overMc.visible=true;
-				overMc.play();
-				stopTimer();
-			}
-			if(timeNum==20)
-			{
-				dispatchEvent(new FightViewEvent(FightViewEvent.GAME_EVENT));
-			}
-			if(timeNum==15)
-			{
-				dispatchEvent(new FightViewEvent(FightViewEvent.GAME_COMPLETE_EVENT));
-			}
-			timeNum-=0.1;
+		{					
+			shieldLabel.text=int(myCar.currentShield).toString();
+			enduranceLabel.text=int(myCar.currentEndurance).toString();
+			
 			if(myCar.source1)
 			{				
 				tankpard_1.source=myCar.source1;
@@ -241,20 +265,34 @@ package view.battle.fightView
 			if(tank1)
 			{
 				var time1:Number=0;
-				time1=1-(tank1.attackCoolEndTime)/tank1.attackCoolDown;
-				var num_1:int=int((MAXNUM)*time1);
-				if(time1==0)	
-					num_1=1;
+				if(tank1.attackCoolEndTime)
+				{
+					time1=1-(tank1.attackCoolEndTime-DateFormatter.currentTimeM)/tank1.attackCoolDown;
+					var num_1:int=int((MAXNUM)*time1);
+					if(time1==0)	
+						num_1=1;
+				}else
+				{
+					num_1=MAXNUM;
+				}
+				
 				tankPartCircle1.gotoAndStop(num_1);
 				attact1Label.text=myCar.tank1.attack.toString();
 			}
 			if(tank2)
 			{
 				var time2:Number=0;
-				time2=1-(tank2.attackCoolEndTime)/tank2.attackCoolDown;
-				var num_2:int=int((MAXNUM)*time2);
-				if(time2==0)	
-					num_2=1;
+				if(tank2.attackCoolEndTime)
+				{
+					time2=1-(tank2.attackCoolEndTime-DateFormatter.currentTimeM)/tank2.attackCoolDown;
+					var num_2:int=int((MAXNUM)*time2);
+					if(time2==0)	
+						num_2=1;
+				}else
+				{
+					num_2=MAXNUM;
+				}
+				
 				tankPartCircle2.gotoAndStop(num_2);
 				attact2Label.text=myCar.tank2.attack.toString();
 			}
@@ -262,10 +300,17 @@ package view.battle.fightView
 			if(tank3)
 			{
 				var time3:Number=0;
-				time3=1-(tank3.attackCoolEndTime)/tank3.attackCoolDown;
-				var num_3:int=int((MAXNUM)*time3);
-				if(time3==0)	
-					num_3=1;
+				if(tank3.attackCoolEndTime)
+				{
+					time3=1-(tank3.attackCoolEndTime-DateFormatter.currentTimeM)/tank3.attackCoolDown;
+					var num_3:int=int((MAXNUM)*time3);
+					if(time3==0)	
+						num_3=1;
+				}else
+				{
+					num_3=MAXNUM;
+				}
+				
 				tankPartCircle3.gotoAndStop(num_3);
 				attact3Label.text=myCar.tank3.attack.toString();
 			}
@@ -274,14 +319,13 @@ package view.battle.fightView
 			
 			chaiortCircle.upDataSh(num1);
 			chaiortCircle.upDataEn(num2);
+			
 		}
 		
 		public function upData():void
 		{
-			chariotImg.source=ResEnum.senceEquipment+ItemEnum.Chariot+"_"+myCar.category+".png"
+			chariotImg.source=ResEnum.senceEquipment+ItemEnum.Chariot+"_"+myCar.category+".png"		
 			
-			shieldLabel.text=myCar.currentShield.toString();
-			enduranceLabel.text=myCar.currentEndurance.toString();
 			nameLabel.text=myCar.name;
 			scoreLabel.text=myCar.value.toString();
 			var str1:String=(myCar.num1*100).toFixed(1);

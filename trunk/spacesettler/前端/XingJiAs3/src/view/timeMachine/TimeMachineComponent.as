@@ -38,6 +38,8 @@ package view.timeMachine
 		
 		public var timeMachineInforBtn:Button;
 		
+		public var noItemLabel:Label;
+		
 		private var container:Container;
 		public var vscrollBar:VScrollBar;
 		
@@ -49,11 +51,13 @@ package view.timeMachine
 			var timeMachineProxy:TimeMachineProxy = ApplicationFacade.getProxy(TimeMachineProxy);
 			
 			totalCrystalCountTxt = createUI(Label,"totalCrystalCountTxt");
+			noItemLabel = createUI(Label,"noLabel");
 			allSpeedBtn = createUI(Button,"allSpeedBtn");
 			closeBtn = createUI(Button,"closeBtn");
 			timeMachineInforBtn = createUI(Button,"timeMachineInforBtn");
 			vscrollBar = createUI(VScrollBar,"vscrollBar");
 			sortChildIndex();
+			noItemLabel.visible=false;
 			mouseChildren = mouseEnabled = true;
 			totalCrystalCountTxt.text = "";
 			
@@ -96,6 +100,7 @@ package view.timeMachine
 			if(arr.length <= 0)
 			{
 				allSpeedBtn.mouseEnabled = false;
+				noItemLabel.visible=true;
 			}
 			else
 			{
@@ -106,7 +111,11 @@ package view.timeMachine
 			
 			if(arr.length>0)
 			{
-				totalCrystal = (arr[arr.length-1] as TimeMachineVO).totalCrystal;
+//				totalCrystal = (arr[arr.length-1] as TimeMachineVO).totalCrystal;
+				for(var n:int=0;n<arr.length;n++)
+				{
+					totalCrystal+=(arr[n] as TimeMachineVO).totalCrystal;
+				}
 			}
 			
 			var newArr:Array = [];

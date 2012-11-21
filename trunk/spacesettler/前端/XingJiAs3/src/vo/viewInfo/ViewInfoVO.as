@@ -58,9 +58,13 @@ package vo.viewInfo
 		 */		
 		public var anNengShuiJinRL:int;
 		/**
-		 *升级限制
+		 *基地中心升级限制
 		 */		
 		public var limit:int;
+		/**
+		 *科技中心及其他建筑升级限制
+		 */		
+		public var command_center_level:int;
 		
 		public var all_subjects_level:int;
 		

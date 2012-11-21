@@ -1,8 +1,12 @@
 package view.email
 {
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.ObjectUtil;
+	import com.zn.utils.StringUtil;
 	
 	import enum.email.EmailTypeEnum;
+	import enum.item.ItemEnum;
+	import enum.science.ScienceEnum;
 	
 	import events.email.EmailEvent;
 	
@@ -10,6 +14,9 @@ package view.email
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	
+	import mx.binding.utils.BindingUtils;
+	
+	import proxy.scienceResearch.ScienceResearchProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.components.Button;
@@ -23,6 +30,8 @@ package view.email
 	import vo.cangKu.BaseItemVO;
 	import vo.email.EmailItemVO;
 	import vo.email.SourceItemVO;
+	import vo.group.GroupMemberListVo;
+	import vo.scienceResearch.ScienceResearchVO;
 	
 	/**
 	 * 发送新邮件
@@ -59,10 +68,25 @@ package view.email
 		private var hasFuJian:Boolean = false;
 		
 		private var userInforProxy:UserInfoProxy;
+		private var scienceResearchProxy:ScienceResearchProxy;
+	    private var techDicObj:Object;
+		private var obj1:Object = {};
+		private var scienceLevel:int;
         public function SendEmailComponent()
         {
             super(ClassUtil.getObject("view.email.SendEmailSkin"));
 			userInforProxy = ApplicationFacade.getProxy(UserInfoProxy);
+			scienceResearchProxy= ApplicationFacade.getProxy(ScienceResearchProxy);
+			techDicObj = ObjectUtil.CreateDic(scienceResearchProxy.reaearchList,"science_type");
+			obj1 = techDicObj[6];
+			if(obj1)
+			{
+				scienceLevel = obj1.level;
+			}
+			else
+			{
+				scienceLevel =0;
+			}
 			
 			closeBtn = createUI(Button,"closeBtn");
 			friendListBtn = createUI(Button,"friendListBtn");
@@ -73,12 +97,15 @@ package view.email
 			titleTxt.mouseEnabled = true;
 			contentTxt = getSkin("contentTxt");
 			contentTxt.mouseEnabled = true;
+			contentTxt.text = "";
+			titleTxt.addEventListener(MouseEvent.CLICK,titleTxt_clickHandler);
 //			chatText.addEventListener(TextEvent.TEXT_INPUT, textChange_handler);
 //			chatText.addEventListener(KeyboardEvent.KEY_UP, keyUp_clickHandler);
 			senderLabel = createUI(Label,"senderLabel");
 			receiverLabel = createUI(Label,"receiverLabel");
+			receiverLabel.text = "点击好友或军团按钮选择收件人";
 			senderLabel.text = userInforProxy.userInfoVO.nickname;
-			receiverLabel.text = titleTxt.text;
+//			receiverLabel.text = titleTxt.text;
 			
 			
 			otherSprite = createUI(Component,"otherSprite")
@@ -112,6 +139,20 @@ package view.email
 			sendObjBtn.addEventListener(MouseEvent.CLICK,sendObjBtn_clickHandler);
 			
 			friendListBtn.addEventListener(MouseEvent.CLICK,friendListBtn_clickHandler);
+			
+			removeCWList();
+			cwList.push(BindingUtils.bindSetter(function():void
+			{
+				if(StringUtil.isEmpty(userInforProxy.userInfoVO.legion_id))
+				{
+					groupListBtn.enabled = false;
+				}
+				else
+				{
+					groupListBtn.enabled = true;
+				}
+			},userInforProxy,["userInfoVO","legion_id"]));
+			groupListBtn.addEventListener(MouseEvent.CLICK,groupListBtn_clickHandler);
         }
 		//回复邮件的数据控制
 		public function setData(data:EmailItemVO):void
@@ -143,7 +184,8 @@ package view.email
 			btnSprite.visible = false;
 			inforSprivate.visible = true;
 			sourceImage.source = EmailTypeEnum.getEquipImageByEmailType(baseItemData.item_type,baseItemData.category);
-			sourceCountLabel.text = baseItemData.count +"";
+	
+			sourceCountLabel.text = "X"+baseItemData.count +"";
 			costMoneyLabel.text =  EmailTypeEnum.getItemCostByItemInfor(baseItemData.value,baseItemData.level,baseItemData.enhanced) +"";
 			hasFuJian = true;
 //			receiverLabel.text = titleTxt.text;
@@ -159,7 +201,6 @@ package view.email
 			
 			friendListBtn.visible = false;
 			groupListBtn.visible = false;
-			hasFuJian = false;
 		}
 		
 		//从好友列表发送的邮件数据
@@ -169,8 +210,14 @@ package view.email
 			receiverLabel.text = friendInforVO.nickname;
 			
 			friendListBtn.visible = true;
+		}
+		
+		//从军团列表发送的邮件数据
+		public function armyGroupListData(armyGroupMemberListVo:GroupMemberListVo):void
+		{
+			senderLabel.text = userInforProxy.userInfoVO.nickname;
+			receiverLabel.text = armyGroupMemberListVo.username;
 			groupListBtn.visible = true;
-			hasFuJian = false;
 		}
 		
 		private function closeBtnHandler(event:MouseEvent):void
@@ -180,14 +227,34 @@ package view.email
 		
 		private function sendBtn_clickHAndler(event:MouseEvent):void
 		{
-			if(titleTxt.text == "" || senderLabel.text == "" || receiverLabel.text == "" || contentTxt.text == "")
+			if(titleTxt.text == "点击这里输入邮件标题" ||titleTxt.text == "")
 			{
+				titleTxt.text = "来自"+ senderLabel.text +"的邮件";
+//				dispatchEvent(new Event("titleTextNull"));
+			}
+		    if(senderLabel.text == "")
+			{
+				dispatchEvent(new Event("senderLabelNull"));
+				return;
+			}
+		    if(receiverLabel.text == "点击好友或军团按钮选择收件人")
+			{
+				dispatchEvent(new Event("receiverLabelNull"));
+				return;
+			}
+		    if(contentTxt.text == "")
+			{
+				dispatchEvent(new Event("contentTxtNull"));
 				return;
 			}
 //			receiverLabel.text = titleTxt.text;
 			if(!hasFuJian)
 			{
 			   obj = {type:EmailTypeEnum.PERSONEL_TYPE,sender:senderLabel.text,receiver:receiverLabel.text,title:titleTxt.text,content:contentTxt.text};
+			}
+			else
+			{
+				obj.title = titleTxt.text;
 			}
 //			var obj:Object = {type:EmailTypeEnum.PERSONEL_TYPE,sender:senderLabel.text,receiver:receiverLabel.text,title:titleTxt.text,content:contentTxt.text,attachment_type:null,attachment_count:0,attachment_id:null};
 			
@@ -202,12 +269,24 @@ package view.email
 		
 		private function sendObjBtn_clickHandler(event:MouseEvent):void
 		{
+			if(scienceLevel < 10)
+			{
+				//星域通讯科技要求10级以上
+				dispatchEvent(new Event("scienceLevelEvent"));
+				return;
+			}
 			//战车或挂件
 			dispatchEvent(new Event("showItemListEvent"));
 		}
 		
 		private function sendSourceBtn_clickHandler(event:MouseEvent):void
 		{
+			if(scienceLevel < 10)
+			{
+				//星域通讯科技要求10级以上
+				dispatchEvent(new Event("scienceLevelEvent"));
+				return;
+			}
 			//资源
 			dispatchEvent(new Event("showSourceListEvent"));
 		}
@@ -216,6 +295,17 @@ package view.email
 		{
 			//好友列表
 			dispatchEvent(new EmailEvent(EmailEvent.SHOW_FRIEND_LIST_EVENT));
+		}
+		
+		private function groupListBtn_clickHandler(event:MouseEvent):void
+		{
+			//军团成员列表
+			dispatchEvent(new EmailEvent(EmailEvent.SHOW_ARMY_GROUP_LIST_EVENT));
+		}
+		
+		private function titleTxt_clickHandler(event:MouseEvent):void
+		{
+			titleTxt.text = "";
 		}
     }
 }

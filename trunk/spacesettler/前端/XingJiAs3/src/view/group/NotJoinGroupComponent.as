@@ -130,12 +130,8 @@ package view.group
 				item.peopleNum.text=grouplistvo.peopleNum.toString()+"/50";
 				item.groupName.text=grouplistvo.groupname;
 				if(grouplistvo.vipLevel>0)
-				{
-					item.vip.visible=true;
-				}else
-				{
-					item.vip.visible=false;
-				}
+					item.myVipShow(grouplistvo.vipLevel);
+				
 				container.add(item);	
 				
 				_arr.push(item);

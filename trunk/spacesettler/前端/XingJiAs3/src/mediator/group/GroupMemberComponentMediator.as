@@ -2,12 +2,15 @@ package mediator.group
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	
+	import events.email.EmailEvent;
 	import events.group.GroupEvent;
 	import events.group.GroupShowAndCloseEvent;
 	
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.email.SendEmailComponentMediator;
+	import mediator.friendList.ViewIdCardComponentMediator;
 	import mediator.prompt.PromptCloseMediator;
 	import mediator.prompt.PromptSureMediator;
 	
@@ -15,6 +18,7 @@ package mediator.group
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.friendList.FriendProxy;
 	import proxy.group.GroupProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -40,6 +44,9 @@ package mediator.group
 			
 			comp.addEventListener(GroupShowAndCloseEvent.CLOSE,doCloseHandler);
 			comp.addEventListener(GroupEvent.QUITE_GROUP,quiteGroup);
+			comp.addEventListener(GroupEvent.CHENK_ID_CARD_BY_ARMY_GROUP_EVENT,checkIdCardhandler);
+			comp.addEventListener(EmailEvent.SEND_ARMY_GROUP_INFOR_TO_EMAIL_EVENT,armyGroupInforToEmailHandler);
+			comp.addEventListener("notSelectedOwn",notSelectedOwnHandler);
 		}
 		
 		
@@ -81,6 +88,22 @@ package mediator.group
 			return viewComponent as GroupMemberComponent;
 		}		
 		
+		/**
+		 * 设置mediator的显示层级
+		 * @param mediatorLevel
+		 * 
+		 */		
+		public function setMediatorLevel(mediatorLevel:int):void
+		{
+			comp.med=this;
+			level = mediatorLevel;
+		}
+		
+		public function setIsSendEmailGroup(vaule:Boolean):void
+		{
+			comp.isSendEmailGroup = vaule;
+		}
+		
 		protected function quiteGroup(event:GroupEvent):void
 		{
 			var obj:Object={};
@@ -104,5 +127,27 @@ package mediator.group
 		{
 			sendNotification(DESTROY_NOTE);
 		}
+		
+		private function checkIdCardhandler(event:GroupEvent):void
+		{
+			var friendProxy:FriendProxy = getProxy(FriendProxy);
+			friendProxy.checkOtherPlayer(event.id,function():void
+			{
+				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
+			});
+		}
+		
+		private function armyGroupInforToEmailHandler(event:EmailEvent):void
+		{
+			sendNotification(DESTROY_NOTE);
+		    sendNotification(SendEmailComponentMediator.SEND_EMAIL_DATA_BY_ARMY_GROUP_LISE,event.obj);
+		}
+		
+		private function notSelectedOwnHandler(event:Event):void
+		{
+			var obj:Object = {infoLable:MultilanguageManager.getString("armyGroupTitle"),showLable:MultilanguageManager.getString("armyGroupInfor"),mediatorLevel:level};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+		}
+		
 	}
 }

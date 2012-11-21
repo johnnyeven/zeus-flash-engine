@@ -71,11 +71,12 @@ package mediator.cangKu
             comp.addEventListener(ChaKanEvent.WEIXIU_EVENT, weiXiuHandler);
             comp.addEventListener(ChaKanEvent.QIANGHUA_EVENT, qiangHuaHandler);
             comp.addEventListener(DonateEvent.DONATE_EVENT, addDonateViewHandler);
+            comp.addEventListener(DonateEvent.ANWUZHI_DONATE_EVENT, anWuZhiDonateViewHandler);
             comp.addEventListener(DonateEvent.DESTROY_EVENT, destroyHandler);
             comp.addEventListener(DonateEvent.USE_EVENT, useHandler);
             comp.addEventListener(DonateEvent.ADDSPACE_EVENT, addSpaceHandler);
         }
-		
+				
         /**
          *添加要监听的消息
          * @return
@@ -114,7 +115,7 @@ package mediator.cangKu
          * @return
          *
          */
-        protected function get comp():CangkuPackageViewComponent
+        public function get comp():CangkuPackageViewComponent
         {
             return viewComponent as CangkuPackageViewComponent;
         }
@@ -174,8 +175,9 @@ package mediator.cangKu
 			obj.count=count;
 			obj.okCallBack=function():void
 			{
-				packageProxy.groupDonate(userProxy.userInfoVO.legion_id,selectedItemVO.id,count,
-										selectedItemVO.item_type,function():void
+				packageProxy.groupDonate(userProxy.userInfoVO.legion_id,selectedItemVO.item_type,
+										selectedItemVO.id,count,
+										function():void
 										{
 											var obj1:Object={};
 											obj1.infoLable=MultilanguageManager.getString("juanxian");
@@ -250,6 +252,10 @@ package mediator.cangKu
 		}		
 		
 		
+		protected function anWuZhiDonateViewHandler(event:DonateEvent):void
+		{
+			sendNotification(Donateview_1ComponentMediator.SHOW_NOTE);
+		}
 		
     }
 }

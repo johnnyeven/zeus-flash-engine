@@ -3,6 +3,7 @@ package view.cangKu
     import com.greensock.TweenLite;
     import com.zn.utils.ClassUtil;
     
+    import enum.BuildTypeEnum;
     import enum.factory.FactoryEnum;
     import enum.item.ItemEnum;
     
@@ -19,6 +20,7 @@ package view.cangKu
     
     import mx.binding.utils.BindingUtils;
     
+    import proxy.BuildProxy;
     import proxy.packageView.PackageViewProxy;
     import proxy.userInfo.UserInfoProxy;
     
@@ -41,8 +43,10 @@ package view.cangKu
      */
     public class CangkuPackageViewComponent extends Component
     {
-        public var shuiJinRL:Label; //水晶容量
+        public var donateBtn:Button; //捐献按钮
 
+        public var shuiJinRL:Label; //水晶容量
+		
         public var anWuZhiRL:Label; //暗物质容量
 
         public var chuanQiRL:Label; //氚气容量
@@ -98,11 +102,16 @@ package view.cangKu
         private var obj:Object;
 
         private var hasLegion:Boolean;
+        private var hasLegionBuild:Boolean;
 
         private var selectedItemVO:BaseItemVO;
 		
 		private var userInfoProxy:UserInfoProxy
-
+		private var buildProxy:BuildProxy;
+		
+		public var currtentTuZhiBtn:Button;
+		
+		
         public function CangkuPackageViewComponent(skin:DisplayObjectContainer)
         {
             super(skin);
@@ -115,6 +124,7 @@ package view.cangKu
 
             buyBtn = createUI(Button, "buy_button");
             closeBtn = createUI(Button, "close_button");
+			donateBtn = createUI(Button, "donateBtn");
 
             obj = new Object();
 
@@ -138,30 +148,56 @@ package view.cangKu
             sortChildIndex();
 			addChild(vScrollBar);
 
-
             buyBtn.addEventListener(MouseEvent.CLICK, buyBtn_clickHandler);
             closeBtn.addEventListener(MouseEvent.CLICK, closeBtn_clickHandler);
-
-            var userInfoProxy:UserInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
+			donateBtn.addEventListener(MouseEvent.CLICK,donateBtnClickHandler);
+			
+			buildProxy= ApplicationFacade.getProxy(BuildProxy);
+			hasLegionBuild=buildProxy.hasBuild(BuildTypeEnum.JUNGONGCHANG);
+			
+			userInfoProxy= ApplicationFacade.getProxy(UserInfoProxy);
 			hasLegion = userInfoProxy.userInfoVO.legion_id != null ? true : false;
+			
+			donateBtn.visible=hasLegion;
 
             var packageViewProxy:PackageViewProxy = ApplicationFacade.getProxy(PackageViewProxy);
 
             cwList.push(BindingUtils.bindSetter(crystalChange, userInfoProxy, [ "userInfoVO", "crystal" ]));
-            cwList.push(BindingUtils.bindProperty(anWuZhiRL, "text", userInfoProxy, [ "userInfoVO", "broken_crysta" ]));
+            cwList.push(BindingUtils.bindSetter(anWuZhiChange, userInfoProxy, [ "userInfoVO", "broken_crysta" ]));
             cwList.push(BindingUtils.bindSetter(tritiumChange, userInfoProxy, [ "userInfoVO", "tritium" ]));
             cwList.push(BindingUtils.bindProperty(anNengShuiJinRL, "text", userInfoProxy, [ "userInfoVO", "dark_crystal" ]));
             cwList.push(BindingUtils.bindSetter(itemVOListChange, packageViewProxy, "itemVOList"));
         }
 		
+		private function anWuZhiChange(value:*):void
+		{
+			anWuZhiRL.text=Math.round(value)+""
+		}
+		
 		private function crystalChange(value:*):void
-		{			
+		{	
 			shuiJinRL.text=Math.round(value)+"";
+			if(value>=userInfoProxy.userInfoVO.crystal_volume)
+			{
+				shuiJinRL.color=0xFF0000;
+			}			
+			else
+			{
+				shuiJinRL.color=0xFFFFFF;
+			}
 		}
 		
 		private function tritiumChange(value:*):void
 		{
 			chuanQiRL.text=Math.round(value)+"";
+			if(value>=userInfoProxy.userInfoVO.tritium_volume)
+			{
+				chuanQiRL.color=0xFF0000;
+			}			
+			else
+			{
+				chuanQiRL.color=0xFFFFFF;
+			}
 		}
 
         private function removeAllItem():void
@@ -226,7 +262,8 @@ package view.cangKu
                     qiangHuaBtn = mcUp.createUI(Button, "qiangHua_btn");
                     weiXiuBtn = mcUp.createUI(Button, "weiXiu_btn");
                     mcUp.sortChildIndex();
-
+					if(!hasLegionBuild)
+						mcUp.visible=false;
                     mcDown = new Component(ClassUtil.getObject("down3_menu")); //查看  捐给军团
                     chaKanBtn = mcDown.createUI(Button, "chaKan_btn");
                     juanXianBtn = mcDown.createUI(Button, "juanGei_btn");
@@ -265,6 +302,7 @@ package view.cangKu
                 {
                     mcUp = new Component(ClassUtil.getObject("up3_menu")); //查看  丢弃
                     chaKanBtn = mcUp.createUI(Button, "chaKan_btn");
+					currtentTuZhiBtn=chaKanBtn;
                     diuQiBtn = mcUp.createUI(Button, "diuQi_btn");
                     mcUp.sortChildIndex();
 
@@ -304,7 +342,8 @@ package view.cangKu
                     qiangHuaBtn = mcUp.createUI(Button, "qiangHua_btn");
                     weiXiuBtn = mcUp.createUI(Button, "weiXiu_btn");
                     mcUp.sortChildIndex();
-
+					if(!hasLegionBuild)
+						mcUp.visible=false;
                     mcDown = new Component(ClassUtil.getObject("down1_menu")); //查看
                     chaKanBtn = mcDown.createUI(Button, "chaKan_btn");
                     mcDown.sortChildIndex();
@@ -338,6 +377,7 @@ package view.cangKu
                 {
                     mcUp = new Component(ClassUtil.getObject("up3_menu")); //查看  丢弃
                     chaKanBtn = mcUp.createUI(Button, "chaKan_btn");
+					currtentTuZhiBtn=chaKanBtn;
                     diuQiBtn = mcUp.createUI(Button, "diuQi_btn");
                     mcUp.sortChildIndex();
 
@@ -454,7 +494,13 @@ package view.cangKu
         {
             dispatchEvent(new DonateEvent(DonateEvent.DONATE_EVENT, selectedItemVO));
         }
-
+		
+		//暗物质捐献
+		protected function donateBtnClickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new DonateEvent(DonateEvent.ANWUZHI_DONATE_EVENT));
+		}
+		
         //添加消毁界面
         protected function xiaoHuiBtn_clickHandler(event:MouseEvent):void
         {
@@ -478,5 +524,23 @@ package view.cangKu
         {
 			dispatchEvent(new ChaKanEvent(ChaKanEvent.WEIXIU_EVENT,selectedItemVO));
         }
+		
+		
+		public function searchContainer(str:String):CangKuGridComponent
+		{
+			var researchItem:CangKuGridComponent=new CangKuGridComponent();
+			for(var i:int;i<container.num;i++)
+			{
+				var item:CangKuGridComponent=container.getAt(i) as CangKuGridComponent;
+				if(item.info)
+				{
+					if(item.info.name==str)
+					{
+						researchItem= item;
+					}
+				}				
+			}
+			return researchItem;
+		}
     }
 }

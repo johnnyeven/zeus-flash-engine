@@ -229,13 +229,7 @@ package view.group
 				item.userName.text=memberVo.username;
 				item.currtentVo=memberVo;
 				if(memberVo.vipLevel>0)
-				{
-					item.vip.visible=true;
-				}else
-				{
-					item.vip.visible=false;
-					
-				}
+					item.myVipShow(memberVo.vipLevel);
 				
 				container.add(item);
 				item.addEventListener(MouseEvent.CLICK,doClickHandler);

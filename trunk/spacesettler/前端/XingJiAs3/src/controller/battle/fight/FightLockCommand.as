@@ -49,7 +49,7 @@ package controller.battle.fight
 
 			//如果被锁定对象不存在，表示解除锁定
 
-			if (lockedVOObj)
+			if (lockedVOObj!=null&&lockedObj!=null)
 			{
 				//被锁定对象存在，表示锁定
 				lockVOObj.myAttackID=lockVO.lockedID;

@@ -7,6 +7,7 @@ package view.factory
 	
 	import events.factory.FactoryEvent;
 	
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
@@ -57,6 +58,12 @@ package view.factory
 		public var show_4:Label;
 		public var show_5:Label;
 		
+		public var mc_1:Sprite;
+		public var mc_2:Sprite;
+		public var mc_3:Sprite;
+		public var mc_4:Sprite;
+		public var mc_5:Sprite;
+		
 		public var sprite:LoaderImage;
 
 		
@@ -99,6 +106,12 @@ package view.factory
 			bar_4=createUI(ProgressBar,"bar_4");
 			bar_5=createUI(ProgressBar,"bar_5");
 				
+			mc_1=getSkin("mc_1");
+			mc_2=getSkin("mc_2");
+			mc_3=getSkin("mc_3");
+			mc_4=getSkin("mc_4");
+			mc_5=getSkin("mc_5");
+			
 			sortChildIndex();
 			
 			upData(FactoryEnum.CURRENT_ZHANCHE_VO);
@@ -116,6 +129,11 @@ package view.factory
 			bar_4.percent=0;
 			bar_5.percent=0;
 			
+			mc_1.visible=false;
+			mc_2.visible=false;
+			mc_3.visible=false;
+			mc_4.visible=false;
+			mc_5.visible=false;
 //			upData(FactoryEnum.CURRENT_ZHANCHE_VO);
         }
 		
@@ -177,6 +195,37 @@ package view.factory
 			show_3.text=info.total_endurance .toString()+"/"+info.max_endurance.toString();
 			show_4.text=info.total_energy .toString()+"/"+info.max_energy.toString();
 			show_5.text=info.total_speed .toString()+"/"+info.max_speed.toString();
+			
+			if(info.total_attack_speed>=info.max_attack_speed)
+			{
+				btn_1.visible=false;
+				mc_1.visible=true;				
+			}
+			
+			if(info.total_attack_area>=info.max_attack_area)
+			{
+				btn_2.visible=false;
+				mc_2.visible=true;				
+			}
+			
+			if(info.total_endurance>=info.max_endurance)
+			{
+				btn_3.visible=false;
+				mc_3.visible=true;				
+			}
+			
+			if(info.total_energy>=info.max_energy)
+			{
+				btn_4.visible=false;
+				mc_4.visible=true;				
+			}
+			
+			if(info.total_speed>=info.max_speed)
+			{
+				btn_5.visible=false;
+				mc_5.visible=true;				
+			}
+			
 			
 			bar_1.percent=info.total_attack_speed/info.max_attack_speed;
 			bar_2.percent=info.total_attack_area/info.max_attack_area;

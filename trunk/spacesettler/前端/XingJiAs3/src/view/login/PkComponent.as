@@ -10,6 +10,7 @@ package view.login
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
+	import ui.components.Label;
 	import ui.core.Component;
 	
 	/**
@@ -27,6 +28,8 @@ package view.login
 		
 		public var beginBtn:Button;
 		
+		public var startOrNext:Label;
+		
 		private var _currentSelectedCamp:MovieClip;
 
 		public var campID:int=0;
@@ -42,6 +45,7 @@ package view.login
 			haiDao.buttonMode = true;
 			haiDao.mouseEnabled=alliance.mouseEnabled=true;
 			
+			startOrNext=createUI(Label,"startOrNext_tf");
 			
 			returnBtn=createUI(Button,"returnBtn");
 			beginBtn=createUI(Button,"beginBtn");

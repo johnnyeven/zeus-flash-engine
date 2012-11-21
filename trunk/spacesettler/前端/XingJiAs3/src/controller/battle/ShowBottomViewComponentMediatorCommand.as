@@ -14,7 +14,7 @@ package controller.battle
     import ui.managers.SystemManager;
 
     /**
-     *显示界面命令
+     *战场编辑底部显示
      * @author zn
      *
      */

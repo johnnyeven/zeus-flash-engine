@@ -1,5 +1,7 @@
 package view.battle.fight
 {
+	import com.greensock.TweenLite;
+	
 	import flash.display.DisplayObjectContainer;
 	
 	import ui.components.Image;
@@ -16,6 +18,8 @@ package view.battle.fight
 		private var _itemVO:BUFFER_DEF;
 
 		private var image:LoaderImage;
+		
+		public var moveTweenLite:TweenLite;
 
 		public function FightItemComponent()
 		{
@@ -29,6 +33,15 @@ package view.battle.fight
 			};
 			
 			mouseChildren=mouseEnabled=false;
+		}
+		
+		public override function dispose():void
+		{
+			if(moveTweenLite)
+				moveTweenLite.kill();
+			moveTweenLite=null;
+			
+			super.dispose();
 		}
 
 		public function get itemVO():BUFFER_DEF

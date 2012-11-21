@@ -9,10 +9,12 @@ package mediator.battle
 	import controller.battle.fight.FightMoveCommand;
 	
 	import enum.SenceTypeEnum;
+	import enum.battle.BattleScaleEnum;
 	
 	import events.battle.fight.FightEvent;
 	import events.battle.fight.FightFeiJiZiBaoEvent;
 	import events.battle.fight.FightFireEvent;
+	import events.battle.fight.FightItemEvent;
 	import events.battle.fight.FightLockEvent;
 	import events.battle.fight.FightZhanCheMoveEvent;
 	
@@ -31,12 +33,13 @@ package mediator.battle
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import proxy.battle.BattleProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.battle.fight.BattleFightComponent;
 	import view.battle.fight.FightFeiJiComponent;
-	import view.battle.fight.FightItemEvent;
 	
 	import vo.GlobalData;
+	import vo.battle.fight.FightResurgenceVo;
 
 	/**
 	 *战场
@@ -52,13 +55,14 @@ package mediator.battle
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
 		private var _battleProxy:BattleProxy;
-
+		private var userProxy:UserInfoProxy;
 		public function BattleFightMediator(viewComponent:Object=null)
 		{
 			super(NAME, viewComponent);
 			_popUp=false;
 
 			_battleProxy=getProxy(BattleProxy);
+			userProxy=getProxy(UserInfoProxy);
 
 			comp.addEventListener(FightZhanCheMoveEvent.ZHAN_CHE_MOVE_EVENT, zhanCheMoveHandler);
 			comp.addEventListener(FightFireEvent.FIGHT_FIRE_EVENT, fireHandler);
@@ -90,6 +94,7 @@ package mediator.battle
 				case DESTROY_NOTE:
 				{
 					//销毁对象
+					
 					destroy();
 					break;
 				}
@@ -105,22 +110,26 @@ package mediator.battle
 		{
 			return viewComponent as BattleFightComponent;
 		}
-
+		
 		public override function showComplete():void
 		{
 			super.showComplete();
 
-			ScreenUtils.normalW=comp.width;
-			ScreenUtils.normalH=comp.height;
+			ScreenUtils.normalW=comp.bgSp.width;
+			ScreenUtils.normalH=comp.bgSp.height;
+//			ScreenUtils.normalW=2048;
+//			ScreenUtils.normalH=2880;
 			ScreenUtils.addScreenScroll(comp, true);
-
-			var obj:DisplayObject=comp.myZhanCheComp();
-			ScreenUtils.scrollRectToPoint(new Point(obj.x, obj.y));
+			
+			ScreenUtils.scrollRectToPoint(new Point(comp.myZhanCheComp.x, comp.myZhanCheComp.y));
 
 			GlobalData.currentSence=SenceTypeEnum.FIGHT_BATTLE;
 			sendNotification(BattleFightViewComponentMediator.SHOW_NOTE);
 			sendNotification(MainViewMediator.HIDE_RIGHT_VIEW_NOTE);
 			sendNotification(MainViewMediator.HIDE_TOP_VIEW_NOTE);
+			
+			Main.addBG();
+			Main.removeBG();
 		}
 		
 		public override function destroy():void
@@ -131,7 +140,8 @@ package mediator.battle
 			sendNotification(BattleTiShiPanelComponentMediator.DESTROY_NOTE);
 			sendNotification(BattleFightViewComponentMediator.DESTROY_NOTE);
 			sendNotification(BattleFightMediator.DESTROY_NOTE);
-			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			//TODO LW:特殊处理
+//			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
 			sendNotification(MainViewMediator.SHOW_RIGHT_VIEW_NOTE);
 			
 			if(GamerServerSocket.instance.connected)
@@ -140,7 +150,7 @@ package mediator.battle
 				RoomSocket.instance.close();
 			ScreenUtils.removeScreenScroll();
 			
-			FightFeiJiComponent.feiJiList=[];
+			BattleFightComponent.daFeiJiCompList=[];
 		}
 
 		
@@ -180,6 +190,7 @@ package mediator.battle
 		 */
 		public function lockHandler(event:FightLockEvent):void
 		{
+			//通知服务器
 			_battleProxy.lock(event.fightLockVO);
 			
 			//通知锁定控制器
@@ -204,9 +215,9 @@ package mediator.battle
 		 */		
 		protected function feiJiZiBaoHandler(event:FightFeiJiZiBaoEvent):void
 		{
-//			BattleProxy(getProxy(BattleProxy)).attacked(event.itemVO);
-//			//通知爆炸控制器
-//			sendNotification(FightExplodeCommand.FIGHT_EXPLODE_COMMAND, event.itemVO);
+			BattleProxy(getProxy(BattleProxy)).attacked(event.itemVO);
+			//通知爆炸控制器
+			sendNotification(FightExplodeCommand.FIGHT_EXPLODE_COMMAND, event.itemVO);
 		}
 		
 		/**
@@ -214,9 +225,29 @@ package mediator.battle
 		 * @param event
 		 * 
 		 */
-		protected function failHandler(event:Event):void
+		protected function failHandler(event:FightEvent):void
 		{
-			sendNotification(DESTROY_NOTE);
+			if(userProxy.userInfoVO.dark_crystal<1)
+			{
+				//弹出提示失败界面
+				sendNotification(BattleFailPanelComponentMediator.SHOW_NOTE);				
+			}else
+			{
+				var obj:Object={};
+				obj.okCallBack=function():void
+				{
+					var fightResVo:FightResurgenceVo=new FightResurgenceVo();
+					fightResVo.idType=comp.myZhanCheComp.itemVO.id.toString();
+					BattleProxy(getProxy(BattleProxy)).gamerResurgence(fightResVo);
+				}
+				obj.noCallBack=function():void
+				{
+					sendNotification(BattleFightMediator.DESTROY_NOTE);
+					//默认显示小行星带
+					sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+				}
+				sendNotification(BattleRevivePanelComponentMediator.SHOW_NOTE,obj);
+			}
 		}
 	}
 }

@@ -1,5 +1,10 @@
 package view.cangKu
 {
+    import com.zn.multilanguage.MultilanguageManager;
+    
+    import enum.ResEnum;
+    
+    import events.buildingView.ConditionEvent;
     import events.cangKu.ChaKanEvent;
     
     import flash.display.DisplayObjectContainer;
@@ -13,6 +18,7 @@ package view.cangKu
     
     import vo.cangKu.BaseItemVO;
     import vo.cangKu.ItemVO;
+    import vo.scienceResearch.ScienceResearchVO;
 
     public class ChaKanTuZhiViewComponent extends Component
     {
@@ -29,6 +35,7 @@ package view.cangKu
 		public var useBtn:Button;
 		
 		private var itemVo:ItemVO;
+		private var conditionArr:Array=[];
         public function ChaKanTuZhiViewComponent(skin:DisplayObjectContainer)
         {
             super(skin);
@@ -51,7 +58,10 @@ package view.cangKu
 		
 		protected function useClickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new ChaKanEvent(ChaKanEvent.USE_EVENT,itemVo));
+			if(conditionArr.length>0)
+				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
+			else
+				dispatchEvent(new ChaKanEvent(ChaKanEvent.USE_EVENT,itemVo));
 		}
 		
         protected function backBtn_clickHandler(event:MouseEvent):void
@@ -70,6 +80,26 @@ package view.cangKu
                 gongNengLabel.text = info.guaJianVO.propertyDes;
 			
 			techDesLabel.text=info.techPropertyDes;
+			
+			for(var i:int=0;i<info.techVOList.length;i++)
+			{
+				var techVO:ScienceResearchVO=info.techVOList[i] as ScienceResearchVO;
+				if(techVO.currentLevel<techVO.level)
+				{
+					var obj6:Object=new Object();
+					obj6.imgSource=ResEnum.getConditionIconURL+"6.png";
+					obj6.content=MultilanguageManager.getString("science")+techVO.currentLevel+"/"+techVO.level;
+					obj6.btnLabel=MultilanguageManager.getString("study_click");
+					conditionArr.push(obj6);
+				}
+			}
+			
+			if(conditionArr.length>0)
+				techDesLabel.color=0xff0000;
+			else
+				techDesLabel.color=0x00cc33;
+			
+				
         }
     }
 }

@@ -41,9 +41,11 @@ package view.group
 		 *排名 
 		 */		
 		public var paiMing:Label;
+				
+		public var vip1:Sprite;
+		public var vip2:Sprite;
+		public var vip3:Sprite;
 		
-		public var vip:Sprite;
-
 		public var back:Sprite;	
 		
 		public var currtentVo:GroupAuditListVo;
@@ -58,12 +60,30 @@ package view.group
 			
 			tongGuoBtn=createUI(Button,"tongguo_btn");
 			juJueBtn=createUI(Button,"jujue_btn");
-			vip=getSkin("vip_mc");
 			back=getSkin("back_mc");
-			back.visible=false;			
-			vip.visible=false;
+			back.visible=false;	
+			vip1=getSkin("vip1");
+			vip2=getSkin("vip2");
+			vip3=getSkin("vip3");
+			vip1.visible=vip2.visible=vip3.visible=false;
 			
 			sortChildIndex();
         }
+		
+		public function myVipShow(level:int):void
+		{
+			if(level==1)
+			{
+				vip1.visible=true;
+			}
+			if(level==2)
+			{
+				vip2.visible=true;
+			}
+			if(level==3)
+			{
+				vip3.visible=true;
+			}
+		}
     }
 }

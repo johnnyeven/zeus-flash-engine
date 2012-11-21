@@ -8,7 +8,10 @@ package view.battle.bottomView
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
+	import mx.binding.utils.BindingUtils;
+	
 	import proxy.plantioid.PlantioidProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.components.Button;
 	import ui.core.Component;
@@ -16,7 +19,7 @@ package view.battle.bottomView
 	import vo.battle.BattleBuildVO;
 	
 	/**
-	 * 战场底部界面
+	 * 战场编辑底部界面
 	 * @author zn
 	 * 
 	 */	
@@ -29,7 +32,7 @@ package view.battle.bottomView
 		public var exitBtn:Button;
 		
 		private var _plantioidProxy:PlantioidProxy;
-		
+		private var userInforProxy:UserInfoProxy;
 		public function BottomViewComponent(skin:DisplayObjectContainer)
 		{
 			super(skin);
@@ -41,6 +44,7 @@ package view.battle.bottomView
 			exitBtn=createUI(Button,"exitBtn");
 			
 			_plantioidProxy=ApplicationFacade.getProxy(PlantioidProxy);
+			userInforProxy = ApplicationFacade.getProxy(UserInfoProxy);
 			for each(var itemVO:BattleBuildVO in _plantioidProxy.buildConentVODic)
 			{
 				if(itemVO.type==BattleBuildTypeEnum.JIA_Xie)
@@ -64,7 +68,42 @@ package view.battle.bottomView
 					viewItemSp4.addChild(viewItem4);
 				}
 			}			
-			
+			removeCWList();
+			cwList.push(BindingUtils.bindSetter(function():void
+			{
+				viewItemSp1.visible = false;
+				viewItemSp2.visible = false;
+				viewItemSp3.visible = false;
+				viewItemSp4.visible = false;
+				if(userInforProxy.userInfoVO.level == 1)
+				{
+					viewItemSp1.visible = true;
+					viewItemSp2.visible = false;
+					viewItemSp3.visible = false;
+					viewItemSp4.visible = false;
+				}
+				else if(userInforProxy.userInfoVO.level == 2)
+				{
+					viewItemSp1.visible = true;
+					viewItemSp2.visible = true;
+					viewItemSp3.visible = false;
+					viewItemSp4.visible = false;
+				}
+				else if(userInforProxy.userInfoVO.level == 3)
+				{
+					viewItemSp1.visible = true;
+					viewItemSp2.visible = true;
+					viewItemSp3.visible = true;
+					viewItemSp4.visible = false;
+				}
+				else if(userInforProxy.userInfoVO.level == 4)
+				{
+					viewItemSp1.visible = true;
+					viewItemSp2.visible = true;
+					viewItemSp3.visible = true;
+					viewItemSp4.visible = true;
+				}
+			},userInforProxy,["userInfoVO","level"]));
 			exitBtn.addEventListener(MouseEvent.CLICK, exitBtn_clickHandler);
 		}
 		

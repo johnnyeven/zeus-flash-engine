@@ -3,6 +3,9 @@ package proxy.factory
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	
+	import controller.task.TaskCompleteCommand;
+	
+	import enum.TaskEnum;
 	import enum.command.CommandEnum;
 	import enum.factory.FactoryEnum;
 	import enum.item.ItemEnum;
@@ -154,6 +157,10 @@ package proxy.factory
 			userProxy.userInfoVO.crystal=data.resources.crystal;
 			userProxy.userInfoVO.tritium=data.resources.tritium;
 			
+			if(userProxy.userInfoVO.index==TaskEnum.index19||userProxy.userInfoVO.index==TaskEnum.index20)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
 			
 			if(callBcakFunction!=null)
 			{
@@ -203,6 +210,8 @@ package proxy.factory
 			
 			userProxy.userInfoVO.dark_crystal-=BaseItemVO.MONEY;
 			
+			
+			
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
@@ -233,6 +242,7 @@ package proxy.factory
 				callBcakFunction=null;
 				return;
 			}
+			//TODU LE:此处有错。
 			userProxy.userInfoVO.broken_crysta-=FactoryEnum.CURRENT_ZHANCHE_VO.repair_cost_broken_crystal;
 			
 			FactoryEnum.CURRENT_ZHANCHE_VO.current_endurance=data.current_endurance;
@@ -389,8 +399,12 @@ package proxy.factory
 			packageProxy.setZhanCheInfo(zhanCheVO, data);
 			zhanCheVO.total_shield=data.total_shield;				
 			FactoryEnum.CURRENT_ZHANCHE_VO=zhanCheVO;			
-			sendNotification(FactoryChangeComponentMediator.CHANGE_NOTE);
+			sendNotification(FactoryChangeComponentMediator.CHANGE_NOTE);			
 			
+			if(userProxy.userInfoVO.index==TaskEnum.index21)
+			{
+				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+			}
 			
 			/*var battleProxy:BattleProxy=getProxy(BattleProxy);
 			battleProxy.getAllZhanCheList(function():void

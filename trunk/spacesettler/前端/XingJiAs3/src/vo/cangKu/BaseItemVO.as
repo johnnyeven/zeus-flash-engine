@@ -34,6 +34,10 @@ package vo.cangKu
          */
         public var item_type:String;
 
+		/**
+		 * 道具标识
+		 */
+		public var key:String;
         /**
          *挂件分类
          */

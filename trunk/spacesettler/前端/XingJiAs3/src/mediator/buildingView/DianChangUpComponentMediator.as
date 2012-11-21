@@ -91,7 +91,7 @@ package mediator.buildingView
 		 * @return
 		 *
 		 */
-		protected function get comp():AnNengDianChangUpComponent
+		public function get comp():AnNengDianChangUpComponent
 		{
 			return viewComponent as AnNengDianChangUpComponent;
 		}

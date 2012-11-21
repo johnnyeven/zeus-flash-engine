@@ -5,6 +5,8 @@ package mediator.prompt
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
     
+    import enum.FontEnum;
+    
     import flash.display.MovieClip;
     import flash.events.Event;
     import flash.events.MouseEvent;
@@ -164,6 +166,9 @@ package mediator.prompt
             var label:Label = new Label();
             label.autoSize = true;
             label.text = note;
+			label.color=0xffcc33;
+			label.fontName=FontEnum.WEI_RUAN_YA_HEI;
+			label.size=30;
 
             label.x = SystemManager.rootStage.stageWidth * 0.5 - label.width * 0.5;
             label.y = 200;

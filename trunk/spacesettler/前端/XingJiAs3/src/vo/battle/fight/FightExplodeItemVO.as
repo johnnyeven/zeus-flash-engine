@@ -25,7 +25,7 @@ package vo.battle.fight
         public var hitID:String;
 		
 		/**
-		 *被什么东西伤害
+		 *受到伤害的类型
 		 * 0 chariot     1 building 
 		 */		
 		public var type:int=CHARIOT;

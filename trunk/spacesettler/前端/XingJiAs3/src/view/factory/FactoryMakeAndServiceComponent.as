@@ -139,6 +139,8 @@ package view.factory
 			container.y = 0;
 			sprite.addChild(container);
 			
+			weiXiuBtn.mouseChildren=weiXiuBtn.mouseEnabled=false;
+			huiShouBtn.mouseChildren=huiShouBtn.mouseEnabled=false;
 			tishi_mc.visible=false;
 			
 			weiXiuBtn.addEventListener(MouseEvent.CLICK,weiXiuHandler);
@@ -166,11 +168,8 @@ package view.factory
 				isBaoFei();
 			if(info.repair_cost_broken_crystal!=0)
 				isSunHuai();
-			if(info.total_endurance==info.max_endurance)
-			{
+			if(info.repair_cost_broken_crystal==0)
 				isWanHao();
-				weiXiuBtn.mouseEnabled=false;				
-			}
 		}
 		
 		private function removeAllItem():void
@@ -198,8 +197,8 @@ package view.factory
 			
 			if(FactoryEnum.CURRENT_ZHANCHE_VO==null)
 			{				
-				currtentItem=itemArr[0] as FactoryItem_2Component;
 				FactoryEnum.CURRENT_ZHANCHE_VO=array[0] as ZhanCheInfoVO;
+				currtentItem=itemArr[0] as FactoryItem_2Component;
 			}			
 			for(var i:int=0;i<array.length;i++)
 			{
@@ -219,11 +218,8 @@ package view.factory
 				item.addEventListener(MouseEvent.CLICK,clickHandler);
 			}
 			upData(FactoryEnum.CURRENT_ZHANCHE_VO);
-			container.layout.update();
-			
-			
+			container.layout.update();			
 			hsBar.viewport=container;			
-			
 		}		
 		
 		protected function clickHandler(event:MouseEvent):void
@@ -320,7 +316,8 @@ package view.factory
 			wanhao_mc.visible=false;
 			sunhuai_mc.visible=true;
 			baofei_mc.visible=false;
-			weiXiuBtn.mouseEnabled=true;
+			weiXiuBtn.mouseEnabled=weiXiuBtn.mouseChildren=true;
+			huiShouBtn.mouseEnabled=huiShouBtn.mouseChildren=true;
 		}
 		
 		public function isBaoFei():void
@@ -328,7 +325,8 @@ package view.factory
 			wanhao_mc.visible=false;
 			sunhuai_mc.visible=false;
 			baofei_mc.visible=true;
-			weiXiuBtn.mouseEnabled=false;
+			weiXiuBtn.mouseEnabled=weiXiuBtn.mouseChildren=true;
+			huiShouBtn.mouseEnabled=huiShouBtn.mouseChildren=true;
 		}
 		
 		public function isWanHao():void
@@ -336,7 +334,8 @@ package view.factory
 			wanhao_mc.visible=true;
 			sunhuai_mc.visible=false;
 			baofei_mc.visible=false;
-			weiXiuBtn.mouseEnabled=false;
+			weiXiuBtn.mouseEnabled=weiXiuBtn.mouseChildren=false;
+			huiShouBtn.mouseEnabled=huiShouBtn.mouseChildren=true;
 			wuZhiTf.text="0";
 		}
 		

@@ -6,6 +6,8 @@ package controller.plantioid
     
     import enum.SenceTypeEnum;
     
+    import flash.geom.Point;
+    
     import mediator.BaseMediator;
     import mediator.plantioid.PlantioidComponentMediator;
     
@@ -42,8 +44,13 @@ package controller.plantioid
             if (_isLoading)
                 return;
 
+			var p:Point=notification.getBody() as Point;
+			
+			if(p==null)
+				p=new Point(1,1);
+			
             var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
-            plantioidProxy.getPlantioidListByXY(1, 1, function():void
+            plantioidProxy.getPlantioidListByXY(p.x, p.y, function():void
             {
                 var med:PlantioidComponentMediator = getMediator(PlantioidComponentMediator);
                 if (med)

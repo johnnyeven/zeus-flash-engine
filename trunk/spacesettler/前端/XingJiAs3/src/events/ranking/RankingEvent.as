@@ -35,6 +35,8 @@ package events.ranking
 		
 		public static const LIST_GROUP:String="list_group";
 		
+		public static const SHOW_JUNGUANZHENG_EVENT:String="show_junguanzheng_event"
+		
 		private var _type:String;
 		
 		public function RankingEvent(type:String,type1:String=null)

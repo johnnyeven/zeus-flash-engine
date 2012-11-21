@@ -9,6 +9,7 @@ package view.friendList
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	import mx.binding.utils.BindingUtils;
 	
@@ -41,18 +42,25 @@ package view.friendList
 		private var _currentSelected:FriendItem;
 		private var currentCount:int = 0;
 		
-		public var shangSprite:Component;
-		public var deletBtnUP:Button;
-		public var checkBtnUP:Button;
-		public var chatBtnUP:Button;
+		public var friendShangComponent:FriendShangComponent;
 		
-		public var xiaSprite:Component;
-		public var deletBtnDown:Button;
-		public var checkBtnDown:Button;
-		public var chatBtnDown:Button;
-		
-		public var maskSprite:Sprite;
-		
+		public var friendXiaComponent:FriendXiaComponent;
+		/**
+		 * 上标
+		 */		
+		private var shangBiaoSprivate:Sprite;
+		/**
+		 * 下标
+		 */		
+		private var xiaBiaoSprivate:Sprite;
+		/**
+		 *聊天框上遮罩 
+		 */		
+		private var shangSprite:Sprite;
+		/**
+		 *聊天框下遮罩 
+		 */		
+		private var xiaSprite:Sprite;
 		//是否是从邮件中选择的好友列表
 		private var _isSendEmail:Boolean = false;
 		
@@ -63,59 +71,36 @@ package view.friendList
 			
 			container = new Container(null);
 			container.contentWidth = 325;
-			container.contentHeight = 450;
+			container.contentHeight = 380;
 			container.layout = new HTileLayout(container);
 			container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
 			container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
 			container.x = 12;
-			container.y = 80;
+			container.y = 85;
 			addChild(container);
 			
 			vScrollBar = createUI(VScrollBar, "vScrollBar");
+			addChild(vScrollBar);
 			vScrollBar.viewport = container;
 			vScrollBar.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
 			vScrollBar.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
-			vScrollBar.alpahaTweenlite(0);
+			container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
+			container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
+//			vScrollBar.alpahaTweenlite(0);
 			
 			reNewBtn = createUI(Button,"reNewBtn");
 			playerBtn = createUI(Button,"playerBtn");
 			closeBtn  = createUI(Button,"closeBtn");
-			shangSprite = createUI(Component,"shangSprite");
-			deletBtnUP =shangSprite.createUI(Button,"deletBtnUP");
-			checkBtnUP =shangSprite.createUI(Button,"checkBtnUP");
-			chatBtnUP =shangSprite.createUI(Button,"chatBtnUP");
-			
-			xiaSprite = createUI(Component,"xiaSprite");
-			deletBtnDown = xiaSprite.createUI(Button,"deletBtnDown");
-			checkBtnDown = xiaSprite.createUI(Button,"checkBtnDown");
-			chatBtnDown = xiaSprite.createUI(Button,"chatBtnDown");
-	
-			maskSprite = getSkin("maskSprite");
-			shangSprite.visible = false;
-			xiaSprite.visible = false;
 			
 			sortChildIndex();
 			
 			removeCWList();
 			cwList.push(BindingUtils.bindSetter(itemVOListChange,friendProxy,"friendArr"));
 			
-			//销毁sprite
-			shangSprite.addEventListener(MouseEvent.CLICK,shangSprite_clickHandler);
-			xiaSprite.addEventListener(MouseEvent.CLICK,xiaSprite_clickHandler);
-			shangSprite.buttonMode = true;
-			xiaSprite.buttonMode = true;
 			
 			reNewBtn.addEventListener(MouseEvent.CLICK,reNewBtn_clickHandler);
 			playerBtn.addEventListener(MouseEvent.CLICK,playerBtn_clickHandler);
 			closeBtn.addEventListener(MouseEvent.CLICK,closeBtn_clickHand);
-			
-			deletBtnUP.addEventListener(MouseEvent.CLICK,deleteBtn_clickHandler);
-			checkBtnUP.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler); 
-			chatBtnUP.addEventListener(MouseEvent.CLICK,chatBtn_clickHandler); 
-			
-			deletBtnDown.addEventListener(MouseEvent.CLICK,deleteBtn_clickHandler);
-			checkBtnDown.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler); 
-			chatBtnDown.addEventListener(MouseEvent.CLICK,chatBtn_clickHandler); 
         }
 		
 		private function itemVOListChange(value:*):void
@@ -129,8 +114,6 @@ package view.friendList
 				var friendItem:FriendItem = new FriendItem();
 				
 				friendItem.data = arr[i];
-				friendItem.topSprite.visible = false;
-				friendItem.buttonSprite.visible = false;
 				friendItem.buttonMode = true;
 				friendItem.addEventListener(MouseEvent.CLICK, friendItem_clickHandler);
 				friendItem.dyData = i;
@@ -189,70 +172,102 @@ package view.friendList
 
 		public function set currentSelected(value:FriendItem):void
 		{
-			if(currentSelected)
-			{
-				currentSelected.topSprite.visible = false;
-				currentSelected.buttonSprite.visible = false;
-				TweenLite.to(shangSprite,0.5,{x:0,y:-330});
-				TweenLite.to(xiaSprite,0.5,{x:0,y:500});
-				shangSprite.visible = false;
-				xiaSprite.visible = false;
-			}
+			if(friendXiaComponent || friendShangComponent)
+				return;
 			_currentSelected = value;
+			//将选中元件的坐标原点转化为全局坐标
+			var point:Point = new Point();
+			point = _currentSelected.localToGlobal(point);
 			if(currentCount<1)
 			{
-				currentSelected.buttonSprite.visible = true;
-				xiaSprite.visible = true;
-				xiaSprite.mask = maskSprite;
-				TweenLite.to(xiaSprite,0.5,{x:0,y:currentSelected.y+currentSelected.height+currentSelected.buttonSprite.height});
+				//聊天框上遮罩
+				shangSprite = new Sprite();
+				shangSprite.graphics.beginFill(0,0.5);
+				shangSprite.graphics.drawRect(0,0,this.width,(point.y-_currentSelected.height/2));
+				shangSprite.graphics.endFill();
+				shangSprite.x = 0;
+				shangSprite.y = 0;
+				shangSprite.mouseEnabled = true;
+				this.addChild(shangSprite);
+				shangSprite.addEventListener(MouseEvent.CLICK,xiaRemove_clickHandler);
+				//聊天框下遮罩
+				xiaSprite = new Sprite();
+				xiaSprite.graphics.beginFill(0,0.5);
+				xiaSprite.graphics.drawRect(0,0,this.width,(this.height - point.y - _currentSelected.height/2-10));
+				xiaSprite.graphics.endFill();
+				xiaSprite.x = 0;
+				xiaSprite.y = point.y + _currentSelected.height/2;
+				xiaSprite.mouseEnabled = true;
+				this.addChild(xiaSprite);
+				xiaSprite.addEventListener(MouseEvent.CLICK,xiaRemove_clickHandler);
+				
+				xiaBiaoSprivate = ClassUtil.getObject("xiaBiaoSprivate") as Sprite;
+				friendXiaComponent = new FriendXiaComponent();
+				friendXiaComponent.data = currentSelected.data;
+				friendXiaComponent.x = 0;
+				friendXiaComponent.y = this.height;
+				this.addChild(xiaBiaoSprivate);
+				this.addChild(friendXiaComponent);
+				xiaBiaoSprivate.x = 70;
+				xiaBiaoSprivate.y = point.y + _currentSelected.height/2;
+				TweenLite.to(friendXiaComponent,0.5,{x:0,y:xiaBiaoSprivate.y + xiaBiaoSprivate.height});
 			}
 			else
 			{
-				currentSelected.topSprite.visible = true;
-				shangSprite.visible = true;
-				shangSprite.mask = maskSprite;
-				TweenLite.to(shangSprite,0.5,{x:0,y:currentSelected.y-330});
+				//聊天框上遮罩
+				shangSprite = new Sprite();
+				shangSprite.graphics.beginFill(0,0.5);
+				shangSprite.graphics.drawRect(0,0,this.width,(point.y-_currentSelected.height/2));
+				shangSprite.graphics.endFill();
+				shangSprite.x = 0;
+				shangSprite.y = 0;
+				shangSprite.mouseEnabled = true;
+				this.addChild(shangSprite);
+				shangSprite.addEventListener(MouseEvent.CLICK,shangRemove_clickHandler);
+				//聊天框下遮罩
+				xiaSprite = new Sprite();
+				xiaSprite.graphics.beginFill(0,0.5);
+				xiaSprite.graphics.drawRect(0,0,this.width,(this.height - point.y - _currentSelected.height/2-10));
+				xiaSprite.graphics.endFill();
+				xiaSprite.x = 0;
+				xiaSprite.y = point.y + _currentSelected.height/2;
+				xiaSprite.mouseEnabled = true;
+				this.addChild(xiaSprite);
+				xiaSprite.addEventListener(MouseEvent.CLICK,shangRemove_clickHandler);
+				
+				shangBiaoSprivate = ClassUtil.getObject("shangBiaoSprivate") as Sprite;
+				friendShangComponent = new FriendShangComponent();
+				friendShangComponent.data = currentSelected.data;
+				friendShangComponent.x = 0;
+				friendShangComponent.y = 0;
+				this.addChild(shangBiaoSprivate);
+				this.addChild(friendShangComponent);
+				shangBiaoSprivate.x = 70;
+				shangBiaoSprivate.y = point.y - shangBiaoSprivate.height-_currentSelected.height/2;
+				TweenLite.to(friendShangComponent,0.5,{x:0,y:shangBiaoSprivate.y-shangBiaoSprivate.height-10});
 			}
 		}
 		
-		private function shangSprite_clickHandler(event:MouseEvent):void
+		public function xiaRemove_clickHandler(event:MouseEvent):void
 		{
-			if(shangSprite.visible == true)
-			{
-				_currentSelected.buttonSprite.visible = false;
-				_currentSelected.topSprite.visible = false;
-				dispatchEvent(new Event("destoryshangSprite"));
-			}
+			    this.removeChild(shangSprite);
+				this.removeChild(xiaSprite);
+				this.removeChild(xiaBiaoSprivate);
+				this.removeChild(friendXiaComponent);
+				friendXiaComponent = null;
+			
 		}
 		
-		private function xiaSprite_clickHandler(event:MouseEvent):void
+		public function shangRemove_clickHandler(event:MouseEvent):void
 		{
-			if( xiaSprite.visible == true)
-			{
-				_currentSelected.buttonSprite.visible = false;
-				_currentSelected.topSprite.visible = false;
-				dispatchEvent(new Event("destoryxiaSprite"));
-			}
-		}
-		
-		private function checkBtn_clickHandler(event:MouseEvent):void
-		{
-			event.stopImmediatePropagation();
-			dispatchEvent(new FriendListEvent(FriendListEvent.CHECK_PLAYER_ID_CARD_EVENT,_currentSelected.data,true));
-		}
-		
-		private function deleteBtn_clickHandler(event:MouseEvent):void
-		{
-			event.stopImmediatePropagation();
-			dispatchEvent(new FriendListEvent(FriendListEvent.DELETED_FRIEND_INFOR_EVENT,_currentSelected.data,true));
-		}
-		
-		private function chatBtn_clickHandler(event:MouseEvent):void
-		{
-			event.stopImmediatePropagation();
-			dispatchEvent(new FriendListEvent(FriendListEvent.CHAT_WITH_FRIEND_EVENT,_currentSelected.data,true));
-		}
 
+				this.removeChild(shangSprite);
+				this.removeChild(xiaSprite);
+				this.removeChild(shangBiaoSprivate);
+				this.removeChild(friendShangComponent);
+				friendShangComponent = null;
+	    }
+		
 		public function get isSendEmail():Boolean
 		{
 			return _isSendEmail;

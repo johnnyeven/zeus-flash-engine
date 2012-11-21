@@ -36,11 +36,13 @@ package mediator.friendList
 		public function SearchPlayerComponentMediator()
 		{
 			super(NAME, new SearchPlayerComponent());
+			comp.med=this;
+			level = 2;
 			friendListProxy = getProxy(FriendProxy);
 			
 			comp.addEventListener(FriendListEvent.CLOSE_SEARCH_PLAYER_EVENT,closeHandler);
 			comp.addEventListener(FriendListEvent.SEARCH_PLATER_EVENT,searchPlayerHandler);
-			comp.addEventListener("search_destoryxiaSprite",destoryxiaSpriteHandler);
+
 			comp.addEventListener(FriendListEvent.SEARCH_CHECK_PLAYER_ID_CARD_EVENT,checkPlayerIdCardHandler);
 			comp.addEventListener(FriendListEvent.SEARCH_ADD_FRIEND_EVENT,addFriendHandler);
 		}
@@ -88,14 +90,16 @@ package mediator.friendList
 			friendListProxy.searchPlayer(event.obj as String);
 		}
 
-		private function destoryxiaSpriteHandler(event:Event):void
-		{
-			comp.xiaSprite.visible = false;
-			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
-		}
-		
 		private function checkPlayerIdCardHandler(event:FriendListEvent):void
 		{
+			if((event.obj as FriendInfoVo).componentInforType == "researchShangComponentSkin")
+			{
+				comp.shangRemove_clickHandler(null);
+			}
+			else if((event.obj as FriendInfoVo).componentInforType == "researchXiaComponentSkin")
+			{
+				comp.xiaRemove_clickHandler(null);
+			}
 			friendListProxy.checkOtherPlayer((event.obj as FriendInfoVo).id,function():void
 			{
 				sendNotification(ViewIdCardComponentMediator.SHOW_NOTE);
@@ -104,6 +108,14 @@ package mediator.friendList
 		
 		private function addFriendHandler(event:FriendListEvent):void
 		{
+			if((event.obj as FriendInfoVo).componentInforType == "researchShangComponentSkin")
+			{
+				comp.shangRemove_clickHandler(null);
+			}
+			else if((event.obj as FriendInfoVo).componentInforType == "researchXiaComponentSkin")
+			{
+				comp.xiaRemove_clickHandler(null);
+			}
 			friendListProxy.addFriend((event.obj as FriendInfoVo).id);
 		}
 	}

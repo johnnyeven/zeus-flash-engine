@@ -87,7 +87,7 @@ package view.cangKu
                     }
                     case ItemEnum.recipes:
                     {
-                        wpName.text = info.name + MultilanguageManager.getString("recipe");
+                        wpName.text = info.name ;
                         //                    wpLevel.text = info.level+"";
                         wpLevel.visible = false;
                         jiLabel.visible = false;

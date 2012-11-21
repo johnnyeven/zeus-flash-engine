@@ -2,10 +2,13 @@ package view.battleEnter
 {
     import com.zn.utils.StringUtil;
     
+    import enum.factory.FactoryEnum;
+    
     import events.battle.BattleEnterEvent;
     
     import flash.display.DisplayObjectContainer;
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.events.MouseEvent;
     
     import flashx.textLayout.formats.WhiteSpaceCollapse;
@@ -101,7 +104,7 @@ package view.battleEnter
 
             contain.layout.update();
             scrollBar.update();
-            selectedItemComp = contain.getAt(0) as BattleEnterItemComonent;
+//            selectedItemComp = contain.getAt(0) as BattleEnterItemComonent;//不用默认选中
         }
 		
 		protected function itemComp_clickHandler(event:MouseEvent):void
@@ -121,6 +124,8 @@ package view.battleEnter
 
             _selectedItemComp = value;
 
+			//将战车的数据保存下来
+			FactoryEnum.CURRENT_ZHANCHE_VO=_selectedItemComp.itemVO;
             enterButton.enabled = false;
             if (selectedItemComp)
             {
@@ -136,6 +141,12 @@ package view.battleEnter
 		 */
 		protected function enterButton_clickHandler(event:MouseEvent):void
 		{
+			if(!selectedItemComp)
+			{
+				//提示选择战车
+				dispatchEvent(new Event("selectedZhanCheTips",true));
+				return;
+			}
 			dispatchEvent(new BattleEnterEvent(BattleEnterEvent.BATTLE_ENTER_EVENT,selectedItemComp.itemVO));
 		}
     }

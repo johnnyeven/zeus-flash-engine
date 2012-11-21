@@ -3,6 +3,8 @@ package mediator.systemView
 	
 	import events.system.SystemEvent;
 	
+	import flash.events.Event;
+	
 	import mediator.BaseMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -25,6 +27,12 @@ package mediator.systemView
 			
 			
 			comp.addEventListener(SystemEvent.CLOSE,doCloseHandler);
+			comp.addEventListener(SystemEvent.PASSWORD_EVENT,doPassWordHandler);
+		}
+		
+		protected function doPassWordHandler(event:SystemEvent):void
+		{
+			sendNotification(SystemPassWordComponentMediator.SHOW_NOTE);
 		}
 		
 		protected function doCloseHandler(event:SystemEvent):void

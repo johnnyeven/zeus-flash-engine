@@ -65,7 +65,7 @@ package proxy.login
          *服务器列表
          */
         [Bindable]
-        public var serverVOList:Array = [];
+        public var serverVOList:Array;
 
         private var _getServerListCallBack:Function;
 
@@ -93,10 +93,18 @@ package proxy.login
         private var _registCallBack:Function;
 
         private var _startLoingCallBack:Function;
+		
+		private var _callbackFun:Function;
 
+		private var _pkCompMed:PkComponentMediator;
+
+		public static var lastSenceMedClass:Class;
+		
         public function LoginProxy(data:Object = null)
         {
             super(NAME, data);
+			
+			_pkCompMed=getMediator(PkComponentMediator);
         }
 
         /**
@@ -109,7 +117,10 @@ package proxy.login
 
             if (!Protocol.hasProtocolFunction(CommandEnum.startLogin, startLoginResult))
                 Protocol.registerProtocol(CommandEnum.startLogin, startLoginResult);
-            ConnDebug.send(CommandEnum.startLogin, null, ConnDebug.HTTP, URLRequestMethod.GET);
+			
+			var obj:Object = {camp_id: camp };
+            ConnDebug.send(CommandEnum.startLogin, obj, ConnDebug.HTTP, URLRequestMethod.POST);
+//            ConnDebug.send(CommandEnum.startLogin, null, ConnDebug.HTTP, URLRequestMethod.GET);
         }
 		
         /**
@@ -126,6 +137,40 @@ package proxy.login
             enterGame();
         }
 
+        /**
+         *检测账号是否重复
+         *
+         */
+        public function web_check_account(userName:String, password:String,callFun:Function=null):void
+        {
+			_callbackFun=callFun;
+            if (!Protocol.hasProtocolFunction(CommandEnum.web_check_account, checkLoginResult))
+                Protocol.registerProtocol(CommandEnum.web_check_account, checkLoginResult);
+
+            var obj:Object = { username: userName, password: password };
+
+            ConnDebug.send(CommandEnum.web_check_account, obj);
+        }
+		
+		/**
+		 *返回检测账号 
+		 * @param data
+		 * 
+		 */		
+		private function checkLoginResult(data:*):void
+		{
+			if (data.hasOwnProperty("errors"))
+			{
+				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				return;
+			}
+			
+			
+			if(_callbackFun!=null)
+				_callbackFun();
+			_callbackFun=null;
+		}
+		
         /**
          *登录
          *
@@ -180,8 +225,8 @@ package proxy.login
             sendNotification(NameInforComponentMediator.DESTROY_NOTE);
             sendNotification(PkComponentMediator.DESTROY_NOTE);
             sendNotification(RegistComponentMediator.DESTROY_NOTE);
-            StartComponentMediator.removeBG();
-
+			StartComponentMediator.removeBG();
+			
             //加载进入游戏的资源
             sendNotification(LoaderResCommand.LOAD_RES_NOTE);
         }
@@ -192,15 +237,25 @@ package proxy.login
          */
         public function getServerList(callBack:Function):void
         {
-            Protocol.registerProtocol(CommandEnum.get_server_list, getServerListResult);
+          if (serverVOList)
+			{
+				if (callBack != null)
+					callBack();
+			}
+			else
+			{
+				if (!Protocol.hasProtocolFunction(CommandEnum.get_server_list, getServerListResult))
+					Protocol.registerProtocol(CommandEnum.get_server_list, getServerListResult);
 
-            _getServerListCallBack = callBack;
-            var obj:Object = { game_id: GlobalData.game_id };
-            ConnDebug.send(CommandEnum.get_server_list, obj);
+				_getServerListCallBack=callBack;
+				var obj:Object={game_id: GlobalData.game_id};
+				ConnDebug.send(CommandEnum.get_server_list, obj);
+			}
         }
 
         private function getServerListResult(data:*):void
         {
+			Protocol.deleteProtocolFunction(CommandEnum.get_server_list, getServerListResult);
             var message:String = data.message;
 
             switch (message)
@@ -260,13 +315,14 @@ package proxy.login
 
         private function registResult(data:Object):void
         {
-			var pkComponentMeditor:PkComponentMediator = getMediator(PkComponentMediator);
+//			var pkComponentMeditor:PkComponentMediator = getMediator(PkComponentMediator);
 			
             serverData = data;
             if (data.hasOwnProperty("errors"))
             {
                 sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
-				pkComponentMeditor.mouseEnabled = true;
+//				pkComponentMeditor.mouseEnabled = true;
+//				_pkCompMed.mouseEnabled = true;
                 return;
             }
 
@@ -275,6 +331,37 @@ package proxy.login
             _registCallBack = null;
 
             enterGame();
+        }
+        /**
+         *验证注册账号密码
+         *
+         */
+        public function registCheck(callBack:Function):void
+        {
+            if (!Protocol.hasProtocolFunction(CommandEnum.regist, registCheckResult))
+                Protocol.registerProtocol(CommandEnum.regist, registCheckResult);
+
+            _registCallBack = callBack;
+            var obj:Object = { username: userName, password: passWord, camp_id: camp };
+            ConnDebug.send(CommandEnum.regist, obj);
+        }
+
+        private function registCheckResult(data:Object):void
+        {
+//			var pkComponentMeditor:PkComponentMediator = getMediator(PkComponentMediator);
+			
+            serverData = data;
+            if (data.hasOwnProperty("errors"))
+            {
+                sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString(data.errors));
+//				pkComponentMeditor.mouseEnabled = true;
+//				_pkCompMed.mouseEnabled = true;
+                return;
+            }
+
+            if (_registCallBack != null)
+                _registCallBack();
+            _registCallBack = null;
         }
 
     /*****************************************

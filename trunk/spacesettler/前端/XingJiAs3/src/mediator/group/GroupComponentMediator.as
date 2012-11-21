@@ -2,12 +2,21 @@ package mediator.group
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	
+	import enum.SenceTypeEnum;
+	import enum.groupFightEnum.GroupFightEnum;
+	
 	import events.group.GroupEvent;
 	import events.group.GroupShowAndCloseEvent;
 	
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.groupFight.GroupFightComponentMediator;
+	import mediator.groupFight.GroupFightMapComponentMediator;
+	import mediator.groupFight.GroupFightMenuComponentMediator;
+	import mediator.groupFight.GroupFightShowComponentMediator;
+	import mediator.mainSence.MainSenceComponentMediator;
+	import mediator.mainView.MainViewMediator;
 	import mediator.plantioid.PlantioidComponentMediator;
 	import mediator.prompt.PromptSureMediator;
 	
@@ -17,8 +26,12 @@ package mediator.group
 	
 	import proxy.BuildProxy;
 	import proxy.group.GroupProxy;
+	import proxy.groupFight.GroupFightProxy;
 	
 	import view.group.GroupComponent;
+	
+	import vo.GlobalData;
+	import vo.groupFight.GroupFightVo;
 
 	public class GroupComponentMediator extends BaseMediator implements IMediator
 	{
@@ -32,6 +45,15 @@ package mediator.group
 		
 		private var groupProxy:GroupProxy;
 		private var buildProxy:BuildProxy;
+		private var groupFightProxy:GroupFightProxy;
+
+		private var bool1:Boolean;
+
+		private var bool2:Boolean;
+
+		private var bool3:Boolean;
+
+		private var bool4:Boolean;
 		public function GroupComponentMediator()
 		{
 			super(NAME, new GroupComponent());
@@ -40,6 +62,8 @@ package mediator.group
 			comp.med=this;
 			level=1;
 			
+			groupFightProxy=getProxy(GroupFightProxy);			
+			upData();
 			comp.addEventListener(GroupShowAndCloseEvent.CLOSE,closeHandler);
 			comp.addEventListener(GroupShowAndCloseEvent.SHOW_GROUPMANAGE,showGroupManageHandler);
 			comp.addEventListener(GroupShowAndCloseEvent.SHOW_LOOKMEMBER,showLookMemberHandler)
@@ -48,17 +72,60 @@ package mediator.group
 			comp.addEventListener(GroupEvent.BUCHONG_EVENT,buChongHandler);
 		}
 		
+		private function upData():void
+		{
+			groupFightProxy=getProxy(GroupFightProxy);
+			groupFightProxy.get_star_map(function():void
+			{
+				for(var i:int=0;i<groupFightProxy.starArr.length;i++)
+				{
+					var starVo:GroupFightVo=groupFightProxy.starArr[i] as GroupFightVo;
+					if(starVo.name==GroupFightEnum.ZIYUAN3_STAR)
+					{
+						bool1=starVo.isMine;
+					}
+					if(starVo.name==GroupFightEnum.ZIYUAN1_STAR)
+					{
+						bool2=starVo.isMine;
+					}
+					if(starVo.name==GroupFightEnum.ZIYUAN2_STAR)
+					{
+						bool3=starVo.isMine;
+					}
+					if(starVo.name==GroupFightEnum.ZHU_STAR)
+					{
+						bool4=starVo.isMine;
+					}
+				}
+				
+				comp.upData(groupProxy.groupInfoVo,bool1,bool2,bool3,bool4);
+			})
+		}
+		
 		protected function showPlaneHandler(event:GroupShowAndCloseEvent):void
 		{
-//			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
-//			buildProxy.isBuild=false;
-			sendNotification(DESTROY_NOTE);
+			if (GlobalData.currentSence == SenceTypeEnum.GROUP_FIGHT)
+				return;
+			var buildProxy:BuildProxy=getProxy(BuildProxy);
+			buildProxy.isBuild=false;
+			groupFightProxy.get_star_map(function():void
+			{
+					sendNotification(MainViewMediator.HIDE_RIGHT_VIEW_NOTE);
+					sendNotification(MainViewMediator.HIDE_RENWU_VIEW_NOTE);
+					sendNotification(GroupFightComponentMediator.SHOW_NOTE);
+					sendNotification(GroupFightMenuComponentMediator.SHOW_NOTE);
+					sendNotification(GroupFightShowComponentMediator.SHOW_NOTE);
+					sendNotification(GroupFightMapComponentMediator.SHOW_NOTE);
+					sendNotification(MainViewMediator.HIDE_TOP_VIEW_NOTE);
+					sendNotification(DESTROY_NOTE);
+			});
 		}
 		
 		protected function buChongHandler(event:GroupEvent):void
 		{
 			groupProxy.get_warship(function():void
 			{
+				comp.current_warship=groupProxy.groupInfoVo.current_warship;
 				var obj:Object={};
 				obj.infoLable=MultilanguageManager.getString("lingqu");
 				obj.showLable=MultilanguageManager.getString("lingquNum")+comp.gapNum.toString()+"艏";
@@ -119,7 +186,7 @@ package mediator.group
 				}
 				case CHANGE_NOTE:
 				{
-					comp.upData();
+					upData();
 					break;
 				}
 			}

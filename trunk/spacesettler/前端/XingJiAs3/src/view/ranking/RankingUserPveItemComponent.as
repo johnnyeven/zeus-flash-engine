@@ -17,7 +17,10 @@ package view.ranking
 	public class RankingUserPveItemComponent extends Component
 	{
 		
-		public var vipMc:Sprite;
+		public var vip1:Sprite;
+		public var vip2:Sprite;
+		public var vip3:Sprite;
+		
 		public var tongPaiMc:Sprite;
 		public var yinPaiMc:Sprite;
 		public var jinPaiMc:Sprite;
@@ -50,7 +53,6 @@ package view.ranking
 			failNum=createUI(Label,"shibai_tf");
 			victoryProbability=createUI(Label,"shenglv_tf");
 			
-			vipMc=getSkin("vip_mc");
 			tongPaiMc=getSkin("tongpai_mc");
 			yinPaiMc=getSkin("yinpai_mc");
 			jinPaiMc=getSkin("jinpai_mc");
@@ -58,12 +60,32 @@ package view.ranking
 			downMc=getSkin("down_mc");
 			backMc=getSkin("back_mc");
 			
+			vip1=getSkin("vip1");
+			vip2=getSkin("vip2");
+			vip3=getSkin("vip3");			
+			vip1.visible=vip2.visible=vip3.visible=false;
 			
 			tongPaiMc.visible=false;
 			yinPaiMc.visible=false;
 			sortChildIndex();
 			
 			notMySelf();
+		}
+		
+		public function myVipShow(level:int):void
+		{
+			if(level==1)
+			{
+				vip1.visible=true;
+			}
+			if(level==2)
+			{
+				vip2.visible=true;
+			}
+			if(level==3)
+			{
+				vip3.visible=true;
+			}
 		}
 		
 		public function isMySelf():void

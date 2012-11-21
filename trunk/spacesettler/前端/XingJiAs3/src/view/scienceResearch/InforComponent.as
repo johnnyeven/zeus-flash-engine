@@ -11,6 +11,7 @@ package view.scienceResearch
 	
 	import ui.components.Button;
 	import ui.components.Label;
+	import ui.components.LoaderImage;
 	import ui.components.Window;
 	import ui.core.Component;
 	
@@ -30,6 +31,8 @@ package view.scienceResearch
 		
 		public var closeBtn:Button;
 		
+		public var iconImg:LoaderImage;
+		
         public function InforComponent()
         {
             super(ClassUtil.getObject("view.scienceResearch.InforSkin"));
@@ -37,7 +40,7 @@ package view.scienceResearch
 			scienceNameLabel = createUI(Label,"scienceNameLabel");
 			inforLabel = createUI(Label,"inforLabel");
 			closeBtn = createUI(Button,"closeBtn");
-			
+			iconImg=createUI(LoaderImage,"image");
 			sortChildIndex();
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closeBtn_clickHAndler);
@@ -53,6 +56,7 @@ package view.scienceResearch
 			_scienceType = value;
 			scienceNameLabel.text = ScienceEnum.getResearchNameByResearchType(_scienceType);
 			inforLabel.text = ScienceEnum.getInforByResearchType(_scienceType);
+			iconImg.source=ScienceEnum.getResearchIconURLByResearchType(_scienceType);
 		}
 		
 		protected function closeBtn_clickHAndler(event:MouseEvent):void

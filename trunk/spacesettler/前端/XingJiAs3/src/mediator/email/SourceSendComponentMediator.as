@@ -1,9 +1,14 @@
 package mediator.email
 {
+	import com.zn.multilanguage.MultilanguageManager;
+	
 	import events.email.EmailEvent;
+	
+	import flash.events.Event;
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
+	import mediator.prompt.PromptSureMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -31,6 +36,9 @@ package mediator.email
 			level = 4;
 			comp.addEventListener("closeSendSourceComponent",closeHandler);
 			comp.addEventListener(EmailEvent.SEND_SOURCE_DATA_EVENT,sendSourceHandler);
+			comp.addEventListener("crystalSourceNotEnough",crystalSourceNotEnough_handler);
+			comp.addEventListener("tritiumSourceNotEnough",tritiumSourceNotEnough_handler);
+			comp.addEventListener("brokenCrystalSourceNotEnough",brokenCrystalSourceNotEnough_handler);
 		}
 		
 		/**
@@ -75,6 +83,22 @@ package mediator.email
 		{
 			sendNotification(DESTROY_NOTE);
 			sendNotification(SendEmailComponentMediator.SELECTED_SOURCE_DATA,event.obj);
+		}
+		
+		private function crystalSourceNotEnough_handler(event:Event):void
+		{
+			var obj:Object = {infoLable:MultilanguageManager.getString("sourceNotEnoughTitle"),showLable:MultilanguageManager.getString("crystalSourceNotEnough"),mediatorLevel:level};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+		}
+		private function tritiumSourceNotEnough_handler(event:Event):void
+		{
+			var obj:Object = {infoLable:MultilanguageManager.getString("sourceNotEnoughTitle"),showLable:MultilanguageManager.getString("tritiumSourceNotEnough"),mediatorLevel:level};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+		}
+		private function brokenCrystalSourceNotEnough_handler(event:Event):void
+		{
+			var obj:Object = {infoLable:MultilanguageManager.getString("sourceNotEnoughTitle"),showLable:MultilanguageManager.getString("brokenCrystalSourceNotEnough"),mediatorLevel:level};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 		}
 	}
 }

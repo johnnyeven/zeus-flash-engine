@@ -5,7 +5,11 @@ package
     import com.zn.utils.ClassUtil;
     import com.zn.utils.ColorUtil;
     import com.zn.utils.ScreenUtils;
+    import com.zn.utils.SoundUtil;
+    import com.zn.utils.URLFunc;
     import com.zn.utils.VersionUtils;
+    
+    import enum.SoundEnum;
     
     import fl.motion.Color;
     
@@ -24,6 +28,7 @@ package
     import other.RegisterClass;
     
     import ui.components.Alert;
+    import ui.components.Button;
     import ui.components.Label;
     import ui.managers.SystemManager;
     import ui.managers.ToolTipManager;
@@ -38,6 +43,8 @@ package
 		public static const WIDTH:Number=1067;
 		
         private var _facade:ApplicationFacade;
+		
+		public static var rootIndex:index;
 
         public function Main()
         {
@@ -46,8 +53,10 @@ package
             Security.allowDomain("*");
         }
 
-        public function start():void
+        public function start(indexComp:index):void
         {
+			rootIndex=indexComp;
+			
             initSet();
 
             _facade = ApplicationFacade.getInstance();
@@ -67,13 +76,20 @@ package
             setVersion();
 			
 			initScreenUtils();
+			
+			URLFunc.lockFPS();
+			
+			Button.clickFunc=function():void
+			{
+				SoundUtil.play(SoundEnum.button);
+			};
         }
 		
         public static function setMouseCursor(camp:int):void
         {
             var mouseData:MouseCursorData = new MouseCursorData();
             mouseData.data = new Vector.<BitmapData>();
-            mouseData.data.push(BitmapUtil.drawBitmapData(ClassUtil.getObject("cursor.Click")));
+			mouseData.data.push(BitmapUtil.drawBitmapData(ClassUtil.getObject("cursor.Click")));
             Mouse.registerCursor(MouseCursor.BUTTON, mouseData);
 
             mouseData = new MouseCursorData();
@@ -100,6 +116,16 @@ package
 			ScreenUtils.stage=SystemManager.rootStage;
 			ScreenUtils.MAX_W=ScreenUtils.MIN_W=rootStage.stageWidth;
 			ScreenUtils.MAX_H=ScreenUtils.MIN_H=rootStage.stageHeight;
+		}
+		
+		public static function addBG():void
+		{
+			instance.addPop(rootIndex.loaderBG);
+		}
+		
+		public static function removeBG():void
+		{
+			instance.removePop(rootIndex.loaderBG);
 		}
     }
 }

@@ -22,6 +22,10 @@ package controller.group
 		
 		public static var loadCompleteCallBack:Function;
 		
+		//显示层级
+		private var mediatorLevel:int = 2;
+		//是否是从邮件中选择的军团成员列表
+		private var isSendEmailGroup:Boolean = false;
         public function ShowGroupMemberComponentMediatorCommand()
         {
             super();
@@ -36,10 +40,24 @@ package controller.group
         {
 			if(_isLoading)
 				return ;
+			if(notification.getBody())
+			{
+				if(notification.getBody().mediatorLevel)
+				{
+					mediatorLevel = notification.getBody().mediatorLevel +1;
+				}
+				
+				if(notification.getBody().isSendEmailGroup)
+				{
+					isSendEmailGroup = notification.getBody().isSendEmailGroup;
+				}
+			}
 			
             var med:GroupMemberComponentMediator = getMediator(GroupMemberComponentMediator);
             if (med)
             {
+				med.setMediatorLevel(mediatorLevel);
+				med.setIsSendEmailGroup(isSendEmailGroup);
 				callShow(med);
             }
             else
@@ -61,7 +79,8 @@ package controller.group
 
             //注册界面的中介
             facade.registerMediator(med);
-			
+			med.setMediatorLevel(mediatorLevel);
+			med.setIsSendEmailGroup(isSendEmailGroup);
 			_isLoading=false;
 			
 			callShow(med);

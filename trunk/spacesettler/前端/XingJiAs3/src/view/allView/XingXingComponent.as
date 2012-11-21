@@ -13,6 +13,7 @@ package view.allView
 	
 	import ui.components.Button;
 	import ui.components.Window;
+	import ui.core.Component;
 	
 	import vo.plantioid.FortsInforVO;
 	
@@ -23,6 +24,8 @@ package view.allView
 	 */	
     public class XingXingComponent extends Window
     {
+		public static var IS_MINE:Boolean;
+		
 		private var allViewProxy:AllViewProxy;
 		
 		public var closeBtn:Button;
@@ -62,8 +65,15 @@ package view.allView
 		public var turnLeftBtn:Button;
 		public var turnRightBtn:Button;
 		
-		public var shangSprite:Sprite;
-		public var xiaSprite:Sprite;
+		public var shangSprite:Component;
+		public var checkBtnUP:Button;
+		public var mangeBtnUP:Button;
+		public var attackBtnUP:Button;
+		
+		public var xiaSprite:Component;
+		public var checkBtnDown:Button;
+		public var manageBtnDown:Button;
+		public var attackBtnDown:Button;
 		public var maskSprite:Sprite;
 		//当前选中元件
 		private var _currentSelected:BoxComponent;
@@ -106,8 +116,18 @@ package view.allView
 			turnLeftBtn.visible = false;
 			turnRightBtn.visible  = false;
 			
-			shangSprite = getSkin("shangSprite");
-			xiaSprite = getSkin("xiaSprite");
+			shangSprite = createUI(Component,"shangSprite");
+			checkBtnUP = shangSprite.createUI(Button,"checkBtnUP");
+			mangeBtnUP = shangSprite.createUI(Button,"mangeBtnUP");
+			attackBtnUP = shangSprite.createUI(Button,"attackBtnUP");
+			shangSprite.sortChildIndex();
+			
+			xiaSprite = createUI(Component,"xiaSprite");
+			checkBtnDown = xiaSprite.createUI(Button,"checkBtnDown");
+			manageBtnDown = xiaSprite.createUI(Button,"manageBtnDown");
+			attackBtnDown = xiaSprite.createUI(Button,"attackBtnDown");
+			xiaSprite.sortChildIndex();
+			
 			maskSprite = getSkin("maskSprite");
 			shangSprite.visible = false;
 			xiaSprite.visible = false;
@@ -115,6 +135,16 @@ package view.allView
 			sortChildIndex();
 			
 			data(allViewProxy.myFortsList);
+			if(IS_MINE)
+			{
+				attackBtnUP.visible=false;
+				attackBtnDown.visible=false;
+			}
+			else
+			{
+				mangeBtnUP.visible=false;
+				manageBtnDown.visible=false;				
+			}
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closedBtn_clickHandler);
 			//销毁sprite
@@ -122,6 +152,13 @@ package view.allView
 			xiaSprite.addEventListener(MouseEvent.CLICK,xiaSprite_clickHandler);
 			shangSprite.buttonMode = true;
 			xiaSprite.buttonMode = true;
+			checkBtnUP.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler);
+			mangeBtnUP.addEventListener(MouseEvent.CLICK,mangeBtn_clickHandler);
+			attackBtnUP.addEventListener(MouseEvent.CLICK,attackBtn_clickHandler);
+			
+			checkBtnDown.addEventListener(MouseEvent.CLICK,checkBtn_clickHandler);
+			manageBtnDown.addEventListener(MouseEvent.CLICK,mangeBtn_clickHandler);
+			attackBtnDown.addEventListener(MouseEvent.CLICK,attackBtn_clickHandler);
 			
 			
         }
@@ -266,6 +303,7 @@ package view.allView
 			else
 			{
 				currentSelected.topSprite.visible = true;
+//				currentSelected.data
 				shangSprite.visible = true;
 				shangSprite.mask = maskSprite;
 				TweenLite.to(shangSprite,0.5,{x:0,y:currentSelected.y-330});
@@ -290,6 +328,21 @@ package view.allView
 				_currentSelected.topSprite.visible = false;
 				dispatchEvent(new Event("destoryxiaSprite"));
 			}
+		}
+		
+		private function checkBtn_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new AllViewXingXingEvent(AllViewXingXingEvent.CHECK_EVENT,_currentSelected.data));
+		}
+		
+		private function mangeBtn_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new AllViewXingXingEvent(AllViewXingXingEvent.MANAGER_EVENT,_currentSelected.data));
+		}
+		
+		private function attackBtn_clickHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new AllViewXingXingEvent(AllViewXingXingEvent.ATTACK_EVENT,_currentSelected.data));
 		}
 
     }

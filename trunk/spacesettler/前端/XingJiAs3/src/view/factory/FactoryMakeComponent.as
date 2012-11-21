@@ -11,6 +11,7 @@ package view.factory
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.clearInterval;
 	
 	import proxy.packageView.PackageViewProxy;
 	
@@ -64,7 +65,7 @@ package view.factory
 			container.y = 0;
 			
 			tishi_mc.visible=false;
-			fanHuiBtn.addEventListener(MouseEvent.CLICK,closeHandler);
+			fanHuiBtn.addEventListener(MouseEvent.CLICK,closeHandler);			
         }
 				
 		protected function closeHandler(event:MouseEvent):void
@@ -77,10 +78,17 @@ package view.factory
 			if(arr.length==0)
 			{
 				tishi_mc.visible=true;
+				vsBar.visible=false;
 				return;
 			}else
 			{
+				if(arr.length<=3)
+					vsBar.visible=false;
 				tishi_mc.visible=false;
+				container.addEventListener(MouseEvent.MOUSE_OVER,mouseOverHandler);
+				vsBar.addEventListener(MouseEvent.MOUSE_OVER,mouseOverHandler);
+				container.addEventListener(MouseEvent.MOUSE_OUT,mouseOutHandler);
+				vsBar.addEventListener(MouseEvent.MOUSE_OUT,mouseOutHandler);
 			}
 				
 			
@@ -92,6 +100,7 @@ package view.factory
 				var item:FactoryItem_1Component=new FactoryItem_1Component;				
 				var guajianVo:GuaJianInfoVO=_packageProxy.createGuaJianVO(drawVo);
 				item.drawVo=drawVo;
+				item.guajianVo=guajianVo;
 				if(drawVo.eventID!=null)
 				{
 					item.isMake();
@@ -133,6 +142,17 @@ package view.factory
 			vsBar.viewport=container;
 		}
 		
+		protected function mouseOutHandler(event:MouseEvent):void
+		{
+			vsBar.visible=false;
+		}
+		
+		protected function mouseOverHandler(event:MouseEvent):void
+		{
+			if(_arr.length>=3)
+				vsBar.visible=true;
+		}
+		
 		private function addClickHandler(item:FactoryItem_1Component):void
 		{
 			item.zhizao_btn.addEventListener(MouseEvent.CLICK,doZhiZaoHandler);
@@ -145,10 +165,17 @@ package view.factory
 			if(arr.length==0)
 			{
 				tishi_mc.visible=true;
+				vsBar.visible=false;
 				return;
 			}else
 			{
+				if(arr.length<=3)
+					vsBar.visible=false;
 				tishi_mc.visible=false;
+				container.addEventListener(MouseEvent.MOUSE_OVER,mouseOverHandler);
+				vsBar.addEventListener(MouseEvent.MOUSE_OVER,mouseOverHandler);
+				container.addEventListener(MouseEvent.MOUSE_OUT,mouseOutHandler);
+				vsBar.addEventListener(MouseEvent.MOUSE_OUT,mouseOutHandler);
 			}
 			
 			list.length=0;
@@ -174,6 +201,7 @@ package view.factory
 				var zhancheVo:ZhanCheInfoVO=_packageProxy.createZhanCheVO(drawVo);
 				item.anwuzhi_tf.text=zhancheVo.broken_crystal.toString();
 				item.chuanqi_tf.text=zhancheVo.tritium .toString();
+				item.zhancheVo=zhancheVo;
 				if(zhancheVo.dark_crystal!=0)
 				{
 					item.shuijin_tf .text=zhancheVo.dark_crystal .toString();
@@ -238,11 +266,48 @@ package view.factory
 				if(item==_arr[i])
 				{
 					var packageProxy:PackageViewProxy=ApplicationFacade.getProxy(PackageViewProxy);
-					FactoryEnum.CURRENT_VO=packageProxy.chakanVO=list[i] as BaseItemVO;
-					dispatchEvent(new FactoryEvent(FactoryEvent.MAKE_EVENT,item));
+					var baseItemVO:BaseItemVO=packageProxy.chakanVO=list[i] as BaseItemVO;
+					dispatchEvent(new FactoryEvent(FactoryEvent.MAKE_EVENT,item,null));
 				}
 			}
-		}	
+		}
+		
+		
+		public function searchContainer(str:String,callBack:Function):void
+		{
+			var invertID:int=interval(function():void
+			{
+				for(var i:int=0;i<container.num;i++)
+				{
+					var item:FactoryItem_1Component=container.getAt(i) as FactoryItem_1Component;
+					if(item.zhancheVo!=null)
+					{
+						if(item.zhancheVo.name==str)
+						{
+							if(callBack!=null)
+							{
+								clearInterval(invertID);
+								callBack(item);
+							}
+							break;
+						}					
+					}else if(item.guajianVo!=null)
+					{
+						if(item.guajianVo.name==str)
+						{
+							if(callBack!=null)
+							{
+								clearInterval(invertID);
+								callBack(item);
+							}
+							break;
+						}	
+					}
+				}
+			},1000);
+			
+			
+		}
 		
     }
 }

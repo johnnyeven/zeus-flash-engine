@@ -17,6 +17,7 @@ package controller.battle.fight
 	import utils.battle.FightDataUtil;
 	import utils.battle.FightUtil;
 	
+	import view.battle.fight.FightFeiJiComponent;
 	import view.battle.fight.FightZhanCheComponent;
 	
 	import vo.battle.fight.FightMoveVO;
@@ -31,6 +32,8 @@ package controller.battle.fight
 		public static const FIGHT_MOVE_COMMAND:String="FIGHT_MOVE_COMMAND";
 
 		private var fightMed:BattleFightMediator;
+
+		private var myZhanCheComp:DisplayObject;
 
 		public function FightMoveCommand()
 		{
@@ -48,7 +51,8 @@ package controller.battle.fight
 			var fightMoveVO:FightMoveVO=notification.getBody() as FightMoveVO;
 
 			fightMed=getMediator(BattleFightMediator);
-
+			myZhanCheComp=fightMed.comp.myZhanCheComp;
+			
 			var voObj:Object=FightDataUtil.getVO(fightMoveVO.id);
 
 			if (!voObj)
@@ -71,10 +75,25 @@ package controller.battle.fight
 						ease: Linear.easeNone,
 						onUpdate: zhanCheMoveUpdate, onUpdateParams: [zhanCheComp]});
 			}
+			else if (voObj.voType == FightVOTypeEnum.xiaoFeiJi)
+			{
+				// 僚机移动
+				var feiJiComp:FightFeiJiComponent=fightMed.comp.compIDDic[fightMoveVO.id];
+				feiJiComp.x=startP.x;
+				feiJiComp.y=startP.y;
+				feiJiComp.moveTweenLite=TweenLite.to(feiJiComp, time, {x: endP.x, y: endP.y, ease: Linear.easeNone});
+			}
 		}
 
 		private function zhanCheMoveUpdate(zhanCheComp:FightZhanCheComponent):void
 		{
+			//检测战车是否有护盾，如果有就让护盾跟随战车移动(lw)
+			if(zhanCheComp.defenseMC)
+			{
+				zhanCheComp.defenseMC.x=zhanCheComp.x;
+				zhanCheComp.defenseMC.y=zhanCheComp.y;
+			}
+			
 			//检查是否停止战车移动
 			var nextPoint:Point=FightUtil.getNextMovePoint(zhanCheComp.x, zhanCheComp.y, zhanCheComp.zhanCheRotation);
 			if (fightMed.comp.hasMask(nextPoint))

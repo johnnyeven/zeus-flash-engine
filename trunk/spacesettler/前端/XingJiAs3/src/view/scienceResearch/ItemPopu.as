@@ -62,7 +62,7 @@ package view.scienceResearch
 		
 		private function upBtn_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.POPU_UP_EVENT,data.type,true,true));
+			dispatchEvent(new ScienceResearchEvent(ScienceResearchEvent.POPU_UP_EVENT,data.type,"",true,true));
 		}
 
 	}

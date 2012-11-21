@@ -34,6 +34,8 @@ package view.shangCheng.shangChengView
 		
 		public var wuPingImg:LoaderImage;
 		
+		public var source:String;
+		
 		public function TuZhiComponent()
 		{
 			super(ClassUtil.getObject("view.allView.TuZhiSkin"));

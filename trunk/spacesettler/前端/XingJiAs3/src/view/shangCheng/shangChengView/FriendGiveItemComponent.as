@@ -6,6 +6,7 @@ package view.shangCheng.shangChengView
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	
+	import ui.components.Label;
 	import ui.core.Component;
 	
 	public class FriendGiveItemComponent extends Component
@@ -13,12 +14,12 @@ package view.shangCheng.shangChengView
 		/**
 		 * 普通用户的名称
 		 */		
-		public var username_tf:TextField;
+		public var username_tf:Label;
 		
 		/**
 		 *VIP用户的名称 
 		 */		
-		public var username_vip:TextField;
+		public var username_vip:Label;
 		
 		/**
 		 *VIP图标 
@@ -28,8 +29,8 @@ package view.shangCheng.shangChengView
 		public function FriendGiveItemComponent()
 		{
 			super(ClassUtil.getObject("view.allView.friendGiveItemSkin"));
-			username_tf=getSkin("username_tf");
-			username_vip=getSkin("username_vip");
+			username_tf=createUI(Label,"username_tf");
+			username_vip=createUI(Label,"username_vip");
 			vip=getSkin("vip_mc");
 			
 			sortChildIndex();

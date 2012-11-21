@@ -16,7 +16,7 @@ package view.battle.build
 	import utils.battle.FightUtil;
 
 	/**
-	 *战场
+	 *战场编辑
 	 * @author zn
 	 *
 	 */

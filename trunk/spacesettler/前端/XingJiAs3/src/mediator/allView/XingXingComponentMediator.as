@@ -5,13 +5,21 @@ package mediator.allView
 	import events.allView.AllViewEvent;
 	
 	import flash.events.Event;
+	import flash.geom.Point;
 	
 	import mediator.WindowMediator;
+	import mediator.battle.BattleEditMediator;
+	import mediator.battleEnter.BattleEnterComponentMediator;
+	import mediator.mainView.MainViewMediator;
+	import mediator.plantioid.PlantioidComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.plantioid.PlantioidProxy;
+	
+	import view.allView.AllViewXingXingEvent;
 	import view.allView.XingXingComponent;
 
 	/**
@@ -33,7 +41,12 @@ package mediator.allView
 			comp.addEventListener(AllViewEvent.CLOSED_XINGXING_EVENT,closeHandler);
 			comp.addEventListener("destoryshangSprite",destoryshangSpriteHandler);
 			comp.addEventListener("destoryxiaSprite",destoryxiaSpriteHandler);
-		}
+			
+			comp.addEventListener(AllViewXingXingEvent.CHECK_EVENT,checkHandler);
+			comp.addEventListener(AllViewXingXingEvent.MANAGER_EVENT,managerHandler);
+			comp.addEventListener(AllViewXingXingEvent.ATTACK_EVENT,attackHandler);
+			
+		}		
 		
 		/**
 		 *添加要监听的消息
@@ -83,6 +96,58 @@ package mediator.allView
 		{
 			comp.xiaSprite.visible = false;
 			TweenLite.to(comp.xiaSprite,0.5,{x:0,y:500});
+		}
+		
+		/**
+		 *管理 
+		 * @param event
+		 * 
+		 */
+		protected function managerHandler(event:AllViewXingXingEvent):void
+		{
+			var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
+			//获取小行星带
+			plantioidProxy.getPlantioidListByXY(1, 1, function():void
+			{
+				plantioidProxy.setSelectedPlantioid(event.fortVO.id);
+				plantioidProxy.getPlantioidInfo(PlantioidProxy.selectedVO.id, function():void
+				{
+					sendNotification(BattleEditMediator.SHOW_NOTE);
+				});
+			});
+			
+			
+		}
+		
+		/**
+		 *查看 
+		 * @param event
+		 * 
+		 */
+		protected function checkHandler(event:AllViewXingXingEvent):void
+		{
+			sendNotification(MainViewMediator.SET_PLANEBTN_NOTE);
+			sendNotification(PlantioidComponentMediator.SHOW_NOTE,new Point(event.fortVO.x,event.fortVO.y));
+		}
+		
+		/**
+		 *攻击 
+		 * @param event
+		 * 
+		 */		
+		protected function attackHandler(event:AllViewXingXingEvent):void
+		{
+			// TODO Auto-generated method stub
+			var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
+			//获取小行星带
+			plantioidProxy.getPlantioidListByXY(1, 1, function():void
+			{
+				plantioidProxy.setSelectedPlantioid(event.fortVO.id);
+				plantioidProxy.getPlantioidInfo(PlantioidProxy.selectedVO.id, function():void
+				{
+					sendNotification(BattleEnterComponentMediator.SHOW_NOTE);
+				});
+			});
 		}
 	}
 }

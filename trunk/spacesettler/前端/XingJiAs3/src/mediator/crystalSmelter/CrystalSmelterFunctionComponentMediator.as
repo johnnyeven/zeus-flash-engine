@@ -1,16 +1,20 @@
 package mediator.crystalSmelter
 {
+	import com.zn.multilanguage.MultilanguageManager;
+	
 	import events.crystalSmelter.CrystalSmelterEvent;
 	
 	import mediator.BaseMediator;
 	import mediator.WindowMediator;
 	import mediator.buildingView.YeLianInfoComponentMediator;
+	import mediator.prompt.PromptSureMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import proxy.crystalSmelter.CrystalSmelterProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.cryStalSmelter.CrystalSmelterFunctionComponent;
 
@@ -69,7 +73,7 @@ package mediator.crystalSmelter
 		 * @return
 		 *
 		 */
-		protected function get comp():CrystalSmelterFunctionComponent
+		public function get comp():CrystalSmelterFunctionComponent
 		{
 			return viewComponent as CrystalSmelterFunctionComponent;
 		}
@@ -82,7 +86,15 @@ package mediator.crystalSmelter
 		private function smelterHandler(event:CrystalSmelterEvent):void
 		{
 			var crystalSmelteProxy:CrystalSmelterProxy = getProxy(CrystalSmelterProxy);
-			crystalSmelteProxy.smelte();
+			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
+			if(userProxy.userInfoVO.crystal>4000)
+				crystalSmelteProxy.smelte();
+			else
+			{
+				var obj:Object={};
+				obj.showLable=MultilanguageManager.getString("shuijingbuzu");
+				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+			}
 		}
 	}
 }

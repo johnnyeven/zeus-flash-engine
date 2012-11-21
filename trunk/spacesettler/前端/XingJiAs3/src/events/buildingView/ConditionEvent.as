@@ -12,6 +12,9 @@ package events.buildingView
 		public static const SHENGJI_EVENT:String="shengji_event";
 		public static const SHENGJIKEJI_EVENT:String="shengjikeji_event";
 		public static const CREATEKEJI_EVENT:String="createkeji_event";
+		
+		public static const POWERPROMT_EVENT:String="powerpromt_event";
+		
 		public static const CLOSE_EVENT:String="close_event";
 		
 		public var conditionArr:Array;

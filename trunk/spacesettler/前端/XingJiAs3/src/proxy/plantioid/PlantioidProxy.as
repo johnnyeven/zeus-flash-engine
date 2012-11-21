@@ -4,23 +4,23 @@ package proxy.plantioid
     import com.zn.net.Protocol;
     import com.zn.utils.ObjectUtil;
     import com.zn.utils.XMLUtil;
-
+    
     import enum.battle.BattleBuildStateEnum;
     import enum.battle.BattleBuildTypeEnum;
     import enum.command.CommandEnum;
-
+    
     import flash.geom.Point;
     import flash.net.URLRequestMethod;
-
+    
     import mediator.prompt.PromptMediator;
-
+    
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;
-
+    
     import other.ConnDebug;
-
+    
     import proxy.userInfo.UserInfoProxy;
-
+    
     import vo.battle.BattleBuildVO;
     import vo.plantioid.FortsInforVO;
 
@@ -50,6 +50,9 @@ package proxy.plantioid
         [Bindable]
         public var currentY:int = 0;
 
+		public var maxX:int=1;
+		public var maxY:int=1;
+		
         private var _tempPoint:Point;
 
         /**
@@ -99,7 +102,7 @@ package proxy.plantioid
         {
             if (data.hasOwnProperty("errors"))
             {
-                sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString(data.errors));
+                sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
                 _getPlantioidListByXYCallBack = null;
                 return;
             }
@@ -107,6 +110,9 @@ package proxy.plantioid
             currentX = _tempPoint.x;
             currentY = _tempPoint.y;
 
+			maxX=data.max_x;
+			maxY=data.max_y;
+			
             var list:Array = [];
             var obj:Object;
             var fortVO:FortsInforVO;
@@ -149,7 +155,7 @@ package proxy.plantioid
          *获取单个要塞信息
          *
          */
-        public function getPlantioidInfo(plantioidID:String, callBack:Function):void
+        public function getPlantioidInfo(plantioidID:String, callBack:Function=null):void
         {
             if (!Protocol.hasProtocolFunction(CommandEnum.getPlantioidInfo, getPlantioidInfoResult))
                 Protocol.registerProtocol(CommandEnum.getPlantioidInfo, getPlantioidInfoResult);
@@ -183,6 +189,7 @@ package proxy.plantioid
                 itemVO.z = data.z;
                 itemVO.protected_until = data.protected_until;
                 itemVO.fort_type = data.fort_type;
+				itemVO.map_type =  data.map_type;
                 itemVO.player_id = data.player_id;
                 itemVO.fort_name = data.fort_name;
                 itemVO.age_level = data.age_level;
@@ -288,6 +295,43 @@ package proxy.plantioid
             }
         }
 
+        /**
+         *强制攻打小行星
+		 * fort_id:要塞ID
+         * @param callBack
+         *
+         */
+        public function break_into_fort(fort_id :String, callBack:Function = null):void
+        {
+            if (!Protocol.hasProtocolFunction(CommandEnum.break_into_fort, breakIntoFortResult))
+                Protocol.registerProtocol(CommandEnum.break_into_fort, breakIntoFortResult);
+
+            _destroyPaoTaCallBack = callBack;
+			var userProxy:UserInfoProxy = getProxy(UserInfoProxy);
+
+            var obj:Object = { fort_id : fort_id , player_id :userProxy.userInfoVO.player_id};
+            ConnDebug.send(CommandEnum.break_into_fort, obj);
+        }
+		
+        private function breakIntoFortResult(data:Object):void
+        {
+            Protocol.deleteProtocolFunction(CommandEnum.break_into_fort, breakIntoFortResult);
+
+            if (data.message!="SUCCESS")
+            {
+                sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.message));
+                _destroyPaoTaCallBack = null;
+                return;
+            }
+			
+			var userProxy:UserInfoProxy = getProxy(UserInfoProxy);
+			userProxy.userInfoVO.dark_crystal=data.dark_crystal;
+			
+			if(_destroyPaoTaCallBack!=null)
+				_destroyPaoTaCallBack();
+			_destroyPaoTaCallBack=null
+		}
+		
         /**
          *摧毁要塞建筑
          * @param buildType

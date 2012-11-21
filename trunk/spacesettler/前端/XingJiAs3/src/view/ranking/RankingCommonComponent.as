@@ -53,9 +53,11 @@ package view.ranking
 		private var containerMySelf:Container;
 		private var page:int;
 		private var _type:String;
+		private var _ownMySelf:Boolean=false;
 		
 		private var rankingProxy:RankingProxy;
 		private var userProxy:UserInfoProxy;
+		private var _currtentBtn:Button;
         public function RankingCommonComponent()
         {
             super(ClassUtil.getObject("view.allView.RankingCommon"));
@@ -107,6 +109,8 @@ package view.ranking
 			sprite.addChild(container);
 			sprite2.addChild(containerMySelf);
 			
+			riBangBtn.toggle=zongBangBtn.toggle=true;
+			currtentBtn=zongBangBtn;
 			fanHuiBtn.addEventListener(MouseEvent.CLICK,doCloseHandler);
 			vsBar.addEventListener(MouseEvent.ROLL_OUT,mouseOutHandler);
 			vsBar.addEventListener(MouseEvent.ROLL_OVER,mouseOverHandler);
@@ -117,26 +121,30 @@ package view.ranking
 		}
 		
 		private function addContainer(arr:Array,cont:Container):void
-		{			
+		{		
+			if(arr.length==0)
+				return;
 			var length:int=arr.length;
 			for(var i:int;i<length;i++)
 			{
 				var rankingVo:RankingVo=arr[i];				
 				var item:RankingUserItemComponent=new RankingUserItemComponent();
+				item.rankingVo=rankingVo;
 				item.userNameText.text=rankingVo.nickname;
 				item.junTuanText.text=rankingVo.legion_name;
-				if(rankingVo.id==userProxy.userInfoVO.player_id)
+				if(rankingVo.id==userProxy.userInfoVO.player_id||rankingVo.id==userProxy.userInfoVO.legion_id)
 				{
 					item.isMySelf();
+					if(cont==container)
+					{
+						sprite2.visible=maskSp.visible=false;
+						container.contentHeight=vsBar.height=296;
+						_ownMySelf=true;
+					}
 				}
 				
 				if(rankingVo.vip_level>0)
-				{
-					item.vipMc.visible=true;
-				}else
-				{
-					item.vipMc.visible=false;
-				}
+					item.myVipShow(rankingVo.vip_level);
 				
 				item.xianShiText.text=rankingVo.show.toString();
 				
@@ -166,9 +174,19 @@ package view.ranking
 					item.tongPaiMc.visible=false;
 				}
 				cont.add(item);
+				item.addEventListener(MouseEvent.CLICK,itemClickHandler);
 			}
 			cont.layout.update();
 			vsBar.update();
+			
+			
+		}
+		
+		protected function itemClickHandler(event:MouseEvent):void
+		{
+			var item:RankingUserItemComponent=event.currentTarget as RankingUserItemComponent;
+			if(_type!=RankEnum.GROUP)
+				dispatchEvent(new RankingEvent(RankingEvent.SHOW_JUNGUANZHENG_EVENT,item.rankingVo.id));
 		}
 		
 		private function add():void
@@ -190,7 +208,8 @@ package view.ranking
 		}
 		
 		protected function riBangClickHandler(event:MouseEvent):void
-		{
+		{		
+			currtentBtn=riBangBtn;
 			maskSp.visible=false;
 			sprite2.visible=false;
 			container.contentHeight=vsBar.height=296;
@@ -214,9 +233,13 @@ package view.ranking
 		
 		protected function zongBangClickHandler(event:MouseEvent):void
 		{
-			maskSp.visible=true;
-			sprite2.visible=true;
-			container.contentHeight=vsBar.height=156;
+			currtentBtn=zongBangBtn;
+			if(!_ownMySelf)
+			{
+				maskSp.visible=true;
+				sprite2.visible=true;
+				container.contentHeight=vsBar.height=156;				
+			}
 			if(_type==RankEnum.YAOSAI)
 				dispatchEvent(new RankingEvent(RankingEvent.LIST_FORTERESS));
 			if(_type==RankEnum.SHENGWANG)
@@ -289,5 +312,21 @@ package view.ranking
 			shengWangMc.visible=false;
 			caiFuMc.visible=false;
 		}
+
+		public function get currtentBtn():Button
+		{
+			return _currtentBtn;
+		}
+
+		public function set currtentBtn(value:Button):void
+		{
+			if(_currtentBtn!=null)
+			{
+				_currtentBtn.selected=false;				
+			}
+			_currtentBtn = value;
+			_currtentBtn.selected=true;
+		}
+
 	}
 }

@@ -8,6 +8,8 @@ package view.ranking
 	import ui.components.Label;
 	import ui.core.Component;
 	
+	import vo.ranking.RankingVo;
+	
 	/**
 	 *通用的用户ITEM显示 
 	 * @author Administrator
@@ -15,10 +17,9 @@ package view.ranking
 	 */	
 	public class RankingUserItemComponent extends Component
 	{
-		/**
-		 *vip图标 
-		 */				
-		public var vipMc:Sprite;
+		public var vip1:Sprite;
+		public var vip2:Sprite;
+		public var vip3:Sprite;
 		
 		/**
 		 *铜牌图标 
@@ -79,6 +80,8 @@ package view.ranking
 		 *排名 
 		 */		
 		public var paiMingText:Label;
+		
+		private var _rankingVo:RankingVo;
 		public function RankingUserItemComponent()
 		{
 			super(ClassUtil.getObject("view.allView.ranking_item_1"));
@@ -90,7 +93,6 @@ package view.ranking
 			upOrDownText=createUI(Label,"up_down_tf");
 			paiMingText=createUI(Label,"paiming_tf");
 			
-			vipMc=getSkin("vip_mc");
 			tongPaiMc=getSkin("tongpai_mc");
 			yinPaiMc=getSkin("yinpai_mc");
 			jinPaiMc=getSkin("jinpai_mc");
@@ -98,9 +100,30 @@ package view.ranking
 			downMc=getSkin("down_mc");
 			backMc=getSkin("back_mc");
 			
+			vip1=getSkin("vip1");
+			vip2=getSkin("vip2");
+			vip3=getSkin("vip3");			
+			vip1.visible=vip2.visible=vip3.visible=false;
+			
 			sortChildIndex();
 			
 			notMySelf();
+		}
+		
+		public function myVipShow(level:int):void
+		{
+			if(level==1)
+			{
+				vip1.visible=true;
+			}
+			if(level==2)
+			{
+				vip2.visible=true;
+			}
+			if(level==3)
+			{
+				vip3.visible=true;
+			}
 		}
 		
 		public function isMySelf():void
@@ -132,6 +155,17 @@ package view.ranking
 			downMc.visible=false;
 			upOrDownText.visible=false;
 		}
+
+		public function get rankingVo():RankingVo
+		{
+			return _rankingVo;
+		}
+
+		public function set rankingVo(value:RankingVo):void
+		{
+			_rankingVo = value;
+		}
+
 				
 	}
 }

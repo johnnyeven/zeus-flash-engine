@@ -1,10 +1,12 @@
 package utils.battle
 {
 	import com.zn.utils.DateFormatter;
-
+	
+	import enum.item.SlotEnum;
+	
 	import proxy.battle.BattleProxy;
 	import proxy.userInfo.UserInfoProxy;
-
+	
 	import vo.GlobalData;
 
 	/**
@@ -19,7 +21,7 @@ package utils.battle
 		 */
 		public static const FEI_JI_COUNT:int=1;
 
-		public static var dataDic:Object;
+		public static var dataDic:Object =[];
 
 		/**
 		 *是否为主机
@@ -97,11 +99,15 @@ package utils.battle
 			for (var i:int=0; i < chariotVO.tankparts.length; i++)
 			{
 				tankpartVO=chariotVO.tankparts[i];
-				if (tankpartVO.attackCoolEndTime == null)
-					tankpartVO.attackCoolEndTime=0;
-
-				if ((tankpartVO.attackCoolEndTime - DateFormatter.currentTimeM) <= 0)
-					return tankpartVO;
+				if(tankpartVO.slotType == SlotEnum.BIG)
+				{
+					if (tankpartVO.attackCoolEndTime == null)
+						tankpartVO.attackCoolEndTime=0;
+	
+					if ((tankpartVO.attackCoolEndTime - DateFormatter.currentTimeM) <= 0)
+						return tankpartVO;
+				}
+				
 			}
 
 			return null;
@@ -201,21 +207,20 @@ package utils.battle
 			return dataDic[id];
 		}
 
-/**
+		/**
 		 *获取玩家列表
-		 * @param id
 		 * @return
 		 *
 		 */
 		public static function getPlayerList():Array
 		{
-			var useData:USER_DATA=getUseData();
+			var userData:USER_DATA=getUseData();
 			var player1:PLAYER1;
 			var playerList:Array=[];
 			
-			for(var i:int=0;i<useData.player1s.length; i++)
+			for(var i:int=0;i<userData.player1s.length; i++)
 			{
-				player1=useData.player1s[i];
+				player1=userData.player1s[i];
 				if(player1.forts.length==0)
 				{
 					playerList.push(player1);

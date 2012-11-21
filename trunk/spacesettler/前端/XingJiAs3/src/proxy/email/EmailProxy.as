@@ -4,15 +4,22 @@ package proxy.email
 	import com.zn.net.Protocol;
 	
 	import enum.command.CommandEnum;
+	import enum.item.ItemEnum;
+	
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mediator.email.ViewEmailComponentMediator;
+	import mediator.mainView.MainViewMediator;
 	import mediator.prompt.PromptMediator;
+	import mediator.prompt.PromptSureMediator;
 	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
 	import other.ConnDebug;
 	
+	import proxy.packageView.PackageViewProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
 	import vo.email.EmailItemVO;
@@ -31,17 +38,29 @@ package proxy.email
 		[Bindable]
 		public var emailCount:int;
 		private var _getEmailListCallBack:Function;
-		
+		//定时刷邮件列表，看看是否有新邮件。
+		private var timer:Timer = new Timer(30000);
+		//当前邮件条数
+		private var emailCurrentCount:int = emailList.length;
 		private var userInforProxy:UserInfoProxy;
+		private var packageViewProxy:PackageViewProxy;
 		public function EmailProxy(data:Object=null)
 		{
 			super(NAME, data);
 			userInforProxy = getProxy(UserInfoProxy);
+			packageViewProxy = getProxy(PackageViewProxy);
 			Protocol.registerProtocol(CommandEnum.emailList,getEmailListResult);
 			Protocol.registerProtocol(CommandEnum.sendEmail,sendEmailResult);
 			Protocol.registerProtocol(CommandEnum.isRead,isReadResult);
 			Protocol.registerProtocol(CommandEnum.deleteEmail,deleteEmailResult);
-			Protocol.registerProtocol(CommandEnum.receiveEmailSource,sendEmailResult);
+			Protocol.registerProtocol(CommandEnum.receiveEmailSource,getSourceResult);
+			timer.addEventListener(TimerEvent.TIMER,timer_handler);
+//			timer.start();
+		}
+		
+		private function timer_handler(event:TimerEvent):void
+		{
+			getEmailList();
 		}
 		
 		/**
@@ -66,8 +85,13 @@ package proxy.email
 				var emailArr:Array = [];
 				var emailItemVO:EmailItemVO;
 				arr = data.mails;
+				if(emailCurrentCount<arr.length)
+				{
+				   //向外发送新邮件提示消息
+			       sendNotification(MainViewMediator.SHOW_NEW_EMAIL_TIPS_NOTE);
+				}
 				emailCount = arr.length;
-				
+				emailCurrentCount = emailCount;
 				for(var i:int = 0;i<arr.length;i++)
 				{
 					emailItemVO = new EmailItemVO();
@@ -106,6 +130,15 @@ package proxy.email
 		 */		
 		public function sendEmail(obj:Object):void
 		{
+			/*if(obj.attachment_type == ItemEnum.Chariot)
+			{
+				//转换类型
+				obj.attachment_type = ItemEnum.chariot;
+			}
+			else if(obj.attachment_type == ItemEnum.TankPart)
+			{
+				obj.attachment_type = ItemEnum.tankPart;
+			}*/
 			ConnDebug.send(CommandEnum.sendEmail,obj);
 		}
 		
@@ -116,8 +149,16 @@ package proxy.email
 				sendNotification(PromptMediator.SCROLL_ALERT_NOTE,MultilanguageManager.getString(data.errors));
 				return ;
 			}
-			//更新服务器数据
-			userInforProxy.updateServerData();
+			if(data.message == "success")
+			{
+				var obj:Object = {infoLable:MultilanguageManager.getString("successSendEmailTitle"),showLable:MultilanguageManager.getString("successSendEmailInfor")};
+				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+				//更新服务器数据
+				userInforProxy.updateServerData();
+				//更新背包数据
+				packageViewProxy.packageViewView();
+			}
+			
 		}
 		
 		/**
@@ -187,6 +228,8 @@ package proxy.email
 				sendNotification(ViewEmailComponentMediator.receive_attachment);
 				//更新服务器数据
 				userInforProxy.updateServerData();
+				//更新背包数据
+				packageViewProxy.packageViewView();
 			}
 			
 		}

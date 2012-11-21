@@ -88,7 +88,11 @@ package proxy.content
 			
 			if(buildObj.conditions.all_subjects_level)
 				viewInfoVO.all_subjects_level=buildObj.conditions.all_subjects_level;
-			viewInfoVO.limit=buildObj.conditions.academy_level;
+			if(buildObj.conditions.academy_level)
+				viewInfoVO.limit=buildObj.conditions.academy_level;
+			if(buildObj.conditions.command_center_level)
+				viewInfoVO.command_center_level=buildObj.conditions.command_center_level;
+			
 			viewInfoVO.time=buildObj.cost.time;
 			viewInfoVO.anWuZhiXH=buildObj.cost.broken_crystal;
 			viewInfoVO.anWuZhiCL=buildObj.cost.broken_crystal_output;

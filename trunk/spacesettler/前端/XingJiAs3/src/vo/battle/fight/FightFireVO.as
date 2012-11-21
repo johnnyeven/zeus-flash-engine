@@ -16,7 +16,7 @@ package vo.battle.fight
 	public class FightFireVO extends ValueObject
 	{
 		/**
-		 *开火对象
+		 *战车ID
 		 */
 		public var id:String;
 
@@ -33,6 +33,8 @@ package vo.battle.fight
 
 		public var rotation:Number=0;
 		
+		public var guaJianID:String="";
+		
 		public function toBy():ByteArray
 		{
 			var body:ByteArray=ClientSocket.getBy();
@@ -43,6 +45,7 @@ package vo.battle.fight
 			body.writeFloat(endX);
 			body.writeFloat(endY);
 			body.writeFloat(rotation);
+			SocketUtil.writeIdType(guaJianID, body);
 			
 			return body;
 		}
@@ -57,6 +60,8 @@ package vo.battle.fight
 			endX=by.readFloat();
 			endY=by.readFloat();
 			rotation=by.readFloat();
+			
+			guaJianID=SocketUtil.readIdType(by);
 		}
 	}
 }

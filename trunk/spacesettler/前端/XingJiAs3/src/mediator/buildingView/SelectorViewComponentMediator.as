@@ -3,6 +3,7 @@ package mediator.buildingView
     import com.zn.utils.ClassUtil;
     
     import enum.BuildTypeEnum;
+    import enum.TaskEnum;
     import enum.factory.FactoryEnum;
     
     import events.buildingView.AddSelectorViewEvent;
@@ -104,6 +105,9 @@ package mediator.buildingView
                     PopUpManager.addPopUp(viewComp);
 
                     viewComp.start();
+					var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
+					if(userProxy.userInfoVO.index<=TaskEnum.index23)						
+						dispatchEvent(new AddViewEvent(AddViewEvent.SEND_STAR_EVENT,0,viewComp));
                     break;
                 }
                 case DESTROY_NOTE:

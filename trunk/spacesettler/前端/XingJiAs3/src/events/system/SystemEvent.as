@@ -34,6 +34,10 @@ package events.system
 		 */		
 		public static const LOGIN_OUT:String="login_out";
 		
+		/**
+		 *修改密码 
+		 */		
+		public static const PASSWORD_EVENT:String="passWord_event";
 		
 		public function SystemEvent(type:String)
 		{

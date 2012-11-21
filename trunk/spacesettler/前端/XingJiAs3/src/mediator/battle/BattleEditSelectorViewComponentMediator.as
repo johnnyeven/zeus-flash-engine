@@ -5,6 +5,7 @@ package mediator.battle
     import enum.BuildTypeEnum;
     import enum.battle.BattleBuildTypeEnum;
     
+    import events.battle.BattleEditorConditionInforEvent;
     import events.battle.BattleEidtSelectorViewEvent;
     import events.buildingView.AddSelectorViewEvent;
     import events.buildingView.AddViewEvent;
@@ -115,6 +116,8 @@ package mediator.battle
                 viewComp.addEventListener(BattleEidtSelectorViewEvent.DOWN_EVENT, downHandler);
                 viewComp.addEventListener(BattleEidtSelectorViewEvent.RIGHT_EVENT, rightHandler);
                 viewComp.addEventListener(BattleEidtSelectorViewEvent.LEFT_EVENT, leftHandler);
+				
+				viewComp.addEventListener(BattleEditorConditionInforEvent.BATTLE_EDITOR_CONDITION_INFOR_EVENT, battleEditorConditionInforHandler);
 
 				var battleEditMed:BattleEditMediator=getMediator(BattleEditMediator);
 				battleEditMed.addSelctedComp(viewComp);
@@ -181,5 +184,10 @@ package mediator.battle
 				plantProxy.buildPaoTa(BattleBuildTypeEnum.JIA_Xie,comp.buildVO.x,comp.buildVO.y);
 			sendNotification(DESTROY_NOTE);
         }
+		
+		private function battleEditorConditionInforHandler(event:BattleEditorConditionInforEvent):void
+		{
+			sendNotification(battleEditorConditionComponentMediator.SHOW_NOTE,event.data);
+		}
     }
 }

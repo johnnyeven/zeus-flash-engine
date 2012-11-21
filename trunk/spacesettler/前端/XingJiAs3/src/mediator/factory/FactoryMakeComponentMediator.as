@@ -58,32 +58,36 @@ package mediator.factory
 		
 		protected function makeCompLeteHandler(event:FactoryItemEvent):void
 		{
-			factoryProxy.update_produce(FactoryEnum.CURRENT_DRAWVO.id);
+			factoryProxy.update_produce(event.item.drawVo.id,function():void
+			{
+				factoryProxy=getProxy(FactoryProxy);
+//				event.item.drawVo=factoryProxy.drawVo;
+			});
 		}
 		
 		protected function doMakeHandler(event:FactoryEvent):void
 		{
 			var item:FactoryItem_1Component=event.item;			
-			factoryProxy.makeStar(FactoryEnum.CURRENT_VO.id,function():void
+			factoryProxy.makeStar(item.drawVo.id,function():void
 			{
-				item.isMake();
+				factoryProxy=getProxy(FactoryProxy);
+				item.drawVo=factoryProxy.drawVo;
 				item.setTweenLine(factoryProxy.drawVo.remainTime);	
-				
 			});
 			
 		}
 		
 		protected function doSpeedUpHandler(event:FactoryEvent):void
 		{
-			var item:FactoryItem_1Component=event.item;
+			var item:FactoryItem_1Component=event.item as FactoryItem_1Component;
 			var obj:Object={};
 			obj.info=MultilanguageManager.getString("thisEvent");
 			obj.count=BaseItemVO.MONEY.toString();
 			obj.okCallBack=function():void
 			{
-				factoryProxy.produce_speed_up(FactoryEnum.CURRENT_DRAWVO.eventID,function():void
+				factoryProxy.produce_speed_up(item.drawVo.eventID,function():void
 				{
-					item.setTweenLine(2);
+					item.setTweenLine(1);
 				});				
 			}
 			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE,obj);
@@ -139,7 +143,7 @@ package mediator.factory
 		 * @return
 		 *
 		 */
-		protected function get comp():FactoryMakeComponent
+		public function get comp():FactoryMakeComponent
 		{
 			return viewComponent as FactoryMakeComponent;
 		}
@@ -155,7 +159,7 @@ package mediator.factory
 				{
 					case FactoryEnum.MAKE_GUAJIAN:
 					{
-						if(drawVo.recipe_type==2&&drawVo.tank_part_type==2)
+						if(drawVo.recipe_type==2&&drawVo.tank_part_type!=1)
 							list.push(drawVo);
 						break;
 					}

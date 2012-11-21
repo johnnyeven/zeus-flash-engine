@@ -18,6 +18,8 @@ package controller.login
      */
     public class ShowPkComponentMediatorCommand extends SimpleCommand
     {
+		private var _bool:Boolean;
+		
         public function ShowPkComponentMediatorCommand()
         {
             super();
@@ -30,9 +32,15 @@ package controller.login
          */
         public override function execute(notification:INotification):void
         {
+			_bool=notification.getBody() as Boolean;
             var med:PkComponentMediator = getMediator(PkComponentMediator);
             if (med)
             {
+				if(_bool)
+					med.comp.startOrNext.text="开始游戏";
+				else
+					med.comp.startOrNext.text="下一步";
+				
 				med.show();
             }
             else
@@ -50,7 +58,11 @@ package controller.login
         protected function loaderComplete(event:LoaderEvent):void
         {
             var med:PkComponentMediator = new PkComponentMediator();
-
+			if(_bool)
+				med.comp.startOrNext.text="开始游戏";
+			else
+				med.comp.startOrNext.text="下一步";
+			
             //注册界面的中介
             facade.registerMediator(med);
 			med.show();

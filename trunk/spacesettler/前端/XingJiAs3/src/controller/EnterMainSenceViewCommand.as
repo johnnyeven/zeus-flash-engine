@@ -6,7 +6,10 @@ package controller
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.LoaderItemUtil;
     
+    import controller.task.TaskCommand;
+    
     import enum.MainSenceEnum;
+    import enum.TaskEnum;
     
     import flash.events.Event;
     
@@ -68,6 +71,13 @@ package controller
 			
             //主界面
             sendNotification(MainViewMediator.SHOW_NOTE);
+			
+			var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
+			var obj:Object={index:userInfoVO.index, isFinished:userInfoVO.is_finished ,isRewarded:userInfoVO.is_rewarded};
+			if(userInfoVO.index<=TaskEnum.index17)
+			{
+				sendNotification(TaskCommand.ADDTASKINFO_COMMAND,obj);
+			}
 			
 			_isLoading=false;
         }

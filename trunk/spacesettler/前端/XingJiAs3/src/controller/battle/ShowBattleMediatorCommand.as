@@ -28,6 +28,7 @@ package controller.battle
     {
         private static var _isLoading:Boolean = false;
 
+		private var mapID:int;
         public function ShowBattleMediatorCommand()
         {
             super();
@@ -43,6 +44,12 @@ package controller.battle
             if (_isLoading)
                 return;
 
+			mapID = int(notification.getBody());
+			//TODU LW:自己设置数据（恢复）
+			if(mapID == 0)
+			{
+				mapID = 1;
+			}
             var med:BattleFightMediator = getMediator(BattleFightMediator);
             if (med)
             {
@@ -54,7 +61,8 @@ package controller.battle
                 _isLoading = true;
 				var loaderMax:LoaderMax=new LoaderMax("fightBattle");
 				loaderMax.addChildLoad(LoaderItemUtil.getLoader("battle"));
-				loaderMax.addChildLoad(LoaderItemUtil.getLoader("zhanChe_1.swf"));
+				loaderMax.addChildLoad(LoaderItemUtil.getLoader("battleZhanChe"));
+				loaderMax.addChildLoad(LoaderItemUtil.getLoader("battleMap_"+ mapID+ ".swf"));
                 ResLoader.load("fightBattle", MultilanguageManager.getString(""), loaderComplete, true);
             }
         }
@@ -66,9 +74,9 @@ package controller.battle
          */
         protected function loaderComplete(event:LoaderEvent):void
         {
-            var med:BattleFightMediator = new BattleFightMediator(new BattleFightComponent(ClassUtil.getObject("battle.battleMap_1")));
+            var med:BattleFightMediator = new BattleFightMediator(new BattleFightComponent(ClassUtil.getObject("battle.battleMap_"+mapID)));
 
-            //注册界面的中介
+            //注册界面的中介s
             facade.registerMediator(med);
             med.show();
 
