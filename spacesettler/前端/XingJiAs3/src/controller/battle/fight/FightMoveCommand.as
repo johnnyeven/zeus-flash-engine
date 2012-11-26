@@ -75,13 +75,19 @@ package controller.battle.fight
 						ease: Linear.easeNone,
 						onUpdate: zhanCheMoveUpdate, onUpdateParams: [zhanCheComp]});
 			}
-			else if (voObj.voType == FightVOTypeEnum.xiaoFeiJi)
+			else if (voObj.voType == FightVOTypeEnum.liaoJi)
 			{
 				// 僚机移动
 				var feiJiComp:FightFeiJiComponent=fightMed.comp.compIDDic[fightMoveVO.id];
 				feiJiComp.x=startP.x;
 				feiJiComp.y=startP.y;
 				feiJiComp.moveTweenLite=TweenLite.to(feiJiComp, time, {x: endP.x, y: endP.y, ease: Linear.easeNone});
+			}
+			else if(voObj.voType == FightVOTypeEnum.xiaoFeiJi)
+			{
+				//TODO LW:小飞机的移动
+				feiJiComp.x=startP.x;
+				feiJiComp.y=startP.y;
 			}
 		}
 

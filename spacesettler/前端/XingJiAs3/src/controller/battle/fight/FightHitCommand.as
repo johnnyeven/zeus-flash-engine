@@ -45,6 +45,7 @@ package controller.battle.fight
 		public function FightHitCommand()
 		{
 			super();
+			//防护盾
 			mc=ClassUtil.getObject("fight.DefenseEffectSkin") as MovieClip;
 			
 		}
@@ -77,6 +78,7 @@ package controller.battle.fight
 				enduranceDis=hitVO.current_endurance - voObj.currentEndurance;
 				voObj.currentEndurance=hitVO.current_endurance;
 				voObj.currentShield=hitVO.current_shield;
+				
 
 				if (voObj.voType == FightVOTypeEnum.building)
 					(comp as FightBuildComponent).updateHp();
@@ -90,14 +92,48 @@ package controller.battle.fight
 				hitNumComp.start();
 				
 //				hitVO.current_shield = 100;//TODO:LW:恢复
-				
-				if (voObj.currentEndurance == 0)
+				//TODO:LW:新加特效  小飞机的爆炸特效
+				if(voObj.voType == FightVOTypeEnum.xiaoFeiJi && voObj.currentEndurance == 0)
 				{
-					//摧毁
-					var className:String=StringUtil.formatString("battle.disposeEffect_{0}", RandomUtil.getRangeInt(0, 2));
+					//爆炸
+					var className2:String=StringUtil.formatString("battle.feiJDisposeEffect_1");
+					disposeEffect(className2, comp);
+				}
+				//TODO:LW:新加特效  僚机的爆炸特效
+				if(voObj.voType == FightVOTypeEnum.liaoJi && voObj.currentEndurance == 0)
+				{
+					//爆炸
+					var className3:String=StringUtil.formatString("battle.feiJDisposeEffect_2");
+					disposeEffect(className3, comp);
+				}
+				//TODO:LW:新加特效  大飞机的爆炸特效
+				if(voObj.voType == FightVOTypeEnum.daFeiJi && voObj.currentEndurance == 0)
+				{
+					//爆炸
+					var className4:String=StringUtil.formatString("battle.feiJDisposeEffect_0");
+					disposeEffect(className4, comp);
+				}
+				//TODO:LW:新加特效  战车的爆炸特效
+				//战车的爆炸特效
+				if (voObj.voType == FightVOTypeEnum.zhanChe && voObj.currentEndurance == 0)
+				{
+					var className:String=StringUtil.formatString("battle.disposeEffect_2");
 					disposeEffect(className, comp);
 				}
-				else if (hitVO.current_shield >0)
+				//TODO:LW:新加特效  要塞中心的爆炸特效
+				// 要塞中心的爆炸特效
+				if (voObj.voType == FightVOTypeEnum.building && voObj.name == "要塞中心" && voObj.currentEndurance == 0)
+				{
+					var className5:String=StringUtil.formatString("battleCenter.disposeEffect");
+					disposeEffect(className5, comp);
+				}
+				else if(voObj.voType == FightVOTypeEnum.building && voObj.currentEndurance == 0)
+				{
+					//爆炸
+					var className6:String=StringUtil.formatString("battle.disposeEffect_{0}", RandomUtil.getRangeInt(0, 2));
+					disposeEffect(className6, comp);
+				}
+				if (hitVO.current_shield >0)
 				{
 					if(comp is  FightZhanCheComponent)
 					{
@@ -132,14 +168,23 @@ package controller.battle.fight
 			var effectMC:MovieClip=ClassUtil.getObject(className);
 			effectMC.mouseChildren=effectMC.mouseEnabled=false;
 			effectMC.addEventListener(Event.COMPLETE, effectMC_completeHandler);
-			effectMC.x=hitObj.x;
-			effectMC.y=hitObj.y;
+			if(hitObj["itemVO"].voType == FightVOTypeEnum.building)
+			{
+				 effectMC.x=hitObj.x +75;
+				 effectMC.y=hitObj.y +75;
+			}
+			else
+			{
+				effectMC.x=hitObj.x;
+				effectMC.y=hitObj.y;
+			}
+			
 			fightMed.comp.addEffect(effectMC);
 			effectMC.gotoAndPlay(1);
 
 			fightMed.comp.disposeComp(hitObj);
 		}
-
+		
 		protected function effectMC_completeHandler(event:Event):void
 		{
 			var effectObj:DisplayObject=event.currentTarget as DisplayObject;

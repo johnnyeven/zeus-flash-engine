@@ -22,6 +22,8 @@ package view.prompt
 		
         public var countTF:Label;
 
+		public var titleLabel:Label;
+
         public var okButton:Button;
 
         public var noButton:Button;
@@ -29,16 +31,25 @@ package view.prompt
         public var infoTF:Label;
 
         public var bg:Sprite;
+		
+		public var numLable:Label;
+		
+		public var vipMc:Sprite;
 
         public function MoneyAlertComponent()
         {
             super(ClassUtil.getObject("res.MoneyAlertSkin"));
 
+			titleLabel = createUI(Label, "titleLabel");
             countTF = createUI(Label, "countTF");
             okButton = createUI(Button, "okButton");
             noButton = createUI(Button, "noButton");
             infoTF = createUI(Label, "infoTF");
-
+			numLable = createUI(Label, "numLable");
+			
+			vipMc=getSkin("vipMc");
+			vipMc.visible=false;
+			numLable.visible=false;
 			sortChildIndex();
 		
 			okButton.addEventListener(MouseEvent.CLICK,okButton_clickHandler);

@@ -108,7 +108,8 @@ package view.buildingView
 		
 		protected function upLevelButton_clickHandler(event:MouseEvent):void
 		{
-			if(conditionBtn.visible==true)
+			buildType=BuildTypeEnum.CHUANQIN;
+			if(conditionArr.length>0)
 				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 			else
 			{
@@ -134,6 +135,7 @@ package view.buildingView
 			var buildProxy:BuildProxy=ApplicationFacade.getProxy(BuildProxy);
 			_buildVO=buildProxy.getBuild(value);
 			_KeJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
+			conditionBtn.visible=false;
 			var centerBuild:BuildInfoVo=buildProxy.getBuild(BuildTypeEnum.CENTER);
 			
 			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;

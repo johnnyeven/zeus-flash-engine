@@ -23,12 +23,19 @@ package view.battle.fightView
 	import ui.components.LoaderImage;
 	import ui.core.Component;
 	import ui.layouts.VLayout;
+	import ui.managers.SystemManager;
+	import ui.utils.DisposeUtil;
 	
 	import utils.battle.FightDataUtil;
 	
 	import vo.cangKu.BaseItemVO;
 	import vo.cangKu.ZhanCheInfoVO;
-	
+
+	/**
+	 * 战场底部界面
+	 * @author gx
+	 * 
+	 */	
     public class BattleFightViewComponent extends Component
     {
 		public static const MAXNUM:int=44;
@@ -44,6 +51,7 @@ package view.battle.fightView
 		public var timeLabel:Label;
 		public var enduranceLabel:Label;
 		public var shieldLabel:Label;
+		public var countLabel:Label;
 		//防御
 		public var defense4Label:Label;
 		public var defense3Label:Label;
@@ -89,9 +97,21 @@ package view.battle.fightView
 		private var shiJiantimer:Timer;
 		private var timeNum:Number;
 		private var battleProxy:BattleProxy;
+		private var count:int;
+		
+		
+		private var countDown:BattleCountDownComponent;
         public function BattleFightViewComponent()
         {
             super(ClassUtil.getObject("battle.BattleFightViewSkin"));
+			
+			countDown=new BattleCountDownComponent();
+			countDown.x=Main.WIDTH*0.5;
+			countDown.y=Main.HEIGHT*0.5;
+			countDown.alpha=0.5;
+			countDown.visible=false;
+			SystemManager.instance.addPop(countDown);
+			
 			sp=getSkin("playerContainer");
 			battleProxy=ApplicationFacade.getProxy(BattleProxy);
 			myCar=FightDataUtil.getMyChariot();
@@ -101,6 +121,7 @@ package view.battle.fightView
 			nameLabel=createUI(Label,"nameLabel");
 			shieldLabel=createUI(Label,"shieldLabel");
 			timeLabel=createUI(Label,"timeLabel");
+			countLabel=createUI(Label,"countLabel");
 			
 			attact3Label=createUI(Label,"attact3Label");
 			attact2Label=createUI(Label,"attact2Label");
@@ -131,6 +152,10 @@ package view.battle.fightView
 			
 			sortChildIndex();
 			
+			chariotImg.isScale=true;
+			chariotImg.mouseEnabled=chariotImg.buttonMode=true;
+			chariotImg.addEventListener(MouseEvent.CLICK,changeSenceHandler);
+			
 			container=new Container(null);
 			container.layout=new VLayout(container);
 			container.contentWidth=150;
@@ -146,6 +171,8 @@ package view.battle.fightView
 			shiJiantimer.addEventListener(TimerEvent.TIMER,shiJiantimerHandler);
 			backBtn.addEventListener(MouseEvent.CLICK,backClickHandler);
 			
+			countLabel.text="x"+count+"";
+			
 			overMc.visible=false;
 			timeNum=battleProxy.roomVO.roomTime;
 			upData();
@@ -153,8 +180,20 @@ package view.battle.fightView
 			overMc.addEventListener(Event.COMPLETE,playCompleteHandler);
         }
 		
+		protected function changeSenceHandler(event:MouseEvent):void
+		{
+			dispatchEvent(new FightViewEvent(FightViewEvent.CHANGESENCE_EVENT));
+		}
+		
+		public function playOverMc():void
+		{
+			overMc.visible=true;
+			overMc.play();
+		}
+		
 		protected function shiJiantimerHandler(event:TimerEvent):void
 		{
+			timeNum-=1;
 			timeLabel.text=DateFormatter.formatterTime(timeNum);
 			if(timeNum<=0)
 			{
@@ -168,15 +207,23 @@ package view.battle.fightView
 			}
 			if(timeNum==15)
 			{
-				dispatchEvent(new FightViewEvent(FightViewEvent.GAME_COMPLETE_EVENT));
+				dispatchEvent(new FightViewEvent(FightViewEvent.GAME_OVER_EVENT));
 			}
-			timeNum-=1;
+			if(timeNum<=10)
+			{
+				countDown.visible=true;
+				countDown.timeNum=timeNum;
+			}
+			if(timeNum<=0)
+			{
+				stopTimer();
+			}
 		}
 		
 		private function removeAllItem():void
 		{
 			while (container.num > 0)
-				dispose();
+				DisposeUtil.dispose(container.removeAt(0));
 		}
 		
 		public function upDataItem():void
@@ -191,10 +238,11 @@ package view.battle.fightView
 			{
 				_player1=arr[i];
 				player=new BattleNameItemComponent();
+				player.info=_player1;
 				_curPlayer=player;
 				isVip=_player1.players[0].playerType==1?false:true;
 				player.setValue(isVip,_player1.players[0].nickname);
-//				player.HP=_player1.chariots[0].currentEndurance;
+//				player.HP=_player1.chariots[0].currentEndurance/_player1.chariots[0].totalEndurance;
 				container.add(player);
 			}
 			
@@ -203,12 +251,13 @@ package view.battle.fightView
 		
 		protected function playCompleteHandler(event:Event):void
 		{
-			dispatchEvent(new FightViewEvent(FightViewEvent.GAME_OVER_EVENT));
+			dispatchEvent(new FightViewEvent(FightViewEvent.GAME_COMPLETE_EVENT));
 		}
 		
 		protected function timerHandler(event:TimerEvent):void
 		{
-			_curPlayer.HP=_player1.chariots[0].currentEndurance/_player1.chariots[0].totalEndurance;//更新玩家面板的血量条
+//			if(_curPlayer.info.players[0].nickname==_player1.players[0].nickname)
+//				_curPlayer.HP=_player1.chariots[0].currentEndurance/_player1.chariots[0].totalEndurance;//更新玩家面板的血量条
 			myCar=FightDataUtil.getMyChariot();	
 			attackCd();
 		}
@@ -216,8 +265,6 @@ package view.battle.fightView
 		{
 			super.dispose();
 			stopTimer();
-			
-			container.removeAt(0);
 		}
 		public function stopTimer():void
 		{
@@ -233,6 +280,8 @@ package view.battle.fightView
 				shiJiantimer.removeEventListener(TimerEvent.TIMER,shiJiantimerHandler);
 				shiJiantimer=null;				
 			}
+			if(SystemManager.instance.contains(countDown))
+				SystemManager.instance.removePop(countDown);
 		}
 		
 		protected function backClickHandler(event:MouseEvent):void
@@ -320,6 +369,19 @@ package view.battle.fightView
 			chaiortCircle.upDataSh(num1);
 			chaiortCircle.upDataEn(num2);
 			
+		}
+		
+		public function CDStop():void
+		{
+			tankPartCircle1.visible=false;
+			tankPartCircle2.visible=false;
+			tankPartCircle3.visible=false;
+		}
+		
+		public function addCount(num:int):void
+		{
+			count += num;
+			countLabel.text="x"+count+"";
 		}
 		
 		public function upData():void

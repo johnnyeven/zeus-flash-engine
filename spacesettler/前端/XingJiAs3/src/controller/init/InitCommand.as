@@ -31,6 +31,8 @@ package controller.init
     import controller.battle.fight.ShowBattleFightViewComponentMediatorCommand;
     import controller.battle.fight.ShowBattleTiShiPanelComponentMediatorCommand;
     import controller.battle.fight.ShowBattleVictoryPanelComponentMediatorCommand;
+    import controller.battle.fight.fightMorePlayer.FightZhanCheFuHuoCommand;
+    import controller.battle.fight.fightMorePlayer.FightZhanCheMaoYanCommand;
     import controller.battleEnter.ShowBattleEnterComponentMediatorCommand;
     import controller.battleEnter.ShowPrompt_weiXiuComponentMediatorCommand;
     import controller.buildingView.ShowCangKuCreateComponentMediatorCommand;
@@ -63,6 +65,7 @@ package controller.init
     import controller.cangKu.ShowDonateview_1ComponentMediatorCommand;
     import controller.crystalMelter.ShowCrystalSmelterFunctionComponentMediatorCommand;
     import controller.email.ShowEmailComponentMediatorCommand;
+    import controller.email.ShowEmailShowBagComponentMediatorCommand;
     import controller.email.ShowSendEmailComponentMediatorCommand;
     import controller.email.ShowSourceSendComponentMediatorCommand;
     import controller.email.ShowViewEmailComponentMediatorCommand;
@@ -92,6 +95,8 @@ package controller.init
     import controller.groupFight.tiShi.ShowGroupFightOneComponentMediatorCommand;
     import controller.groupFight.tiShi.ShowGroupFightThreeComponentMediatorCommand;
     import controller.groupFight.tiShi.ShowGroupFightTwoComponentMediatorCommand;
+    import controller.mainSence.DestroyCommand;
+    import controller.mainSence.ShowCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.mainView.ShowMainViewMediatorCommand;
     import controller.plantioid.ShowPlantioidComponentMediatorCommand;
@@ -170,6 +175,7 @@ package controller.init
     import mediator.cangKu.WuPingChaKanMenuViewComponentMediator;
     import mediator.crystalSmelter.CrystalSmelterFunctionComponentMediator;
     import mediator.email.EmailComponentMediator;
+    import mediator.email.EmailShowBagComponentMediator;
     import mediator.email.SendEmailComponentMediator;
     import mediator.email.SourceSendComponentMediator;
     import mediator.email.ViewEmailComponentMediator;
@@ -204,7 +210,6 @@ package controller.init
     import mediator.mainView.MainViewMediator;
     import mediator.plantioid.PlantioidComponentMediator;
     import mediator.plantioid.PlantioidTiShiComponentMediator;
-    import mediator.prompt.GroupPopComponentMediator;
     import mediator.prompt.MoneyAlertComponentMediator;
     import mediator.prompt.PromptWeiXiuMediator;
     import mediator.ranking.RankingCommonComponentMediator;
@@ -378,7 +383,6 @@ package controller.init
 			facade.registerMediator(new MoneyAlertComponentMediator());
 			facade.registerMediator(new SelectorViewComponentMediator());
 			facade.registerMediator(new WuPingChaKanMenuViewComponentMediator());
-			facade.registerMediator(new GroupPopComponentMediator());
 			facade.registerMediator(new BattleEditSelectorViewComponentMediator());
 			
 //			//新手任务
@@ -391,6 +395,11 @@ package controller.init
          */
         protected function registerCommand():void
         {
+			//界面SHOW 和销毁的渐变处理
+			facade.registerCommand(ShowCommand.SHOW_INTERFACE, ShowCommand);
+			facade.registerCommand(DestroyCommand.DESTROY_INTERFACE, DestroyCommand);
+			
+			
 			//登陆后获取信息 
 			facade.registerCommand(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND, EnterMainSenceViewCommand);
             //注册显示主界面命令
@@ -426,6 +435,8 @@ package controller.init
 			facade.registerCommand(ViewIdCardComponentMediator.SHOW_NOTE,ShowViewIdCardComponentMediatorCommand);
 			//展示装备
 			facade.registerCommand(ShowBagComponentMediator.SHOW_NOTE,ShowShowBagComponentMediatorCommand);
+			//邮件展示的装备
+			facade.registerCommand(EmailShowBagComponentMediator.SHOW_NOTE,ShowEmailShowBagComponentMediatorCommand);
 			//邮件列表
 			facade.registerCommand(EmailComponentMediator.SHOW_NOTE,ShowEmailComponentMediatorCommand);
 			//发送新邮件
@@ -654,6 +665,12 @@ package controller.init
 			
 			//锁定
 			facade.registerCommand(FightLockCommand.FIGHT_LOCK_COMMAND, FightLockCommand);
+			
+			//冒烟
+			facade.registerCommand(FightZhanCheMaoYanCommand.FIGHT_ZHAN_CHE_MAO_YAN_COMMAND, FightZhanCheMaoYanCommand);
+			
+			//复活 其他玩家可见
+			facade.registerCommand(FightZhanCheFuHuoCommand.FIGHT_ZHAN_CHE_FU_HUO_COMMAND, FightZhanCheFuHuoCommand);
 			
 			//爆炸控制器
 			facade.registerCommand(FightExplodeCommand.FIGHT_EXPLODE_COMMAND, FightExplodeCommand);

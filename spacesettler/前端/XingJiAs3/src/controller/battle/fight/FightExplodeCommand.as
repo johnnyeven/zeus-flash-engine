@@ -34,7 +34,7 @@ package controller.battle.fight
 	import vo.battle.fight.FightFireVO;
 
 	/**
-	 *爆炸控制器
+	 *对应开火武器的爆炸及自爆小飞机爆炸的控制器
 	 * @author zn
 	 *
 	 */
@@ -78,7 +78,9 @@ package controller.battle.fight
 				{
 					tankpartVO=chariotVO.tankparts[0];
 					//小飞机自爆
-					className=StringUtil.formatString("battle.feiJDisposeEffect_{0}", RandomUtil.getRangeInt(0, 2));
+//					className=StringUtil.formatString("battle.feiJDisposeEffect_{0}", RandomUtil.getRangeInt(0, 2));
+					//TODU LW:小飞机自爆特效修改
+					className=StringUtil.formatString("battle.feiJDisposeEffect_1");
 					disposeEffect(className, fightMed.comp.getCompByID(chariotVO.id.toString()));
 				}
 				else
@@ -91,7 +93,7 @@ package controller.battle.fight
 			else if (voObj.voType == FightVOTypeEnum.building)
 			{
 				SoundUtil.play(SoundEnum.explode,false,false);
-				//炮塔
+				//炮塔建筑被武器打到的相应爆炸特效
 				className=StringUtil.formatString("battle.explodeEffect_{0}", voObj.attackType);
 				showEffect(className);
 			}

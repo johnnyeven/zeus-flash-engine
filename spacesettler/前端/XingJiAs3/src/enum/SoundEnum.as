@@ -8,7 +8,7 @@ package enum
 		 */
 		public static const ammunition_fire:String="ammunition_fire";
 		/**
-		 * 战场背景音效
+		 * 战场背景音乐
 		 */
 		public static const battle_bg_music:String="battle_bg_music";
 		/**
@@ -16,7 +16,7 @@ package enum
 		 */
 		public static const battle_failed:String="battle_failed";
 		/**
-		 * 主场景背景音效
+		 * 主场景背景音乐
 		 */
 		public static const bg_music:String="bg_music";
 		/**
@@ -32,7 +32,7 @@ package enum
 		 */
 		public static const explode:String="explode";
 		/**
-		 *军团战背景音效
+		 *军团战背景音乐
 		 */
 		public static const group_bg_music:String="group_bg_music";
 		/**

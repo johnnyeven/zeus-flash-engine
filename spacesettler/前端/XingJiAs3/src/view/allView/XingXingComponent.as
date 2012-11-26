@@ -1,6 +1,7 @@
 package view.allView
 {
 	import com.greensock.TweenLite;
+	import com.zn.utils.BitmapUtil;
 	import com.zn.utils.ClassUtil;
 	
 	import events.allView.AllViewEvent;
@@ -8,6 +9,8 @@ package view.allView
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	
+	import mx.binding.utils.BindingUtils;
 	
 	import proxy.allView.AllViewProxy;
 	
@@ -134,7 +137,8 @@ package view.allView
 			
 			sortChildIndex();
 			
-			data(allViewProxy.myFortsList);
+			cwList.push(BindingUtils.bindSetter(data,allViewProxy,"myFortsList"));
+//			data(allViewProxy.myFortsList);
 			if(IS_MINE)
 			{
 				attackBtnUP.visible=false;
@@ -169,8 +173,9 @@ package view.allView
 			currentSelected = (event.currentTarget as BoxComponent);
 		}
 		
-		private function data(arr:Array):void
+		private function data(value:Array):void
 		{
+			var arr:Array=value;
 			maxPage();
 			startIndex();
 			endIndex();
@@ -337,6 +342,7 @@ package view.allView
 		
 		private function mangeBtn_clickHandler(event:MouseEvent):void
 		{
+			
 			dispatchEvent(new AllViewXingXingEvent(AllViewXingXingEvent.MANAGER_EVENT,_currentSelected.data));
 		}
 		

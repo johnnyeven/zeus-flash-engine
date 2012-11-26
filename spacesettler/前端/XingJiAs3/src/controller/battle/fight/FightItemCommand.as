@@ -42,6 +42,8 @@ package controller.battle.fight
 		private var itemVO:FightItemVO;
 		private var fightMed:BattleFightMediator;
 
+		private var feiJiComp:FightFeiJiComponent;
+
 		public function FightItemCommand()
 		{
 			super();
@@ -76,6 +78,10 @@ package controller.battle.fight
 			{
 				case FightBuffItemTypeEnum.naiJiu:
 				{
+					//TODU LW:更新战车的数据
+					//更新战车的数据
+					zhanCheVO.currentEndurance+=voObj.delta;
+					
 					break;
 				}
 				case FightBuffItemTypeEnum.huDun:
@@ -126,7 +132,7 @@ package controller.battle.fight
 					
 					zhanCheComp=fightMed.comp.getCompByID(itemVO.pickID);
 					
-					var feiJiComp:FightFeiJiComponent=new FightFeiJiComponent(feiJiVO);
+					feiJiComp=new FightFeiJiComponent(feiJiVO);
 					feiJiComp.mouseChildren=feiJiComp.mouseEnabled=feiJiComp.buttonMode=false;
 					
 					feiJiComp.relativeZhanChePoint=(zhanCheComp as FightZhanCheComponent).getAreaRangePoint();

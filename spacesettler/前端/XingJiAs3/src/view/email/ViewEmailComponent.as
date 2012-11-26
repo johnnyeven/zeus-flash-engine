@@ -109,9 +109,9 @@ package view.email
 							sourceImage.source = EmailTypeEnum.getItemImageByEmailType(_data.attachment_type);
 							break;
 						}
-						case ItemEnum.item:
+						case ItemEnum.emailItem:
 						{
-							sourceImage.source = EmailTypeEnum.getVipImageByEmailKey(_data.key);
+							sourceImage.source = EmailTypeEnum.getVipImageByEmailKey("vip_level_"+_data.type);
 							break;
 						}
 						case ItemEnum.CRYSTAL:
@@ -158,7 +158,6 @@ package view.email
 
 		protected function closeHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
 			dispatchEvent(new Event("closeViewEmailComponent"));
 		}
 		

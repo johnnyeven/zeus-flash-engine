@@ -69,7 +69,8 @@ package proxy.rankingProxy
 			rankUserVo.legion_prestige_total_rank_first=data.legion_prestige_total_rank_first.legion_name;
 			rankUserVo.legion_prestige_rank_updated_time=data.legion_prestige_rank_updated_time;
 			
-			rankUserVo.orders_daily_rank_first=data.orders_daily_rank_first.nickname;
+			if(data.orders_daily_rank_first)
+				rankUserVo.orders_daily_rank_first=data.orders_daily_rank_first.nickname;
 			rankUserVo.orders_total_rank_first=data.orders_total_rank_first.nickname;
 			rankUserVo.orders_rank_updated_time=data.orders_rank_updated_time;
 			
@@ -322,6 +323,7 @@ package proxy.rankingProxy
 				rankingVo.vip_level=data.ranks[i].vip_level;
 				rankingVo.legion_name=data.ranks[i].legion_name;
 				rankingVo.rank=data.ranks[i].rank;
+				rankingVo.rank_rise=data.ranks[i].rank_rise;
 				if(data.ranks[i].total_dark_crystals)
 					rankingVo.show=data.ranks[i].total_dark_crystals;
 				if(data.ranks[i].prestige)
@@ -342,6 +344,7 @@ package proxy.rankingProxy
 				rankingVo1.vip_level=data.my_ranks_around[j].vip_level;
 				rankingVo1.legion_name=data.my_ranks_around[j].legion_name;
 				rankingVo1.rank=data.my_ranks_around[j].rank;
+				rankingVo1.rank_rise=data.my_ranks_around[j].rank_rise;
 				if(data.my_ranks_around[j].total_dark_crystals)
 					rankingVo1.show=data.my_ranks_around[j].total_dark_crystals;
 				if(data.my_ranks_around[j].prestige)

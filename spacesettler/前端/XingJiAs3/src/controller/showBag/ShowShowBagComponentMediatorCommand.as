@@ -76,7 +76,7 @@ package controller.showBag
 			callShow(med);
         }
 		
-		private function callShow(med:BaseMediator):void
+		private function callShow(med:ShowBagComponentMediator):void
 		{
 			if (loadCompleteCallBack!=null)
 			{

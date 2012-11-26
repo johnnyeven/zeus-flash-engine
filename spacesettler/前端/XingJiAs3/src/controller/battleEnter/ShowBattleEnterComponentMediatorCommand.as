@@ -6,10 +6,14 @@ package controller.battleEnter
     import com.zn.utils.ClassUtil;
     import com.zn.utils.SoundUtil;
     
+    import controller.EnterMainSenceViewCommand;
+    
     import enum.SoundEnum;
     
     import mediator.BaseMediator;
     import mediator.battleEnter.BattleEnterComponentMediator;
+    import mediator.mainView.MainViewMediator;
+    import mediator.prompt.PromptSureMediator;
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
@@ -47,16 +51,33 @@ package controller.battleEnter
             var battleProxy:BattleProxy = getProxy(BattleProxy);
             battleProxy.getAllZhanCheList(function():void
             {
-                var med:BattleEnterComponentMediator = getMediator(BattleEnterComponentMediator);
-                if (med)
-                {
-                    callShow(med);
-                }
-                else
-                {
-                    //加载界面SWF
-                    ResLoader.load("battleEnter.swf", MultilanguageManager.getString(""), loaderComplete, true);
-                }
+				if(battleProxy.allZhanCheList.length>0)
+				{
+					var med:BattleEnterComponentMediator = getMediator(BattleEnterComponentMediator);
+					if (med)
+					{
+						callShow(med);
+					}
+					else
+					{
+						//加载界面SWF
+						ResLoader.load("battleEnter.swf", MultilanguageManager.getString(""), loaderComplete, true);
+					}
+				}
+				else
+				{
+					var obj:Object={};
+					obj.infoLable=MultilanguageManager.getString("armyGroupTitle");
+					obj.showLable=MultilanguageManager.getString("notZhanChe");
+					obj.okCallBack=function():void
+					{
+						Main.addBG();
+						sendNotification(MainViewMediator.SHOW_RENWU_VIEW_NOTE);
+						sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
+					};
+					sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+				}				
+               
             });
         }
 

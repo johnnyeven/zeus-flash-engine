@@ -39,6 +39,7 @@ package mediator.mainSence
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 		
+		public static const BUILD_OVER_NOTE:String="build" + NAME + "Note";
 		
 		public function MainSenceComponentMediator()
 		{
@@ -61,7 +62,7 @@ package mediator.mainSence
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [DESTROY_NOTE];
+			return [DESTROY_NOTE,BUILD_OVER_NOTE];
 		}
 
 		/**
@@ -77,6 +78,12 @@ package mediator.mainSence
 				{
 					//销毁对象
 					destroy();
+					break;
+				}
+				case BUILD_OVER_NOTE:
+				{
+					var obj:Object=note.getBody();
+					comp.overBuildShow(obj.type,obj.level);
 					break;
 				}
 			}

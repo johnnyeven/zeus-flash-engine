@@ -94,7 +94,7 @@ package view.groupFight
 			{	
 				clear();
 				
-				SoundUtil.play(SoundEnum.scan_star,false,false);
+				SoundUtil.play(SoundEnum.scan_star,true,true);
 				
 				var star1:GroupFightVo=_selectedPlantioidComp.platioidVO;
 				var point1:Point=new Point(star1.x,star1.y);						
@@ -150,7 +150,9 @@ package view.groupFight
 					value.anNiuSp.addChild(anNiuComp);
 					anNiuComp.chaKanBtn.addEventListener(MouseEvent.CLICK,chaKanHandler);
 				}
-			}			
+			}
+			else
+				SoundUtil.stop(SoundEnum.scan_star);
 		}
 				
 		public function setTweenLite(mc:Sprite,point:Point):void
@@ -158,6 +160,7 @@ package view.groupFight
 			mc.alpha=1;
 			mc.x=0;
 			mc.y=0;
+			TweenLite.killTweensOf(mc);
 			TweenLite.to(mc, 2, { x:point.x,y:point.y,alpha:0.1, ease: Linear.easeNone,onComplete: setTweenLite,onCompleteParams:[mc,point]});
 		}
 		
@@ -181,9 +184,9 @@ package view.groupFight
 				PlantSenceComp= new GroupFightSenceComponent();
 			PlantSenceComp.setPlantList(groupFightProxy.starArr);
 //			PlantSenceComp.setSenceCenter(groupFightProxy.myStarVo);
-			PlantSenceComp.addEventListener(GroupFightSenceComponent.SELECTED_XING_QIU_CHANGE_EVENT, selectedPlantXingQiuChangeHandler);
 			xingQiuSp.addChild(PlantSenceComp);
 			PlantSenceComp.xingQiu1.graphics.lineStyle(0,0xffffff,1,true);
+			PlantSenceComp.addEventListener(GroupFightSenceComponent.SELECTED_XING_QIU_CHANGE_EVENT, selectedPlantXingQiuChangeHandler);
 			PlantSenceComp.bgEffectComp.addEventListener(MouseEvent.CLICK,bgSp_clickHandler);
 			
 		}
@@ -260,32 +263,50 @@ package view.groupFight
 				
 			mc=ClassUtil.getObject("view.GroupFightMC_"+type1+"_"+type2) as MovieClip;
 			playSp.addChild(mc);
+			this.addEventListener("PLAY_SHOUTSOUND",playShoutSoundHandler);
+			this.addEventListener("PLAY_EXPLODSOUND",playExploSoundHandler);
 			this.addEventListener(Event.COMPLETE,mcCompleteHandler);
 			_timer.start();
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 		}
 		
+		protected function playShoutSoundHandler(event:Event):void
+		{
+			SoundUtil.play(SoundEnum.laser_fire2,false);
+		}
+		
+		protected function playExploSoundHandler(event:Event):void
+		{
+			SoundUtil.play(SoundEnum.explode,false);
+		}
+		
 		protected function timerComplete(event:TimerEvent):void
 		{
-			fanHangBtn.visible=tiShiMc.visible=fanHangBtn.mouseEnabled=false;			
+			fanHangBtn.visible=tiShiMc.visible=fanHangBtn.mouseEnabled=false;	
+			dispatchEvent(new GroupFightEvent(GroupFightEvent.GONGJI_EVENT));
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			_timer=null
 		}
 		
 		public override function dispose():void
 		{
-			super.dispose();
+			xuanQuArr=null;
+			PlantSenceComp.removeEventListener(GroupFightSenceComponent.SELECTED_XING_QIU_CHANGE_EVENT, selectedPlantXingQiuChangeHandler);
+			PlantSenceComp.bgEffectComp.removeEventListener(MouseEvent.CLICK,bgSp_clickHandler);
+			bgSp.removeEventListener(MouseEvent.CLICK, bgSp_clickHandler);
 			if(_timer)
 			{
 				_timer.removeEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 				_timer=null
 			}
+			super.dispose();
 		}
 		
 		protected function mcCompleteHandler(event:Event):void
 		{
 			playSp.removeChild(mc);	
-			dispatchEvent(new GroupFightEvent(GroupFightEvent.GONGJI_EVENT));
+			dispatchEvent(new GroupFightEvent(GroupFightEvent.PLAY_COMPLETE_EVENT));
+			mc=null;
 		}
 		
 		

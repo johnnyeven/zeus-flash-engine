@@ -34,6 +34,11 @@ package view.battle.build
     import vo.scienceResearch.ScienceResearchVO;
     import vo.userInfo.UserInfoVO;
 
+	/**
+	 * 战场编辑选择修建炮台特效界面
+	 * @author lw
+	 * 
+	 */	
     public class BattleEditSelectorViewComponent extends Component
     {
         public var upButton:BattleEditSelectedItemComponent;
@@ -46,7 +51,7 @@ package view.battle.build
 
         private var sp:Sprite;
 
-        private var oldPoint:Point = new Point(-80, -30);
+        private var oldPoint:Point;
 
         private var timeLine:TimelineLite;
 
@@ -75,9 +80,10 @@ package view.battle.build
 
             sp = new Sprite();
             addChild(sp);
-            sp.addChild(ClassUtil.getObject("Build_ClickEffect"));
+            sp.addChild(ClassUtil.getObject("battleBuild_ClickEffect"));
 
-            var line:Sprite = ClassUtil.getObject("Build_ClickEffect_Line");
+			oldPoint = new Point(65,115);
+            var line:Sprite = ClassUtil.getObject("battleBuild_ClickEffect_Line");
             sp.addChild(line);
 
             line.getChildByName("top").visible = line.getChildByName("right").visible = line.getChildByName("left").visible = line.getChildByName("down").visible = false;
@@ -223,13 +229,13 @@ package view.battle.build
             }});
 
             if (upButton)
-                timeLine.insert(TweenLite.to(upButton, 0.5, { y: -100 }));
+                timeLine.insert(TweenLite.to(upButton, 0.5, { y: 34 }));
             if (downButton)
-                timeLine.insert(TweenLite.to(downButton, 0.5, { y: 44 }));
+                timeLine.insert(TweenLite.to(downButton, 0.5, { y: 196 }));
             if (rightButton)
-                timeLine.insert(TweenLite.to(rightButton, 0.5, { x: 54 }));
+                timeLine.insert(TweenLite.to(rightButton, 0.5, { x: 192}));
             if (leftButton)
-                timeLine.insert(TweenLite.to(leftButton, 0.5, { x: -216 }));
+                timeLine.insert(TweenLite.to(leftButton, 0.5, { x: -64 }));
         }
 
         public function endClose():void
@@ -245,13 +251,13 @@ package view.battle.build
             }});
 
             if (upButton)
-                timeLine.insert(TweenLite.to(upButton, 0.5, { y: -28 }));
+                timeLine.insert(TweenLite.to(upButton, 0.5, { y: 115 }));
             if (downButton)
-                timeLine.insert(TweenLite.to(downButton, 0.5, { y: -28 }));
+                timeLine.insert(TweenLite.to(downButton, 0.5, { y: 115 }));
             if (rightButton)
-                timeLine.insert(TweenLite.to(rightButton, 0.5, { x: -81 }));
+                timeLine.insert(TweenLite.to(rightButton, 0.5, { x: 65 }));
             if (leftButton)
-                timeLine.insert(TweenLite.to(leftButton, 0.5, { x: -81 }));
+                timeLine.insert(TweenLite.to(leftButton, 0.5, { x: 65 }));
         }
 
         protected function upButton_clickHandler(event:MouseEvent):void

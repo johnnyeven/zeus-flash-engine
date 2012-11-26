@@ -36,6 +36,8 @@ package mediator.allView
 		public function AllViewComponentMediator()
 		{
 			super(NAME, new AllViewComponent());
+			comp.med = this;
+			level = 1;
 			
 			allViewProxy = getProxy(AllViewProxy);
 			userInforProxy = getProxy(UserInfoProxy);

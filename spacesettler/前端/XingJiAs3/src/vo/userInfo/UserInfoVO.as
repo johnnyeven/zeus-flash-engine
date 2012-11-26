@@ -127,6 +127,16 @@ package vo.userInfo
          */
         public var buff3:BuffVo;
 		
+		/**
+		 *VIP免费加速次数 
+		 */		
+		public var vip_speed:int;
+		
+		/**
+		 *VIP免费邮件次数 
+		 */		
+		public var vip_mail:int;
+		
         private var _current_power_supply:int;
 
        
@@ -150,6 +160,12 @@ package vo.userInfo
 		 * 是否获取任务奖励
 		 */
 		public var is_rewarded:Boolean;
+		
+		/**
+		 *新邮件
+		 * 数量
+		 */
+		public var new_mail:int;
 		
 		/**
 		 *礼包

@@ -135,6 +135,15 @@ package view.ranking
 				if(rankingVo.id==userProxy.userInfoVO.player_id||rankingVo.id==userProxy.userInfoVO.legion_id)
 				{
 					item.isMySelf();
+					if(rankingVo.rank_rise>0)
+						item.downMc.visible=false;
+					else if(rankingVo.rank_rise<0)
+						item.upMc.visible=false;
+					else
+					{
+						item.downMc.visible=item.upMc.visible=false;
+					}
+					item.upOrDownText.text=rankingVo.rank_rise.toString();
 					if(cont==container)
 					{
 						sprite2.visible=maskSp.visible=false;

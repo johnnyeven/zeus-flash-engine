@@ -75,8 +75,15 @@ package mediator.task
 		
 		public override function show():void
 		{
+			var p:DisplayObjectContainer=comp.objContainer.parent;
+			var p1:DisplayObjectContainer=p.parent;
 //			SystemManager.instance.addInfo(comp);
-			PopUpManager.addPopUp(comp);
+			if(p1==null)
+				p.addChild(comp);
+			else
+				p1.addChild(comp);
+				
+//			PopUpManager.addPopUp(comp);
 		}
 
 	}

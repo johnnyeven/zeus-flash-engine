@@ -2,6 +2,8 @@ package view.battle.build
 {
 	import com.zn.utils.ClassUtil;
 	
+	import flash.geom.Point;
+	
 	import ui.components.Label;
 	import ui.core.Component;
 	
@@ -18,7 +20,6 @@ package view.battle.build
 		public var label2:Label;
 		
 		private var _buildVO:BattleBuildVO;
-		
 		public function BattleEditSelectedItemComponent(showMoreInfo:Boolean=true)
 		{
 			super(ClassUtil.getObject("battle.BattleEditSelectedItemSkin"));

@@ -1,9 +1,13 @@
 package view.systemView
 {
 	import com.zn.utils.ClassUtil;
+	import com.zn.utils.SoundUtil;
+	
+	import enum.SoundEnum;
 	
 	import events.system.SystemEvent;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
@@ -12,6 +16,9 @@ package view.systemView
 	
     public class OptionBoundaryComponent extends Component
     {
+		public static var _ischeck1:Boolean=true;//确定是否有音乐 为真则音乐开着的
+		public static var _ischeck2:Boolean=true;//确定是否有音效 为真则音效开着的
+		
 		/**
 		 *返回按钮 
 		 */		
@@ -27,8 +34,6 @@ package view.systemView
 		 */		
 		public var checkBox2:CheckBox;
 
-		private var _ischeck1:Boolean=true;//确定是否有音乐 为真则音乐开着的
-		private var _ischeck2:Boolean=true;//确定是否有音效 为真则音效开着的
         public function OptionBoundaryComponent()
         {
             super(ClassUtil.getObject("view.systemView.OptionBoundarySkin"));
@@ -43,35 +48,39 @@ package view.systemView
 			sortChildIndex();
 			
 			fanHuiBtn.addEventListener(MouseEvent.CLICK,doCloseHandler);
-			checkBox1.addEventListener(MouseEvent.CLICK,checkBox1_clickHandler);
-			checkBox2.addEventListener(MouseEvent.CLICK,checkBox2_clickHandler);
+			checkBox1.addEventListener(Event.CHANGE,checkBox1_clickHandler);
+			checkBox2.addEventListener(Event.CHANGE,checkBox2_clickHandler);
 			
         }
 		
-		protected function checkBox1_clickHandler(event:MouseEvent):void
+		protected function checkBox1_clickHandler(event:Event):void
 		{
-			if(_ischeck1)
+			_ischeck1=checkBox1.selected;
+			if(!_ischeck1)
 			{
-				//TODO :GX关闭音乐
+				SoundUtil.setBG(false);
+//				SoundUtil.stop(SoundEnum.bg_music);
+//				SoundUtil.stop(SoundEnum.battle_bg_music);
+//				SoundUtil.stop(SoundEnum.group_bg_music);
 			}else
 			{
-				//TODO :GX打开音乐
+				SoundUtil.setBG(true);
+//				SoundUtil.play(SoundEnum.bg_music,true);
+//				SoundUtil.play(SoundEnum.battle_bg_music,true);
+//				SoundUtil.play(SoundEnum.group_bg_music,true);
 			}
-			_ischeck1=!_ischeck1;
-			checkBox1.selected=_ischeck1;
 		}
 		
-		protected function checkBox2_clickHandler(event:MouseEvent):void
+		protected function checkBox2_clickHandler(event:Event):void
 		{
-			if(_ischeck2)
+			_ischeck2=checkBox2.selected;
+			if(!_ischeck2)
 			{
-				//TODO :GX关闭音效
+				SoundUtil.setEffect(false);
 			}else
 			{
-				//TODO :GX打开音效	
+				SoundUtil.setEffect(true);
 			}
-			_ischeck2=!_ischeck2;
-			checkBox2.selected=_ischeck2;
 		}
 		
 		protected function doCloseHandler(event:MouseEvent):void

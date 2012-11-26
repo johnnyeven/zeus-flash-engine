@@ -47,12 +47,14 @@ package view.plantioid
 
         public override function dispose():void
         {
-            super.dispose();
-
-			_tweenMoveToLeftOut.kill();
-			_tweenMoveToLeft.kill();
+			if(_tweenMoveToLeftOut)
+				_tweenMoveToLeftOut.kill();
+			if(_tweenMoveToLeft)
+				_tweenMoveToLeft.kill();
 
 			_tweenMoveToLeft = _tweenMoveToLeftOut = null;
+            super.dispose();
+
         }
 
         private function moveToLeftOut(sp:Sprite):void

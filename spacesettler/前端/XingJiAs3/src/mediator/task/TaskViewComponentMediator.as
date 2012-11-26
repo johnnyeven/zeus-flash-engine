@@ -1,6 +1,7 @@
 package mediator.task
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
 	
 	import controller.task.TaskCommand;
 	import controller.task.TaskCompleteCommand;
@@ -22,14 +23,17 @@ package mediator.task
 	import org.puremvc.as3.patterns.observer.Notification;
 	
 	import proxy.BuildProxy;
+	import proxy.battle.BattleProxy;
 	import proxy.scienceResearch.ScienceResearchProxy;
 	import proxy.task.TaskProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
+	import ui.managers.PopUpManager;
 	import ui.managers.SystemManager;
 	
 	import view.task.TaskViewComponent;
 	
+	import vo.BuildInfoVo;
 	import vo.scienceResearch.ScienceResearchVO;
 	import vo.task.TaskInfoVO;
 
@@ -56,7 +60,8 @@ package mediator.task
 		public function TaskViewComponentMediator()
 		{
 			super(NAME, new TaskViewComponent());
-//			_popUp=false;
+			level=1;
+			_popUp=false;
 			taskProxy=getProxy(TaskProxy);
 			_buildProxy=getProxy(BuildProxy);
 			_scienceProxy=getProxy(ScienceResearchProxy);
@@ -64,22 +69,38 @@ package mediator.task
 			comp.addEventListener(TaskEvent.CLOSE_EVENT,closeHandler);
 		}
 		
-		/*protected override function addUIComp():void
+		protected override function addUIComp():void
 		{
 			super.addUIComp();
-			
+			PopUpManager.closeAll(level);
+			PopUpManager.addPopUp(comp, mode);
 			comp.x=SystemManager.rootStage.stageWidth;;
 			comp.y=(SystemManager.rootStage.stageHeight-comp.height)*0.5;
+			comp.lightSp.alpha=0;
+			comp.lightSp.x=comp.lightSp.x-comp.width;
 			
-			TweenLite.to(comp.lightSp, 0.4, { x: comp.x-comp.lightSp.width, onComplete: showComplete });
-			
-			
+			TweenLite.to(comp.lightSp, 0.8, {alpha:1, onComplete: addPerson });
 		}
+		
+		private function addPerson():void
+		{
+			TweenLite.to(comp.backSp, 0.4, { x:comp.backSp.x -comp.backSp.width, onComplete: showComplete });
+		}
+		
+		/*private function removePerson():void
+		{
+			TweenLite.to(comp.backSp, 0.2, { x:comp.backSp.x+comp.backSp.width, ease: Linear.easeNone, onComplete: removeTweenLiteComplete });
+			removeCWList();	
+			facade.removeMediator(getMediatorName());
+		}*/
 		
 		public override function destroy():void
 		{
+			comp.removeEventListener(TaskEvent.CLOSE_EVENT,closeHandler);
 			super.destroy();
-		}*/
+//			if(comp)
+//				TweenLite.to(comp.lightSp, 0.2, {alpha:0, onComplete: removePerson });
+		}
 		
 		/**
 		 *添加要监听的消息
@@ -258,7 +279,7 @@ package mediator.task
 				}	
 				case TaskEnum.index13:
 				{
-					if(_buildProxy.hasBuild(BuildTypeEnum.JUNGONGCHANG)&&_buildProxy.getBuild(BuildTypeEnum.JUNGONGCHANG).eventID==null)
+					if(_buildProxy.hasBuild(BuildTypeEnum.JUNGONGCHANG)&&_buildProxy.getBuild(BuildTypeEnum.JUNGONGCHANG).eventID=="")
 					{
 						completeTask();
 						return;
@@ -286,6 +307,16 @@ package mediator.task
 				case TaskEnum.index22:
 				{
 					if(_buildProxy.getBuild(BuildTypeEnum.DIANCHANG).level>=3)
+					{
+						completeTask();
+						return;
+					}					
+					break;
+				}
+				case TaskEnum.index24:
+				{
+					var battleProxy:BattleProxy=getProxy(BattleProxy);
+					if(battleProxy.isCompleteRenWu==true)
 					{
 						completeTask();
 						return;

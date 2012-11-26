@@ -8,8 +8,10 @@ package view.task
 	import events.task.TaskEvent;
 	
 	import flash.events.MouseEvent;
+	import flash.events.TextEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.utils.ByteArray;
 	
 	import ui.components.Button;
 	import ui.components.Label;
@@ -63,7 +65,7 @@ package view.task
 			
 			userNameTf.restrict = "a-zA-Z0-9\u4e00-\u9fa5_-";
 			userNameTf.maxChars = 16;
-			userNameTf.maxChars = 16;
+			nameTf.maxChars = 16;
 			
 			nameTf.restrict = "a-zA-Z0-9\u4e00-\u9fa5_-";
 			passWordTf.restrict = "a-zA-Z0-9_-";
@@ -72,6 +74,8 @@ package view.task
 			passWordTf1.maxChars = 16;
 			passWordTf1.displayAsPassword=passWordTf.displayAsPassword=true;//设置密码格式
 			sureBtn.addEventListener(MouseEvent.CLICK,suerClickHandler);
+			userNameTf.addEventListener(TextEvent.TEXT_INPUT,userNameTfEvent);
+			nameTf.addEventListener(TextEvent.TEXT_INPUT,nameTfEvent);
         }
 		
 		public function upData(taskVo:TaskInfoVO):void
@@ -82,11 +86,63 @@ package view.task
 			crystal.text=taskVo.crystal.toString();
 		}
 		
+		private function nameTfEvent(e:TextEvent):void
+		{
+			
+			if((getStringBytesLength(nameTf.text,"gb2312") +
+				
+				getStringBytesLength(e.text,'gb2312')) > nameTf.maxChars)
+			{
+				e.preventDefault();
+				return; 
+			}
+		}
+		
+		private function userNameTfEvent(e:TextEvent):void
+		{
+			
+			if((getStringBytesLength(userNameTf.text,"gb2312") +
+				
+				getStringBytesLength(e.text,'gb2312')) > userNameTf.maxChars)
+			{
+				e.preventDefault();
+				return; 
+			}
+		}
+		
+		private function getStringBytesLength(str:String,charSet:String):int
+		{
+			
+			var bytes:ByteArray = new ByteArray();
+			
+			bytes.writeMultiByte(str, charSet);
+			
+			bytes.position = 0;
+			
+			return bytes.length;
+			
+		}
+		
+		private function strLength(str:String):int
+		{
+			var length:int=0;
+			for (var i:int = 0; i < str.length; i++)
+			{  
+				if(str.charCodeAt(i)<10000)
+					length+=1;
+				else
+					length+=2;
+				//				trace(str.charAt(i), "-", str.charCodeAt(i));
+			}
+			
+			return length;
+		}
+		
 		protected function suerClickHandler(event:MouseEvent):void
 		{
 			var emailReg:RegExp=new RegExp("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$","g");
 			
-			if(StringUtil.isEmpty(userNameTf.text)||userNameTf.length<6)
+			if(StringUtil.isEmpty(userNameTf.text)||strLength(userNameTf.text)<6)
 			{
 				tiShiTf.text=MultilanguageManager.getString("registInforError");
 				return;
@@ -106,7 +162,7 @@ package view.task
 				tiShiTf.text=MultilanguageManager.getString("registAgainEmpty");
 				return;
 			}
-			else if(nameTf.length<6)
+			else if(strLength(nameTf.text)<6)
 			{
 				tiShiTf.text=MultilanguageManager.getString("registNameError");
 				return;

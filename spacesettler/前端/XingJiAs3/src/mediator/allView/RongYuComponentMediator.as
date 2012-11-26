@@ -27,6 +27,8 @@ package mediator.allView
 		public function RongYuComponentMediator()
 		{
 			super(NAME, new RongYuComponent());
+			comp.med = this;
+			level = 2;
 			
 			comp.addEventListener(AllViewEvent.CLOSED_RONGYU_EVENT,closeHandler);
 		}

@@ -138,7 +138,7 @@ package proxy.plantioid
                 fortVO.fort_name = obj.fort_name;
                 fortVO.resources = obj.resources;
                 fortVO.age_level = obj.age_level;
-                fortVO.campID = obj.campID;
+                fortVO.campID = obj.camp_id;
                 fortVO.updateType();
 
                 list.push(fortVO);
@@ -203,7 +203,7 @@ package proxy.plantioid
                 dic = {};
                 if (itemVO.isEdit)
                 {
-                    var xmlPointList:XMLList = editPointXML.point.(mapID == itemVO.mapID);
+                    var xmlPointList:XMLList = editPointXML.point.(mapID == itemVO.map_type);
                     var length:int = xmlPointList.length();
                     for (var j:int = 0; j < length; j++)
                     {

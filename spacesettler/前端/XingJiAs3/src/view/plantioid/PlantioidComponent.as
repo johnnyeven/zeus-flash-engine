@@ -66,6 +66,8 @@ package view.plantioid
 
 		private var dragInfoLabel:Label;
 
+		private var comp:PlantSenceComponent;
+
 		public function PlantioidComponent()
 		{
 			super(ClassUtil.getObject("plantioid.PlantioidSkin"));
@@ -96,6 +98,10 @@ package view.plantioid
 		
 		public override function dispose():void
 		{
+			bgSp.removeEventListener(MouseEvent.CLICK, bgSp_clickHandler);
+			comp.removeEventListener(PlantSenceComponent.SELECTED_XING_QIU_CHANGE_EVENT, selectedPlantXingQiuChangeHandler);
+			comp.removeEventListener(PlantSenceComponent.UPDATE_SELECTED_XING_QIU_POINT_EVENT, updateSelectedXingQiuPointHandler);
+			comp.bgEffectComp.removeEventListener(MouseEvent.CLICK, bgSp_clickHandler);
 			SystemManager.rootStage.removeEventListener(MouseEvent.MOUSE_MOVE, stageMouseMoveHandler);
 			super.dispose();
 		}
@@ -209,14 +215,14 @@ package view.plantioid
 
 		private function createNewPlantSenceComp():PlantSenceComponent
 		{
-			var comp:PlantSenceComponent=new PlantSenceComponent();
+			comp=new PlantSenceComponent();
 			comp.addEventListener(PlantSenceComponent.SELECTED_XING_QIU_CHANGE_EVENT, selectedPlantXingQiuChangeHandler);
 			comp.addEventListener(PlantSenceComponent.UPDATE_SELECTED_XING_QIU_POINT_EVENT, updateSelectedXingQiuPointHandler);
+			comp.bgEffectComp.addEventListener(MouseEvent.CLICK, bgSp_clickHandler);
 			xingQiuSp.addChild(comp);
 			comp.plantX=_plantProxy.currentX;
 			comp.plantY=_plantProxy.currentY;
 
-			comp.bgEffectComp.addEventListener(MouseEvent.CLICK, bgSp_clickHandler);
 
 			return comp;
 		}
@@ -231,7 +237,7 @@ package view.plantioid
 			_selectedPlantioidComp=value;
 			if (value)
 			{
-				SoundUtil.play(SoundEnum.scan_star,false,false);
+				SoundUtil.play(SoundEnum.scan_star,true,true);
 
 				infoComp.plantVO=_selectedPlantioidComp.platioidVO;
 				infoComp.selectedEffectMC.gotoAndPlay(1);
@@ -242,6 +248,8 @@ package view.plantioid
 			}
 			else
 			{
+				SoundUtil.stop(SoundEnum.scan_star);
+				
 				infoComp.plantVO=null;
 				infoComp.visible=false;
 			}

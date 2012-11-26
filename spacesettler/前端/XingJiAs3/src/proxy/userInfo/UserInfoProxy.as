@@ -3,25 +3,27 @@ package proxy.userInfo
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	import com.zn.utils.StringUtil;
-
+	
 	import controller.task.TaskCompleteCommand;
-
+	
+	import enum.TaskEnum;
 	import enum.command.CommandEnum;
-
+	import enum.friendList.FriendListCardEnum;
+	
 	import flash.net.URLRequestMethod;
-
+	
 	import mediator.mainView.MainViewMediator;
 	import mediator.prompt.PromptMediator;
-
+	
 	import org.puremvc.as3.interfaces.IProxy;
 	import org.puremvc.as3.patterns.proxy.Proxy;
-
+	
 	import other.ConnDebug;
-
+	
 	import proxy.BuildProxy;
 	import proxy.login.LoginProxy;
 	import proxy.timeMachine.TimeMachineProxy;
-
+	
 	import vo.userInfo.BuffVo;
 	import vo.userInfo.UserInfoVO;
 
@@ -37,6 +39,8 @@ package proxy.userInfo
 		public static var SESSION_KEY:String="";
 
 		private var _getUserInfoCallBack:Function;
+		
+		
 
 		[Bindable]
 		public var userInfoVO:UserInfoVO;
@@ -50,10 +54,11 @@ package proxy.userInfo
 		 *刷新玩家信息
 		 *
 		 */
-		public function updateInfo():void
+		public function updateInfo(callFun:Function=null):void
 		{
 			if (!Protocol.hasProtocolFunction(CommandEnum.updateInfo, updateInfoResult))
 				Protocol.registerProtocol(CommandEnum.updateInfo, updateInfoResult);
+			_getUserInfoCallBack=callFun;
 			var id:String=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO.id;
 			var obj:Object={id: id};
 			ConnDebug.send(CommandEnum.updateInfo, obj, ConnDebug.HTTP, URLRequestMethod.GET);
@@ -70,6 +75,10 @@ package proxy.userInfo
 
 			var userInfoProxy:UserInfoProxy=getProxy(UserInfoProxy);
 			userInfoProxy.updateServerData(data);
+			
+			if(_getUserInfoCallBack!=null)
+				_getUserInfoCallBack();
+			_getUserInfoCallBack=null;
 		}
 
 		public function getUserInfoResult(data:Object):void
@@ -83,7 +92,9 @@ package proxy.userInfo
 			userInfoVO.nickname=data.nickname;
 			userInfoVO.vip_level=data.vip_level;
 			userInfoVO.officer_id=data.officer_id;
-
+			userInfoVO.vip_mail=data.vip_mail;
+			userInfoVO.vip_speed=data.vip_speed;
+			
 			userInfoVO.crystal_volume=data.base.crystal_volume;
 			userInfoVO.tritium_volume=data.base.tritium_volume;
 
@@ -119,6 +130,8 @@ package proxy.userInfo
 			{
 				userInfoVO.index=28;
 			}
+			
+			FriendListCardEnum.friendListarr=data.friends_list;
 
 			if (data.buffs)
 			{
@@ -141,7 +154,12 @@ package proxy.userInfo
 					}
 				}
 			}
-
+			
+			userInfoVO.new_mail=data.new_mail;
+			if(data.new_mail>0)
+				sendNotification(MainViewMediator.SHOW_NEW_EMAIL_TIPS_NOTE,true);
+			else
+				sendNotification(MainViewMediator.SHOW_NEW_EMAIL_TIPS_NOTE,false);
 
 			userInfoVO.received_daily_rewards=data.received_daily_rewards;
 			userInfoVO.received_continuous_rewards=data.received_continuous_rewards;

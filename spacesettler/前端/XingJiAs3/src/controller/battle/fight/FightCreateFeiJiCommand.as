@@ -86,8 +86,11 @@ package controller.battle.fight
 				feiJiVO=chariots[i];
 
 				feiJiComp=new FightFeiJiComponent(feiJiVO);
-				feiJiComp.x=Math.random() * (Main.WIDTH + 200) - 100;
-				feiJiComp.y=-Math.random() * 100;
+				//TODO LW:多人战斗中 大小飞机同步
+				feiJiComp.x=0.05*i * (Main.WIDTH + 200) - 100;
+				feiJiComp.y=-0.05*i * 100;
+//				feiJiComp.x=Math.random() * (Main.WIDTH + 200) - 100;
+//				feiJiComp.y=-Math.random() * 100;
 
 				fightComp.feiJiCompList.push(feiJiComp);
 				fightComp.allCompList.push(feiJiComp);

@@ -89,22 +89,25 @@ package view.groupFight
 					for(var i:int=0;i<len;i++)
 					{
 						var myArmiesVO:MyArmiesVo=tempProxy.myArmiesArr[i];
-						if(myArmiesVO.name==starVO.name)
+						if(myArmiesVO.warship!=0)
 						{
-							if(starVO.type==4)//中圆点
+							if(myArmiesVO.name==starVO.name)
 							{
-								mPoint.visible=true;
-								mPoint.gotoAndStop(3);
-							}
-							else if(starVO.type==5)//大圆点
-							{
-								lPoint.visible=true;
-								lPoint.gotoAndStop(3);
-							}
-							else//小圆点
-							{
-								sPoint.visible=true;
-								sPoint.gotoAndStop(3);
+								if(starVO.type==4)//中圆点
+								{
+									mPoint.visible=true;
+									mPoint.gotoAndStop(3);
+								}
+								else if(starVO.type==5)//大圆点
+								{
+									lPoint.visible=true;
+									lPoint.gotoAndStop(3);
+								}
+								else//小圆点
+								{
+									sPoint.visible=true;
+									sPoint.gotoAndStop(3);
+								}
 							}
 						}
 					}

@@ -10,6 +10,8 @@ package controller.group
     
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
+    
+    import proxy.userInfo.UserInfoProxy;
 
     /**
      *显示界面命令

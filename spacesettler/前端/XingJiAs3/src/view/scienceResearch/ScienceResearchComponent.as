@@ -35,6 +35,8 @@ package view.scienceResearch
 		
 		private var scienceResearchProxy:ScienceResearchProxy;
 		
+		private var itemArr:Array=[];
+		private var length:int=0;
         public function ScienceResearchComponent()
         {
             super(ClassUtil.getObject("view.scienceResearch.ScienceResearchSkin"));
@@ -66,18 +68,38 @@ package view.scienceResearch
 
 		private function setData(arr:Array):void
 		{
-			while(container.num)
-				DisposeUtil.dispose(container.removeAt(0));
-			
-			var scienceResearchItem:ScienceResearchItem;
-			for(var i:int =0;i<arr.length;i++)
+			if(length!=arr.length)
 			{
-				scienceResearchItem = new ScienceResearchItem();
-				scienceResearchItem.data = arr[i] as ScienceResearchVO;
-				container.add(scienceResearchItem);
+				length=arr.length;
+				while(container.num)
+					DisposeUtil.dispose(container.removeAt(0));
+				var scienceResearchItem:ScienceResearchItem;
+				for(var i:int =0;i<arr.length;i++)
+				{
+					scienceResearchItem = new ScienceResearchItem();
+					scienceResearchItem.data = arr[i] as ScienceResearchVO;
+					container.add(scienceResearchItem);
+					itemArr[i]=scienceResearchItem;
+				}
+				container.layout.update();
+				vScrollBar.viewport = container;
+			}else
+			{
+				for(var j:int=0;j<length;j++)
+				{
+					var itemVo:ScienceResearchVO=arr[j] as ScienceResearchVO;
+					for(var k:int=0;k<length;k++)
+					{
+						var item:ScienceResearchItem=itemArr[k] as ScienceResearchItem;
+						if(itemVo.science_type==item.data.science_type)
+						{
+							item.data=itemVo;
+						}
+					}
+				}
+				
 			}
-			container.layout.update();
-			vScrollBar.viewport = container;
+			
 		}
 		
 		protected function closeBtn_clickHAndler(event:MouseEvent):void

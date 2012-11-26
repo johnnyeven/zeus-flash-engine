@@ -25,11 +25,11 @@ package view.mainView
 	public class ChatFaceComponent extends Component
 	{
 		public static const FACE_COUNT:int = 24;
-		public var closeButton:Button;
+//		public var closeButton:Button;
 		public function ChatFaceComponent()
 		{
 			super(ClassUtil.getObject("mainView.chat.faceComponentSkin"));
-			closeButton = createUI(Button,"closeButton");
+//			closeButton = createUI(Button,"closeButton");
 			sortChildIndex();
 			layout=new VTileLayout(this);
 			
@@ -49,7 +49,7 @@ package view.mainView
 //			layout.vGap = 5;
 			layout.update();
 			
-			closeButton.addEventListener(MouseEvent.CLICK,closeButton_clickHandler);
+//			closeButton.addEventListener(MouseEvent.CLICK,closeButton_clickHandler);
 		}
 		private function clickHandler(event:MouseEvent):void
 		{
@@ -57,6 +57,8 @@ package view.mainView
 			if(chat.hasOwnProperty("num"))
 			{
 				dispatchEvent(new ChatEvent(ChatEvent.SELECTED_CHAT_FACE,chat.num));
+				//关闭聊天表情界面
+				dispatchEvent(new Event("closeBtnInChatFace"));
 			}
 		}
 		

@@ -2,6 +2,8 @@ package mediator.group
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	
+	import controller.mainSence.ShowCommand;
+	
 	import enum.SenceTypeEnum;
 	import enum.groupFightEnum.GroupFightEnum;
 	
@@ -110,14 +112,10 @@ package mediator.group
 			buildProxy.isBuild=false;
 			groupFightProxy.get_star_map(function():void
 			{
-					sendNotification(MainViewMediator.HIDE_RIGHT_VIEW_NOTE);
-					sendNotification(MainViewMediator.HIDE_RENWU_VIEW_NOTE);
-					sendNotification(GroupFightComponentMediator.SHOW_NOTE);
-					sendNotification(GroupFightMenuComponentMediator.SHOW_NOTE);
-					sendNotification(GroupFightShowComponentMediator.SHOW_NOTE);
-					sendNotification(GroupFightMapComponentMediator.SHOW_NOTE);
-					sendNotification(MainViewMediator.HIDE_TOP_VIEW_NOTE);
-					sendNotification(DESTROY_NOTE);
+				var obj:Object={type:SenceTypeEnum.GROUP_FIGHT}
+				sendNotification(ShowCommand.SHOW_INTERFACE,obj);
+				
+//				sendNotification(GroupFightComponentMediator.SHOW_NOTE);
 			});
 		}
 		
@@ -128,7 +126,17 @@ package mediator.group
 				comp.current_warship=groupProxy.groupInfoVo.current_warship;
 				var obj:Object={};
 				obj.infoLable=MultilanguageManager.getString("lingqu");
-				obj.showLable=MultilanguageManager.getString("lingquNum")+comp.gapNum.toString()+"艏";
+				if(comp.groupVo.warship<=0)
+				{
+					obj.showLable="军团战舰库存不够，领取失败！";
+				}else
+				{
+					if(comp.gapNum>0)
+						obj.showLable=MultilanguageManager.getString("lingquNum")+comp.gapNum.toString()+"艘";
+					else 
+						obj.showLable="您的战舰数已满，领取失败！";
+				}
+				
 				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 			});
 		}

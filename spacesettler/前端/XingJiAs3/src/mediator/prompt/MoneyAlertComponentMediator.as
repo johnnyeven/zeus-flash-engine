@@ -10,6 +10,7 @@ package mediator.prompt
     import org.puremvc.as3.interfaces.INotification;
     
     import proxy.BuildProxy;
+    import proxy.userInfo.UserInfoProxy;
     
     import ui.managers.PopUpManager;
     
@@ -29,10 +30,12 @@ package mediator.prompt
         public static const DESTROY_NOTE:String = "destroy" + NAME + "Note";
 
         public var okCallBack:Function;
-
+		private var userProxy:UserInfoProxy;
         public function MoneyAlertComponentMediator()
         {
             super(NAME, new MoneyAlertComponent());
+			userProxy=getProxy(UserInfoProxy);
+			
             _popUp = true;
             mode = true;
 			popUpEffect=CENTER;
@@ -72,9 +75,22 @@ package mediator.prompt
                 case SHOW_NOTE:
                 {
                     var obj:Object = note.getBody();
+					if(obj.title)
+						comp.titleLabel.text=obj.title;
                     comp.infoTF.text = obj.info;
                     comp.countTF.text = "x" + obj.count;
                     okCallBack = obj.okCallBack;
+					if(userProxy.userInfoVO.vip_speed>0)
+					{
+						comp.numLable.text=String(userProxy.userInfoVO.vip_speed);
+						comp.countTF.text = "x0";
+						comp.vipMc.visible=true;
+						comp.numLable.visible=true;
+					}else
+					{
+						comp.vipMc.visible=false;
+						comp.numLable.visible=false;
+					}
                     show();
                     break;
                 }

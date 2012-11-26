@@ -24,7 +24,10 @@ package events.groupFight
 		public static const BACK_EVENT:String="back_event";
 		
 		public static const SENCE_EVENT:String="sence_event";
+		
 		public static const SENCECHANGE_EVENT:String="senceChange_event";
+		
+		public static const PLAY_COMPLETE_EVENT:String="play_complete_event";
 		
 		private var _warship_count:int;
 		

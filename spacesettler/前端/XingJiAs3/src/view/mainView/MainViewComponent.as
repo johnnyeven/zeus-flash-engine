@@ -25,12 +25,14 @@ package view.mainView
         public function MainViewComponent()
         {
             super(ClassUtil.getObject("view.mainView.MainViewComponentSkin"));
+			
 			topComp=createUI(TopViewComponent,"top_mc_skin");
 			chatComp=createUI(ChatViewComponent,"liaotian_mc_skin");
 			controlComp=createUI(ControlViewComponent,"anniu_mc_skin");
 			prompComp=createUI(PromptViewComponent,"tishi_mc");			
 			
 			sortChildIndex();//重新排序
+			this.mouseChildren = this.mouseEnabled = true;
         }
     }
 }

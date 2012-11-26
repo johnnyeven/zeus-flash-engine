@@ -25,6 +25,7 @@ package view.mainView
     import flash.text.TextField;
     import flash.ui.Keyboard;
     import flash.utils.getDefinitionByName;
+    import flash.utils.setTimeout;
     
     import mediator.mainView.MainViewMediator;
     
@@ -67,6 +68,7 @@ package view.mainView
 		 * 私聊输入框
 		 */
 		public var privateSprivate:Component;
+		public var privatePlayerNameSprite:Component;
 		public var nameLabel:Label;
 		public var inforTxt:TextInput;
 
@@ -103,7 +105,11 @@ package view.mainView
 		/**
 		 * 私聊提示元件
 		 */
-		public var privateChatTips:MovieClip;
+		public var privateChatTips:PrivateChatCountTipsComponent;
+		/**
+		 * 私聊提示元件
+		 */
+		private var privateCount:int = 0;
         /**
          * 超链接按钮
          */
@@ -194,10 +200,11 @@ package view.mainView
 		 * 选中的表情
 		 */		
 		private var selectedFace:String;
+		private var _isOpen:Boolean=false;
+		
         public function ChatViewComponent(skin:DisplayObjectContainer)
         {
             super(skin);
-			
             var num:String;
             for (var i:int = 0; i < VIP_COUNT; i++)
             {
@@ -210,10 +217,14 @@ package view.mainView
 
             chatText = createUI(TextInput, "liaotian_tf");
 			privateSprivate = createUI(Component,"privateSprivate");
-			nameLabel = privateSprivate.createUI(Label,"nameLabel");
+			privatePlayerNameSprite = privateSprivate.createUI(Component,"privatePlayerNameSprite");
+			nameLabel = privatePlayerNameSprite.createUI(Label,"nameLabel");
+			privatePlayerNameSprite.sortChildIndex();
 			inforTxt = privateSprivate.createUI(TextInput,"inforTxt");
 			privateSprivate.sortChildIndex();
 			
+			privateSprivate.mouseEnabled = privateSprivate.mouseChildren = true;
+			privatePlayerNameSprite.mouseEnabled = privatePlayerNameSprite.mouseChildren = true;
 			
             sendBtn = createUI(Button, "fasong_btn");
             friendBtn = createUI(Button, "haoyou_btn");
@@ -238,11 +249,12 @@ package view.mainView
 
 			
 			//私聊提示元件
-			privateChatTips = ClassUtil.getObject("mainView.chat.PrivateChatTipsSkin") as MovieClip;
+			privateChatTips = new PrivateChatCountTipsComponent();
 			privateChatTips.x = privateChatBtn.x+ privateChatBtn.width/2;
 			privateChatTips.y = privateChatBtn.y - privateChatTips.height;
 			this.addChild(privateChatTips);
 			privateChatTips.visible = false;
+			privateChatTips.privateCount = privateCount;
 			
             sortChildIndex();
 
@@ -250,6 +262,7 @@ package view.mainView
             chatText.label.fontName = FontEnum.WEI_RUAN_YA_HEI;
             chatText.addEventListener(TextEvent.TEXT_INPUT, textChange_handler);
             chatText.addEventListener(KeyboardEvent.KEY_UP, keyUp_clickHandler);
+			privatePlayerNameSprite.addEventListener(MouseEvent.CLICK,privatePlayerNameSprite_clickHandler);
 			
 			inforTxt.color = 0xFFFFFF;
 			inforTxt.label.fontName = FontEnum.WEI_RUAN_YA_HEI;
@@ -341,7 +354,7 @@ package view.mainView
 
 			//默认世界频道选中
 			wordBtn_clickHandler(null);
-
+			this.mouseChildren = this.mouseEnabled = true;
         }
 
         public function dataChange(data:ChatVO):void
@@ -363,6 +376,7 @@ package view.mainView
 				//私聊来信提示
 				if(channel == ChannelEnum.CHANNEL_PRIVATE)
 				{
+					privateCount++;
 					if((value[0] as ChatItemVO).myID == userInforProxy.userInfoVO.player_id)
 					{
 						privateChatTips.visible = false;
@@ -370,6 +384,7 @@ package view.mainView
 					else
 					{
 						privateChatTips.visible = true;
+						privateChatTips.privateCount = privateCount;
 					}
 					
 				}
@@ -397,7 +412,7 @@ package view.mainView
 
                 for (var j:int = 0; j < arr.length; j++)
                 {
-					while(getContainerByChannel(channel).num >2)
+					while(getContainerByChannel(channel).num >1)
 					{
 						DisposeUtil.dispose(getContainerByChannel(channel).removeAt(0));
 					}
@@ -435,23 +450,36 @@ package view.mainView
 
         private function send_clickHandler(event:MouseEvent):void
         {
-            if (chatString == "" || chatString == "请在聊天框或好友列表中选择私聊对象！")
-                return;
+            if (chatString == "")
+			{
+				//无聊天内容的提示
+				dispatchEvent(new Event("noChatInfor"));
+				 return;
+			}  
+			if(channelSelected == ChannelEnum.CHANNEL_PRIVATE &&  _privateChatName == "")
+			{
+				//私聊无玩家对象的提示
+				dispatchEvent(new Event("noPrivateChatName"));	
+				return;
+			}
             dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
 			chatText.clean();
 			inforTxt.clean();
+			chatString = "";
         }
 
         private function textChange_handler(event:TextEvent):void
         {
 //            chatString = chatText.text;
-			chatString = chatText.createXML(chatText.text);
+			if(chatText.text != "")
+			    chatString = chatText.createXML(chatText.text);
         }
 		
 		private function ptivateTextChange_handler(event:TextEvent):void
 		{
 //			chatString = inforTxt.text;
-			chatString = inforTxt.createXML(inforTxt.text);
+			if(inforTxt.text != "")
+			    chatString = inforTxt.createXML(inforTxt.text);
 		}
 		
         private function keyUp_clickHandler(event:KeyboardEvent):void
@@ -459,17 +487,19 @@ package view.mainView
            if (event.charCode == Keyboard.ENTER && chatString != "")
 			{
 				dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
-			    chatText.text = "";
+				chatText.clean();
+				chatString = "";
 			}
                 
         }
 		
 		private function privateKeyUp_clickHandler(event:KeyboardEvent):void
 		{
-			if (event.charCode == Keyboard.ENTER && chatString != "")
+			if (event.charCode == Keyboard.ENTER && chatString != "" && _privateChatName != "")
 			{
 				dispatchEvent(new TalkEvent(TalkEvent.TALK_EVENT, chatString, channelSelected));
-				inforTxt.text = "";
+				inforTxt.clean();
+				chatString = "";
 			}
 			
 		}
@@ -504,7 +534,7 @@ package view.mainView
               
 			//点击其他按钮恢复输如框
 			privateChatName = "";
-			chatText.text = "";
+			chatText.clean();
 			chatText.visible = true;
 			privateSprivate.visible = false;
 			chatText.mouseEnabled = true;
@@ -540,7 +570,7 @@ package view.mainView
 			
 			//点击其他按钮恢复输如框
 			privateChatName = "";
-			chatText.text = "";
+			chatText.clean();
 			chatText.visible = true;
 			privateSprivate.visible = false;
 			chatText.mouseEnabled = true;
@@ -593,6 +623,8 @@ package view.mainView
         {
 			//查看私聊来信后提示消失
 			privateChatTips.visible = false;
+			//私聊次数归零
+			privateCount = 0;
 			privateChatBtn.selected=true;
 			if(privateBoolean)
 			{
@@ -622,17 +654,19 @@ package view.mainView
 			}  
 			
 			//私聊通道的控制
-			if(privateChatName)
-			{
+//			if(privateChatName)
+//			{
 				chatText.visible = false;
 				privateSprivate.visible = true;
-				chatText.mouseEnabled = true;
-			}
-			else
-			{
-				chatText.text = "请在聊天框或好友列表中选择私聊对象！";
-				chatText.mouseEnabled = false;
-			}
+				inforTxt.clean();
+				chatString = "";
+//				chatText.mouseEnabled = true;
+//			}
+//			else
+//			{
+//				chatText.text = "请在聊天框或好友列表中选择私聊对象！";
+//				chatText.mouseEnabled = false;
+//			}
         }
 
         private function chatInforItem_ClickHandler(event:MouseEvent):void
@@ -654,7 +688,15 @@ package view.mainView
 
         public function setLabel(value:String):void
         {
-            chatText.text += value;
+			if(_channelSelected == ChannelEnum.CHANNEL_PRIVATE)
+			{
+				inforTxt.text += value;
+			}
+			else
+			{
+				chatText.text += value;
+			}
+            
         }
 
         public function get channelSelected():String
@@ -1003,22 +1045,33 @@ package view.mainView
 		//聊天表情选择面板
 		private function faceBtn_clickHandler(event:MouseEvent):void
 		{
-			if(chatFaceComponent)
+			//TODU LW:此处要延迟1-3秒才显示表情界面
+			if(!_isOpen)
 			{
-				chatFaceComponent.visible = true;
+				setTimeout(function():void
+				{
+					if(chatFaceComponent)
+					{
+						chatFaceComponent.visible = true;
+						_isOpen=true;
+					}
+					else
+					{
+						chatFaceComponent = new ChatFaceComponent();
+						chatFaceComponent.mouseEnabled = chatFaceComponent.mouseChildren = true;
+						chatFaceComponent.x = event.target.x - 95;
+						chatFaceComponent.y = event.target.y - chatFaceComponent.height -40;
+						//			SystemManager.instance.addInfo(chatFaceComponent);
+						addChild(chatFaceComponent);
+						_isOpen=true;
+					}
+					
+					chatFaceComponent.addEventListener(ChatEvent.SELECTED_CHAT_FACE,chatFaceHandler);
+					chatFaceComponent.addEventListener("closeBtnInChatFace",closeBtnInChatFaceHandler);
+				},500);
 			}
 			else
-			{
-				chatFaceComponent = new ChatFaceComponent();
-				chatFaceComponent.mouseEnabled = chatFaceComponent.mouseChildren = true;
-				chatFaceComponent.x = event.target.x - 95;
-				chatFaceComponent.y = event.target.y - chatFaceComponent.height -40;
-	//			SystemManager.instance.addInfo(chatFaceComponent);
-				addChild(chatFaceComponent);
-			}
-				 
-			chatFaceComponent.addEventListener(ChatEvent.SELECTED_CHAT_FACE,chatFaceHandler);
-			chatFaceComponent.addEventListener("closeBtnInChatFace",closeBtnInChatFaceHandler);
+				chatFaceComponent.addEventListener("closeBtnInChatFace",closeBtnInChatFaceHandler);
 		}
 		
 		private function chatFaceHandler(event:ChatEvent):void
@@ -1034,10 +1087,20 @@ package view.mainView
 			}
 			chatFaceComponent.visible = false;
 		}
-		private function closeBtnInChatFaceHandler(event:Event):void
+		public function closeBtnInChatFaceHandler(event:Event):void
 		{
-			chatFaceComponent.visible = false;
+			if(chatFaceComponent)
+			     chatFaceComponent.visible = false;
+			_isOpen=false;
 		}
+		
+		private function privatePlayerNameSprite_clickHandler(event:MouseEvent):void
+		{
+				chatText.text = "";
+				if(privateChatName == "")
+					dispatchEvent(new Event("noPrivateChatName"));	 
+		}
+		
         /***********************************************************
          *
          * 功能方法

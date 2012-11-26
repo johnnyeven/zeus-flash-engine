@@ -11,12 +11,12 @@ package events.factory
 		
 		public static const ZHIZAO_COMPLETE_EVENT:String="zhizao_complete_event";
 		
-		public var item:FactoryItem_1Component;
+		public var drawListVo:DrawListVo;
 		
-		public function FactoryItemEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false,item:FactoryItem_1Component=null)
+		public function FactoryItemEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false,drawVo:DrawListVo=null)
 		{
 			super(type, bubbles, cancelable);
-			this.item=item;
+			drawListVo=drawVo;
 		}
 	}
 }

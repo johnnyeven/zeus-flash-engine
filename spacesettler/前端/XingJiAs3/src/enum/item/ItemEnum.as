@@ -22,6 +22,8 @@ package enum.item
 		 * 商城物品
 		 */
         public static const item:String = "item";
+		
+        public static const emailItem:String = "Item";
 
 		/**
 		 * 图纸
@@ -46,7 +48,7 @@ package enum.item
 		/**
 		 * 暗物质
 		 */
-		public static const BROKENCRYSTAL:String = "brokenCrystal";
+		public static const BROKENCRYSTAL:String = "broken_crystal";
 		
 		/**
 		 * 捐献暗物质type

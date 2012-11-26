@@ -64,6 +64,10 @@ package proxy.packageView
 
         private var _getTankPartInfoCallBack:Function;
 
+		/**
+		 * 存储图纸数据
+		 */		
+		private var thuZhiDic:Object = {};
         public function PackageViewProxy(data:Object = null)
         {
             super(NAME, data);
@@ -161,6 +165,7 @@ package proxy.packageView
                         itemVO.can_use = objItem.can_use;
                         itemVO.tank_part_type = objItem.tank_part_type;
 
+						thuZhiDic[itemVO.id]=itemVO;
                         itemVOList.push(itemVO);
                         break;
                     }
@@ -242,13 +247,14 @@ package proxy.packageView
 			Protocol.deleteProtocolFunction(CommandEnum.useItem, useItemResult);
 			if (data.hasOwnProperty("errors"))
 			{
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE,data.errors);
 				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
 				_packageViewViewCallBack = null;
 				return;
 			}
 			
-			packageViewResult(data);
-			
+			var packProxy:PackageViewProxy=getProxy(PackageViewProxy);
+			packProxy.packageViewView();
 			
 			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);			
 			
@@ -332,8 +338,16 @@ package proxy.packageView
 
             if (itemVO)
                 setZhanCheInfo(itemVO, data);
-
-            chakanVO = itemVO;
+			else
+			{
+				var itemVo1:ZhanCheInfoVO=new ZhanCheInfoVO();
+				setZhanCheInfo(itemVo1, data);
+			}
+			
+			if(itemVO)
+          	  chakanVO = itemVO;
+			else
+				chakanVO = itemVo1;
 			FactoryEnum.CURRENT_ZHANCHE_VO=itemVO;
             if (_chariotInfoCallBack != null)
                 _chariotInfoCallBack();
@@ -371,8 +385,17 @@ package proxy.packageView
 
             if (itemVO)
                 setGuaJianInfo(itemVO, data);
-
-            chakanVO = itemVO;
+			else
+			{
+				var itemVo1:GuaJianInfoVO=new GuaJianInfoVO();
+                setGuaJianInfo(itemVo1, data);				
+			}
+			
+			if(itemVO)
+          	  chakanVO = itemVO;
+			else
+          	  chakanVO = itemVo1;
+				
 
             if (_getTankPartInfoCallBack != null)
                 _getTankPartInfoCallBack();
@@ -509,6 +532,7 @@ package proxy.packageView
         {
             var itemInfoVO:ItemVO = new ItemVO();
 
+			itemInfoVO.isChatData = obj.isChatData;
             itemInfoVO.id = obj.id;
             itemInfoVO.item_type = obj.item_type;
             itemInfoVO.category = obj.category;
@@ -590,7 +614,7 @@ package proxy.packageView
         }
 
 		/**
-		 * 通过ID获取物品信息
+		 * 通过category获取VIP信息
 		 * @param id
 		 * @return 
 		 * 
@@ -619,6 +643,21 @@ package proxy.packageView
 				callBack();
 			callBack = null;
 		}
+		
+		/**
+		 * 通过category获取图纸道具信息
+		 * @param id
+		 * @return 
+		 * 
+		 */			
+		public function getTuZhiDaoJuVOByID(obj:Object,isChatData:Boolean,callBack:Function):void
+		{
+			chakanVO = createTuZhiVO(obj);
+			
+			if(callBack != null)
+				callBack();
+			callBack = null;
+		}
         /**
          *设置战车详细信息
          * @param itemVO
@@ -627,6 +666,13 @@ package proxy.packageView
          */
         public function setZhanCheInfo(itemVO:ZhanCheInfoVO, obj:Object):void
         {
+			if(obj.category)
+				itemVO.category=obj.category;
+			itemVO.item_type=ItemEnum.Chariot;
+			itemVO.id = obj.id;
+			itemVO.enhanced = obj.enhanced;
+			itemVO.type = obj.type;
+			
             itemVO.player_id = obj.player_id;
             itemVO.level = obj.level;
             itemVO.value = obj.value;
@@ -655,7 +701,7 @@ package proxy.packageView
                 setGuaJianInfo(guaJianVO, obj.slots[i]);
                 itemVO.guaJianItemVOList.push(guaJianVO);
             }
-
+			setBaseItemName(itemVO,packageXML);
             CalculateUtil.zhanChe(itemVO);
         }
 
@@ -670,7 +716,6 @@ package proxy.packageView
 			if(obj.category)
 				itemVO.category=obj.category;
 			itemVO.item_type=ItemEnum.TankPart;
-			
             itemVO.id = obj.id;
             itemVO.enhanced = obj.enhanced;
             itemVO.type = obj.type;
@@ -700,6 +745,33 @@ package proxy.packageView
             itemVO.shield = obj.shield;
 
             itemVO.createPropertyDes();
+			setBaseItemName(itemVO,packageXML);
         }
+		
+		/**
+		 * 通过category获取图纸的相关信息
+		 * @param category
+		 * @param rootXML
+		 * 
+		 */		
+		public function getBaseItemNameByCategory(category:int, rootXML:XML):ItemVO
+		{
+			var xml:XML;
+			var itemvo:ItemVO= new ItemVO();
+		    if (rootXML == tuZhiXML)
+			{
+						
+				xml = rootXML.recipes.(category == category)[0];
+			}
+			
+			if (xml != null)
+			{
+				itemvo.recipe_type = xml.itemType;
+				itemvo.category = xml.category;
+				itemvo.enhanced = xml.enhanced;
+				itemvo.type = xml.type;
+			}
+			return itemvo
+		}
     }
 }

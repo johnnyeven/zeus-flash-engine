@@ -59,12 +59,14 @@ package mediator.groupFight
 		{
 			if (GlobalData.currentSence == SenceTypeEnum.MAIN)
 				return;
+			var mainViewMed:MainViewMediator=getMediator(MainViewMediator);
+			mainViewMed.comp.controlComp.setBaseBtn();
+			Main.addBG();
+			sendNotification(MainViewMediator.SHOW_RENWU_VIEW_NOTE);
 			sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
 			sendNotification(MainViewMediator.SHOW_RIGHT_VIEW_NOTE);
 			sendNotification(MainViewMediator.SHOW_TOP_VIEW_NOTE);
-			sendNotification(MainViewMediator.SHOW_RENWU_VIEW_NOTE);
 			sendNotification(DESTROY_NOTE);
-			sendNotification(GroupFightComponentMediator.DESTROY_NOTE);
 			sendNotification(GroupFightShowComponentMediator.DESTROY_NOTE);
 			sendNotification(GroupFightMapComponentMediator.DESTROY_NOTE);
 		}
@@ -117,7 +119,7 @@ package mediator.groupFight
 		 * @return
 		 *
 		 */
-		protected function get comp():GroupFightMenuComponent
+		public function get comp():GroupFightMenuComponent
 		{
 			return viewComponent as GroupFightMenuComponent;
 		}

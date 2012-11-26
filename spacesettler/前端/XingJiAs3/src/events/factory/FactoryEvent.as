@@ -15,6 +15,11 @@ package events.factory
 		public static const CLOSE_EVENT:String="close_event";
 		
 		/**
+		 * 未满足条件
+		 */		
+		public static const CONDITION_EVENT:String="condition_event";
+		
+		/**
 		 *维修 
 		 */		
 		public static const WEIXIU_EVENT:String="weixiu_event";
@@ -115,11 +120,13 @@ package events.factory
 		
 
 		private var _type:String;
-		public function FactoryEvent(type:String,item:FactoryItem_1Component=null,qiangHuatype:String=null)
+		private var _count:int;
+		public function FactoryEvent(type:String,item:FactoryItem_1Component=null,qiangHuatype:String=null,count:int=1)
 		{
 			super(type,false,false);
 			_item=item;
 			_type=qiangHuatype;
+			_count=count;
 		}
 		
 		public function get item():FactoryItem_1Component
@@ -140,6 +147,16 @@ package events.factory
 		public function set qiangHuatype(value:String):void
 		{
 			_type = value;
+		}
+
+		public function get count():int
+		{
+			return _count;
+		}
+
+		public function set count(value:int):void
+		{
+			_count = value;
 		}
 
 		

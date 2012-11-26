@@ -1,9 +1,11 @@
 package mediator.mainView
 {
     import com.zn.multilanguage.MultilanguageManager;
+    import com.zn.utils.SoundUtil;
     import com.zn.utils.StringUtil;
     
     import controller.EnterMainSenceViewCommand;
+    import controller.mainSence.ShowCommand;
     import controller.mainSence.ShowMainSenceComponentMediatorCommand;
     import controller.plantioid.ShowPlantioidComponentMediatorCommand;
     import controller.task.TaskCommand;
@@ -117,6 +119,10 @@ package mediator.mainView
 			if(userInforProxy.userInfoVO.received_online_rewards!="" && userInforProxy.userInfoVO.received_online_rewards=="false")
 				comp.prompComp.gift.visible = true;
 			
+			if(userInforProxy.userInfoVO.new_mail>0)
+				comp.prompComp.mail.visible=true;
+//			comp.addEventListener(Event.ENTER_FRAME,enterFrameHandler);
+			
             comp.addEventListener(ZhuJiDiEvent.RONGYU_EVENT, rongYuHandler);
             comp.addEventListener(ZhuJiDiEvent.SYSTEM_EVENT, systemHandler);
             comp.addEventListener(ZhuJiDiEvent.ALLVIEW_EVENT, zhongLanHandler);
@@ -143,6 +149,11 @@ package mediator.mainView
 			//复制聊天信息到剪切板
 			comp.addEventListener(TalkEvent.COPY_INFOR_EVENT,copyHandler);
         }
+		
+//		protected function enterFrameHandler(event:Event):void
+//		{
+//			userInforProxy.updateInfo();
+//		}
 		
         /**
          *添加要监听的消息
@@ -195,7 +206,7 @@ package mediator.mainView
                 }
 				case SHOW_NEW_EMAIL_TIPS_NOTE:
 				{
-					comp.prompComp.mail.visible = true;
+					comp.prompComp.mail.visible = note.getBody() as Boolean;
 					break;
 				}
 				case SHOW_GIFT_TIPS_NOTE:
@@ -271,8 +282,9 @@ package mediator.mainView
         {
             if (GlobalData.currentSence == SenceTypeEnum.PLANT)
                 return;
-			sendNotification(HIDE_RENWU_VIEW_NOTE);
-            sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			var obj:Object={type:SenceTypeEnum.PLANT}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj);
+//          	sendNotification(PlantioidComponentMediator.SHOW_NOTE);
 			buildProxy.isBuild=false;
         }
 
@@ -310,24 +322,24 @@ package mediator.mainView
 		
 		protected function groupHandler(event:Event):void
 		{
-			//if(userInforProxy.userInfoVO.legion_id!=null)
-			if(!StringUtil.isEmpty(userInforProxy.userInfoVO.legion_id))
-			{
-				groupProxy.refreshGroup(function():void
+			userInforProxy.updateInfo(function ():void{
+				if(!StringUtil.isEmpty(userInforProxy.userInfoVO.legion_id))
 				{
-					sendNotification(GroupComponentMediator.SHOW_NOTE);
-					
-				});
-			}else
-			{
-				groupProxy.searchGroup("",function():void
+					groupProxy.refreshGroup(function():void
+					{
+						sendNotification(GroupComponentMediator.SHOW_NOTE);
+						
+					});
+				}else
 				{
-					sendNotification(NotJoinGroupComponentMediator.SHOW_NOTE);
+					groupProxy.searchGroup("",function():void
+					{
+						sendNotification(NotJoinGroupComponentMediator.SHOW_NOTE);
+						
+					});
 					
-				});
-				
-			}
-			
+				}
+			});
 		}
 		
 		private function enemyListHandler(event:FriendListEvent):void

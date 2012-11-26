@@ -224,11 +224,11 @@ package utils.battle
 				if(player1.forts.length==0)
 				{
 					playerList.push(player1);
-					return playerList;
+//					return playerList;
 				}
 			}
-			
-			return null;
+			return playerList;
+//			return null;
 		}
 
 		/**

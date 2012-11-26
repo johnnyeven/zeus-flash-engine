@@ -77,8 +77,11 @@ package proxy.task
 			callBackFun=fun;
 			var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
 			var obj:Object={};
-			obj={player_id: userInfoVO.player_id, force: 1};
-			ConnDebug.send(CommandEnum.getFreshmanTask, obj, ConnDebug.HTTP, URLRequestMethod.GET);
+//			if(force==1)
+				obj={player_id: userInfoVO.player_id, force: 1};
+//			else
+//				obj={player_id: userInfoVO.player_id};
+			ConnDebug.send(CommandEnum.getFreshmanTask, obj, ConnDebug.HTTP, URLRequestMethod.POST);
 
 //			获取所有任务奖励
 //			var obj:Object={player_id:userInfoVO.id,force:1};

@@ -96,11 +96,10 @@ package view.allView
 				
 				keJiShiDaiTxt.text = allViewProxy.allViewVO.getKeJiShiDaiNameByKeJiShiDaiLevel;
 				
-				if(allViewProxy.allViewVO.junTuanTxt)
+				if(allViewProxy.allViewVO.junTuanTxt&&allViewProxy.allViewVO.junTuanTxt!="")
 				{
 					junTuanTxt.text = allViewProxy.allViewVO.junTuanTxt;
-				}
-				
+				}				
 				
 				startCountTxt.text = allViewProxy.allViewVO.startCountTxt+"个";
 				

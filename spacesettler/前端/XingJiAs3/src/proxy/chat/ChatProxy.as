@@ -1,9 +1,11 @@
 package proxy.chat
 {
 	import com.adobe.crypto.SHA1;
+	import com.netease.protobuf.Int64;
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
 	import com.zn.net.socket.ClientSocket;
+	import com.zn.utils.DateFormatter;
 	import com.zn.utils.StringUtil;
 	
 	import enum.chat.ChannelEnum;
@@ -173,8 +175,10 @@ package proxy.chat
 			
 			chatItemVO.myID = SocketUtil.readIdType(pg.body);
 			chatItemVO.channel =  SocketUtil.readIdType(pg.body);
-			chatItemVO.timeStamp = SocketUtil.readIdTypeInt64(pg.body).high;
+			var int64:Int64=SocketUtil.readIdTypeInt64(pg.body);
+			chatItemVO.timeStamp = int64.high*1000;
 			
+
 			chatItemVO.strLength = pg.body.readUnsignedInt();
 			
 			chatItemVO.campID = pg.body.readInt();
@@ -183,14 +187,14 @@ package proxy.chat
 				chatItemVO.str = pg.body.readMultiByte(chatItemVO.strLength, Protocol.CHARSET);
 			
 			
-			//将特殊字符转换回来
-			var t:String=String.fromCharCode(11);
-			var re:RegExp=new RegExp(t,"g");
-			chatItemVO.str=chatItemVO.str.replace(re,'"');
 			//对阵营的特殊处理
 			var strXml:String = StringUtil.formatString("<p><s>{0}</s></p>",chatItemVO.str);
 			var xml:XML = new XML(strXml);
 			var userData:String = xml.a.@value[0];
+			//将特殊字符转换回来
+			var t:String=String.fromCharCode(11);
+			var re:RegExp=new RegExp(t,"g");
+			 userData=userData.replace(re,'"');
 			var dataObj:Object = JSON.parse(userData);
 			//玩家自己的数据
 			chatItemVO.myVIP = dataObj.myVIP;

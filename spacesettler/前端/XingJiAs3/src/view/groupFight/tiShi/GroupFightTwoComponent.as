@@ -56,7 +56,10 @@ package view.groupFight.tiShi
 		
 		protected function sureHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new GroupFightEvent(GroupFightEvent.SURE_EVENT,hsBar.value));
+			if(hsBar.value==0)
+				dispatchEvent(new GroupFightEvent(GroupFightEvent.CLOSE_EVENT));
+			else
+				dispatchEvent(new GroupFightEvent(GroupFightEvent.SURE_EVENT,hsBar.value));
 		}
 		
 		protected function closeHandler(event:MouseEvent):void

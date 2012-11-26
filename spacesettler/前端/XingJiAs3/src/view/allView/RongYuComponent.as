@@ -7,6 +7,7 @@ package view.allView
 	
 	import events.allView.AllViewEvent;
 	
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import mx.binding.utils.BindingUtils;
@@ -34,26 +35,46 @@ package view.allView
     {
 		public var closedBtn:Button;
 		
+		public var medalComp:Component;
 		public var medalImg:LoaderImage;
 		public var numLabel:Label;
+		
+		public var infoLabel:Sprite;
 		
 		private var _allViewProxy:AllViewProxy;
 		
 		private var _container:Container;
 		private var _vScrollBar:VScrollBar;
 		
+		private var _startCount:int;
+		
         public function RongYuComponent()
         {
             super(ClassUtil.getObject("view.allView.RongYuSkin"));
 			_allViewProxy=ApplicationFacade.getProxy(AllViewProxy);
-			medalImg=createUI(LoaderImage,"medal_image");
-			numLabel=createUI(Label,"num_tf");
+			medalComp=createUI(Component,"yaoSaiComp");
+			medalImg=medalComp.createUI(LoaderImage,"medal_image");
+			numLabel=medalComp.createUI(Label,"num_tf");
+			medalComp.sortChildIndex();
+			medalComp.visible=false;
+			infoLabel = getSkin("infoLabel");
+			infoLabel.visible=false;
 			closedBtn = createUI(Button,"closedBtn");
 			
-			medalImg.source=getMedalImgStr(_allViewProxy.allViewVO.startCountTxt);
-			if(_allViewProxy.allViewVO)
-				numLabel.text="["+MultilanguageManager.getString("numOfYaoSai")+"×"+_allViewProxy.allViewVO.startCountTxt+"]";
-			
+			_startCount=_allViewProxy.allViewVO.startCountRecord;
+			if(_startCount<=0)
+			{
+				medalComp.visible=false;
+				infoLabel.visible=true;
+			}
+			else
+			{
+				medalComp.visible=true;
+				infoLabel.visible=false;
+				medalImg.source=getMedalImgStr(_startCount);
+				if(_allViewProxy.allViewVO)
+					numLabel.text="["+MultilanguageManager.getString("numOfYaoSai")+"×"+_startCount+"]";
+			}
 			_container = new Container(null);
 			addContainerValue();
 			
@@ -115,39 +136,35 @@ package view.allView
 			var str:String="";
 			var type:int;
 			var level:int;
-			if(count<20)
+			if(count>0&&count<20)
 			{
-				str="";
+				type=2;
+				level=1;
+				str=ResEnum.medalsImgURL+type+"_"+level+".png";
 			}
 			if(count>=20 && count<100)
 			{
 				type=2;
-				level=1;
+				level=2;
 				str=ResEnum.medalsImgURL+type+"_"+level+".png";				
 			}
 			if(count>=100 && count<200)
 			{
 				type=2;
-				level=2;
+				level=3;
 				str=ResEnum.medalsImgURL+type+"_"+level+".png";
 			}
 			if(count>=200 && count<500)
 			{
 				type=2;
-				level=3;
-				str=ResEnum.medalsImgURL+type+"_"+level+".png";	
-			}
-			if(count>=500 && count<1000)
-			{
-				type=2;
 				level=4;
 				str=ResEnum.medalsImgURL+type+"_"+level+".png";	
 			}
-			if(count>=1000)
+			if(count>=500)
 			{
 				type=2;
 				level=5;
-				str=ResEnum.medalsImgURL+type+"_"+level+".png";
+				str=ResEnum.medalsImgURL+type+"_"+level+".png";	
 			}
 			
 			return str;

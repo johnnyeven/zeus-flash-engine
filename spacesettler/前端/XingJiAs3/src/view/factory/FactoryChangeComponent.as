@@ -203,7 +203,7 @@ package view.factory
 				nengliang_tf.color=0x00ccff;
 			}
 			zhuanhuan_tf.text=infoVo.attackSpeed.toString();
-			gongji_tf.text=infoVo.attack.toString();
+			gongji_tf.text=int(infoVo.attack).toString();
 			
 			var str1:String=(infoVo.damageDescShiDan*100).toFixed(1);
 			var str2:String=(infoVo.damageDescJiGuang*100).toFixed(1);

@@ -84,8 +84,9 @@ package view.mainView
 			{
 				inforLabel.text = setString(_data,_data.mySetChannel);
 				var timeStr:String = "<p><s>[{0}]</s></p>";
-				timeStr = StringUtil.formatString(timeStr,DateFormatter.formatterTime(data.timeStamp));
-				timeLabel.text = setTime(data.timeStamp);
+				timeStr = StringUtil.formatString(timeStr,DateFormatter.gFormatterSF(data.timeStamp));
+//				timeStr = StringUtil.formatString(timeStr,setTime(data.timeStamp));
+//				timeLabel.text = setTime(data.timeStamp);
 				timeLabel.text = timeStr;
 				timeLabel.y = inforLabel.y+inforLabel.height - timeLabel.height;
 				bgSprite.height = inforLabel.height;
@@ -193,13 +194,20 @@ package view.mainView
 		 */		
 		private function setTime(time:Number):String
 		{
+			var date:Date = new Date();
+			var currentTime:Date;
+			date.setTime(time);
 			var timeStr:String ="";
-			var day:int = int(time/(60*60*24))%30;
-			var hour:int = int(time/3600)%24;
-			var min:int = int(time/60)%60;
 			var sec:int = time%60;
-			
-			timeStr =  (hour < 10 ? "0" + hour : "" + hour)+ (min < 10 ? "0" + min : "" + min)+ (sec < 10 ? "0" + sec : "" + sec);
+			var min:int = int(time/60)%60;
+			var hour:int = int(time/3600)%23 +12;
+			var day:int = int(time/(60*60*24))%32;
+//			var sec:Number = date.seconds;
+//			var min:Number = date.minutes;
+//			var hour:Number = date.hours;
+//			var day:Number = date.date;
+//			timeStr =  (day < 10 ? "0" + day : "" + day)+":"+(hour < 10 ? "0" + hour : "" + hour)+":"+ (min < 10 ? "0" + min : "" + min)+":"+(sec < 10 ? "0" + sec : "" + sec);
+			timeStr =  (hour < 10 ? "0" + hour : "" + hour)+":"+ (min < 10 ? "0" + min : "" + min);
 			return timeStr;
 		}
 

@@ -74,7 +74,7 @@ package view.mainView
 		
 		protected function mail_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			mail.visible = false;
 			dispatchEvent(new ZhuJiDiEvent(ZhuJiDiEvent.EMAIL_EVENT,true));
 		}

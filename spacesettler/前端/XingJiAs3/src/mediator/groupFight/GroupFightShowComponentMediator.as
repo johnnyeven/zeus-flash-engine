@@ -86,7 +86,7 @@ package mediator.groupFight
 		 * @return
 		 *
 		 */
-		protected function get comp():GroupFightShowComponent
+		public function get comp():GroupFightShowComponent
 		{
 			return viewComponent as GroupFightShowComponent;
 		}

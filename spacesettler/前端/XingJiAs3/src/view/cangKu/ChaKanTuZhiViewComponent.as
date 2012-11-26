@@ -74,6 +74,14 @@ package view.cangKu
             tzName.text = info.name;
             tzInfo.text = info.description;
 
+			if(info.isChatData == true)
+			{
+				useBtn.visible = false;
+			}
+			else
+			{
+				useBtn.visible = true;
+			}
             if (info.zhanCheVO)
                 gongNengLabel.text = info.zhanCheVO.propertyDes;
             if (info.guaJianVO)

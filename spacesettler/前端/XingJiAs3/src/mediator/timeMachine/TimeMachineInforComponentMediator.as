@@ -27,6 +27,8 @@ package mediator.timeMachine
 		public function TimeMachineInforComponentMediator()
 		{
 			super(NAME, new TimeMachineInforComponent());
+			comp.med = this;
+			level = 2;
 			
 			comp.addEventListener(TimeMachineEvent.CLOSE_INFOR_COMPONENT_EVENT,closeHandler);
 		}

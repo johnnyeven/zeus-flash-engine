@@ -37,6 +37,8 @@ package proxy.email
 		
 		[Bindable]
 		public var emailCount:int;
+		public var emailOnReadCount:int;
+		
 		private var _getEmailListCallBack:Function;
 		//定时刷邮件列表，看看是否有新邮件。
 		private var timer:Timer = new Timer(30000);
@@ -81,6 +83,7 @@ package proxy.email
 		{
 			if(data)
 			{
+				emailList.length=0;
 				var arr:Array = [];
 				var emailArr:Array = [];
 				var emailItemVO:EmailItemVO;
@@ -88,15 +91,16 @@ package proxy.email
 				if(emailCurrentCount<arr.length)
 				{
 				   //向外发送新邮件提示消息
-			       sendNotification(MainViewMediator.SHOW_NEW_EMAIL_TIPS_NOTE);
+//			       sendNotification(MainViewMediator.SHOW_NEW_EMAIL_TIPS_NOTE);
 				}
 				emailCount = arr.length;
+				emailOnReadCount=0;
 				emailCurrentCount = emailCount;
 				for(var i:int = 0;i<arr.length;i++)
 				{
 					emailItemVO = new EmailItemVO();
 					
-					emailItemVO.mails_count = emailCount;
+//					emailItemVO.mails_count = emailCount;
 					emailItemVO.id = arr[i].id;
 					emailItemVO.created_at = arr[i].created_at;
 					emailItemVO.type = arr[i].type;
@@ -105,6 +109,8 @@ package proxy.email
 					emailItemVO.title = arr[i].title;
 					emailItemVO.content = arr[i].content;
 					emailItemVO.is_read = arr[i].is_read;
+					if(arr[i].is_read==false)
+						emailOnReadCount++;
 					emailItemVO.attachment = arr[i].attachment;
 					if(emailItemVO.attachment)
 					{
@@ -154,7 +160,7 @@ package proxy.email
 				var obj:Object = {infoLable:MultilanguageManager.getString("successSendEmailTitle"),showLable:MultilanguageManager.getString("successSendEmailInfor")};
 				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 				//更新服务器数据
-				userInforProxy.updateServerData();
+				userInforProxy.updateInfo();
 				//更新背包数据
 				packageViewProxy.packageViewView();
 			}
@@ -226,10 +232,13 @@ package proxy.email
 			if(data.message_type == "receive_attachment")
 			{
 				sendNotification(ViewEmailComponentMediator.receive_attachment);
+				getEmailList();
 				//更新服务器数据
-				userInforProxy.updateServerData();
+				userInforProxy.updateInfo();
 				//更新背包数据
 				packageViewProxy.packageViewView();
+				//更新列表数据
+				getEmailList();
 			}
 			
 		}

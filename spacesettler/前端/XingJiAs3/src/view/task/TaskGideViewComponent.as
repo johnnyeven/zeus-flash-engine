@@ -36,6 +36,7 @@ package view.task
 		{
 			if(objContainer)
 			{
+				this.rotation=0;
 				point=objContainer.localToGlobal(new Point());
 				if(objContainer.visible==false)
 				{
@@ -44,8 +45,17 @@ package view.task
 				{
 					this.visible=true;
 				}
-				this.x=point.x+objContainer.width*0.5;
-				this.y=point.y;
+//				this.x=point.x+objContainer.width*0.5;
+//				this.y=point.y;
+				var point1:Point=parent.globalToLocal(point);
+				this.x=point1.x+objContainer.width*0.5;
+				this.y=point1.y;
+				if(this.y<60)
+				{
+					this.rotation=-90;
+					this.x=point1.x;
+					this.y=point1.y+objContainer.height*0.5;
+				}
 			}
 			
 		}
@@ -59,8 +69,8 @@ package view.task
 		{
 			if(_objContainer)
 				_objContainer.removeEventListener(Event.REMOVED_FROM_STAGE,removeFromStage);
-			super.dispose();
 			this.removeEventListener(Event.ENTER_FRAME,enterFrameHandler);
+			super.dispose();
 			_objContainer=null;
 		}
 

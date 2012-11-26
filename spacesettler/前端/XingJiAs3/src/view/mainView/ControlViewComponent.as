@@ -174,6 +174,11 @@ package view.mainView
 		{
 			currentSelcetedBtn=planetBtn;
 		}
+		
+		public function setBaseBtn():void
+		{
+			currentSelcetedBtn=baseBtn;
+		}
 
 		public function set currentSelcetedBtn(value:Button):void
 		{			

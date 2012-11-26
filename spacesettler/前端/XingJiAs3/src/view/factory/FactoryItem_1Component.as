@@ -173,7 +173,8 @@ package view.factory
 			{		
 				isMake();
 				stopTimer();
-				num=time/1000;
+				num=Math.round(time/1000);
+				time_tf2.text=num.toString()+"秒";			
 				bar.percent=percent;
 				_timer=new Timer(1000);
 				_timer.addEventListener(TimerEvent.TIMER,timerHandler);
@@ -181,12 +182,11 @@ package view.factory
 				_tweenLite = TweenLite.to(bar, num, { percent: 1, ease: Linear.easeNone , onComplete:callFun});
 			}
 				
-			time_tf2.text=num.toString()+"秒";			
 		}
 		
 		public function timerComplete():void
 		{
-			dispatchEvent(new FactoryItemEvent(FactoryItemEvent.ZHIZAO_COMPLETE_EVENT,true,false,this));
+			dispatchEvent(new FactoryItemEvent(FactoryItemEvent.ZHIZAO_COMPLETE_EVENT,true,false,drawVo));
 		}
 		
 		protected function timerHandler(event:TimerEvent):void
@@ -195,10 +195,10 @@ package view.factory
 			time_tf2.text=num.toString()+"秒";
 			if(num<=0)
 			{
-				isNotMake();
 				timerComplete();
 				stopTimer();
 				stopTweenLite();
+				isNotMake();
 			}
 		}
 
@@ -210,6 +210,8 @@ package view.factory
 		public function set drawVo(value:DrawListVo):void
 		{
 			_drawVo = value;
+			if(drawVo.eventID!=""||drawVo.eventID!=null)
+				setTweenLine(drawVo.remainTime);
 		}
 		
 		

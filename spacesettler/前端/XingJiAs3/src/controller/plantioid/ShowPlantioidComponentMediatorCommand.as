@@ -55,6 +55,7 @@ package controller.plantioid
                 var med:PlantioidComponentMediator = getMediator(PlantioidComponentMediator);
                 if (med)
                 {
+					med.comp.switchPlantSence();
                     callShow(med);
                 }
                 else

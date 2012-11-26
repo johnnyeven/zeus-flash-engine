@@ -17,6 +17,8 @@ package proxy.battle
 	import controller.battle.fight.FightMoveCommand;
 	import controller.battle.fight.FightNewPlayerCommand;
 	import controller.battle.fight.FightResurgenceCommand;
+	import controller.battle.fight.fightMorePlayer.FightZhanCheFuHuoCommand;
+	import controller.battle.fight.fightMorePlayer.FightZhanCheMaoYanCommand;
 	import controller.task.TaskCompleteCommand;
 	
 	import enum.ResEnum;
@@ -37,6 +39,8 @@ package proxy.battle
 	import mediator.battle.BattleBuyComponentMediator;
 	import mediator.battle.BattleFailPanelComponentMediator;
 	import mediator.battle.BattleFightMediator;
+	import mediator.battle.BattleFightViewComponentMediator;
+	import mediator.battle.BattleTiShiPanelComponentMediator;
 	import mediator.battle.BattleVictoryPanelComponentMediator;
 	import mediator.prompt.PromptMediator;
 	
@@ -81,6 +85,8 @@ package proxy.battle
 	import vo.battle.fight.FightResultVO;
 	import vo.battle.fight.FightResurgenceVo;
 	import vo.battle.fight.FightVictoryRewardVO;
+	import vo.battle.fight.fightMorePlayer.FightZhanCheFuHuoVO;
+	import vo.battle.fight.fightMorePlayer.FightZhanCheMaoYanVO;
 	import vo.cangKu.BaseItemVO;
 	import vo.cangKu.ZhanCheInfoVO;
 	import vo.userInfo.UserInfoVO;
@@ -93,6 +99,8 @@ package proxy.battle
 	public class BattleProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String="BattleProxy";
+		
+		public static var isChaoShi:Boolean=false;
 
 		private var _getAllZhanCheListCallBack:Function;
 
@@ -101,6 +109,8 @@ package proxy.battle
 		private var _enterBattleZhanCheID:String;
 		
 		private var _callBackFun:Function;
+		
+		
 		/**
 		 * 玩家所有战车
 		 * value:ZhanCheInfoVO
@@ -115,31 +125,51 @@ package proxy.battle
 		public var newUserData:USER_DATA;
 		
 		public var pickupArr:Array=[];
+
+		public var isCompleteRenWu:Boolean;
 		
 		public function BattleProxy(data:Object=null)
 		{
 			super(NAME, data);
 			
+			
+			// 可移动对象移动历史    （广播）
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_MOVING_HISTORY, moveHistoryResult);
+			//攻击者对象移动
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_MOVING, zhanCheMoveResult);
+			// 开火
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_FIRE, fireResult);
+			//自定义消息
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_BOARDCAST_MESSAGE, customMessageResult);
+			//爆炸伤害
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_ATTACKED, attackedResult);
+			//捡到物品 返回      (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_REQUEST_BUFFER_RESULT, fightItemResult);
+			//生成小飞机    (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_NPC_CHARIOT_ENTER, createFeiJiResult);
+			//请求控制结果    (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_REQUEST_CONTROL_RESULT, getContorlResult);
+			
 //			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_RELEASE_CONTROL, freeContorlResult);/
+			//广播受到伤害对象当前  (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_BOARDCAST_STATUS, updateHitResult);
+			//更新对象属性 改基地耐久为5%，攻击去掉  (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_UPDATE_OBJECT, updateCenterResult);
+			//击毁建筑（炮台）获得荣誉  (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_OBTAIN_HONOR, dropHonorResult);
+			//	新玩家进入房间   (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_PLAYER_ENTER, newPlayerEnterResult);
+			//游戏结束 (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_FINISH, finishResult);
+			//游戏超时结束 (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_FINISH_TIMEOUT, finishTimeOutResult);
+			//断开连接，赢了才会有战斗结果 (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_SHUTDOWN, shutDownResult);
+			//打爆建筑时的物品掉落  (广播)
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_BUFFER_GENERATED, dropItemResult);
 			//多人同时战斗（广播投票）
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_VOTE_STARTUP,voteSatrtUpResult);
-			//购买结果返回
+			//购买结果返回（广播）
 			RoomProtocol.registerProtocol(CommandEnum.ROOM2CLIENT_VOTE_RESULT,buyResult);
 		}
 
@@ -165,7 +195,8 @@ package proxy.battle
 
 			if (data.hasOwnProperty("errors"))
 			{
-				sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString("errors:getAllZhanCheListResult"));
+				trace(data.errors);
+//				sendNotification(PromptMediator.SCROLL_ALERT_NOTE, MultilanguageManager.getString("errors:getAllZhanCheListResult"));
 				_getAllZhanCheListCallBack=null;
 				return;
 			}
@@ -201,7 +232,8 @@ package proxy.battle
 		{
 			_enterBattleCallBack=callBack;
 			_enterBattleZhanCheID=id;
-
+			
+			isChaoShi=false;
 			var plantioidProxy:PlantioidProxy=getProxy(PlantioidProxy);
 			plantioidProxy.getPlantioidInfo(PlantioidProxy.selectedVO.id, function():void
 			{
@@ -246,7 +278,8 @@ package proxy.battle
 
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				_enterBattleCallBack=null;
 				return;
 			}
@@ -281,7 +314,8 @@ package proxy.battle
 
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				_enterBattleCallBack=null;
 				return;
 			}
@@ -345,7 +379,8 @@ package proxy.battle
 
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:loginRoomResult"));
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:loginRoomResult"));
 				_enterBattleCallBack=null;
 				return;
 			}
@@ -364,7 +399,7 @@ package proxy.battle
 		}
 
 		/**
-		 *新玩家进入房间
+		 *	新玩家进入房间   (广播)
 		 *
 		 */
 		private function newPlayerEnterResult(pg:RoomSocketIn):void
@@ -373,8 +408,8 @@ package proxy.battle
 			
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:ROOM2CLIENT_PLAYER_ENTER"));
-				
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:ROOM2CLIENT_PLAYER_ENTER"));
 				return;
 			}
 			
@@ -388,9 +423,8 @@ package proxy.battle
 					newUserData=new USER_DATA();
 					newUserData.mergeFrom(pg.body);
 					var fortPlayer1:PLAYER1=newUserData.player1s[0]
-					userData.player1s.push(newUserData.player1s[0]);
-					var comp:BattleFightViewComponent=new BattleFightViewComponent();
-					comp.upDataItem();
+					userData.player1s.push(fortPlayer1);
+					sendNotification(BattleFightViewComponentMediator.UPDATE_ITEM_NOTE);
 					sendNotification(FightNewPlayerCommand.FIGHT_NEWPLAYER_COMMAND,fortPlayer1);
 				}
 				
@@ -419,13 +453,19 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 			
 			var fightResVo:FightResurgenceVo=new FightResurgenceVo();
 			fightResVo.toObj(pg.body);
 			sendNotification(FightResurgenceCommand.FIGHT_RESURGENCE_COMMAND,fightResVo);
+			
+			var fightZhanCheFuHuoVO:FightZhanCheFuHuoVO=new FightZhanCheFuHuoVO();
+			fightZhanCheFuHuoVO.id=fightResVo.idType;
+			fightZhanCheFuHuoVO.isFuHuo=1;
+			zhanCheFuHuo(fightZhanCheFuHuoVO);
 			
 			if(_callBackFun!=null)
 				_callBackFun();
@@ -474,7 +514,7 @@ package proxy.battle
 						buildingVO.attackCoolEndTime=0;
 						buildingVO.voType=FightVOTypeEnum.building;
 						buildingVO.lockArea=buildingVO.searchArea;
-						buildingVO.explodeArea=buildingVO.currentAttackArea + 100; //TODO:ZN 恢复
+						buildingVO.explodeArea=buildingVO.currentAttackArea + 100; //TODO:ZN 恢复建筑的攻击范围
 						buildingVO.name=BattleBuildTypeEnum.getBuildName(buildingVO.type);
 					}
 				}
@@ -574,7 +614,7 @@ package proxy.battle
 
 		private function setBuffProperty(buffVO:BUFFER_DEF, zhanCheVO:CHARIOT=null):void
 		{
-			buffVO.uid=UIDUtil.createUID();
+			buffVO.uid=buffVO.x+";"+buffVO.y;
 			FightDataUtil.dataDic[buffVO.uid]=buffVO;
 		
 			buffVO.voType=FightVOTypeEnum.item;
@@ -594,8 +634,8 @@ package proxy.battle
 			zhanCheVO.voType=FightVOTypeEnum.zhanChe;
 			zhanCheVO.myMoveSpeed=CalculateUtil.fightZhanCheSpeed(zhanCheVO);
 //			zhanCheVO.lockArea=zhanCheVO.totalAttackArea;
-			//TODO:ZN 恢复
-			zhanCheVO.lockArea=200;
+			//TODO:ZN 恢复战车的锁定范围
+			zhanCheVO.lockArea=250;
 				
 			//挂件
 			var guaJianVO:TANKPART;
@@ -606,8 +646,8 @@ package proxy.battle
 				guaJianVO.voType=FightVOTypeEnum.guaJia;
 
 //				guaJianVO.myAttackArea=CalculateUtil.fightZhanCheAttackArea(zhanCheVO, guaJianVO);
-				guaJianVO.myAttackArea=300;//TODO:ZN 恢复
-				guaJianVO.explodeArea=guaJianVO.explodeArea + 100; //TODO:ZN 恢复
+				guaJianVO.myAttackArea=350;//TODO:ZN 恢复挂件的攻击范围
+				guaJianVO.explodeArea=guaJianVO.explodeArea + 100; //TODO:ZN 恢复挂件的爆炸范围
 			}
 		}
 
@@ -654,6 +694,7 @@ package proxy.battle
 			RoomSocket.instance.sendMessage(out);
 		}
 		
+		//攻击者对象移动
 		private function zhanCheMoveResult(pg:RoomSocketIn):void
 		{
 			var fightMoveVO:FightMoveVO=new FightMoveVO();
@@ -691,11 +732,13 @@ package proxy.battle
 			RoomSocket.instance.sendMessage(out);
 		}
 
+		// 开火
 		private function fireResult(pg:RoomSocketIn):void
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -725,11 +768,13 @@ package proxy.battle
 			RoomSocket.instance.sendMessage(out);
 		}
 
+		//自定义消息
 		private function customMessageResult(pg:RoomSocketIn):void
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -746,6 +791,24 @@ package proxy.battle
 					sendNotification(FightLockCommand.FIGHT_LOCK_COMMAND, lockVO);
 					break;
 				}
+				case FightCustomMessageTypeEnum.MAO_YAN:
+				{
+					//冒烟
+					var fightZhanCheMaoYanVO:FightZhanCheMaoYanVO = new FightZhanCheMaoYanVO();
+					fightZhanCheMaoYanVO.toObj(pg.body);
+					//通知冒烟控制器
+					sendNotification(FightZhanCheMaoYanCommand.FIGHT_ZHAN_CHE_MAO_YAN_COMMAND,fightZhanCheMaoYanVO);
+					break;
+				}
+				case FightCustomMessageTypeEnum.FU_HUO:
+				{
+					//复活
+					var fightZhanCheFuHuoVO:FightZhanCheFuHuoVO=new FightZhanCheFuHuoVO();
+					fightZhanCheFuHuoVO.toObj(pg.body);
+					//通知复活控制器
+					sendNotification(FightZhanCheFuHuoCommand.FIGHT_ZHAN_CHE_FU_HUO_COMMAND,fightZhanCheFuHuoVO);
+					break;
+				}
 			}
 		}
 
@@ -760,11 +823,13 @@ package proxy.battle
 			RoomSocket.instance.sendMessage(out);
 		}
 
+		//爆炸伤害
 		private function attackedResult(pg:RoomSocketIn):void
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -786,11 +851,13 @@ package proxy.battle
 			RoomSocket.instance.sendMessage(out);
 		}
 
+		//捡到物品 返回      (广播)
 		private function fightItemResult(pg:RoomSocketIn):void
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -824,7 +891,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -877,13 +945,15 @@ package proxy.battle
 			RoomSocket.instance.sendMessage(out);
 		}
 
+		//请求控制结果    (广播)
 		private function getContorlResult(pg:RoomSocketIn):void
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
 				//TODU LW:此处需要屏蔽
 				//412请求控制结果
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -940,7 +1010,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 			sendNotification(BattleBuyComponentMediator.SHOW_NOTE);
@@ -968,11 +1039,12 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 			//TODO LW: 显示谁购买到了此要塞
-			//显示谁购买到了此要塞(此处hulue)
+			//显示谁购买到了此要塞(此处忽略)
 		}
 		/**
 		 *更新伤害
@@ -983,7 +1055,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 				
@@ -1009,7 +1082,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -1035,7 +1109,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 
@@ -1048,6 +1123,7 @@ package proxy.battle
 			buffVO.iconURL=ResEnum.fightBuffItemIcon + buffVO.itemType + ".png";
 			buffVO.data=honorVO;
 			sendNotification(FightDropHonorCommand.FIGHT_DROP_HONOR_COMMAND, buffVO);
+			sendNotification(BattleFightViewComponentMediator.ADDCOUNT_NOTE);
 		}
 		
 		/**
@@ -1058,17 +1134,12 @@ package proxy.battle
 		private function finishResult(pg:RoomSocketIn):void
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
-			{
-				sendNotification(BattleFailPanelComponentMediator.SHOW_NOTE);
+			{				
+				trace("errors:" + pg.result);
 				return;
 			}
 			
-			var userProxy:UserInfoProxy=getProxy(UserInfoProxy);
-			if(userProxy.userInfoVO.index==TaskEnum.index24)
-			{
-				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
-			}
-			
+			sendNotification(BattleFightViewComponentMediator.STOPCD_NOTE);
 		}
 		
 
@@ -1081,7 +1152,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, "errors:" + pg.result);
 				return;
 			}
 			var buffVO:BUFFER_DEF=new BUFFER_DEF();
@@ -1099,6 +1171,7 @@ package proxy.battle
 
 			fightMed.comp.buildSp.addChild(fightItemComp);
 		}
+		
 		/**
 		 * 游戏超时结束
 		 * @param pg
@@ -1108,11 +1181,14 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:finishTimeOutResult"));
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:finishTimeOutResult"));
 				return;
 			}
 			
-			sendNotification(BattleFailPanelComponentMediator.SHOW_NOTE);
+			isChaoShi=true;
+			sendNotification(BattleFightViewComponentMediator.LOSE_NOTE);
+			sendNotification(BattleFightViewComponentMediator.STOPCD_NOTE);
 		}
 		
 		/**
@@ -1124,7 +1200,8 @@ package proxy.battle
 		{
 			if (pg.result != GameServerErrorEnum.RESULT_SUCCESS)
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:shutDownResult"));
+				trace("errors:" + pg.result);
+//				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString("errors:shutDownResult"));
 				return;
 			}
 			
@@ -1143,10 +1220,40 @@ package proxy.battle
 			fightVictoryRewardVO.gain_fort=pg.body.readInt();
 			fightVictoryRewardVO.dark_delta=pg.body.readInt();
 			fightVictoryRewardVO.dark_crystal_for_relive=pg.body.readInt();
+			isCompleteRenWu=true;
 			
+			if(isChaoShi)
+				return;
 			sendNotification(BattleVictoryPanelComponentMediator.SHOW_NOTE,fightVictoryRewardVO);
-			
+			sendNotification(BattleFightViewComponentMediator.STOPCD_NOTE);
 		}
+		
+		
+		/**
+		 *战车冒烟
+		 * @param fightZhanCheMaoYanVO
+		 *
+		 */
+		public function zhanCheMaoYan(fightZhanCheMaoYanVO:FightZhanCheMaoYanVO):void
+		{
+//			var myID:String=FightDataUtil.getMyChariot().id.toString();
+//			if (fightZhanCheMaoYanVO.id == myID)
+//				return;
+			var out:RoomSocketOut=new RoomSocketOut(CommandEnum.ROOM2CLIENT_BOARDCAST_MESSAGE, fightZhanCheMaoYanVO.toBy());
+			RoomSocket.instance.sendMessage(out);
+		}
+		
+		/**
+		 * 战车复活通知小队中其他玩家
+		 * @param fightZhanCheMaoYanVO
+		 *
+		 */
+		public function zhanCheFuHuo(fightZhanCheFuHuoVO:FightZhanCheFuHuoVO):void
+		{
+			var out:RoomSocketOut=new RoomSocketOut(CommandEnum.ROOM2CLIENT_BOARDCAST_MESSAGE, fightZhanCheFuHuoVO.toBy());
+			RoomSocket.instance.sendMessage(out);
+		}
+		
 	/******************************************************
 	*
 	* 功能方法

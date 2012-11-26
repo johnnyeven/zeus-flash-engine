@@ -16,6 +16,11 @@ package view.battle.build
 	
 	import vo.battle.BattleBuildVO;
 	
+	/**
+	 * 战场建筑修建倒计时
+	 * @author Administrator
+	 * 
+	 */	
 	public class BattleBuildTimeBarComponent extends Component
 	{
 		public var timeLabel:Label;
@@ -48,9 +53,12 @@ package view.battle.build
 			super.dispose();
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER,timerHandler);
-			_timer=null;
+			//TODO LW :恢复
+//			_timer=null;
 			_tweenLite.kill();
-			_tweenLite=null;
+//			_tweenLite=null;
+			//TODO LW :恢复
+//			_tweenLite=null;
 		}
 		
 		protected function timerHandler(event:TimerEvent):void
@@ -62,7 +70,6 @@ package view.battle.build
 				
 				return ;
 			}
-			
 			timeLabel.text=DateFormatter.formatterTime(buildVO.remainTime/1000);
 		}
 

@@ -2,6 +2,8 @@ package mediator.showBag
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	
+	import enum.item.ItemEnum;
+	
 	import events.showBag.ShowBagEvent;
 	
 	import mediator.BaseMediator;
@@ -86,7 +88,7 @@ package mediator.showBag
 		{
 			if(isEmailInfor)
 			{
-				if(event.baseItemVO.key)
+				if(event.baseItemVO.item_type == ItemEnum.recipes)
 				{
 					//vip道具不能邮寄给别人
 					var obj:Object = {infoLable:MultilanguageManager.getString("showBagTitle"),showLable:MultilanguageManager.getString("showBagInfor"),mediatorLevel:level};

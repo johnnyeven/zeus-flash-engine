@@ -37,19 +37,23 @@ package proxy.factory
 		[Bindable]
 		public var makeListArr:Array=[];
 		
-		[Bindable]
-		public var drawVo:DrawListVo;
+		public var makeZCListArr:Array=[];
+		public var makeWQListArr:Array=[];
+		public var makeGJListArr:Array=[];
 		
 		private var callBcakFunction:Function;
 		
 		private var userProxy:UserInfoProxy;
 		private var pageProxy:PackageViewProxy;
 		
+		public var conditionArr:Array;
+		
+		private var _count:int;
+		
 //		public  var allZhanCheList:Array;
 		public function FactoryProxy( data:Object=null)
 		{
 			super(NAME, data);
-			drawVo=new DrawListVo();
 			userProxy=getProxy(UserInfoProxy);
 			pageProxy=getProxy(PackageViewProxy);
 		}
@@ -105,11 +109,29 @@ package proxy.factory
 				list.push(drawListVo);
 			}
 			makeListArr=list;
+			setAllArr();
 			
 			if(callBcakFunction!=null)
 			{
 				callBcakFunction();
 				callBcakFunction=null;
+			}
+		}
+		
+		public function setAllArr():void
+		{
+			makeZCListArr=[];
+			makeWQListArr=[];
+			makeGJListArr=[];
+			for(var i:int;i<makeListArr.length;i++)
+			{
+				var drawVo:DrawListVo=makeListArr[i] as DrawListVo;
+				if(drawVo.recipe_type==2&&drawVo.tank_part_type!=1)
+					makeGJListArr.push(drawVo);				
+				if(drawVo.recipe_type==2&&drawVo.tank_part_type==1)
+					makeWQListArr.push(drawVo);			
+				if(drawVo.recipe_type==1)
+					makeZCListArr.push(drawVo);							
 			}
 		}
 		
@@ -137,21 +159,31 @@ package proxy.factory
 				callBcakFunction=null;
 				return;
 			}
-			if(data.event)
-			{
-				drawVo.current_time=data.event.current_time;
-				drawVo.start_time=data.event.start_time;
-				drawVo.finish_time=data.event.finish_time;
-				drawVo.initTime();
-				drawVo.eventID=data.event.id;				
-			}
-			drawVo.id=data.id;
-			drawVo.recipe_type=data.recipe_type;
-			drawVo.category=data.category;
-			drawVo.enhanced=data.enhanced;
-			drawVo.tank_part_type=data.tank_part_type;
 			
-			FactoryEnum.CURRENT_DRAWVO=drawVo;
+			for(var i:int=0;i<makeListArr.length;i++)
+			{
+				var dwVo:DrawListVo=makeListArr[i] as DrawListVo;
+				if(dwVo.id==data.id)
+				{
+					if(data.event)
+					{
+						dwVo.current_time=data.event.current_time;
+						dwVo.start_time=data.event.start_time;
+						dwVo.finish_time=data.event.finish_time;
+						dwVo.initTime();
+						dwVo.eventID=data.event.id;				
+					}
+					dwVo.id=data.id;
+					dwVo.recipe_type=data.recipe_type;
+					dwVo.category=data.category;
+					dwVo.enhanced=data.enhanced;
+					dwVo.tank_part_type=data.tank_part_type;
+					
+					FactoryEnum.CURRENT_DRAWVO=dwVo;
+					makeListArr[i]=dwVo;
+					setAllArr();
+				}
+			}
 			
 			userProxy.userInfoVO.broken_crysta=data.resources.broken_crystal;
 			userProxy.userInfoVO.crystal=data.resources.crystal;
@@ -208,9 +240,30 @@ package proxy.factory
 				return;
 			}
 			
+			for(var i:int=0;i<makeListArr.length;i++)
+			{
+				var dwVo:DrawListVo=makeListArr[i] as DrawListVo;
+				if(dwVo.id==data.id)
+				{
+				
+					dwVo.current_time=0;
+					dwVo.start_time=0;
+					dwVo.finish_time=0;
+					dwVo.initTime();
+					dwVo.eventID=null;				
+				
+					dwVo.id=data.id;
+					dwVo.recipe_type=data.recipe_type;
+					dwVo.category=data.category;
+					dwVo.enhanced=data.enhanced;
+					dwVo.type=data.type;
+					
+					makeListArr[i]=dwVo;
+					setAllArr();
+				}
+			}
+			
 			userProxy.userInfoVO.dark_crystal-=BaseItemVO.MONEY;
-			
-			
 			
 			if(callBcakFunction!=null)
 			{
@@ -303,12 +356,13 @@ package proxy.factory
 		 *强化功能
 		 * 
 		 */		
-		public function enhance_chariot(chariot_id:String,attribute:String,callBcakFun:Function=null):void
+		public function enhance_chariot(chariot_id:String,attribute:String,count:int=1,callBcakFun:Function=null):void
 		{
 			if(!Protocol.hasProtocolFunction(CommandEnum.enhance_chariot,enhanceReputation))
 				Protocol.registerProtocol(CommandEnum.enhance_chariot, enhanceReputation);
 			
-			var obj:Object = {player_id:userProxy.userInfoVO.player_id ,chariot_id:chariot_id ,attribute:attribute};
+			_count=count;
+			var obj:Object = {player_id:userProxy.userInfoVO.player_id ,chariot_id:chariot_id ,attribute:attribute,count:count};
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.enhance_chariot, obj, ConnDebug.HTTP, URLRequestMethod.POST);
 		}
@@ -323,7 +377,7 @@ package proxy.factory
 				return;
 			}			
 			
-			userProxy.userInfoVO.dark_crystal-=1;
+			userProxy.userInfoVO.dark_crystal-=_count;
 			FactoryEnum.CURRENT_ZHANCHE_VO.total_attack_speed=data.total_attack_speed;
 			FactoryEnum.CURRENT_ZHANCHE_VO.total_attack_area=data.total_attack_area;
 			FactoryEnum.CURRENT_ZHANCHE_VO.total_endurance=data.total_endurance;

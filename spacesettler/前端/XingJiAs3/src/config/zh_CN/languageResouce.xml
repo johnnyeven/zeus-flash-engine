@@ -9,6 +9,8 @@
     <loginFail>登陆失败</loginFail>
     <createFail>创建失败</createFail>
     <tips>提示</tips>
+    <jiaSu>加速</jiaSu>
+    <foundTitle>创建军团</foundTitle>
     <loginUserNameEmpty>用户名不能为空</loginUserNameEmpty>
     <loginNaneWrong>用户名长度至少为6位</loginNaneWrong>
     <loginPasswordEmpty>密码不能为空</loginPasswordEmpty>
@@ -31,7 +33,7 @@
     <loaderAllView>正在加载总览界面</loaderAllView>
     <loaderRongYu>正在加载荣誉界面</loaderRongYu>
     <NOT_ENOUGH_POWER>电能不足</NOT_ENOUGH_POWER>
-    <PACKAGE_FULL_FOR_UPGRADE>包满了升级</PACKAGE_FULL_FOR_UPGRADE>
+    <PACKAGE_FULL_FOR_UPGRADE>背包空间不足！</PACKAGE_FULL_FOR_UPGRADE>
     <notEnoughInfo>升级该建筑后会导致你的电量不足，电量不足将会使你的基地和要塞的采集功能停止运作，是否还要升级？</notEnoughInfo>
     <INSUFFICIENT_RESOURCES>资源不足</INSUFFICIENT_RESOURCES>
     <NOT_REACHED_BUILDING_UPGRADE_CONDITIONS>没有达到升级条件，无法进行升级</NOT_REACHED_BUILDING_UPGRADE_CONDITIONS>
@@ -117,14 +119,14 @@
 	<buySuccess>兑换成功！</buySuccess>
 	
 	<numOfYaoSai>要塞</numOfYaoSai>
-	<buffType1>水晶产量增加</buffType1>
+	<buffType1>金晶产量增加</buffType1>
 	<buffType2>氚气产量增加</buffType2>
 	<buffType3>暗物质产量增加</buffType3>
 	<buffType>增益类型：</buffType>
 	
     <!--———————————————————————条件不足 ——————————————————————-->
     <broken_crysta>暗物质：</broken_crysta>
-    <crystal>水晶矿：</crystal>
+    <crystal>金晶矿：</crystal>
     <tritium>氚气：</tritium>
     <power_supply>电能：</power_supply>
     <center_build>基地中心：</center_build>
@@ -139,7 +141,7 @@
     <ji_guang_ke_ji>激光科技：</ji_guang_ke_ji>
     <dian_ci_ke_ji>电磁科技：</dian_ci_ke_ji>
     <an_neng_ke_ji>暗能科技：</an_neng_ke_ji>
-    <shuijingbuzu>水晶数量不足无法熔炼！</shuijingbuzu>
+    <shuijingbuzu>金晶数量不足无法熔炼！</shuijingbuzu>
     
     
     <dark_crystal>暗能水晶</dark_crystal>
@@ -154,6 +156,8 @@
     <plantioidSwicthPointXY>切换坐标</plantioidSwicthPointXY>
 	<plantJumpMaxTips>该区域还未被探测,将跳转到已探测的最大区域</plantJumpMaxTips>
 	<plantDragInfoTips>按鼠标左键拖拽，移动可视区域</plantDragInfoTips>
+	<PlantTongZhengYingName>星际联盟</PlantTongZhengYingName>
+	<PlantDiZhengYingName>星际海盗</PlantDiZhengYingName>
     <!--———————————————————————挂件描述——————————————————————-->
     <guanJianDes_value>评分</guanJianDes_value>
     <guanJianDes_level>等级</guanJianDes_level>
@@ -221,6 +225,7 @@
 
 	<armyGroupTitle>警告</armyGroupTitle>
 	<armyGroupInfor>自己不能给自己发邮件！</armyGroupInfor>
+	<notZhanChe>玩家没有战车，需要先制造或购买战车</notZhanChe>
 
 	<!--———————————————————————军团战 ——————————————————————-->
 	<wuziyuan>此星球无资源</wuziyuan>
@@ -247,6 +252,10 @@
 	<titleInChat>重要提示</titleInChat>
 	<inforInChat>您暂未加入军团，请加入后再试！</inforInChat>
 	<canNotCharTips>发送消息太快，请稍后再试</canNotCharTips>
+	<titleInChatNoPrivateChatName>重要提示</titleInChatNoPrivateChatName>
+	<inforInChatNoPrivateChatName>请在聊天框或好友列表中选择私聊对象！</inforInChatNoPrivateChatName>
+	<titleInChatNoChatInfor>重要提示</titleInChatNoChatInfor>
+	<inforInChatNoChatInfor>请输入聊天内容！</inforInChatNoChatInfor>
 	
 	<!--———————————————————————邮件 ——————————————————————-->
 	<titleInEmail>警告</titleInEmail>
@@ -259,7 +268,7 @@
 	<scienceLevelTitle>警告</scienceLevelTitle>
 	<scienceLevelInfor>传送附件需要星域通讯科技达到10级！</scienceLevelInfor>
 	<sourceNotEnoughTitle>警告</sourceNotEnoughTitle>
-    <crystalSourceNotEnough>水晶不足！</crystalSourceNotEnough>
+    <crystalSourceNotEnough>金晶不足！</crystalSourceNotEnough>
     <tritiumSourceNotEnough>氢氚不足！</tritiumSourceNotEnough>
     <brokenCrystalSourceNotEnough>暗物质不足！</brokenCrystalSourceNotEnough>
     <showBagTitle>提示</showBagTitle>

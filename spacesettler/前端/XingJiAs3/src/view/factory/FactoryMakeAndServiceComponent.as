@@ -212,6 +212,7 @@ package view.factory
 				
 				if(FactoryEnum.CURRENT_ZHANCHE_VO.id==zhancheVo.id)
 				{
+					FactoryEnum.CURRENT_ZHANCHE_VO=zhancheVo;
 					currtentItem=item;					
 				}
 				

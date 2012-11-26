@@ -105,10 +105,10 @@
 		<index>5</index>
 		<title>基地建设4/16</title>
 		<name>金晶熔炼</name>
-		<broken_crystal/>
-		<crystal/>
-		<tritium/>
-		<dark_crystal/>
+		<broken_crystal>80</broken_crystal>
+		<crystal>800</crystal>
+		<tritium>500</tritium>
+		<dark_crystal>0</dark_crystal>
 		<des>&lt;root&gt;
 &lt;p&gt;
   &lt;s&gt;“暗物质”比“金晶矿”更难获得，产量非常低，大多数的建筑及科技都会用到“暗物质”，请在“晶体冶炼厂”内使用“金晶矿”熔炼“暗物质”。&lt;/s&gt;&lt;n/&gt;
@@ -151,7 +151,7 @@
 		<title>基地建设6/16</title>
 		<name>升级建筑Ⅰ</name>
 		<broken_crystal>120</broken_crystal>
-		<crystal>2000</crystal>
+		<crystal>1200</crystal>
 		<tritium>1600</tritium>
 		<dark_crystal>0</dark_crystal>
 		<des>&lt;root&gt;
@@ -175,7 +175,7 @@
 		<name>升级建筑Ⅱ</name>
 		<broken_crystal>80</broken_crystal>
 		<crystal>1600</crystal>
-		<tritium>1200</tritium>
+		<tritium>700</tritium>
 		<dark_crystal>0</dark_crystal>
 		<des>&lt;root&gt;
 &lt;p&gt;   
@@ -195,7 +195,7 @@
 		<index>9</index>
 		<title>基地建设8/16</title>
 		<name>升级建筑Ⅲ</name>
-		<broken_crystal>130</broken_crystal>
+		<broken_crystal>50</broken_crystal>
 		<crystal>10000</crystal>
 		<tritium>2000</tritium>
 		<dark_crystal>0</dark_crystal>

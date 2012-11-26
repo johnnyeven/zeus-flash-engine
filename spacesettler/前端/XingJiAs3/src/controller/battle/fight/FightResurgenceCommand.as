@@ -14,6 +14,11 @@ package controller.battle.fight
 	import vo.battle.fight.FightResurgenceVo;
 	import vo.cangKu.ZhanCheInfoVO;
 
+	/**
+	 * 战车的复活
+	 * @author gx
+	 * 
+	 */	
 	public class FightResurgenceCommand extends SimpleCommand
 	{
 		public static const FIGHT_RESURGENCE_COMMAND:String="FIGHT_RESURGENCE_COMMAND";

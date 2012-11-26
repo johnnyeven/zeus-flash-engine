@@ -11,6 +11,8 @@ package view.giftBag
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import proxy.taskGift.GiftBagProxy;
+	
 	import ui.components.Button;
 	import ui.components.Label;
 	import ui.core.Component;
@@ -39,12 +41,14 @@ package view.giftBag
 		public var itemType:int;
 		
 		private var _timer:Timer;
-		private var _timeCount:Number;
+		private var _total:Number;
+		private var _count:int;
 		
 		public function GiftBagOnlineItemComponent()
 		{
 			super(ClassUtil.getObject("view.giftItem4"));
 			_timer=new Timer(1000);
+			_timer.addEventListener(TimerEvent.TIMER,timerHandler);
 			
 			dateLabel=createUI(Label,"lastTime");
 			timeLabel=createUI(Label,"time");
@@ -53,6 +57,7 @@ package view.giftBag
 			brokenCrystalLabel=createUI(Label,"brokenCrystalNum");
 			darkCrystalLabel=createUI(Label,"darkCrystalNum");
 			getBtn=createUI(Button,"getBtn");
+			getBtn.enabled=false;
 			levelMC1=getSkin("lvMC1");
 			levelMC2=getSkin("lvMC2");
 			levelMC3=getSkin("lvMC3");
@@ -68,12 +73,43 @@ package view.giftBag
 			getBtn.addEventListener(MouseEvent.CLICK,getBtn_clickHandler);
 		}
 		
+		override public function dispose():void
+		{
+			maskSp.removeEventListener(MouseEvent.CLICK,getInfo_clickHandler);
+			if(_timer)
+			{
+				_timer.stop();
+				_timer.removeEventListener(TimerEvent.TIMER,timerHandler);
+				_timer=null;
+			}
+			super.dispose();
+		}
+		
+		protected function timerHandler(event:TimerEvent):void
+		{
+			_total--;
+			if(_total<=0)
+			{
+				_timer.stop();
+				_timer.removeEventListener(TimerEvent.TIMER,timerHandler);
+			}
+			
+			var s:int=int(_total/60/60);
+			var f:int=int(_total/60%60);
+			var m:int=int(_total%60);
+			timeLabel.text=(s>9?s:"0"+s)+":"+(f>9?f:"0"+f)+":"+(m>9?m:"0"+m);
+		}
+		
 		public function set setValue(data:GiftBagVO):void
 		{
-			_timer.start();
+			var giftBagProxy:GiftBagProxy=ApplicationFacade.getProxy(GiftBagProxy);
 			
-			dateLabel.text=data.begin_time+"-"+data.end_time;
-			timeLabel.text="";
+			dateLabel.text=giftBagProxy.setTime(data.begin_time)+"-"+giftBagProxy.setTime(data.end_time);
+			_total=data.countdown;
+			_timer.repeatCount=_total;
+			_timer.start();
+			_count=(data.now_time-data.last_time)/60;
+			
 			crystalLabel.text=data.crystal+"";
 			tritiumLabel.text=data.tritium+"";
 			brokenCrystalLabel.text=data.broken_crystal+"";
@@ -173,35 +209,17 @@ package view.giftBag
 					break;
 			}
 			
-			if(data.now_time-data.last_time!=0)
-			{
-				_timeCount=data.now_time-data.last_time;
-				_timer.repeatCount=_timeCount;
-				_timer.addEventListener(TimerEvent.TIMER,timerHandler);
-			}
-			
 			if(data.status=="false")
 			{
-//				if(data.now_time-data.last_time<=data.time)
+				if(_count>=data.time)
 					getBtn.enabled=true;
-//				else
-//					getBtn.enabled=false;
+				else
+					getBtn.enabled=false;
 			}
 			else
 				getBtn.enabled=false;
 			
 			itemType=data.type;
-		}
-		
-		protected function timerHandler(event:TimerEvent):void
-		{
-			_timeCount--;
-//			timeLabel.text=_timeCount+"";
-			if(_timeCount<=0)
-			{
-				_timer.stop();
-				_timer.removeEventListener(TimerEvent.TIMER,timerHandler);
-			}
 		}
 		
 		protected function getBtn_clickHandler(event:MouseEvent):void

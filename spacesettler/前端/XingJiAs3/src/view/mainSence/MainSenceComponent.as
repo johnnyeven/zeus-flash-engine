@@ -1,5 +1,6 @@
 package view.mainSence
 {
+    import com.greensock.TweenLite;
     import com.greensock.loading.BinaryDataLoader;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
@@ -11,8 +12,10 @@ package view.mainSence
     import events.buildingView.AddSelectorViewEvent;
     import events.buildingView.AddViewEvent;
     
+    import flash.display.MovieClip;
     import flash.display.Shape;
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.events.MouseEvent;
     import flash.geom.Point;
     
@@ -23,6 +26,8 @@ package view.mainSence
     
     import ui.components.LoaderImage;
     import ui.core.Component;
+    
+    import view.mainView.mainViewBuildUpComponent;
     
     import vo.BuildInfoVo;
 
@@ -71,11 +76,24 @@ package view.mainSence
         public var guanDaoLoaderImage:LoaderImage;
 
         public var buildCompDic:Object = {};
-
+		
+		public var showMc1:Sprite;
+		public var showMc2:Sprite;
+		public var showMc3:Sprite;
+		public var showMc4:Sprite;
+		public var showMc5:Sprite;
+		public var showMc6:Sprite;
+		public var showMc7:Sprite;
+		
 		public var chuanQiZhiYinSp:Sprite;			
 		public var kuangChangZhiShiSp:Sprite;		
 		public var keJiZhiYinSp:Sprite;		
-		public var junGongChangZhiYinSp:Sprite;		
+		public var junGongChangZhiYinSp:Sprite;	
+		
+		private var buildOver:MovieClip;
+		private var buildUpOver:mainViewBuildUpComponent;
+
+		private var sprite:Sprite;
         public function MainSenceComponent()
         {
             _userInfoProxy = ApplicationFacade.getProxy(UserInfoProxy);
@@ -95,6 +113,13 @@ package view.mainSence
 			keJiZhiYinSp = keJiSp.getChildByName("keJiZhiYinSp") as Sprite;
 			junGongChangZhiYinSp = junGongChangSp.getChildByName("junGongChangZhiYinSp") as Sprite;
 			
+			showMc1 = jiDiSp.getChildByName("showMc1") as Sprite;
+			showMc2 = cangKuSp.getChildByName("showMc2") as Sprite;
+			showMc3 = chuanQinSp.getChildByName("showMc3") as Sprite;
+			showMc4 = anNengDianChangSp.getChildByName("showMc4") as Sprite;
+			showMc5 = keJiSp.getChildByName("showMc5") as Sprite;
+			showMc6 = junGongChangSp.getChildByName("showMc6") as Sprite;
+			showMc7 = kuangChangSp.getChildByName("showMc7") as Sprite;
 			
             sortChildIndex();
 
@@ -112,6 +137,13 @@ package view.mainSence
 
         public override function dispose():void
         {
+			jiDiSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
+			chuanQinSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
+			anNengDianChangSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
+			cangKuSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
+			kuangChangSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
+			keJiSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
+			junGongChangSp.removeEventListener(MouseEvent.CLICK,doClickHandler);
             super.dispose();
             buildCompDic = null;
         }
@@ -279,15 +311,8 @@ package view.mainSence
             }
         }
 		
-		private function buildClear(sp:Sprite):void
-		{
-			while(sp.numChildren>0)
-			{
-				sp.removeChildAt(0);
-			}
-			
-		}
-
+		
+		
         private function buildListChange(value:Array):void
         {
             for (var i:int; i < value.length; i++)
@@ -303,42 +328,34 @@ package view.mainSence
 
                     if (buildInfoVo.type == BuildTypeEnum.CENTER)
 					{
-//						buildClear(jiDiSp);
                         jiDiSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.CHUANQIN)
 					{
-//						buildClear(chuanQinSp);
                         chuanQinSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.DIANCHANG)
 					{
-//						buildClear(anNengDianChangSp);
                         anNengDianChangSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.CANGKU)
 					{
-//						buildClear(cangKuSp);
                         cangKuSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.KUANGCHANG)
 					{
-//						buildClear(kuangChangSp);
                         kuangChangSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.KEJI)
 					{
-//						buildClear(keJiSp);
                         keJiSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.JUNGONGCHANG)
 					{
-//						buildClear(junGongChangSp);
                         junGongChangSp.addChild(buildComp);						
 					}
                     else if (buildInfoVo.type == BuildTypeEnum.SHIJINMAC)
                     {
-//						buildClear(shiJianJiQiSp);
                         shiJianJiQiSp.addChild(buildComp);
                         addMouseClick(shiJianJiQiSp);
                     }
@@ -346,8 +363,80 @@ package view.mainSence
             }
         }
 
-        private function judgeType(buildInfoVo:BuildInfoVo):void
+        public function overBuildShow(type:int,level:int):void
         {
+			sprite=showOver(type);
+			if(level<=1)
+			{
+				buildOver=ClassUtil.getObject("view.mainViewBuildOverSkin") as MovieClip;
+				sprite.addChild(buildOver);
+				buildOver.gotoAndPlay(1);
+				buildOver.addEventListener(Event.COMPLETE,playComplete);
+			}else
+			{
+				buildUpOver=new mainViewBuildUpComponent(level);
+				buildUpOver.level=level;
+				buildUpOver.alpha=0;
+				sprite.addChild(buildUpOver);
+				TweenLite.to(buildUpOver,1,{alpha:1,y:buildUpOver.y-buildUpOver.height*0.5,onComplete:buildUpOverComplete});
+			}
         }
+		
+		protected function buildUpOverComplete():void
+		{
+			sprite.removeChild(buildUpOver);
+			buildUpOver=null;
+		}
+		protected function playComplete(event:Event):void
+		{
+			sprite.removeChild(buildOver);
+			buildOver.removeEventListener(Event.COMPLETE,playComplete);
+			buildOver=null;
+		}
+		
+		private function showOver(type:int):Sprite
+		{
+			var sprite:Sprite;
+			switch(type)
+			{
+				case BuildTypeEnum.CENTER:
+				{
+					sprite=showMc1;
+					break;
+				}
+				case BuildTypeEnum.CANGKU:
+				{
+					sprite=showMc2;
+					break;
+				}
+				case BuildTypeEnum.CHUANQIN:
+				{
+					sprite=showMc3;
+					break;
+				}
+				case BuildTypeEnum.DIANCHANG:
+				{
+					sprite=showMc4;
+					break;
+				}
+				case BuildTypeEnum.KEJI:
+				{
+					sprite=showMc5;
+					break;
+				}
+				case BuildTypeEnum.JUNGONGCHANG:
+				{
+					sprite=showMc6;
+					break;
+				}
+				case BuildTypeEnum.KUANGCHANG:
+				{
+					sprite=showMc7;
+					break;
+				}
+			}
+			
+			return sprite;
+		}
     }
 }

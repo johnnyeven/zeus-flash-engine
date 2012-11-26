@@ -38,7 +38,7 @@ package mediator.friendList
 		{
 			super(NAME, new ViewIdCardComponent());
 			comp.med=this;
-			level=3;
+			level=1;
 			
 			friendProxy = getProxy(FriendProxy);
 			comp.addEventListener("closeIDCardComponent",closeHandler);

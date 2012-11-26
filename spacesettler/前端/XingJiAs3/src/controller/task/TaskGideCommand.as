@@ -1,5 +1,6 @@
 package controller.task
 {
+	import com.greensock.TweenLite;
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.PointUtil;
 	import com.zn.utils.StringUtil;
@@ -15,8 +16,10 @@ package controller.task
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.utils.setTimeout;
 	
 	import mediator.buildingView.CangKuCreateComponentMediator;
 	import mediator.buildingView.ChuanQinCreateComponentMediator;
@@ -61,8 +64,12 @@ package controller.task
 	{
 		public static const TASKGIDE_COMMAND:String="TASKGIDE_COMMAND";
 		
+		public static var isAddObj:Boolean=false;
 		public static var LENGTH:int;		
 		public static var BUTTON_TYPE:int=1;
+		public static var objContainer:DisplayObjectContainer;
+		public static var _button:Button;
+		public static var _comp:DisplayObjectContainer;
 		
 		private var _type:int;
 		private var taskVo:TaskInfoVO;
@@ -71,9 +78,6 @@ package controller.task
 		private var mainMed:MainViewMediator
 		private var sprite:Sprite;
 		private var userProxy:UserInfoProxy;
-		private var objContainer:DisplayObjectContainer;
-		private var _button:Button;
-		private var _comp:DisplayObjectContainer;
 		private var currtentBtn:Button;
 		public function TaskGideCommand()
 		{
@@ -90,11 +94,7 @@ package controller.task
 		 */
 		public override function execute(notification:INotification):void
 		{
-			_index=0;
-			taskVo=TaskEnum.CURRTENT_TASKVO;
-			LENGTH=taskVo.idArr.length;
-			_type=taskVo.idArr[_index];	
-			checkTypeId(_type);
+			index=0;			
 		}
 		
 		private function formatStr(str:String):String
@@ -109,9 +109,13 @@ package controller.task
 				case TaskEnum.TYPE1://*********************************************************建造氚气分离厂
 				{					
 					allNotClick(mainSenceMed.comp.chuanQinSp);
-					objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
-									formatStr("sence{0}_chuanQingCang_up")));
-					mainSenceMed.comp.chuanQinSp.addChild(objContainer);
+					if(isAddObj==false)
+					{
+						isAddObj=true;
+						objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
+										formatStr("sence{0}_chuanQingCang_up")));
+						mainSenceMed.comp.chuanQinSp.addChild(objContainer);						
+					}
 					sendNotification(taskGideComponentMediator.SHOW_NOTE,mainSenceMed.comp.chuanQiZhiYinSp);
 					break;
 				}				
@@ -120,6 +124,8 @@ package controller.task
 					getMediator(ChuanQinCreateComponentMediator,function(chuanQiMed:ChuanQinCreateComponentMediator):void
 					{						
 						sendNotification(taskGideComponentMediator.SHOW_NOTE,chuanQiMed.comp.createButton);
+						chuanQiMed.comp.createButton.addEventListener(MouseEvent.CLICK,clearObjContainer);
+						chuanQiMed.comp.closeButton.addEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
 					});
 					
 					break;
@@ -127,9 +133,13 @@ package controller.task
 				case TaskEnum.TYPE3://*******************************************************建造暗能电厂
 				{
 					allNotClick(mainSenceMed.comp.anNengDianChangSp);
-					objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
-						formatStr("sence{0}_anNengDianChang_up")));
-					mainSenceMed.comp.anNengDianChangSp.addChild(objContainer);
+					if(isAddObj==false)
+					{
+						isAddObj=true;
+						objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
+							formatStr("sence{0}_anNengDianChang_up")));
+						mainSenceMed.comp.anNengDianChangSp.addChild(objContainer);
+					}
 					sendNotification(taskGideComponentMediator.SHOW_NOTE,mainSenceMed.comp.anNengDianChangSp);
 					break;
 				}				
@@ -138,6 +148,8 @@ package controller.task
 					getMediator(DianChangCreateComponentMediator,function(dianChangMed:DianChangCreateComponentMediator):void
 					{
 						sendNotification(taskGideComponentMediator.SHOW_NOTE,dianChangMed.comp.createButton);
+						dianChangMed.comp.createButton.addEventListener(MouseEvent.CLICK,clearObjContainer);
+						dianChangMed.comp.closeButton .addEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
 					});
 						
 					break;
@@ -145,9 +157,13 @@ package controller.task
 				case TaskEnum.TYPE5://************************************************************建造矿场
 				{
 					allNotClick(mainSenceMed.comp.kuangChangSp);
-					objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
-						formatStr("sence{0}_kuangChang_up")));
-					mainSenceMed.comp.kuangChangSp.addChild(objContainer);
+					if(isAddObj==false)
+					{
+						isAddObj=true;
+						objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
+							formatStr("sence{0}_kuangChang_up")));
+						mainSenceMed.comp.kuangChangSp.addChild(objContainer);
+					}
 					sendNotification(taskGideComponentMediator.SHOW_NOTE,mainSenceMed.comp.kuangChangZhiShiSp);
 					
 					break;
@@ -157,6 +173,8 @@ package controller.task
 					getMediator(YeLianCreateComponentMediator,function(yeLianMed:YeLianCreateComponentMediator):void
 					{
 						sendNotification(taskGideComponentMediator.SHOW_NOTE,yeLianMed.comp.createButton);
+						yeLianMed.comp.createButton.addEventListener(MouseEvent.CLICK,clearObjContainer);
+						yeLianMed.comp.closeButton.addEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
 					});
 					
 					break;
@@ -187,9 +205,13 @@ package controller.task
 				case TaskEnum.TYPE10://***************************************************************建造仓库
 				{
 					allNotClick(mainSenceMed.comp.cangKuSp);
-					objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
-						formatStr("sence{0}_cangKu_up")));
-					mainSenceMed.comp.cangKuSp.addChild(objContainer);
+					if(isAddObj==false)
+					{
+						isAddObj=true;
+						objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
+							formatStr("sence{0}_cangKu_up")));
+						mainSenceMed.comp.cangKuSp.addChild(objContainer);
+					}
 					sendNotification(taskGideComponentMediator.SHOW_NOTE,mainSenceMed.comp.cangKuSp);
 					
 					break;
@@ -199,6 +221,8 @@ package controller.task
 					getMediator(CangKuCreateComponentMediator,function(cangKuMed:CangKuCreateComponentMediator):void
 					{
 						sendNotification(taskGideComponentMediator.SHOW_NOTE,cangKuMed.comp.createButton);
+						cangKuMed.comp.createButton.addEventListener(MouseEvent.CLICK,clearObjContainer);
+						cangKuMed.comp.closeButton.addEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
 					});
 					
 					break;
@@ -281,9 +305,13 @@ package controller.task
 				case TaskEnum.TYPE21://**********************************************************建造科学院
 				{					
 					allNotClick(mainSenceMed.comp.keJiSp);
-					objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
-						formatStr("sence{0}_keXueYuan_up")));
-					mainSenceMed.comp.keJiSp.addChild(objContainer);
+					if(isAddObj==false)
+					{
+						isAddObj=true;
+						objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
+							formatStr("sence{0}_keXueYuan_up")));
+						mainSenceMed.comp.keJiSp.addChild(objContainer);
+					}
 					sendNotification(taskGideComponentMediator.SHOW_NOTE,mainSenceMed.comp.keJiZhiYinSp);
 					break;
 				}				
@@ -292,6 +320,8 @@ package controller.task
 					getMediator(KeJiCreateComponentMediator,function(chuanQiMed:KeJiCreateComponentMediator):void
 					{						
 						sendNotification(taskGideComponentMediator.SHOW_NOTE,chuanQiMed.comp.createButton);
+						chuanQiMed.comp.createButton.addEventListener(MouseEvent.CLICK,clearObjContainer);
+						chuanQiMed.comp.closeButton.addEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
 					});
 					
 					break;
@@ -299,17 +329,23 @@ package controller.task
 				case TaskEnum.TYPE23://********************************************************建造军工厂
 				{					
 					allNotClick(mainSenceMed.comp.junGongChangSp);
-					objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
-						formatStr("sence{0}_junGongCang_up")));
-					mainSenceMed.comp.junGongChangSp.addChild(objContainer);
+					if(isAddObj==false)
+					{
+						isAddObj=true;
+						objContainer=DisplayObjectContainer(ClassUtil.getDisplayObjectByLoad(MainSenceEnum.chuanQingCangURL, 
+							formatStr("sence{0}_junGongCang_up")));
+						mainSenceMed.comp.junGongChangSp.addChild(objContainer);
+					}
 					sendNotification(taskGideComponentMediator.SHOW_NOTE,mainSenceMed.comp.junGongChangSp);
 					break;
 				}				
 				case TaskEnum.TYPE24:
-				{
+				{					
 					getMediator(JunGongCreateComponentMediator,function(chuanQiMed:JunGongCreateComponentMediator):void
 					{						
 						sendNotification(taskGideComponentMediator.SHOW_NOTE,chuanQiMed.comp.createButton);
+						chuanQiMed.comp.createButton.addEventListener(MouseEvent.CLICK,clearObjContainer);
+						chuanQiMed.comp.closeButton.addEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
 					});
 					
 					break;
@@ -694,21 +730,19 @@ package controller.task
 		
 		protected function sendStarHandler(event:AddViewEvent):void
 		{
+			event.currentTarget.removeEventListener(AddViewEvent.SEND_STAR_EVENT,sendStarHandler);
 			if(BUTTON_TYPE==0)
 			{
 				button=event.comp.rightButton;
 				sendNotification(taskGideComponentMediator.SHOW_NOTE,event.comp.rightButton);	
-				event.comp.rightButton.addEventListener(MouseEvent.CLICK,btnClickHandler);
 			}else if(BUTTON_TYPE==1)
 			{
 				button=event.comp.upButton;
 				sendNotification(taskGideComponentMediator.SHOW_NOTE,event.comp.upButton);
-				event.comp.upButton.addEventListener(MouseEvent.CLICK,btnClickHandler);
 			}else if(BUTTON_TYPE==3)
 			{
 				button=event.comp.leftButton;
 				sendNotification(taskGideComponentMediator.SHOW_NOTE,event.comp.leftButton);
-				event.comp.leftButton.addEventListener(MouseEvent.CLICK,btnClickHandler);
 			}
 		}
 		
@@ -748,12 +782,28 @@ package controller.task
 		protected function clickHandler(event:MouseEvent):void
 		{
 			sprite.removeEventListener(MouseEvent.CLICK,clickHandler);
-			if(objContainer)
-				sprite.removeChild(objContainer);
-//			allClick();
 			sendNotification(taskGideComponentMediator.DESTROY_NOTE);
 			index+=1
-			objContainer=null;	
+		}
+		
+		protected function closeButtonHandler(event:Event):void
+		{
+			event.currentTarget.removeEventListener(Event.REMOVED_FROM_STAGE,closeButtonHandler);
+			clearContainer();
+		}
+		
+		private function clearContainer():void
+		{
+			if(objContainer)
+				objContainer.parent.removeChild(objContainer);
+			objContainer=null;
+			isAddObj=false;
+		}
+		
+		private function clearObjContainer(event:MouseEvent):void
+		{
+			TweenLite.to(objContainer,1,{alpha:0.1});
+			setTimeout(clearContainer,1000);
 		}
 		
 		public function allClick():void
@@ -782,7 +832,9 @@ package controller.task
 			{
 				_index=0;
 			}
-			_type=TaskEnum.CURRTENT_TASKVO.idArr[_index];	
+			taskVo=TaskEnum.CURRTENT_TASKVO;
+			LENGTH=taskVo.idArr.length;
+			_type=taskVo.idArr[_index];	
 			checkTypeId(_type);	
 		}
 

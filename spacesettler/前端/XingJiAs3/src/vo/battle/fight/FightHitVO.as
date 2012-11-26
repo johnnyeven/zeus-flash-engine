@@ -20,8 +20,14 @@ package vo.battle.fight
 
 		public var id:String;
 
+		/**
+		 * 当前耐久值
+		 */		
 		public var current_endurance:Number=0;
 
+		/**
+		 * 当前护盾值
+		 */
 		public var current_shield:Number=0;
 
 		public function toBy():ByteArray

@@ -2,6 +2,8 @@ package controller.battle.fight
 {
 	import com.zn.utils.PointUtil;
 	
+	import enum.battle.FightVOTypeEnum;
+	
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
 	
@@ -56,7 +58,28 @@ package controller.battle.fight
 
 				//角度调整
 				//计算旋转角度
-				lockObj["tankPartRotaion"]=PointUtil.getRotaion(new Point(lockObj.x, lockObj.y), new Point(lockedObj.x, lockedObj.y));
+				var rotaion:Number;
+				//主动对象包含建筑
+				if(lockObj["itemVO"].voType == FightVOTypeEnum.building && lockedObj["itemVO"].voType == FightVOTypeEnum.zhanChe )
+				{
+					rotaion = PointUtil.getRotaion(new Point(lockObj.x+75, lockObj.y+75), new Point(lockedObj.x, lockedObj.y));
+				}
+				else if(lockedObj["itemVO"].voType == FightVOTypeEnum.zhanChe)
+				{
+					rotaion = PointUtil.getRotaion(new Point(lockObj.x, lockObj.y), new Point(lockedObj.x, lockedObj.y));
+				}
+				
+				//被动对象包含建筑
+				if((lockObj["itemVO"].voType == FightVOTypeEnum.zhanChe || lockObj["itemVO"].voType == FightVOTypeEnum.liaoJi) && lockedObj["itemVO"].voType == FightVOTypeEnum.building)
+				{
+					rotaion = PointUtil.getRotaion(new Point(lockObj.x, lockObj.y), new Point(lockedObj.x+75, lockedObj.y+75));
+				}
+				else
+				{
+					rotaion = PointUtil.getRotaion(new Point(lockObj.x, lockObj.y), new Point(lockedObj.x, lockedObj.y));
+				}
+//				lockObj["tankPartRotaion"]=PointUtil.getRotaion(new Point(lockObj.x, lockObj.y), new Point(lockedObj.x, lockedObj.y));
+				lockObj["tankPartRotaion"] = rotaion;
 			}
 			else
 			{

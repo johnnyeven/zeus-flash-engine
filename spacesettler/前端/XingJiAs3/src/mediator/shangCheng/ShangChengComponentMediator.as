@@ -1,6 +1,7 @@
 package mediator.shangCheng
 {
 	
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.SoundUtil;
 	
 	import enum.SoundEnum;
@@ -12,6 +13,7 @@ package mediator.shangCheng
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.prompt.PromptSureMediator;
 	import mediator.shangCheng.FriendGiveComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -67,7 +69,15 @@ package mediator.shangCheng
 		
 		protected function buyItemHandler(event:ShopEvent):void
 		{
-			sendNotification(BuyPromptComponentMediator.SHOW_NOTE,event);
+			var obj:Object=new Object();
+			obj.infoLable=MultilanguageManager.getString("duiHuan");
+			obj.showLable="你确定要兑换" + event.resourceName +"吗？";
+			obj.mediatorLevel=level;
+			obj.okCallBack=function ():void{
+				shopProxy.buyItem(userProxy.userInfoVO.player_id,event.key,event.resourceName);
+				};
+			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+//			sendNotification(BuyPromptComponentMediator.SHOW_NOTE,event);
 //			shopProxy.buyItem(userProxy.userInfoVO.player_id,event.key,event.resourceName);
 		}
 		
@@ -129,7 +139,7 @@ package mediator.shangCheng
 		//界面显示层级控制
 		public function setmediatorLevel(mediatorLevel:int):void
 		{
-			level = mediatorLevel +1;
+			level = mediatorLevel;
 		}
 	}
 }

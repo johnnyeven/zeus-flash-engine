@@ -9,8 +9,11 @@ package view.plantioid.topInfo
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
+	import flash.ui.KeyboardType;
 	
 	import mx.binding.utils.BindingUtils;
 	
@@ -97,6 +100,8 @@ package view.plantioid.topInfo
 			downBtn.addEventListener(MouseEvent.CLICK,downBtn_clickHandler);
 			leftBnt.addEventListener(MouseEvent.CLICK,leftBnt_clickHandler);
 			rightBtn.addEventListener(MouseEvent.CLICK,rightBtn_clickHandler);
+			
+			addEventListener(KeyboardEvent.KEY_DOWN,key_downHandler);
 		}
 		
 		public override function dispose():void
@@ -122,11 +127,11 @@ package view.plantioid.topInfo
 			if(_plantioidProxy.currentX>1)
 				leftBnt.visible=true;
 			if(_plantioidProxy.currentY>1)
-				downBtn.visible=true;
+				upBtn.visible=true;
 			if(_plantioidProxy.currentX<_plantioidProxy.maxX)
 				rightBtn.visible=true;
 			if(_plantioidProxy.currentY<_plantioidProxy.maxY)
-				upBtn.visible=true;
+				downBtn.visible=true;
 		}
 
 		protected function myPlant_clickHandler(event:MouseEvent):void
@@ -134,6 +139,12 @@ package view.plantioid.topInfo
 			dispatchEvent(new PlantioidEvent(PlantioidEvent.MY_PLANT_EVENT));
 		}
 
+		protected function key_downHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode==Keyboard.ENTER)
+				jumpBtn_clickHandler(null);
+		}
+		
 		protected function jumpBtn_clickHandler(event:MouseEvent):void
 		{
 			if (!_isShowJump)
@@ -168,7 +179,7 @@ package view.plantioid.topInfo
 		protected function downBtn_clickHandler(event:MouseEvent):void
 		{
 			var x:Number=_plantioidProxy.currentX;
-			var y:Number=_plantioidProxy.currentY-1;
+			var y:Number=_plantioidProxy.currentY+1;
 			
 			dispatchEvent(new PlantioidEvent(PlantioidEvent.JUMP_EVENT, "", new Point(x, y)));		
 			
@@ -177,7 +188,7 @@ package view.plantioid.topInfo
 		protected function upBtn_clickHandler(event:MouseEvent):void
 		{
 			var x:Number=_plantioidProxy.currentX;
-			var y:Number=_plantioidProxy.currentY+1;
+			var y:Number=_plantioidProxy.currentY-1;
 			
 			dispatchEvent(new PlantioidEvent(PlantioidEvent.JUMP_EVENT, "", new Point(x, y)));		
 		}

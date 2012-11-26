@@ -4,6 +4,7 @@ package view.timeMachine
 	
 	import events.timeMachine.TimeMachineEvent;
 	
+	import flash.display.DisplayObjectContainer;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	
@@ -44,7 +45,10 @@ package view.timeMachine
 		public var vscrollBar:VScrollBar;
 		
 		private var totalCrystal:int;
-		
+//		private var itemArr:Array=[];
+		private var isNumOne:Boolean=true;
+//		private var notClearArr:Array;
+		private var num:int;
         public function TimeMachineComponent()
         {
             super(ClassUtil.getObject("view.timeMachine.TimeMachine"));
@@ -90,6 +94,12 @@ package view.timeMachine
 			setData(value as Array);
 		}
 		
+		private function clearCantainer():void
+		{
+			while(container.num>0)
+				DisposeUtil.dispose(container.removeAt(0));
+		}
+		
 		private function totalCrystalCountTxtChange(value:*):void
 		{
 			totalCrystalCountTxt.text = value;
@@ -97,8 +107,11 @@ package view.timeMachine
 		
 		private function setData(arr:Array):void
 		{
+			totalCrystal=0;
+			num=arr.length;
 			if(arr.length <= 0)
 			{
+				clearCantainer();
 				allSpeedBtn.mouseEnabled = false;
 				noItemLabel.visible=true;
 			}
@@ -106,9 +119,6 @@ package view.timeMachine
 			{
 				allSpeedBtn.mouseEnabled = true;
 			}
-			while(container.num)
-				DisposeUtil.dispose(container.removeAt(0));
-			
 			if(arr.length>0)
 			{
 //				totalCrystal = (arr[arr.length-1] as TimeMachineVO).totalCrystal;
@@ -117,6 +127,8 @@ package view.timeMachine
 					totalCrystal+=(arr[n] as TimeMachineVO).totalCrystal;
 				}
 			}
+			
+			
 			
 			var newArr:Array = [];
 			var timeMachineVO:TimeMachineVO;
@@ -127,20 +139,41 @@ package view.timeMachine
 					newArr.push(timeMachineVO);
 				}
 			}
-			var timeMachineItem:TimeMachineItem;
-			for(var i:int =0;i<newArr.length;i++)
+			if(isNumOne)
 			{
-				timeMachineItem = new TimeMachineItem();
-				timeMachineItem.data = newArr[i] as TimeMachineVO;
-				container.add(timeMachineItem);
-			}
+				isNumOne=false;
+				while(container.num)
+					DisposeUtil.dispose(container.removeAt(0));
+				var timeMachineItem:TimeMachineItem;
+				for(var i:int =0;i<newArr.length;i++)
+				{
+					timeMachineItem = new TimeMachineItem();
+					timeMachineItem.data = newArr[i] as TimeMachineVO;
+					timeMachineItem.addEventListener(MouseEvent.CLICK,speedClickHandler);
+					container.add(timeMachineItem);
+				}
+			}	
+			container.layout.update();
+			vscrollBar.viewport = container;
+		}
+		
+		private function speedClickHandler(event:MouseEvent):void
+		{
+			var item:TimeMachineItem=(event.currentTarget) as TimeMachineItem
+			var count:int = item.data.crystalCount;
+			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SPEED_EVENT,item.data.building_type,count,true,true,item));
+		}
+		
+		public function clearContainer(obj:DisplayObjectContainer,money:int):void
+		{
+			DisposeUtil.dispose(obj);
 			container.layout.update();
 			vscrollBar.viewport = container;
 		}
 		
 		private function allSpeedBtn_clickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.ALL_SPEED_EVENT,0,totalCrystal));
+			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.ALL_SPEED_EVENT,container.num,totalCrystal));
 		}
 		
 		private function closedBtn_clickHandler(event:MouseEvent):void

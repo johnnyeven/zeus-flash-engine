@@ -7,6 +7,11 @@ package view.battle.fightView
 	
 	import ui.core.Component;
 	
+	/**
+	 * 战车能量护盾值显示
+	 * @author gx
+	 * 
+	 */	
     public class BattleEnergShieldComponent extends Component
     {
 		public static const MAXNUM:int=40;

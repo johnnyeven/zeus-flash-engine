@@ -6,10 +6,6 @@ package vo.groupFight
 	
 	public class RewardsStarVo extends ValueObject
 	{
-		/**
-		 *军团成员获得水晶 
-		 */		
-		public var crystal:int;
 		
 		/**
 		 *军团获得暗物质 
@@ -22,7 +18,7 @@ package vo.groupFight
 		public var dark_crystal:int;
 		
 		/**
-		 *增益类型  type=1 水晶矿产量增加type=2 氚氢产量增加type=3 暗物质产量增加 
+		 *增益类型  type=1 水晶矿产量增加type=3 氚氢产量增加type=2 暗物质产量增加 
 		 */		
 		public var type:int;
 		
@@ -42,7 +38,7 @@ package vo.groupFight
 		public var count:int;
 		
 		/**
-		 *资源TYPE
+		 *个人获得资源TYPE type=1 水晶矿增加   type=3 氚氢增加   type=2 暗物质增加  4 为暗能水晶
 		 */		
 		public var resource_type:int;
 		

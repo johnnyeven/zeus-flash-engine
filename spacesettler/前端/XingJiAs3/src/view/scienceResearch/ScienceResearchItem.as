@@ -77,6 +77,8 @@ package view.scienceResearch
 		private var _tweenLite:TweenLite;
 		private var isUp:Boolean = false;
 		
+		private var conditionArr:Array=[];
+		
 		public function ScienceResearchItem()
 		{
 			super(ClassUtil.getObject("view.scienceResearch.ScienceResearchItemSkin"));
@@ -243,9 +245,10 @@ package view.scienceResearch
 		
 		private function researchBtn_clickHAndler(event:MouseEvent):void
 		{
-			if(data.academy_level>buildProxy.getBuild(3).level||data.command_center_level>buildProxy.getBuild(1).level)
+			if(data.academy_level>buildProxy.getBuild(3).level||data.command_center_level>buildProxy.getBuild(1).level||
+				data.broken_crystal>userInforProxy.userInfoVO.broken_crysta||data.tritium>userInforProxy.userInfoVO.tritium)
 			{
-				var conditionArr:Array=[];
+				conditionArr=[];
 				if(data.academy_level>buildProxy.getBuild(3).level)
 				{
 					var obj1:Object=new Object();
@@ -261,6 +264,22 @@ package view.scienceResearch
 					obj2.content=MultilanguageManager.getString("center_build")+buildProxy.getBuild(1).level+"/"+data.command_center_level;
 					obj2.btnLabel=MultilanguageManager.getString("up_center");
 					conditionArr.push(obj2);
+				}
+				if(data.broken_crystal>userInforProxy.userInfoVO.broken_crysta)
+				{
+					var obj3:Object=new Object();
+					obj3.imgSource=ResEnum.getConditionIconURL+"1.png";
+					obj3.content=MultilanguageManager.getString("broken_crysta")+int(userInforProxy.userInfoVO.broken_crysta)+"/"+data.broken_crystal;
+					obj3.btnLabel=MultilanguageManager.getString("buy_click");
+					conditionArr.push(obj3);
+				}
+				if(data.tritium>userInforProxy.userInfoVO.tritium)
+				{
+					var obj4:Object=new Object();
+					obj4.imgSource=ResEnum.getConditionIconURL+"3.png";
+					obj4.content=MultilanguageManager.getString("tritium")+int(userInforProxy.userInfoVO.tritium)+"/"+data.tritium;
+					obj4.btnLabel=MultilanguageManager.getString("buy_click");
+					conditionArr.push(obj4);
 				}
 				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 //				dispatchEvent(new SciencePopuEvent(SciencePopuEvent.POPU_DATA_EVENT,_data,true,true));
