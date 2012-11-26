@@ -55,6 +55,7 @@ package view.groupFight
 		private var _currtentStar:GroupFightStarComponent;
 		private var groupFightProxy:GroupFightProxy;
 		
+		private var _star:GroupFightStarComponent;
 		public function GroupFightSenceComponent()
 		{
 			super(null);
@@ -82,9 +83,9 @@ package view.groupFight
 			
 		public override function dispose():void
 		{
-			super.dispose();
 			plantCompList = null;
 			SystemManager.rootStage.removeEventListener(MouseEvent.MOUSE_MOVE, stageMouseMoveHandler);
+			super.dispose();
 		}
 		
 		public function clearXingQiu1():void
@@ -122,29 +123,28 @@ package view.groupFight
 			{
 				var starVo1:GroupFightVo=plantVOList[i] as GroupFightVo;
 				var starVo:GroupFightVo=groupFightProxy.creadLinesVo(starVo1);
-				var star:GroupFightStarComponent;
 				if(starVo.name==GroupFightEnum.ZHU_STAR)
 				{
-					star= new GroupFightStarComponent(GroupFightEnum.MAINSTAR_TYPE);
-					star.rewardsStarVo=groupFightProxy.star5000;
+					_star= new GroupFightStarComponent(GroupFightEnum.MAINSTAR_TYPE);
+					_star.rewardsStarVo=groupFightProxy.star5000;
 				}else
 				{
-					star= new GroupFightStarComponent();
+					_star= new GroupFightStarComponent();
 				}
 				if(starVo.name==GroupFightEnum.ZIYUAN1_STAR)
-					star.rewardsStarVo=groupFightProxy.star4001;
+					_star.rewardsStarVo=groupFightProxy.star4001;
 				if(starVo.name==GroupFightEnum.ZIYUAN2_STAR)
-					star.rewardsStarVo=groupFightProxy.star4002;
+					_star.rewardsStarVo=groupFightProxy.star4002;
 				if(starVo.name==GroupFightEnum.ZIYUAN3_STAR)
-					star.rewardsStarVo=groupFightProxy.star4003;
-				star.platioidVO = starVo;
-				star.x=starVo.x;
-				star.y=starVo.y;	
-				plantCompList[i]=star;
+					_star.rewardsStarVo=groupFightProxy.star4003;
+				_star.platioidVO = starVo;
+				_star.x=starVo.x;
+				_star.y=starVo.y;	
+				plantCompList[i]=_star;
 				drawLine(starVo);
 				
-				xingQiu1.addChild(star);
-				star.addEventListener(MouseEvent.CLICK, plantInfoComp_clickHandler);
+				xingQiu1.addChild(_star);
+				_star.addEventListener(MouseEvent.CLICK, plantInfoComp_clickHandler);
 			}
 		}
 		
@@ -159,8 +159,6 @@ package view.groupFight
 				var stVo1:GroupFightVo=starVo.lines[i] as GroupFightVo;	
 				var point2:Point=new Point(stVo1.x,stVo1.y);
 				BrokenLine.drawDashed(xingQiu1.graphics,point1,point2,5,10);
-//				xingQiu1.graphics.moveTo(starVo.x,starVo.y);
-//				xingQiu1.graphics.lineTo(stVo1.x,stVo1.y);							
 			}
 		}			
 		
@@ -204,8 +202,9 @@ package view.groupFight
 			distenceX=starVO.x-SystemManager.rootStage.stageWidth/2;
 			distenceY=starVO.y-SystemManager.rootStage.stageHeight/2;
 			
-			xingQiu1.x = - distenceX;
-			xingQiu1.y = - distenceY;
+			TweenLite.to(xingQiu1,1,{x:- distenceX,y:- distenceY});
+//			xingQiu1.x = - distenceX;
+//			xingQiu1.y = - distenceY;
 			
 //			dispatchEvent(new GroupFightEvent(GroupFightEvent.SENCE_EVENT,0,new Point(xingQiu1.x,xingQiu1.y),new Point(distenceX,distenceY)));
 		}

@@ -14,6 +14,7 @@ package proxy.content
     
     import other.ConnDebug;
     
+    import vo.cangKu.ItemVO;
     import vo.scienceResearch.ScienceResearchVO;
     import vo.viewInfo.ViewInfoVO;
 
@@ -62,6 +63,7 @@ package proxy.content
      * 功能方法
      *
      * ****************************************************/
+		
 		
 		public function getCreateBuildInfo(type:int):ViewInfoVO
 		{

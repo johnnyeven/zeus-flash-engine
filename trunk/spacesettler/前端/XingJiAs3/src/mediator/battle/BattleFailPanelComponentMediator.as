@@ -1,5 +1,9 @@
 package mediator.battle
 {
+	import controller.mainSence.ShowCommand;
+	
+	import enum.SenceTypeEnum;
+	
 	import events.battle.fight.FightPanelEvent;
 	
 	import mediator.BaseMediator;
@@ -13,10 +17,10 @@ package mediator.battle
 	import view.battle.fightView.BattleFailPanelComponent;
 
 	/**
-	 *模板 
-	 * @author zn
+	 * 战斗失败
+	 * @author lw
 	 * 
-	 */
+	 */	
 	public class BattleFailPanelComponentMediator extends BaseMediator implements IMediator
 	{
 		public static const NAME:String="BattleFailPanelComponentMediator";
@@ -29,7 +33,6 @@ package mediator.battle
 		{
 			super(NAME, new BattleFailPanelComponent());
 			_popUp = true;
-			mode = true;
 			popUpEffect=CENTER;
 			
 			comp.med=this;
@@ -81,17 +84,18 @@ package mediator.battle
 			return viewComponent as BattleFailPanelComponent;
 		}
 		
-		public override function destroy():void
+		/*public override function destroy():void
 		{
 			PopUpManager.removePopUp(uiComp);
-		}
+		}*/
 		
 		private function closeHandler(event:FightPanelEvent):void
 		{
 			sendNotification(DESTROY_NOTE);
 			sendNotification(BattleFightMediator.DESTROY_NOTE);
 			//默认显示小行星带
-			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			var obj1:Object={type:SenceTypeEnum.PLANT}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
 		}
 	}
 }

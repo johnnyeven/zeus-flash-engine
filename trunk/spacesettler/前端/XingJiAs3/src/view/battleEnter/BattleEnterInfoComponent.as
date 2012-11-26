@@ -42,7 +42,8 @@ package view.battleEnter
         public var contain:Container;
 
         private var _selectedItemComp:BattleEnterItemComonent;
-
+		
+		private var itemArr:Array=[];
         public function BattleEnterInfoComponent(skin:DisplayObjectContainer)
         {
             super(skin);
@@ -99,12 +100,22 @@ package view.battleEnter
                 itemComp = new BattleEnterItemComonent();
 				itemComp.addEventListener(MouseEvent.CLICK,itemComp_clickHandler);
                 itemComp.itemVO = zhanCheVO;
+				itemArr[i]=itemComp;
                 contain.add(itemComp);
             }
-
             contain.layout.update();
             scrollBar.update();
-//            selectedItemComp = contain.getAt(0) as BattleEnterItemComonent;//不用默认选中
+			if(selectedItemComp==null)
+          		 selectedItemComp = contain.getAt(0) as BattleEnterItemComonent;//不用默认选中
+			else
+			{
+				for(var j:int=0;j<itemArr.length;j++)
+				{
+					var item:BattleEnterItemComonent=itemArr[j] as BattleEnterItemComonent;
+					if(selectedItemComp.itemVO.id==item.itemVO.id)
+						selectedItemComp=item;
+				}
+			}
         }
 		
 		protected function itemComp_clickHandler(event:MouseEvent):void

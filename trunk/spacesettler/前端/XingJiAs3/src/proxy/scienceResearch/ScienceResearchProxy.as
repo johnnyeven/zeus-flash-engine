@@ -106,8 +106,9 @@ package proxy.scienceResearch
 			changeData(data);
 		}
 		
-		public function speedResearchUp(eventID:String):void
+		public function speedResearchUp(eventID:String,callBackFun:Function=null):void
 		{
+			_scienceResearchCallBack=callBackFun;
 //			var id:String = userInforProxy.userInfoVO.id;
 			var obj:Object = {research_event_id:eventID};
 			ConnDebug.send(CommandEnum.speedResearchUp,obj);
@@ -123,10 +124,14 @@ package proxy.scienceResearch
 			
 			userInforProxy.userInfoVO.dark_crystal=data.dark_crystal;
 			changeData(data);
+			
+			if(_scienceResearchCallBack!=null)
+				_scienceResearchCallBack();
+			_scienceResearchCallBack=null;
 		}
 		
 		public function researchReturn(scienceType:int):void
-		{
+		{			
 			type=scienceType;
 			var id:String = userInforProxy.userInfoVO.id;
 			var obj:Object = {base_id:id,science_type:scienceType};
@@ -141,6 +146,7 @@ package proxy.scienceResearch
 				return ;
 			}
 			
+			userInforProxy.updateInfo();
 			changeData(data);
 			
 			var userProxy:UserInfoProxy=getProxy(UserInfoProxy)
@@ -166,19 +172,19 @@ package proxy.scienceResearch
 		private function getResearchCountByAcademyLevel(academyLevel:int):int
 		{
 			var researchCount:int;
-			if(academyLevel>=1 && academyLevel<11)
+			if(academyLevel>=1 && academyLevel<10)
 			{
 				researchCount = 3;
 			}
-			else if(academyLevel>=11 &&　academyLevel<21)
+			else if(academyLevel>=10 &&　academyLevel<20)
 			{
 				researchCount = 6;
 			}
-			else if(academyLevel>=21 && academyLevel<31)
+			else if(academyLevel>=20 && academyLevel<30)
 			{
 				researchCount = 9;
 			}
-			else if(academyLevel>=31 && academyLevel<41)
+			else if(academyLevel>=30 && academyLevel<=40)
 			{
 				researchCount = 12;
 			}
@@ -187,6 +193,11 @@ package proxy.scienceResearch
 		
 		private function changeData(data:Object):void
 		{
+			userInforProxy.userInfoVO.broken_crysta=data.base.broken_crystal;
+			userInforProxy.userInfoVO.tritium=data.base.tritium;
+			userInforProxy.userInfoVO.crystal=data.base.crystal;
+			userInforProxy.userInfoVO.dark_crystal=data.dark_crystal;
+			
 			var buildProxy:BuildProxy = getProxy(BuildProxy);
 			
 			//研究的数目
@@ -211,8 +222,7 @@ package proxy.scienceResearch
 			for(var i:int = 1;i<=researchCount;i++)
 			{
 				scienceResearchVO = new ScienceResearchVO();
-				scienceResearchVO.science_type=i;
-				
+				scienceResearchVO.science_type=i;				
 				if(techDicObj[scienceResearchVO.science_type])
 				{
 					var techObj:Object=techDicObj[scienceResearchVO.science_type];

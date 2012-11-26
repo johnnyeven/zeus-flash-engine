@@ -6,7 +6,9 @@ package view.login
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TextEvent;
 	import flash.text.TextField;
+	import flash.utils.ByteArray;
 	
 	import proxy.login.LoginProxy;
 	
@@ -82,7 +84,35 @@ package view.login
 			
 			nextBtn.addEventListener(MouseEvent.CLICK,nextBtn_clickHandler);
 			returnBtn.addEventListener(MouseEvent.CLICK,returnBtn_clickHandler);
+			userNameTextInput.addEventListener(TextEvent.TEXT_INPUT, nameInputEvent);
         }
+		
+		
+		private function nameInputEvent(e:TextEvent):void
+		{
+			
+			if((getStringBytesLength(userNameTextInput.text,"gb2312") +
+				
+				getStringBytesLength(e.text,'gb2312')) > userNameTextInput.maxChars)
+			{
+				e.preventDefault();
+				return; 
+			}
+		}
+
+		
+		private function getStringBytesLength(str:String,charSet:String):int
+		{
+			
+			var bytes:ByteArray = new ByteArray();
+			
+			bytes.writeMultiByte(str, charSet);
+			
+			bytes.position = 0;
+			
+			return bytes.length;
+			
+		}
 		
 		protected function returnBtn_clickHandler(event:MouseEvent):void
 		{

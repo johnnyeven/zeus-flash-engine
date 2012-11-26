@@ -2,8 +2,10 @@ package controller.battle
 {
     import com.zn.ResLoader;
     import com.zn.loading.LoaderEvent;
+    import com.zn.loading.LoaderMax;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.ClassUtil;
+    import com.zn.utils.LoaderItemUtil;
     
     import enum.SenceTypeEnum;
     
@@ -28,6 +30,7 @@ package controller.battle
     {
         private static var _isLoading:Boolean = false;
 
+		private var mapID:int;
         public function ShowBattleEditMediatorCommand()
         {
             super();
@@ -43,6 +46,12 @@ package controller.battle
             if (_isLoading)
                 return;
 
+			mapID = int(notification.getBody());
+			//TODU LW:自己设置数据（恢复）
+			if(mapID == 0)
+			{
+				mapID = 1;
+			}
             var med:BattleEditMediator = getMediator(BattleEditMediator);
             if (med)
             {
@@ -52,7 +61,10 @@ package controller.battle
             {
                 //加载界面SWF
                 _isLoading = true;
-                ResLoader.load("battle", MultilanguageManager.getString(""), loaderComplete, true);
+				var loaderMax:LoaderMax=new LoaderMax("fightBattle");
+				loaderMax.addChildLoad(LoaderItemUtil.getLoader("battleBuild_icon.swf"));
+				loaderMax.addChildLoad(LoaderItemUtil.getLoader("battleMap_"+ mapID+ ".swf"));
+				ResLoader.load("fightBattle", MultilanguageManager.getString(""), loaderComplete, true);
             }
         }
 
@@ -63,7 +75,7 @@ package controller.battle
          */
         protected function loaderComplete(event:LoaderEvent):void
         {
-            var med:BattleEditMediator = new BattleEditMediator(new BattleEditComponent(ClassUtil.getObject("battle.battleMap_1")));
+            var med:BattleEditMediator = new BattleEditMediator(new BattleEditComponent(ClassUtil.getObject("battle.battleMap_"+mapID)));
 
             //注册界面的中介
             facade.registerMediator(med);

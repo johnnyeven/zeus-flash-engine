@@ -116,7 +116,7 @@ package mediator.buildingView
 			var buildVO:BuildInfoVo = buildProxy.getBuild(BuildTypeEnum.DIANCHANG);
 			if(buildVO.level<40)
 			{
-				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, {title:MultilanguageManager.getString("jiaSu"), info: MultilanguageManager.getString("speedTimeInfo"),
 					count: buildVO.speedCount, okCallBack: function():void
 					{
 						buildProxy.speedUpBuild(BuildTypeEnum.DIANCHANG);

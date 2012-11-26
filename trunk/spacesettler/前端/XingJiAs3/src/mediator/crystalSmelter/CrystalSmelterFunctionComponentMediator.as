@@ -35,6 +35,10 @@ package mediator.crystalSmelter
 		{
 			super(NAME, new CrystalSmelterFunctionComponent());
 			
+			comp.med = this;
+			level = 1;
+			comp.med=this;
+			
 			comp.addEventListener(CrystalSmelterEvent.INFOR_EVENT,inforHandler);
 			comp.addEventListener(CrystalSmelterEvent.CLOSE_EVENT,closeHandler);
 			comp.addEventListener(CrystalSmelterEvent.SMELTER_EVENT,smelterHandler);

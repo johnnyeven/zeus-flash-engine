@@ -15,6 +15,7 @@ package proxy
     import flash.net.URLRequestMethod;
     import flash.utils.setTimeout;
     
+    import mediator.mainSence.MainSenceComponentMediator;
     import mediator.prompt.PromptMediator;
     import mediator.task.taskGideComponentMediator;
     
@@ -155,8 +156,9 @@ package proxy
          * 加快升级
          * 建筑事件的ID
          */
-        public function speedUpBuild(type:int):void
+        public function speedUpBuild(type:int,callBackFun:Function=null):void
         {
+			_upCallBack=callBackFun;
 			var buildVO:BuildInfoVo=getBuild(type);
 			var eventID:String=buildVO.eventID;
             var obj:Object = { building_event_id:eventID };
@@ -216,23 +218,33 @@ package proxy
 		public function updateBuilder(type:int):void
 		{
 			var userInfoProxy:UserInfoProxy=getProxy(UserInfoProxy);
-			userInfoProxy.updateInfo();
-			if(userInfoProxy.userInfoVO.index==TaskEnum.index2&&_type==BuildTypeEnum.CHUANQIN||
-				userInfoProxy.userInfoVO.index==TaskEnum.index3&&_type==BuildTypeEnum.DIANCHANG||
-				userInfoProxy.userInfoVO.index==TaskEnum.index4&&_type==BuildTypeEnum.KUANGCHANG||
-				userInfoProxy.userInfoVO.index==TaskEnum.index6&&_type==BuildTypeEnum.CANGKU||
-				userInfoProxy.userInfoVO.index==TaskEnum.index10&&_type==BuildTypeEnum.KEJI)
+			userInfoProxy.updateInfo(function():void
 			{
-				sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
-			}
-			if(userInfoProxy.userInfoVO.index==TaskEnum.index7&&type==BuildTypeEnum.CHUANQIN||
-				userInfoProxy.userInfoVO.index==TaskEnum.index8&&type==BuildTypeEnum.DIANCHANG||
-				userInfoProxy.userInfoVO.index==TaskEnum.index9&&type==BuildTypeEnum.KUANGCHANG||
-				userInfoProxy.userInfoVO.index==TaskEnum.index22&&type==BuildTypeEnum.DIANCHANG)
-			{
-				sendNotification(taskGideComponentMediator.DESTROY_NOTE);
-				setTimeout(sendNot,250);
-			}
+				if(userInfoProxy.userInfoVO.index==TaskEnum.index2&&_type==BuildTypeEnum.CHUANQIN||
+					userInfoProxy.userInfoVO.index==TaskEnum.index3&&_type==BuildTypeEnum.DIANCHANG||
+					userInfoProxy.userInfoVO.index==TaskEnum.index4&&_type==BuildTypeEnum.KUANGCHANG||
+					userInfoProxy.userInfoVO.index==TaskEnum.index6&&_type==BuildTypeEnum.CANGKU||
+					userInfoProxy.userInfoVO.index==TaskEnum.index10&&_type==BuildTypeEnum.KEJI)
+				{
+					sendNot();
+//					sendNotification(taskGideComponentMediator.DESTROY_NOTE);
+//					setTimeout(sendNot,250);
+				}
+				if(userInfoProxy.userInfoVO.index==TaskEnum.index7&&type==BuildTypeEnum.CHUANQIN||
+					userInfoProxy.userInfoVO.index==TaskEnum.index8&&type==BuildTypeEnum.DIANCHANG||
+					userInfoProxy.userInfoVO.index==TaskEnum.index9&&type==BuildTypeEnum.KUANGCHANG||
+					userInfoProxy.userInfoVO.index==TaskEnum.index22&&type==BuildTypeEnum.DIANCHANG)
+				{
+					sendNot();
+				}
+				var obj:Object={};
+				var buildVo:BuildInfoVo=getBuild(type);
+				obj.type=type;
+				obj.level=buildVo.level+1;				
+				sendNotification(MainSenceComponentMediator.BUILD_OVER_NOTE,obj);
+			});
+			
+			
 		}
 		/**
 		 *请求时间机器 

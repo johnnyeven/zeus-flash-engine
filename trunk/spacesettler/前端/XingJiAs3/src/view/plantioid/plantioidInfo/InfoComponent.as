@@ -17,11 +17,14 @@ package view.plantioid.plantioidInfo
     import flash.events.TimerEvent;
     import flash.utils.Timer;
     
+    import proxy.userInfo.UserInfoProxy;
+    
     import ui.components.Button;
     import ui.components.Label;
     import ui.core.Component;
     
     import vo.plantioid.FortsInforVO;
+    import vo.userInfo.UserInfoVO;
 
     /**
      *星球信息
@@ -45,6 +48,8 @@ package view.plantioid.plantioidInfo
         public var stateLabel:Label;
 
         public var nameLabel:Label;
+		
+		public var campLabel:Label;
 
         public var bg2:Sprite;
 
@@ -76,7 +81,8 @@ package view.plantioid.plantioidInfo
             attackLabel = createUI(Label, "attackLabel");
             stateLabel = createUI(Label, "stateLabel");
             nameLabel = createUI(Label, "nameLabel");
-
+			campLabel=createUI(Label,"campLabel");			
+			
             bg2 = getSkin("bg2");
             bg1 = getSkin("bg1");
 
@@ -100,11 +106,11 @@ package view.plantioid.plantioidInfo
 
         public override function dispose():void
         {
-            super.dispose();
             _time.stop();
             _time.removeEventListener(TimerEvent.TIMER, timerHandler);
-
             _time = null;
+
+            super.dispose();
         }
 
         public function get plantVO():FortsInforVO
@@ -118,6 +124,7 @@ package view.plantioid.plantioidInfo
 
             if (plantVO)
             {
+				npcGift.visible=false;
                 addChildAt(selectedEffectMC, 0);
 
                 bg2.visible = bg1.visible = true;
@@ -126,10 +133,19 @@ package view.plantioid.plantioidInfo
                 if (plantVO.type == PlantioidTypeEnum.NPC)
 				{
                     bg1.visible = true;
+					bg2.visible = false;
+	                canLiangItem_0.visible = false;
+	                canLiangItem_1.visible = false;
+					npcGift.visible=true;
 				}
                 else
+				{
+					bg1.visible = false;
                     bg2.visible = true;
-
+					canLiangItem_0.visible = true;
+					canLiangItem_1.visible = true;
+				}
+				
                 nameLabel.text = plantVO.fort_name;
                 if (plantVO.type == PlantioidTypeEnum.NPC && plantVO.protectedRemainTime > 0)
                 {
@@ -142,28 +158,66 @@ package view.plantioid.plantioidInfo
                 techLabel.text = CenterTechTypeEnum["type_" + plantVO.level];
                 areaLabel.text = StringUtil.formatString("x:{0}-y:{1}-{2}", plantVO.x, plantVO.y, plantVO.z);
 
-                canLiangItem_0.visible = false;
-                canLiangItem_1.visible = false;
-				npcGift.visible=false;
 
                 var index:int = 0;
                 if (plantVO.crystal_output != 0)
                 {
                     this["canLiangItem_" + index].setItemVO(ResEnum.crystalIconURL, plantVO.crystal_output);
-                    this["canLiangItem_" + index].visible = true;
+//                    this["canLiangItem_" + index].visible = true;
                     index++;
                 }
 
                 if (plantVO.broken_crystal_output != 0)
                 {
                     this["canLiangItem_" + index].setItemVO(ResEnum.brokenCrystalIconURL, plantVO.broken_crystal_output);
-                    this["canLiangItem_" + index].visible = true;
+//                    this["canLiangItem_" + index].visible = true;
                     index++;
                 }
 				
-				if(!plantVO.crystal_output || !plantVO.broken_crystal_output)
+//				if(!plantVO.crystal_output || !plantVO.broken_crystal_output)
+//				{
+//					npcGift.visible=true;
+//				}
+				
+				var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
+				if(plantVO.fort_name!="nobody")
 				{
-					npcGift.visible=true;
+					if(userInfoVO.camp==1)//联盟
+					{
+						if(plantVO.campID == userInfoVO.camp-1)
+						{
+							campLabel.text=MultilanguageManager.getString("PlantTongZhengYingName");
+							campLabel.color=0x00FFFF;
+						}
+						else
+						{
+							campLabel.text=MultilanguageManager.getString("PlantDiZhengYingName");
+							campLabel.color=0xFF0000;
+						}
+					}
+					else//海盗
+					{
+						if(plantVO.campID == userInfoVO.camp-1)
+						{
+							campLabel.text=MultilanguageManager.getString("PlantDiZhengYingName");
+							campLabel.color=0x00FFFF;
+						}
+						else
+						{
+							campLabel.text=MultilanguageManager.getString("PlantTongZhengYingName");
+							campLabel.color=0xFF0000;
+						}
+					}
+				}
+				
+				if(plantVO.type==PlantioidTypeEnum.NO_OWN ||
+					plantVO.type==PlantioidTypeEnum.NPC)
+				{
+					campLabel.visible=false;
+				}
+				else
+				{
+					campLabel.visible=true;
 				}
             }
             else

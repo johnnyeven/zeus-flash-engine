@@ -8,9 +8,11 @@ package view.factory
 	import events.factory.FactoryEvent;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import ui.components.Button;
+	import ui.components.CheckBox;
 	import ui.components.Label;
 	import ui.components.LoaderImage;
 	import ui.components.ProgressBar;
@@ -65,8 +67,18 @@ package view.factory
 		public var mc_5:Sprite;
 		
 		public var sprite:LoaderImage;
-
 		
+		public var num_1:Label;
+		public var num_2:Label;
+		public var num_3:Label;
+		public var num_4:Label;
+		public var num_5:Label;
+		
+		public var box1:CheckBox;
+		public var box2:CheckBox;
+		public var box3:CheckBox;
+		
+		private var _count:int=1;
         public function FactoryStrengthenComponent()
         {
             super(ClassUtil.getObject("view.factory.FactoryStrengthenSkin"));
@@ -86,7 +98,20 @@ package view.factory
 			tf_3=createUI(Label,"tf_3");
 			tf_2=createUI(Label,"tf_2");
 			tf_1=createUI(Label,"tf_1");
-				
+			
+			num_1=createUI(Label,"num_1");
+			num_2=createUI(Label,"num_2");
+			num_3=createUI(Label,"num_3");
+			num_4=createUI(Label,"num_4");
+			num_5=createUI(Label,"num_5");
+			
+			box1=createUI(CheckBox,"box1");
+			box2=createUI(CheckBox,"box2");
+			box3=createUI(CheckBox,"box3");
+			
+			box1.selected=true;
+			box2.selected=box3.selected=false;
+			
 			text_1=createUI(Label,"text_1");
 			text_2=createUI(Label,"text_2");
 			text_3=createUI(Label,"text_3");
@@ -134,8 +159,56 @@ package view.factory
 			mc_3.visible=false;
 			mc_4.visible=false;
 			mc_5.visible=false;
+			
+			setNumLable(_count);
+			
+			box1.addEventListener(Event.CHANGE,boxChange1Handler);
+			box2.addEventListener(Event.CHANGE,boxChange2Handler);
+			box3.addEventListener(Event.CHANGE,boxChange3Handler);
+			
 //			upData(FactoryEnum.CURRENT_ZHANCHE_VO);
         }
+		
+		protected function boxChange1Handler(event:Event):void
+		{
+			if(box1.selected==true)
+			{
+				_count=1;
+				box2.selected=box3.selected=false;
+			}
+			changeBox();
+		}
+		
+		private function changeBox():void
+		{
+			if(box1.selected==false&&box3.selected==false&&box2.selected==false)
+			{
+				box1.selected=true;
+				_count=1;
+				box2.selected=box3.selected=false;
+			}
+			setNumLable(_count);
+		}
+		
+		protected function boxChange2Handler(event:Event):void
+		{
+			if(box2.selected==true)
+			{
+				_count=5;
+				box1.selected=box3.selected=false;
+			}
+			changeBox();
+		}
+		
+		protected function boxChange3Handler(event:Event):void
+		{
+			if(box3.selected==true)
+			{
+				_count=10;
+				box1.selected=box2.selected=false;
+			}
+			changeBox();
+		}
 		
 		protected function closeHandler(event:MouseEvent):void
 		{
@@ -144,27 +217,27 @@ package view.factory
 		
 		protected function btn_1Handler(event:MouseEvent):void
 		{
-			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ATTACK_SPEED));
+			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ATTACK_SPEED,_count));
 		}
 		
 		protected function btn_2Handler(event:MouseEvent):void
 		{
-			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ARRACK_AREA));
+			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ARRACK_AREA,_count));
 		}
 		
 		protected function btn_3Handler(event:MouseEvent):void
 		{
-			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ENDURANCE));
+			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ENDURANCE,_count));
 		}
 		
 		protected function btn_4Handler(event:MouseEvent):void
 		{
-			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ENERGY));	
+			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.ENERGY,_count));	
 		}
 		
 		protected function btn_5Handler(event:MouseEvent):void
 		{
-			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.SPEED));
+			dispatchEvent(new FactoryEvent(FactoryEvent.QIANGHUA_EVENT,null,FactoryEnum.SPEED,_count));
 		}
 		
 		public function upData(info:ZhanCheInfoVO):void
@@ -174,9 +247,9 @@ package view.factory
 			pingfen_tf.text=info.value.toString();
 			level_tf.text=info.level.toString();
 			title_tf.text=info.name;
-			tf_3.text=info.big_slot.toString();
+			tf_1.text=info.big_slot.toString();
 			tf_2.text=info.medium_slot.toString();
-			tf_1.text=info.small_slot.toString();
+			tf_3.text=info.small_slot.toString();
 			text_1.text=info.attack.toString();
 			text_4.text=info.total_shield.toString();
 			
@@ -234,6 +307,9 @@ package view.factory
 			bar_5.percent=info.total_speed/info.max_speed;
 		}
 		
-		
+		private function setNumLable(num:int):void
+		{
+			num_1.text=num_2.text=num_3.text=num_4.text=num_5.text="X"+String(num);
+		}
     }
 }

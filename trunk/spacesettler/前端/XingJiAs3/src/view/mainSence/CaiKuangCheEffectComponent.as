@@ -104,13 +104,13 @@ package view.mainSence
 		
 		public override function dispose():void
 		{
-			super.dispose();
-			
 			for each (var tweenLite:TweenLite in tweenLiteDic) 
 			{
 				tweenLite.kill();
 			}
 			tweenLiteDic=null;
+			
+			super.dispose();
 		}
 
 
@@ -233,8 +233,12 @@ package view.mainSence
 
             var p:Point;
 			var time:int;
+			if(isDispose)
+				return;
             timeout(function():void
             {
+				if(isDispose)
+					return;
                 che.gotoAndStop(BACK);
                 switch (che)
                 {
@@ -277,8 +281,12 @@ package view.mainSence
         {
             var p:Point;
 			var time:int;
+			if(isDispose)
+				return;
             timeout(function():void
             {
+				if(isDispose)
+					return;
                 che.gotoAndStop(OUT);
                 switch (che)
                 {

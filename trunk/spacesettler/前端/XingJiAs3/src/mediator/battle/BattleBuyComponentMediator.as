@@ -1,5 +1,8 @@
 package mediator.battle
 {
+	import controller.mainSence.ShowCommand;
+	
+	import enum.SenceTypeEnum;
 	import enum.battle.BattleVoteTypeEnum;
 	
 	import events.battle.BattleBuyEvent;
@@ -14,6 +17,7 @@ package mediator.battle
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import proxy.battle.BattleProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.battle.fightView.BattleBuyComponent;
 
@@ -84,7 +88,8 @@ package mediator.battle
 			sendNotification(DESTROY_NOTE);
 			sendNotification(BattleFightMediator.DESTROY_NOTE);
 			//默认显示小行星带
-			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			var obj1:Object={type:SenceTypeEnum.PLANT}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
 		}
 		
 		private function battleBuyHandler(event:BattleBuyEvent):void

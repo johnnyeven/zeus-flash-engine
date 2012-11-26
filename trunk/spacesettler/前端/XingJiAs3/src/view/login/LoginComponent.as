@@ -7,8 +7,11 @@ package view.login
     
     import flash.display.SpreadMethod;
     import flash.display.Sprite;
+    import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.text.TextField;
+    import flash.ui.Keyboard;
+    import flash.ui.KeyboardType;
     
     import proxy.login.LoginProxy;
     
@@ -67,7 +70,15 @@ package view.login
 //			userNameTextInput.addEventListener(MouseEvent.CLICK,userNameTextInput_clickHandler);
 			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler);
 			backBtn.addEventListener(MouseEvent.CLICK,backBtn_clickHandler);
+			
+			addEventListener(KeyboardEvent.KEY_DOWN,keyDownHandler);
         }
+		
+		protected function keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode==Keyboard.ENTER)
+				submitButton_clickHandler(null);
+		}
 		
 		protected function backBtn_clickHandler(event:MouseEvent):void
 		{

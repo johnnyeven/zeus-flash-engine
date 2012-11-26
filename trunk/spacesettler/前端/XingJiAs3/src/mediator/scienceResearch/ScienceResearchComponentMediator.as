@@ -113,7 +113,7 @@ package mediator.scienceResearch
 		
 		private function researchSpeedHandler(event:ScienceResearchEvent):void
 		{
-			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, {title:MultilanguageManager.getString("jiaSu"), info: MultilanguageManager.getString("speedTimeInfo"),
 				count: ScienceResearchVO.SPEEDCOST, okCallBack: function():void
 				{
 					scienceResearchProxy.speedResearchUp(event.eventID);

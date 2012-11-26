@@ -45,13 +45,16 @@ package controller.task
 				SystemManager.instance.addPop(completeMc);
 				completeMc.gotoAndPlay(1);
 				completeMc.addEventListener(Event.COMPLETE,mcCompleteHandler);
-				if(TaskEnum.CURRTENT_TASKVO.index!=1)
+				if(TaskEnum.CURRTENT_TASKVO)
 				{
-	//				var userProxy:UserInfoProxy=getProxy(UserInfoProxy)
-					TaskEnum.CURRTENT_TASKVO.is_finished=true;
-					var obj:Object={index:TaskEnum.CURRTENT_TASKVO.index, isFinished:TaskEnum.CURRTENT_TASKVO.is_finished ,
-						isRewarded:TaskEnum.CURRTENT_TASKVO.is_rewarded};
-					sendNotification(TaskCommand.ADDTASKINFO_COMMAND,obj);										
+					if(TaskEnum.CURRTENT_TASKVO.index!=1)
+					{
+		//				var userProxy:UserInfoProxy=getProxy(UserInfoProxy)
+						TaskEnum.CURRTENT_TASKVO.is_finished=true;
+						var obj:Object={index:TaskEnum.CURRTENT_TASKVO.index, isFinished:TaskEnum.CURRTENT_TASKVO.is_finished ,
+							isRewarded:TaskEnum.CURRTENT_TASKVO.is_rewarded};
+						sendNotification(TaskCommand.ADDTASKINFO_COMMAND,obj);										
+					}					
 				}
 			});
 		}

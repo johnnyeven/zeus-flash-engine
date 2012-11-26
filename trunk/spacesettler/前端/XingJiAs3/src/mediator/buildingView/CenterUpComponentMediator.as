@@ -138,7 +138,7 @@ package mediator.buildingView
 			var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			if(userInfoVO.level<4)
 			{
-				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, { info: MultilanguageManager.getString("speedTimeInfo"),
+				sendNotification(MoneyAlertComponentMediator.SHOW_NOTE, {title:MultilanguageManager.getString("jiaSu"), info: MultilanguageManager.getString("speedTimeInfo"),
 				count: buildVO.speedCount, okCallBack: function():void
 				{
 					buildProxy.speedUpBuild(BuildTypeEnum.CENTER);

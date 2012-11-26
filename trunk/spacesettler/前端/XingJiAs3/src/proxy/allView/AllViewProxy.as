@@ -81,7 +81,8 @@ package proxy.allView
 			allViewVO.playerNameTxt = data.nickname;
 			allViewVO.rongYuTxt = data.prestige;
 			allViewVO.keJiShiDaiTxt = data.age_level;
-			allViewVO.junTuanTxt = data.name;
+			if(data.legion)
+				allViewVO.junTuanTxt = data.legion.name;
 			allViewVO.scienceLvTxt=data.academy_level;
 			allViewVO.startCountTxt = data.fort_count;
 			allViewVO.junXianTxt = userInforProxy.userInfoVO.junXian;
@@ -99,7 +100,10 @@ package proxy.allView
 				for(var i:int=0;i<arr.length;i++)
 				{
 					if(arr[i].type==MedalEnum.MedalYaoSai)
+					{
+						allViewVO.startCountRecord=arr[i].occupy_forts_record;
 						medalsYSImgStr=ResEnum.medalsImgURL+arr[i].type+"_"+arr[i].level+".png";
+					}
 					else
 						medals.push(arr[i]);
 				}

@@ -8,7 +8,6 @@ package mediator.group
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
-	import mediator.prompt.GroupPopComponentMediator;
 	import mediator.prompt.MoneyAlertComponentMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
@@ -56,6 +55,7 @@ package mediator.group
 		{
 			
 			var obj:Object={};
+			obj.title=MultilanguageManager.getString("foundTitle");
 			obj.info=MultilanguageManager.getString("foundGroup");
 			obj.count="100";
 			obj.okCallBack=function():void

@@ -47,7 +47,7 @@ package view.battle.fightView
 		public function BattleVictoryPanelComponent()
 		{
 			super(ClassUtil.getObject("battle.BattleVictoryPanelSkin"));
-			timer = new Timer(5000);
+			timer = new Timer(10000);
 			timer.addEventListener(TimerEvent.TIMER,timerHandler);
 			okBtn=createUI(Button,"ok_btn");
 			vScrollBar = createUI(VScrollBar, "vScrollBar");
@@ -315,14 +315,36 @@ package view.battle.fightView
 			vScrollBar.update();
 		}
 		
+		override public function dispose():void
+		{
+			if(timer)
+			{
+				timer.stop();
+				timer.removeEventListener(TimerEvent.TIMER,timerHandler);				
+			}
+			vScrollBar.removeEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
+			vScrollBar.removeEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
+			super.dispose();
+		}
+		
+		
+		
 		protected function okBtnHandler(event:MouseEvent):void
 		{
-			timer.stop();
+			if(timer)
+			{
+				timer.stop();
+				timer.removeEventListener(TimerEvent.TIMER,timerHandler);				
+			}
 			dispatchEvent(new FightPanelEvent(FightPanelEvent.CLOSE_EVENT));
 		}
 		private function timerHandler(event:TimerEvent):void
 		{
-			timer.stop();
+			if(timer)
+			{
+				timer.stop();
+				timer.removeEventListener(TimerEvent.TIMER,timerHandler);				
+			}
 			if(_victoryRewardVO.gain_fort==1)
 			{
 				dispatchEvent(new Event("victoryTimerEvent"));

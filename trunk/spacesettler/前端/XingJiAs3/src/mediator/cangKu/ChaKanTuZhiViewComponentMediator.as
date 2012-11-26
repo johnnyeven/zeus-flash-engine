@@ -15,12 +15,14 @@ package mediator.cangKu
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import proxy.factory.FactoryProxy;
 	import proxy.packageView.PackageViewProxy;
 	import proxy.scienceResearch.ScienceResearchProxy;
 	
 	import view.cangKu.ChaKanTuZhiViewComponent;
 	
 	import vo.cangKu.ItemVO;
+	import vo.factory.DrawListVo;
 	import vo.scienceResearch.ScienceResearchVO;
 
 	/**
@@ -107,13 +109,38 @@ package mediator.cangKu
 		protected function useHandler(event:ChaKanEvent):void
 		{
 			var itemVo:ItemVO=event.itemVO as ItemVO;
-			packageProxy.useItem(itemVo.id,function():void
+			var bool:Boolean=true;
+			var factoryProxy:FactoryProxy=getProxy(FactoryProxy);
+			factoryProxy.makeList(function():void
 			{
-				var obj:Object={};
-				obj.showLable=MultilanguageManager.getString("useIteminfo");
-				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
-				sendNotification(DESTROY_NOTE);	
+				for(var i:int=0;i<factoryProxy.makeListArr.length;i++)
+				{
+					var item:DrawListVo=factoryProxy.makeListArr[i] as DrawListVo;
+					if(itemVo.type==item.type&&itemVo.category==item.category
+						&&itemVo.enhanced==item.enhanced&&itemVo.recipe_type==item.recipe_type)
+					{
+						bool=false;
+					}
+				}
+				
+				if(bool)
+				{
+					packageProxy.useItem(itemVo.id,function():void
+					{
+						var obj:Object={};
+						obj.showLable=MultilanguageManager.getString("useIteminfo");
+						sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+						sendNotification(DESTROY_NOTE);	
+					});
+				}else
+				{
+					var obj1:Object={};
+					obj1.showLable="图纸已经学习！";
+					sendNotification(PromptSureMediator.SHOW_NOTE,obj1);
+					sendNotification(DESTROY_NOTE);	
+				}			
 			});
 		}
+			
 	}
 }

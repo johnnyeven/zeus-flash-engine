@@ -43,7 +43,7 @@ package vo
         /**
          * 建筑事件
          */
-        public var eventID:String=null;
+        public var eventID:String;
 
         /**
          * 当前服务器时间

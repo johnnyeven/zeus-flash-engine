@@ -1,5 +1,8 @@
 package controller.battle.fight
 {
+	import enum.battle.FightVOTypeEnum;
+	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
@@ -16,7 +19,7 @@ package controller.battle.fight
 
 	/**
 	 *新玩家进入 
-	 * @author Administrator
+	 * @author zn
 	 * 
 	 */	
 	public class FightNewPlayerCommand extends SimpleCommand
@@ -42,7 +45,19 @@ package controller.battle.fight
 		public override function execute(notification:INotification):void
 		{
 			fightMed=getMediator(BattleFightMediator);
-			
+			//有多个玩家时，去掉小飞机  lw
+			var arr:Array = fightMed.comp.allCompList.concat();
+			//循环所有对象
+			for (var i:int=0; i < arr.length; i++)
+			{
+				var obj:DisplayObject;
+				obj = arr[i];
+			   var voObj:Object=obj["itemVO"];
+			   if (voObj.voType == FightVOTypeEnum.xiaoFeiJi)
+			   {
+				   fightMed.comp.disposeComp(obj);
+			   }
+			}
 			startPoint=fightMed.comp.startPoint;
 			
 			var fortPlayer1:PLAYER1=notification.getBody() as PLAYER1;

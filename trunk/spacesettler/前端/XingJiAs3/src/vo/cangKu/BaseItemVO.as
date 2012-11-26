@@ -35,6 +35,10 @@ package vo.cangKu
         public var item_type:String;
 
 		/**
+		 *类型 (int)
+		 */
+		public var itemType:int;
+		/**
 		 * 道具标识
 		 */
 		public var key:String;
@@ -52,7 +56,18 @@ package vo.cangKu
          * 型号
          */
         public var type:int;
-		
+		/**
+		 * 需要的条件
+		 */
+		public var conditions:Array = [];
+		/**
+		 * 需要的科技类型
+		 */
+		public var science_type:int;
+		/**
+		 * 需要的科技等级
+		 */
+		public var science_level:int;
 		/**
 		 * 道具介绍
 		 */

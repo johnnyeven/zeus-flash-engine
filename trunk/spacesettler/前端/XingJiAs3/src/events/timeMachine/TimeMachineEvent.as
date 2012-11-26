@@ -1,6 +1,9 @@
 package events.timeMachine
 {
 	import flash.events.Event;
+	
+	import view.timeMachine.TimeMachineItem;
+
 	/**
 	 *时间机器 
 	 * @author lw
@@ -39,10 +42,12 @@ package events.timeMachine
 		
 		private var _count:int;
 		
-		public function TimeMachineEvent(type:String,idType:int,count:int, bubbles:Boolean=false, cancelable:Boolean=false)
+		private var _item:TimeMachineItem;
+		public function TimeMachineEvent(type:String,idType:int,count:int, bubbles:Boolean=false, cancelable:Boolean=false,item:TimeMachineItem=null)
 		{
 			_idType = idType;
 			_count = count;
+			_item=item;
 			super(type,bubbles, cancelable);
 		}
 		
@@ -74,6 +79,16 @@ package events.timeMachine
 		public function set count(value:int):void
 		{
 			_count = value;
+		}
+
+		public function get item():TimeMachineItem
+		{
+			return _item;
+		}
+
+		public function set item(value:TimeMachineItem):void
+		{
+			_item = value;
 		}
 
 

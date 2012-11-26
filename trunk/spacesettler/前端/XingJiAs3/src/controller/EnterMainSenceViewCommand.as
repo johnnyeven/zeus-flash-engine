@@ -6,12 +6,16 @@ package controller
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.LoaderItemUtil;
     
+    import controller.mainSence.ShowCommand;
     import controller.task.TaskCommand;
+    import controller.task.TaskCompleteCommand;
     
     import enum.MainSenceEnum;
+    import enum.SenceTypeEnum;
     import enum.TaskEnum;
     
     import flash.events.Event;
+    import flash.utils.setTimeout;
     
     import mediator.mainSence.MainSenceComponentMediator;
     import mediator.mainView.MainViewMediator;
@@ -19,6 +23,7 @@ package controller
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
     
+    import proxy.battle.BattleProxy;
     import proxy.userInfo.UserInfoProxy;
     
     import vo.userInfo.UserInfoVO;
@@ -67,17 +72,30 @@ package controller
         protected function loaderCompleteHandler(event:LoaderEvent):void
         {
 			//主场景
-			sendNotification(MainSenceComponentMediator.SHOW_NOTE);
+			var obj1:Object={type:SenceTypeEnum.MAIN}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
+//			sendNotification(MainSenceComponentMediator.SHOW_NOTE);
 			
             //主界面
-            sendNotification(MainViewMediator.SHOW_NOTE);
+//            sendNotification(MainViewMediator.SHOW_NOTE);
 			
-			var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
-			var obj:Object={index:userInfoVO.index, isFinished:userInfoVO.is_finished ,isRewarded:userInfoVO.is_rewarded};
-			if(userInfoVO.index<=TaskEnum.index17)
+			setTimeout(function():void
 			{
-				sendNotification(TaskCommand.ADDTASKINFO_COMMAND,obj);
-			}
+				var userInfoVO:UserInfoVO=UserInfoProxy(getProxy(UserInfoProxy)).userInfoVO;
+				var obj:Object={index:userInfoVO.index, isFinished:userInfoVO.is_finished ,isRewarded:userInfoVO.is_rewarded};
+				if(userInfoVO.index<=TaskEnum.index17)
+				{
+					sendNotification(TaskCommand.ADDTASKINFO_COMMAND,obj);
+				}
+				
+				if(userInfoVO.index==TaskEnum.index24)
+				{
+					var battleProxy:BattleProxy=getProxy(BattleProxy);
+					if(battleProxy.isCompleteRenWu)
+						sendNotification(TaskCompleteCommand.TASKCOMPLETE_COMMAND);
+				}
+			},2500);
+			
 			
 			_isLoading=false;
         }

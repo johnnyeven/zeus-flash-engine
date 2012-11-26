@@ -57,10 +57,10 @@ package view.plantioid
 
         public override function dispose():void
         {
-            super.dispose();
-
             _rotationTimeLine.kill();
             _rotationTimeLine = null;
+            super.dispose();
+
         }
 
         public function get platioidVO():FortsInforVO
@@ -138,7 +138,8 @@ package view.plantioid
             var rotation:int = 360;
             if (OddsUtil.getDrop(0.5))
                 rotation = -rotation;
-
+			if(_rotationTimeLine)
+				_rotationTimeLine.kill();
             _rotationTimeLine = new TimelineLite({ onComplete: rotationXingQiu });
             _rotationTimeLine.insert(TweenLite.to(xingQiuSp, 60, { rotation: rotation, ease: Linear.easeNone }));
             _rotationTimeLine.insert(TweenLite.to(bgSp, 60, { rotation: -rotation, ease: Linear.easeNone }));

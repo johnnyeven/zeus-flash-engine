@@ -17,6 +17,7 @@ package mediator.allView
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
+	import proxy.BuildProxy;
 	import proxy.plantioid.PlantioidProxy;
 	
 	import view.allView.AllViewXingXingEvent;
@@ -38,6 +39,9 @@ package mediator.allView
 		public function XingXingComponentMediator()
 		{
 			super(NAME, new XingXingComponent());
+			comp.med = this;
+			level = 2;
+			
 			comp.addEventListener(AllViewEvent.CLOSED_XINGXING_EVENT,closeHandler);
 			comp.addEventListener("destoryshangSprite",destoryshangSpriteHandler);
 			comp.addEventListener("destoryxiaSprite",destoryxiaSpriteHandler);
@@ -81,7 +85,7 @@ package mediator.allView
 		 * @return
 		 *
 		 */
-		protected function get comp():XingXingComponent
+		public function get comp():XingXingComponent
 		{
 			return viewComponent as XingXingComponent;
 		}
@@ -107,12 +111,12 @@ package mediator.allView
 		{
 			var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
 			//获取小行星带
-			plantioidProxy.getPlantioidListByXY(1, 1, function():void
+			plantioidProxy.getPlantioidListByXY(event.fortVO.x,event.fortVO.y, function():void
 			{
 				plantioidProxy.setSelectedPlantioid(event.fortVO.id);
 				plantioidProxy.getPlantioidInfo(PlantioidProxy.selectedVO.id, function():void
 				{
-					sendNotification(BattleEditMediator.SHOW_NOTE);
+					sendNotification(BattleEditMediator.SHOW_NOTE,PlantioidProxy.selectedVO.map_type);
 				});
 			});
 			
@@ -126,6 +130,8 @@ package mediator.allView
 		 */
 		protected function checkHandler(event:AllViewXingXingEvent):void
 		{
+			var buildProxy:BuildProxy=getProxy(BuildProxy);
+			buildProxy.isBuild=false;
 			sendNotification(MainViewMediator.SET_PLANEBTN_NOTE);
 			sendNotification(PlantioidComponentMediator.SHOW_NOTE,new Point(event.fortVO.x,event.fortVO.y));
 		}
@@ -137,7 +143,7 @@ package mediator.allView
 		 */		
 		protected function attackHandler(event:AllViewXingXingEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			var plantioidProxy:PlantioidProxy = getProxy(PlantioidProxy);
 			//获取小行星带
 			plantioidProxy.getPlantioidListByXY(1, 1, function():void

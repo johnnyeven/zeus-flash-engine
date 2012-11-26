@@ -1,5 +1,6 @@
 package mediator.groupFight
 {
+	import enum.SenceTypeEnum;
 	import enum.groupFightEnum.GroupFightEnum;
 	
 	import events.groupFight.GroupFightEvent;
@@ -10,6 +11,7 @@ package mediator.groupFight
 	import mediator.groupFight.tiShi.GroupFightOneComponentMediator;
 	import mediator.groupFight.tiShi.GroupFightThreeComponentMediator;
 	import mediator.groupFight.tiShi.GroupFightTwoComponentMediator;
+	import mediator.mainView.MainViewMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
@@ -19,6 +21,7 @@ package mediator.groupFight
 	
 	import view.groupFight.GroupFightComponent;
 	
+	import vo.GlobalData;
 	import vo.groupFight.LossReportVo;
 
 	public class GroupFightComponentMediator extends BaseMediator implements IMediator
@@ -46,7 +49,19 @@ package mediator.groupFight
 			comp.addEventListener(GroupFightEvent.GONGJI_EVENT,gongJiHandler);
 			comp.addEventListener(GroupFightEvent.BACK_EVENT,backHandler);
 			comp.addEventListener(GroupFightEvent.SENCE_EVENT,rectMoveHandler);
+			comp.addEventListener(GroupFightEvent.PLAY_COMPLETE_EVENT,playCompleteHandler);
 		}		
+		
+		protected function playCompleteHandler(event:GroupFightEvent):void
+		{
+			sendNotification(GroupFightMenuComponentMediator.SHOW_HIDE_NOTE);
+			sendNotification(GroupFightShowComponentMediator.SHOW_HIDE_NOTE);
+			sendNotification(GroupFightMapComponentMediator.SHOW_COMP_NOTE);
+			sendNotification(GroupFightShowComponentMediator.CHANGE_NOTE);
+			sendNotification(GroupFightComponentMediator.CHANGE_NOTE);
+			sendNotification(GroupFightMenuComponentMediator.CHANGE_NOTE);
+			sendNotification(GroupFightMapComponentMediator.CHANGE_NOTE);
+		}
 		
 		protected function rectMoveHandler(event:GroupFightEvent):void
 		{
@@ -57,6 +72,17 @@ package mediator.groupFight
 		{
 			sendNotification(GroupFightMenuComponentMediator.SHOW_HIDE_NOTE);
 			sendNotification(GroupFightShowComponentMediator.SHOW_HIDE_NOTE);
+			sendNotification(GroupFightMapComponentMediator.SHOW_COMP_NOTE);
+		}
+		
+		override public function show():void
+		{
+			if(GlobalData.currentSence==SenceTypeEnum.MAIN)
+				Main.removeBG();
+			super.show();
+			sendNotification(MainViewMediator.HIDE_TOP_VIEW_NOTE);
+			sendNotification(MainViewMediator.HIDE_RIGHT_VIEW_NOTE);
+			sendNotification(MainViewMediator.HIDE_RENWU_VIEW_NOTE);
 		}
 		
 		protected function gongJiHandler(event:GroupFightEvent):void
@@ -64,10 +90,8 @@ package mediator.groupFight
 			groupFightProxy.move_to_star(GroupFightEnum.CURRTENT_STARVO.name,GroupFightEnum.CURRTENT_TO_STARVO.name,
 				GroupFightEnum.NUM,function():void
 				{
-					sendNotification(GroupFightMenuComponentMediator.SHOW_HIDE_NOTE);
-					sendNotification(GroupFightShowComponentMediator.SHOW_HIDE_NOTE);
 					GroupFightComponent.MOUSE_ENABLED=true;
-				});				
+				},true);				
 		}
 		
 		protected function paiQianHandler(event:GroupFightEvent):void
@@ -120,6 +144,7 @@ package mediator.groupFight
 				{
 					sendNotification(GroupFightMenuComponentMediator.HIDE_NOTE);
 					sendNotification(GroupFightShowComponentMediator.HIDE_NOTE);
+					sendNotification(GroupFightMapComponentMediator.HIDE_NOTE);
 					var lossReportVo:LossReportVo=new LossReportVo();
 					lossReportVo.send_warships=GroupFightEnum.NUM;
 					lossReportVo.send_warships_1=GroupFightEnum.CURRTENT_TO_STARVO.total_warships;
@@ -140,7 +165,7 @@ package mediator.groupFight
 		 * @return
 		 *
 		 */
-		protected function get comp():GroupFightComponent
+		public function get comp():GroupFightComponent
 		{
 			return viewComponent as GroupFightComponent;
 		}

@@ -1,5 +1,6 @@
 package mediator.loader
 {
+    import com.greensock.TweenLite;
     import com.zn.ResLoader;
     import com.zn.loading.LoaderEvent;
     
@@ -104,8 +105,10 @@ package mediator.loader
          */
         private function showLoaderBar():void
         {
+			(comp as DisplayObject).alpha=0.2;
             PopUpManager.addPopUp(comp as DisplayObject, true);
             UIUtil.centerUI(comp as DisplayObject);
+			TweenLite.to(comp as DisplayObject,1,{alpha:1});
         }
 
         /**

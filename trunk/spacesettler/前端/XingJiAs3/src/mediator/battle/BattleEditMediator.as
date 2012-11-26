@@ -82,7 +82,7 @@ package mediator.battle
          * @return
          *
          */
-        protected function get comp():BattleEditComponent
+        public function get comp():BattleEditComponent
         {
             return viewComponent as BattleEditComponent;
         }
@@ -91,8 +91,8 @@ package mediator.battle
         {
             super.showComplete();
 
-            ScreenUtils.normalW = comp.buildSp.width;
-            ScreenUtils.normalH = comp.buildSp.height;
+            ScreenUtils.normalW = comp.bgSp.width;
+            ScreenUtils.normalH = comp.bgSp.height;
             ScreenUtils.addScreenScroll(comp, true);
 
             GlobalData.currentSence = SenceTypeEnum.EDIT_BATTLE;

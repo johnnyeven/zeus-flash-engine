@@ -89,6 +89,21 @@ package mediator.login
 			sendNotification(DESTROY_NOTE);
 		}
 		
+		private function strLength(str:String):int
+		{
+			var length:int=0;
+			for (var i:int = 0; i < str.length; i++)
+			{  
+				if(str.charCodeAt(i)<10000)
+					length+=1;
+				else
+					length+=2;
+//				trace(str.charAt(i), "-", str.charCodeAt(i));
+			}
+			
+			return length;
+		}
+		
 		private function nextHandler(event:RegistEvent):void
 		{
 			if (StringUtil.isEmpty(event.userName))
@@ -96,7 +111,7 @@ package mediator.login
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registInfoEmpty"));
 				return;
 			}
-			else if(event.userName.length <6)
+			else if(strLength(event.userName) <6)
 			{
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registInforError"));
 				return;

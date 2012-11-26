@@ -30,7 +30,7 @@ package mediator.cangKu
 		{
 			super(NAME, new ChaKanDaoJuViewComponent(ClassUtil.getObject("item_View")));
 			comp.med=this;
-			level=2;
+			level=3;
 			comp.addEventListener(ChaKanEvent.CLOSEVIEW_EVENT,closeHandler);
 		}
 		

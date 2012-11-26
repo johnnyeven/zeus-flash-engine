@@ -9,6 +9,7 @@ package view.groupFight
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
+	import flash.utils.setTimeout;
 	
 	import proxy.groupFight.GroupFightProxy;
 	
@@ -22,10 +23,13 @@ package view.groupFight
 	
 	public class GroupFightMapComponent extends Component
 	{
+		
+		public static const GAP:int=5;
+		
 		public var rightBtn:Button;
 		public var mapShowComp:Component;
 		public var leftBtn:Button;
-		
+		public var backMc:Sprite;
 		public var container:Sprite;
 		
 		private var _comp:GroupFightComponent;
@@ -40,6 +44,7 @@ package view.groupFight
 		private var _pointList:Array=[];
 		
 		private var _proxy:GroupFightProxy;
+		private var currtentStarVo:GroupFightVo;
 		public function GroupFightMapComponent()
 		{
 			super(ClassUtil.getObject("view.GroupFightMapSkin"));
@@ -53,15 +58,24 @@ package view.groupFight
 			
 			leftBtn=mapShowComp.createUI(Button,"leftBtn");
 			container=mapShowComp.getSkin("container");
+			backMc=mapShowComp.getSkin("backMc");
 			mapShowComp.sortChildIndex();
-			
 			setMap();
 			
+			initializeStar(_proxy.myStarVo);
 //			setRectPosition(new Point(_proxy.myStarVo.x,_proxy.myStarVo.y));
 			
 			rightBtn.addEventListener(MouseEvent.CLICK,rightBtn_clickHandler);
 			leftBtn.addEventListener(MouseEvent.CLICK,leftBtn_clickHandler);
+			backMc.addEventListener(MouseEvent.CLICK,containerClickHandler);
 			
+		}
+		
+		protected function containerClickHandler(event:MouseEvent):void
+		{			
+			_rect.x=container.mouseX-_rect.width/2;
+			_rect.y=container.mouseY-_rect.height/2;
+			dispatchEvent(new GroupFightEvent(GroupFightEvent.SENCECHANGE_EVENT,0,_point,_point2,clickVo));
 		}
 		
 //		private function removeAllItem():void
@@ -135,6 +149,19 @@ package view.groupFight
 		{
 			_rect.x=-point.x/(rateW()*6);
 			_rect.y=-point.y/(rateH()*6);
+			rectScope();
+		}
+		
+		private function rectScope():void
+		{
+			if(_rect.x+_rect.width>=backMc.width-container.x-GAP)
+				_rect.x=backMc.width-GAP-container.x-_rect.width;
+			if(_rect.y+_rect.height>=backMc.height-container.y-GAP)
+				_rect.y=backMc.height-GAP-container.y-_rect.height;
+			if(_rect.x<=-container.x+GAP)
+				_rect.x=-container.x+GAP;
+			if(_rect.y<=-container.y+GAP)
+				_rect.y=-container.y+GAP;
 		}
 		
 		private function rateW():Number
@@ -150,6 +177,19 @@ package view.groupFight
 			rateOfHeight=SystemManager.rootStage.height/(this.height+50);
 			
 			return rateOfHeight;
+		}
+		
+		private function initializeStar(starPoint:GroupFightVo):void
+		{
+			_rect.x=starPoint.x/rateW()-_rect.width/2;
+			_rect.y=starPoint.y/rateH()-_rect.height/2;
+			currtentStarVo=starPoint;
+			setTimeout(sendMsg,500);
+		}
+		
+		private function sendMsg():void
+		{
+			dispatchEvent(new GroupFightEvent(GroupFightEvent.SENCECHANGE_EVENT,0,_point,_point2,currtentStarVo));			
 		}
 		
 		private function rectW(x:Number):Number
@@ -169,6 +209,14 @@ package view.groupFight
 			heightOfRect=y/rateOfRectH;
 			
 			return heightOfRect;
+		}
+		
+		private function get clickVo():GroupFightVo
+		{
+			var clickVo:GroupFightVo=new GroupFightVo();
+			clickVo.x=(_rect.x+_rect.width*0.5)*rateW()*6;
+			clickVo.y=(_rect.y+_rect.height*0.5)*rateH()*6;
+			return clickVo;
 		}
 		
 		public function rectMoveHandler(event:GroupFightEvent):void

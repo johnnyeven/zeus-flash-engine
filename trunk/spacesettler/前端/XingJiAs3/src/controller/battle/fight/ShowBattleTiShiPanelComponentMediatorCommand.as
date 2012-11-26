@@ -11,11 +11,11 @@ package controller.battle.fight
     import org.puremvc.as3.interfaces.INotification;
     import org.puremvc.as3.patterns.command.SimpleCommand;
 
-    /**
-     *显示界面命令
-     * @author zn
-     *
-     */
+	/**
+	 * 时间或其他紧急提示
+	 * @author rl
+	 * 
+	 */	
     public class ShowBattleTiShiPanelComponentMediatorCommand extends SimpleCommand
     {
 		private static var _isLoading:Boolean=false;

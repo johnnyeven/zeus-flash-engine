@@ -2,6 +2,8 @@ package vo
 {
 	import com.zn.utils.SoundUtil;
 	
+	import controller.mainSence.DestroyCommand;
+	
 	import enum.SenceTypeEnum;
 	import enum.SoundEnum;
 	
@@ -10,6 +12,7 @@ package vo
 	import mediator.BaseMediator;
 	import mediator.battle.BattleEditMediator;
 	import mediator.battle.BattleFightMediator;
+	import mediator.groupFight.GroupFightComponentMediator;
 	import mediator.mainSence.MainSenceComponentMediator;
 	import mediator.plantioid.PlantioidComponentMediator;
 	
@@ -52,7 +55,9 @@ package vo
 			if(_currentSenceMed)
 			{
 				PopUpManager.closeAll(0);
-				ApplicationFacade.getInstance().sendNotification(_currentSenceMed["DESTROY_NOTE"]);
+				var obj:Object={type:_currentSence};
+				ApplicationFacade.getInstance().sendNotification(DestroyCommand.DESTROY_INTERFACE,obj);
+//				ApplicationFacade.getInstance().sendNotification(_currentSenceMed["DESTROY_NOTE"]);
 				_currentSenceMed=null;
 			}
 			
@@ -63,29 +68,36 @@ package vo
 				case SenceTypeEnum.MAIN:
 				{
 					SoundUtil.stopAll();
-					SoundUtil.play(SoundEnum.bg_music,true);
+					SoundUtil.play(SoundEnum.bg_music,true,true,true);
 					_currentSenceMed=MainSenceComponentMediator;
 					break;
 				}
 				case SenceTypeEnum.PLANT:
 				{
 					SoundUtil.stopAll();
-					SoundUtil.play(SoundEnum.bg_music,true);
+					SoundUtil.play(SoundEnum.bg_music,true,true,true);
 					_currentSenceMed=PlantioidComponentMediator;
 					break;
 				}
 				case SenceTypeEnum.EDIT_BATTLE:
 				{
 					SoundUtil.stopAll();
-					SoundUtil.play(SoundEnum.bg_music,true);
+					SoundUtil.play(SoundEnum.bg_music,true,true,true);
 					_currentSenceMed=BattleEditMediator;
 					break;
 				}
 				case SenceTypeEnum.FIGHT_BATTLE:
 				{
 					SoundUtil.stopAll();
-					SoundUtil.play(SoundEnum.battle_bg_music,true);
+					SoundUtil.play(SoundEnum.battle_bg_music,true,true,true);
 					_currentSenceMed=BattleFightMediator;
+					break;
+				}
+				case SenceTypeEnum.GROUP_FIGHT:
+				{
+					SoundUtil.stopAll();
+					SoundUtil.play(SoundEnum.group_bg_music,true,true,true);
+					_currentSenceMed=GroupFightComponentMediator;
 					break;
 				}
 			}

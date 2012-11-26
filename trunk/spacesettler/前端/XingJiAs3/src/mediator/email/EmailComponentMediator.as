@@ -10,6 +10,7 @@ package mediator.email
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import proxy.email.EmailProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import view.email.EmailComponent;
 	
@@ -65,6 +66,7 @@ package mediator.email
 			{
 				case DESTROY_NOTE:
 				{
+					UserInfoProxy(getProxy(UserInfoProxy)).updateInfo();
 					//销毁对象
 					destroy();
 					break;

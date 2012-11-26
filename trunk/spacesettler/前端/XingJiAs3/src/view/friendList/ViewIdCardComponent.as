@@ -154,7 +154,7 @@ package view.friendList
 				{
 					addFriendBtn.visible = false;
 					sendEmailBtn.visible = false;
-					if(playerIDCardVO.vip_start_at=="")
+					if(playerIDCardVO.vip_start_at==null)
 						vipDaysLabel.visible=false;
 					else
 					{
@@ -167,7 +167,11 @@ package view.friendList
 				{
 					vipDaysLabel.visible=false;
 					addFriendBtn.visible = true;
-					sendEmailBtn.visible = true;
+					if(playerIDCardVO.isMyFriend)
+						sendEmailBtn.visible = true;
+					else
+						sendEmailBtn.visible = false;
+						
 					if(playerIDCardVO.isMyFriend == true)
 					{
 						addFriendBtn.visible = false;
@@ -193,25 +197,25 @@ package view.friendList
 		
 		protected function closeBtnHAndler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dispatchEvent(new Event("closeIDCardComponent"));
 		}
 		
 		protected function checkFortBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dispatchEvent(new FriendListEvent(FriendListEvent.CHECK_FORT_BY_ID_CARD_EVENT,playerIDCardVO.id));
 		}
 		
 		protected function addFriendBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dispatchEvent(new FriendListEvent(FriendListEvent.ADD_FRIEND_BY_ID_CARD_EVENT,playerIDCardVO.id));
 		}
 		
 		protected function sendEmailBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dispatchEvent(new FriendListEvent(FriendListEvent.SEND_EMAIL_BY_ID_CARD_EVENT,playerIDCardVO));
 		}
 	}

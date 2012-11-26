@@ -2,6 +2,11 @@ package mediator.plantioid
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	
+	import controller.EnterMainSenceViewCommand;
+	import controller.mainSence.ShowCommand;
+	
+	import enum.SenceTypeEnum;
+	
 	import events.plantioid.PlantioidEvent;
 	
 	import mediator.BaseMediator;
@@ -10,10 +15,12 @@ package mediator.plantioid
 	import mediator.battleEnter.BattleEnterComponentMediator;
 	import mediator.mainView.MainViewMediator;
 	import mediator.prompt.PromptMediator;
+	import mediator.prompt.PromptSureMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import proxy.battle.BattleProxy;
 	import proxy.plantioid.PlantioidProxy;
 	import proxy.userInfo.UserInfoProxy;
 	
@@ -33,12 +40,14 @@ package mediator.plantioid
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
 		public static const SWITCH_PLANT_SENCE_NOTE:String="SWITCH_PLANT_SENCE_NOTE" + NAME;
-
+		
+		private var battleProxy:BattleProxy;
+		private var id:String;
 		public function PlantioidComponentMediator()
 		{
 			super(NAME, new PlantioidComponent());
 			_popUp=false;
-
+			battleProxy=getProxy(BattleProxy);
 			comp.addEventListener(PlantioidEvent.ATTACK_EVENT, attackHandler);
 			comp.addEventListener(PlantioidEvent.FORCE_ATTACK_EVENT, forceAttackHandler);
 			comp.addEventListener(PlantioidEvent.MANAGER_EVENT, managerHandler);
@@ -84,7 +93,7 @@ package mediator.plantioid
 		 * @return
 		 *
 		 */
-		protected function get comp():PlantioidComponent
+		public function get comp():PlantioidComponent
 		{
 			return viewComponent as PlantioidComponent;
 		}
@@ -94,35 +103,45 @@ package mediator.plantioid
 			Main.removeBG();
 			super.show();
 			sendNotification(MainViewMediator.HIDE_TOP_VIEW_NOTE);
+			sendNotification(MainViewMediator.HIDE_RENWU_VIEW_NOTE);
 		}
 
 		public override function destroy():void
 		{
+			comp.removeEventListener(PlantioidEvent.ATTACK_EVENT, attackHandler);
+			comp.removeEventListener(PlantioidEvent.FORCE_ATTACK_EVENT, forceAttackHandler);
+			comp.removeEventListener(PlantioidEvent.MANAGER_EVENT, managerHandler);
+			comp.removeEventListener(PlantioidEvent.JUMP_EVENT, jumpHandler);
+			comp.removeEventListener(PlantioidEvent.MY_PLANT_EVENT, myPlantHandler);
 			super.destroy();
-
-			sendNotification(MainViewMediator.SHOW_TOP_VIEW_NOTE);
+//			sendNotification(MainViewMediator.SHOW_TOP_VIEW_NOTE);
 		}
 
 
 		protected function attackHandler(event:PlantioidEvent):void
 		{
 			PlantioidComponent.MOUSE_ENABLED=false;
+			id=event.plantioidID;			
+			sureZhanChe();			
+		}
+		private function sureZhanChe():void
+		{
 			var plantioidProxy:PlantioidProxy=getProxy(PlantioidProxy);
-			plantioidProxy.setSelectedPlantioid(event.plantioidID);
+			plantioidProxy.setSelectedPlantioid(id);
 			sendNotification(BattleEnterComponentMediator.SHOW_NOTE);
 		}
 
 		protected function forceAttackHandler(event:PlantioidEvent):void
 		{
 			PlantioidComponent.MOUSE_ENABLED=false;
+			id=event.plantioidID;
 			var plantioidProxy:PlantioidProxy=getProxy(PlantioidProxy);
 			var obj:Object={};
 			obj.okCallFun=function():void
 			{
 				plantioidProxy.break_into_fort(event.plantioidID,function():void
 				{
-					plantioidProxy.setSelectedPlantioid(event.plantioidID);
-					sendNotification(BattleEnterComponentMediator.SHOW_NOTE);
+					sureZhanChe();
 				});
 			};
 			sendNotification(PlantioidTiShiComponentMediator.SHOW_NOTE,obj);			
@@ -134,8 +153,13 @@ package mediator.plantioid
 			plantioidProxy.setSelectedPlantioid(event.plantioidID);
 			plantioidProxy.getPlantioidInfo(PlantioidProxy.selectedVO.id, function():void
 			{
-				sendNotification(BattleEditMediator.SHOW_NOTE);
-				sendNotification(DESTROY_NOTE);
+				var obj:Object={};
+				obj.type=SenceTypeEnum.EDIT_BATTLE;
+				obj.id=PlantioidProxy.selectedVO.map_type;
+				sendNotification(ShowCommand.SHOW_INTERFACE,obj);
+//				sendNotification(BattleEditMediator.SHOW_NOTE,PlantioidProxy.selectedVO.map_type);
+				sendNotification(MainViewMediator.SHOW_TOP_VIEW_NOTE);
+//				sendNotification(DESTROY_NOTE);
 			});
 		}
 

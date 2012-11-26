@@ -71,12 +71,12 @@ package view.friendList
 			
 			container = new Container(null);
 			container.contentWidth = 325;
-			container.contentHeight = 380;
+			container.contentHeight = 400;
 			container.layout = new HTileLayout(container);
 			container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
 			container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
 			container.x = 12;
-			container.y = 85;
+			container.y = 80;
 			addChild(container);
 			
 			vScrollBar = createUI(VScrollBar, "vScrollBar");

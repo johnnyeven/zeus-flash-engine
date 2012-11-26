@@ -45,6 +45,7 @@ package view.group
 		 *拖动条 
 		 */		
 		public var vsBar:VScrollBar;
+		public var vsBar1:VScrollBar;
 		/**
 		 *从邮件中选择的军团成员信息显示
 		 */	
@@ -52,10 +53,13 @@ package view.group
 		public var playerNameLabel:Label;
 		public var okBtn:Button;
 		public var itemSp:Sprite;
+		public var itemSp1:Sprite;
 
 		private var container:Container;
+		private var container1:Container;
 		private var groupProxy:GroupProxy;
 		private var userProxy:UserInfoProxy;
+		private var arr:Array=[];
 		
 		private var _currentItem:GroupItem_2Component;
 		/**
@@ -77,8 +81,10 @@ package view.group
 			tuiChuBtn=createUI(Button,"tuichu_btn");
 			fanHuiBtn=createUI(Button,"fanhui_btn");
 			vsBar=createUI(VScrollBar,"vs_bar");
+			vsBar1=createUI(VScrollBar,"vs_bar1");
 			
 			itemSp=getSkin("item_sp");
+			itemSp1=getSkin("item_sp1");
 			emailArmyGroupInforSprivate = createUI(Component,"emailArmyGroupInforSprivate");
 			playerNameLabel = emailArmyGroupInforSprivate.createUI(Label,"playerNameLabel");
 			playerNameLabel.text = "";
@@ -90,6 +96,7 @@ package view.group
 			//初始化组件
 			emailArmyGroupInforSprivate.visible = false;
 			_currentItem=new GroupItem_2Component();
+			
 			container=new Container(null);
 			container.contentWidth=itemSp.width;
 			container.contentHeight=itemSp.height;			
@@ -98,8 +105,17 @@ package view.group
 			container.y=0;
 			itemSp.addChild(container);
 			
+			container1=new Container(null);
+			container1.contentWidth=itemSp1.width;
+			container1.contentHeight=itemSp1.height;			
+			container1.layout=new HTileLayout(container1);
+			container.x=0;
+			container.y=0;
+			itemSp1.addChild(container1);
+			
 			changeContainer();
 			vsBar.viewport=container;
+			vsBar1.viewport=container1;
 			
 			fanHuiBtn.addEventListener(MouseEvent.CLICK,doCloseHandler)
         }
@@ -108,6 +124,8 @@ package view.group
 		{
 			while (container.num > 0)
 				DisposeUtil.dispose(container.removeAt(0));
+			while (container1.num > 0)
+				DisposeUtil.dispose(container1.removeAt(0));
 		}
 		
 		private function changeContainer():void
@@ -134,12 +152,18 @@ package view.group
 				item.currtentVo=memberVo;
 				if(memberVo.vipLevel>0)
 					item.myVipShow(memberVo.vipLevel);
-				
 				container.add(item);
 				item.addEventListener(MouseEvent.CLICK,doClickHandler);
+				
+				var item1:GroupItem_4Component=new GroupItem_4Component();
+				item1.nameLable.text=memberVo.username;
+				item1.numLable.text=String(memberVo.reward_dark_crystal);
+				container1.add(item1);
+				
 			}
 			
 			container.layout.update();
+			container1.layout.update();
 		}
 		
 		protected function doClickHandler(event:MouseEvent):void

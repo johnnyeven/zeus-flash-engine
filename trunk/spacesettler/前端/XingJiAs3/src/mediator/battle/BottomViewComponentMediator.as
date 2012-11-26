@@ -4,6 +4,10 @@ package mediator.battle
 	import com.zn.utils.ObjectUtil;
 	import com.zn.utils.ScreenUtils;
 	
+	import controller.mainSence.ShowCommand;
+	
+	import enum.SenceTypeEnum;
+	
 	import events.battle.BottomViewEvent;
 	
 	import flash.display.Stage;
@@ -88,8 +92,9 @@ package mediator.battle
 		
 		protected function exitHandler(event:Event):void
 		{
-			sendNotification(BattleEditMediator.DESTROY_NOTE);
-			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+//			sendNotification(BattleEditMediator.DESTROY_NOTE);
+			var obj1:Object={type:SenceTypeEnum.PLANT}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
 		}
 		
 		

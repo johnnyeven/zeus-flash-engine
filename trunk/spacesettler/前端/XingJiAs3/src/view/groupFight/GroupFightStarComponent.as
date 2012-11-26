@@ -23,6 +23,7 @@ package view.groupFight
 	import ui.components.Button;
 	import ui.components.Label;
 	import ui.core.Component;
+	import ui.utils.DisposeUtil;
 	
 	import vo.groupFight.GroupFightVo;
 	import vo.groupFight.RewardsStarVo;
@@ -77,6 +78,8 @@ package view.groupFight
 		 */		
 		public var button2:Button;
 		
+		public var showMc:Sprite;
+		
 		public var qiuMianMc:GroupFightNumShowComponent;
 		
 		private var _isMine:Boolean=false;
@@ -109,6 +112,7 @@ package view.groupFight
 			button2=createUI(Button,"button2");
 			
 			anNiuSp=getSkin("anNiuSp");
+			showMc=getSkin("showMc");
 			chaKanSp=getSkin("chaKanSp");
 			sprite=getSkin("sprite");
 			clickMc=getSkin("clickMc");
@@ -121,6 +125,7 @@ package view.groupFight
 			qiuMianMc.visible=false;
 			button1.visible=false;
 			button2.visible=false;
+			showMc.visible=false;
 			button2.addEventListener(MouseEvent.CLICK,paiQianHandler);
         }
 		
@@ -131,27 +136,26 @@ package view.groupFight
 		
 		public override function dispose():void
 		{
-			super.dispose();
-			
 			_rotationTimeLine.kill();
 			_rotationTimeLine = null;
+			super.dispose();
 		}
 		
 		public function clearSp():void
 		{
 			while(chaKanSp.numChildren>0)
 			{
-				chaKanSp.removeChildAt(0);
+				DisposeUtil.dispose(chaKanSp.removeChildAt(0));
 			}
 			
 			while(anNiuSp.numChildren>0)
 			{
-				anNiuSp.removeChildAt(0);
+				DisposeUtil.dispose(anNiuSp.removeChildAt(0));
 			}
 			
 			while(moveMc.numChildren>0)
 			{
-				moveMc.removeChildAt(0);
+				DisposeUtil.dispose(moveMc.removeChildAt(0));
 			}
 		}
 		
@@ -186,6 +190,10 @@ package view.groupFight
 				ColorUtil.tint(bgMc, 0x33FF00, 1);
 				ColorUtil.tint(titleBg, 0x33FF00, 1);
 				ColorUtil.tint(qiuMianMc.mc1, 0x33FF00, 0.2);
+				if(platioidVO.total_warships>0)
+					showMc.visible=true;
+				else
+					showMc.visible=false;
 			}else if(platioidVO.legion_name!=groupProxy.groupInfoVo.groupname&&platioidVO.legion_name!="")
 			{
 				if(platioidVO.total_warships>100000)
@@ -215,7 +223,8 @@ package view.groupFight
 			var rotation:int = 360;
 			if (OddsUtil.getDrop(0.5))
 				rotation = -rotation;
-			
+			if(_rotationTimeLine)
+				_rotationTimeLine.kill();
 			_rotationTimeLine = new TimelineLite({ onComplete: rotationXingQiu });
 			_rotationTimeLine.insert(TweenLite.to(sprite, 60, { rotation: rotation, ease: Linear.easeNone }));
 			_rotationTimeLine.insert(TweenLite.to(bgMc, 60, { rotation: -rotation, ease: Linear.easeNone }));

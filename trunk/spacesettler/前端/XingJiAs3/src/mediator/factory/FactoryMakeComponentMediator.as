@@ -6,12 +6,14 @@ package mediator.factory
 	import enum.factory.FactoryEnum;
 	import enum.item.ItemEnum;
 	
+	import events.buildingView.ConditionEvent;
 	import events.factory.FactoryEvent;
 	import events.factory.FactoryItemEvent;
 	
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
+	import mediator.buildingView.ConditionViewCompMediator;
 	import mediator.cangKu.ChaKanGuaJianViewComponentMediator;
 	import mediator.cangKu.ChaKanZhanCheViewComponentMediator;
 	import mediator.prompt.MoneyAlertComponentMediator;
@@ -39,7 +41,7 @@ package mediator.factory
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 		
 		private var factoryProxy:FactoryProxy;		
-		
+		private var type:String;
 		public function FactoryMakeComponentMediator()
 		{
 			super(NAME, new FactoryMakeComponent());
@@ -52,27 +54,29 @@ package mediator.factory
 			comp.addEventListener(FactoryEvent.SHOW_INFO_EVENT,doShowInfoHandler);
 			comp.addEventListener(FactoryEvent.SPEEDUP_EVENT,doSpeedUpHandler);
 			comp.addEventListener(FactoryEvent.MAKE_EVENT,doMakeHandler);
+			comp.addEventListener(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionHandler);
 			
 			comp.addEventListener(FactoryItemEvent.ZHIZAO_COMPLETE_EVENT,makeCompLeteHandler);
 		}
 		
+		protected function conditionHandler(event:ConditionEvent):void
+		{
+			sendNotification(ConditionViewCompMediator.SHOW_NOTE,event.conditionArr);
+		}
+		
 		protected function makeCompLeteHandler(event:FactoryItemEvent):void
 		{
-			factoryProxy.update_produce(event.item.drawVo.id,function():void
+			factoryProxy.update_produce(event.drawListVo.id,function():void
 			{
-				factoryProxy=getProxy(FactoryProxy);
-//				event.item.drawVo=factoryProxy.drawVo;
+				change();
 			});
 		}
 		
 		protected function doMakeHandler(event:FactoryEvent):void
 		{
-			var item:FactoryItem_1Component=event.item;			
-			factoryProxy.makeStar(item.drawVo.id,function():void
+			factoryProxy.makeStar(event.item.drawVo.id,function():void
 			{
-				factoryProxy=getProxy(FactoryProxy);
-				item.drawVo=factoryProxy.drawVo;
-				item.setTweenLine(factoryProxy.drawVo.remainTime);	
+				change();
 			});
 			
 		}
@@ -81,13 +85,14 @@ package mediator.factory
 		{
 			var item:FactoryItem_1Component=event.item as FactoryItem_1Component;
 			var obj:Object={};
+			obj.title=MultilanguageManager.getString("jiaSu");
 			obj.info=MultilanguageManager.getString("thisEvent");
 			obj.count=BaseItemVO.MONEY.toString();
 			obj.okCallBack=function():void
 			{
 				factoryProxy.produce_speed_up(item.drawVo.eventID,function():void
 				{
-					item.setTweenLine(1);
+					change();
 				});				
 			}
 			sendNotification(MoneyAlertComponentMediator.SHOW_NOTE,obj);
@@ -148,50 +153,40 @@ package mediator.factory
 			return viewComponent as FactoryMakeComponent;
 		}
 		
-		public function upData(type:String,callfunction:Function=null):void
+		private function change():void
 		{
-			var list:Array=[];
 			var listProxy:FactoryProxy=getProxy(FactoryProxy);
-			for(var i:int;i<listProxy.makeListArr.length;i++)
-			{
-				var drawVo:DrawListVo=listProxy.makeListArr[i] as DrawListVo;
-				switch(type)
-				{
-					case FactoryEnum.MAKE_GUAJIAN:
-					{
-						if(drawVo.recipe_type==2&&drawVo.tank_part_type!=1)
-							list.push(drawVo);
-						break;
-					}
-					case FactoryEnum.MAKE_WUQI:
-					{
-						if(drawVo.recipe_type==2&&drawVo.tank_part_type==1)
-							list.push(drawVo);
-						break;
-					}
-					case FactoryEnum.MAKE_ZHANCHE:
-					{
-						if(drawVo.recipe_type==1)
-							list.push(drawVo);
-						break;
-					}		
-				}			
-			}
 			if(type==FactoryEnum.MAKE_ZHANCHE)
 			{
-				comp.addContainerZhanChe(list);
-			}else
+				comp.changeContainer(listProxy.makeZCListArr);
+			}else if(type==FactoryEnum.MAKE_WUQI)
 			{
-				comp.addContainerGuaJian(list);
+				comp.changeContainer(listProxy.makeWQListArr);
+			}else if(type==FactoryEnum.MAKE_GUAJIAN)
+			{
+				comp.changeContainer(listProxy.makeGJListArr);
+			}		
+		}
+		
+		public function upData(type:String,callfunction:Function=null):void
+		{
+			this.type=type;
+			var listProxy:FactoryProxy=getProxy(FactoryProxy);
+			if(type==FactoryEnum.MAKE_ZHANCHE)
+			{
+				comp.addContainerZhanChe(listProxy.makeZCListArr);
+			}else if(type==FactoryEnum.MAKE_WUQI)
+			{
+				comp.addContainerGuaJian(listProxy.makeWQListArr);
+			}else if(type==FactoryEnum.MAKE_GUAJIAN)
+			{
+				comp.addContainerGuaJian(listProxy.makeGJListArr);
 			}					
 			
 			if(callfunction!=null)
 				callfunction();
 			callfunction=null;
-			list.length=0;
 									
-					
-				
 		}
 	}
 }

@@ -28,6 +28,7 @@ package proxy.groupFight
 	public class GroupFightProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = "GroupFightProxy";
+		public static var isAttack:Boolean;
 		
 		/**
 		 *行星数组 
@@ -116,7 +117,6 @@ package proxy.groupFight
 			starArr=list;
 			
 			var str1:String=GroupFightEnum.ZIYUAN1_STAR;
-			star4001.crystal=data.star_rewards[str1].person.crystal;
 			star4001.broken_crystal=data.star_rewards[str1].legion.broken_crystal;
 			star4001.type=data.star_rewards[str1].legion.buffs[0].type;
 			star4001.value=data.star_rewards[str1].legion.buffs[0].value;
@@ -125,7 +125,6 @@ package proxy.groupFight
 			star4001.count=data.star_rewards[str1].person[0].count;			
 			
 			var str2:String=GroupFightEnum.ZIYUAN2_STAR;
-			star4002.crystal=data.star_rewards[str2].person.crystal;
 			star4002.broken_crystal=data.star_rewards[str2].legion.broken_crystal;
 			star4002.type=data.star_rewards[str2].legion.buffs[0].type;
 			star4002.value=data.star_rewards[str2].legion.buffs[0].value;
@@ -134,7 +133,6 @@ package proxy.groupFight
 			star4002.count=data.star_rewards[str2].person[0].count;			
 			
 			var str3:String=GroupFightEnum.ZIYUAN3_STAR;
-			star4003.crystal=data.star_rewards[str3].person.crystal;
 			star4003.broken_crystal=data.star_rewards[str3].legion.broken_crystal;
 			star4003.type=data.star_rewards[str3].legion.buffs[0].type;
 			star4003.value=data.star_rewards[str3].legion.buffs[0].value;
@@ -143,11 +141,16 @@ package proxy.groupFight
 			star4003.count=data.star_rewards[str3].person[0].count;			
 			
 			var str4:String=GroupFightEnum.ZHU_STAR;
-			star5000.dark_crystal=data.star_rewards[str4].person.dark_crystal;
+			star5000.dark_crystal=data.star_rewards[str4].person[0].dark_crystal;
+			star5000.resource_type=data.star_rewards[str4].person[0].resource_type;
+			star5000.count=data.star_rewards[str4].person[0].count;
+			if(isAttack==false)
+			{
+				sendNotification(GroupFightComponentMediator.CHANGE_NOTE);
+				sendNotification(GroupFightMenuComponentMediator.CHANGE_NOTE);
+				sendNotification(GroupFightMapComponentMediator.CHANGE_NOTE);
+			}
 			
-			sendNotification(GroupFightComponentMediator.CHANGE_NOTE);
-			sendNotification(GroupFightMenuComponentMediator.CHANGE_NOTE);
-			sendNotification(GroupFightMapComponentMediator.CHANGE_NOTE);
 			
 			if(callBcakFunction!=null)
 				callBcakFunction();
@@ -255,13 +258,14 @@ package proxy.groupFight
 		 *星球移动
 		 * 参数：from_star_id:星球移动的源头       to_star_id:星球移动的目的星球       warship_count:派兵多少 INt
 		 */		
-		public function move_to_star(from_star_id:String,to_star_id:String,warship_count:int,callBcakFun:Function=null):void
+		public function move_to_star(from_star_id:String,to_star_id:String,warship_count:int,callBcakFun:Function=null,bool:Boolean=false):void
 		{
 			if(!Protocol.hasProtocolFunction(CommandEnum.move_to_star, moveStarReputation))
 				Protocol.registerProtocol(CommandEnum.move_to_star, moveStarReputation);
 			var obj:Object = {player_id:userProxy.userInfoVO.player_id,from_star_id:from_star_id ,
 				to_star_id:to_star_id,warship_count:warship_count};
 			callBcakFunction=callBcakFun;
+			isAttack=bool;
 			ConnDebug.send(CommandEnum.move_to_star, obj);
 		}
 		
@@ -276,9 +280,6 @@ package proxy.groupFight
 			}
 			
 			get_star_map(callBcakFunction);	
-			
-			sendNotification(GroupFightComponentMediator.CHANGE_NOTE);
-			sendNotification(GroupFightMenuComponentMediator.CHANGE_NOTE);			
 			
 			if(data.battle_index)
 				get_battle_result(data.battle_index,callBcakFunction);
@@ -311,8 +312,6 @@ package proxy.groupFight
 				return;
 			}
 			
-			get_star_map(callBcakFunction);
-			
 			lossReportVo.send_warships=data.attacker_info.send_warships;
 			lossReportVo.left_warships=data.attacker_info.left_warships;
 			lossReportVo.total_warships=data.attacker_info.total_warships;
@@ -325,11 +324,6 @@ package proxy.groupFight
 			{
 				num+=1;				
 			}
-			
-			sendNotification(GroupFightShowComponentMediator.CHANGE_NOTE);
-			sendNotification(GroupFightComponentMediator.CHANGE_NOTE);
-			sendNotification(GroupFightMenuComponentMediator.CHANGE_NOTE);
-//			sendNotification(GroupFightMapComponentMediator.CHANGE_NOTE);
 			
 			if(callBcakFunction!=null)
 				callBcakFunction();

@@ -184,7 +184,7 @@ package mediator.email
 		{
 			//标记是邮件需要的数据
 			var obj:Object = {isEmail:true};
-			sendNotification(ShowBagComponentMediator.SHOW_NOTE,obj);
+			sendNotification(EmailShowBagComponentMediator.SHOW_NOTE,obj);
 		}
 		
 		private function showSourceListHandler(event:Event):void

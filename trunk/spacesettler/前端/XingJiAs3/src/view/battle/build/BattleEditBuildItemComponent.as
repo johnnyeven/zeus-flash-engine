@@ -23,7 +23,7 @@ package view.battle.build
     import vo.battle.BattleBuildVO;
 
     /**
-     *战场建筑
+     *战场编辑建筑
      * @author zn
      *
      */

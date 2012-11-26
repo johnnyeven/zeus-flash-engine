@@ -10,6 +10,7 @@ package proxy.shangCheng
     
     import mediator.prompt.PromptMediator;
     import mediator.prompt.PromptSureMediator;
+    import mediator.shangCheng.ShangChengComponentMediator;
     
     import org.puremvc.as3.interfaces.IProxy;
     import org.puremvc.as3.patterns.proxy.Proxy;
@@ -231,7 +232,7 @@ package proxy.shangCheng
 			var obj:Object={};
 			obj.infoLable=MultilanguageManager.getString("duiHuan");
 			obj.showLable=MultilanguageManager.getString("buySuccess");
-			obj.mediatorLevel = mediatorLevel;
+			obj.mediatorLevel =ShangChengComponentMediator(getMediator(ShangChengComponentMediator)).level;//mediatorLevel
 			sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 		}
     }

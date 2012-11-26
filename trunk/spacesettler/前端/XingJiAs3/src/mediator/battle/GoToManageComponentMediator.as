@@ -1,5 +1,9 @@
 package mediator.battle
 {
+	import controller.mainSence.ShowCommand;
+	
+	import enum.SenceTypeEnum;
+	
 	import flash.events.Event;
 	
 	import mediator.BaseMediator;
@@ -78,7 +82,8 @@ package mediator.battle
 			//退出战场
 			sendNotification(BattleFightMediator.DESTROY_NOTE);
 			//默认显示小行星带
-			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			var obj1:Object={type:SenceTypeEnum.PLANT}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
 		}
 		
 		private function gotoManageHandler(event:Event):void
@@ -91,7 +96,7 @@ package mediator.battle
 				//退出战场
 				sendNotification(BattleFightMediator.DESTROY_NOTE);
 				//显示可编辑要塞
-				sendNotification(BattleEditMediator.SHOW_NOTE);
+				sendNotification(BattleEditMediator.SHOW_NOTE,PlantioidProxy.selectedVO.map_type);
 				sendNotification(MainViewMediator.SHOW_TOP_VIEW_NOTE);
 			});
 		}

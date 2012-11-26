@@ -7,6 +7,7 @@ package mediator.battle
 	import controller.battle.fight.FightItemCommand;
 	import controller.battle.fight.FightLockCommand;
 	import controller.battle.fight.FightMoveCommand;
+	import controller.mainSence.ShowCommand;
 	
 	import enum.SenceTypeEnum;
 	import enum.battle.BattleScaleEnum;
@@ -17,6 +18,7 @@ package mediator.battle
 	import events.battle.fight.FightItemEvent;
 	import events.battle.fight.FightLockEvent;
 	import events.battle.fight.FightZhanCheMoveEvent;
+	import events.battle.fight.fightMorePlayer.FightZhanCheMaoYanEvent;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -54,6 +56,8 @@ package mediator.battle
 
 		public static const DESTROY_NOTE:String="destroy" + NAME + "Note";
 
+		public static const CHANGESENCE_NOTE:String="changeSence" + NAME + "Note";
+		
 		private var _battleProxy:BattleProxy;
 		private var userProxy:UserInfoProxy;
 		public function BattleFightMediator(viewComponent:Object=null)
@@ -70,6 +74,8 @@ package mediator.battle
 			comp.addEventListener(FightItemEvent.FIGHT_ITEM_EVENT, fightItemHandler);
 			comp.addEventListener(FightFeiJiZiBaoEvent.FIGHT_FEI_JI_ZI_BAO_EVENT, feiJiZiBaoHandler);
 			comp.addEventListener(FightEvent.FAIL_EVENT, failHandler);
+			//战车冒烟控制
+			comp.addEventListener(FightZhanCheMaoYanEvent.MAO_YAN_EVENT,zhanCheMaoYanHandler);
 		}
 		
 		/**
@@ -79,7 +85,7 @@ package mediator.battle
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [DESTROY_NOTE];
+			return [DESTROY_NOTE,CHANGESENCE_NOTE];
 		}
 
 		/**
@@ -96,6 +102,11 @@ package mediator.battle
 					//销毁对象
 					
 					destroy();
+					break;
+				}
+				case CHANGESENCE_NOTE:
+				{
+					ScreenUtils.scrollRectToPoint(new Point(comp.myZhanCheComp.x, comp.myZhanCheComp.y));
 					break;
 				}
 			}
@@ -244,10 +255,16 @@ package mediator.battle
 				{
 					sendNotification(BattleFightMediator.DESTROY_NOTE);
 					//默认显示小行星带
-					sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+					var obj1:Object={type:SenceTypeEnum.PLANT}
+					sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
 				}
 				sendNotification(BattleRevivePanelComponentMediator.SHOW_NOTE,obj);
 			}
+		}
+		
+		private function zhanCheMaoYanHandler(event:FightZhanCheMaoYanEvent):void
+		{
+			BattleProxy(getProxy(BattleProxy)).zhanCheMaoYan(event.fightZhanCheMaoYanVO);
 		}
 	}
 }

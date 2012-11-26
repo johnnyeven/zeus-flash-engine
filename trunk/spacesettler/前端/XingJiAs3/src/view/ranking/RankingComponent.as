@@ -57,10 +57,10 @@ package view.ranking
 		
 		public function upData(rankVo:RankingUserVo):void
 		{
-			item_1.timeText.text=DateFormatter.formatterTimeNYR(rankVo.orders_rank_updated_time);
-			item_2.timeText.text=DateFormatter.formatterTimeNYR(rankVo.forts_count_rank_updated_time);
-			item_3.timeText.text=DateFormatter.formatterTimeNYR(rankVo.legion_prestige_rank_updated_time);
-			item_4.timeText.text=DateFormatter.formatterTimeNYR(rankVo.person_prestige_rank_updated_time);
+			item_1.timeText.text=DateFormatter.formatterTimeNYR(rankVo.orders_rank_updated_time*1000);
+			item_2.timeText.text=DateFormatter.formatterTimeNYR(rankVo.forts_count_rank_updated_time*1000);
+			item_3.timeText.text=DateFormatter.formatterTimeNYR(rankVo.legion_prestige_rank_updated_time*1000);
+			item_4.timeText.text=DateFormatter.formatterTimeNYR(rankVo.person_prestige_rank_updated_time*1000);
 			
 			item_1.zongBangText.text=rankVo.orders_total_rank_first;
 			item_1.riBangText.text=rankVo.orders_daily_rank_first;

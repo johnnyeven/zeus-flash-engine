@@ -55,12 +55,12 @@ package view.email
 			
 			container = new Container(null);
 			container.contentWidth = 316;
-			container.contentHeight = 360;
+			container.contentHeight = 395;
 			container.layout = new HTileLayout(container);
 			container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
 			container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
 			container.x = 12;
-			container.y = 94;
+			container.y = 80;
 			addChild(container);
 			
 			vScrollBar = createUI(VScrollBar, "vScrollBar");
@@ -83,10 +83,10 @@ package view.email
 			
 			removeCWList();
 			cwList.push(BindingUtils.bindSetter(itemVOListChange,emailProxy,"emailList"));
-			cwList.push(BindingUtils.bindSetter(function():void
-			{
-				emailCountLabel.text = emailProxy.emailCount +"/" +emailProxy.emailCount +"";
-			},emailProxy,"emailCount"));
+//			cwList.push(BindingUtils.bindSetter(function():void
+//			{
+//				emailCountLabel.text = emailProxy.emailNoReadCount +"/" +emailProxy.emailCount +"";
+//			},emailProxy,"emailCount"));
 			//刷新邮件列表
 			receiveEmailBtn.addEventListener(MouseEvent.CLICK,receiveEmailBtn_clickHandler);
 			sendEmailBtn.addEventListener(MouseEvent.CLICK,sendEmailBtn_clickHandler);
@@ -99,7 +99,6 @@ package view.email
 			deleteAllBtn.addEventListener(MouseEvent.CLICK,deleteAllBtn_clickHandler);
 		}
 		
-		
 		private function itemVOListChange(value:*,bool:Boolean = false):void
 		{
 			while (container.num > 0)
@@ -109,17 +108,24 @@ package view.email
 			 if(arr.length>0)
 			 {
 				 noEmailTipsLabel.visible = false;
-//				 emailCountLabel.text = (arr[0] as EmailItemVO).mails_count +"/" +(arr[0] as EmailItemVO).mails_count +"";
 			    for (var i:int = 0; i < arr.length; i++)
 				{
+					var emailItemVO:EmailItemVO=arr[i];
 					var emailItem:EmailItem = new EmailItem();
 					emailItem.data = arr[i];
 					emailItem.isDelete = bool;
 					emailItem.addEventListener(MouseEvent.CLICK, emailItem_clickHandler);
 					emailItem.dyData = i;
 					
+					if(emailItemVO.is_read==false)
+					{
+						currentCount++;
+					}
+					
 					container.add(emailItem);
 				}
+				
+				emailCountLabel.text = emailProxy.emailOnReadCount +"/" +emailProxy.emailCount +"";
 				
 				container.layout.update();
 				
@@ -167,7 +173,7 @@ package view.email
 			
 		protected function deleteAllBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			var arrJson:Array = [];
 			var emialID:int;
 			for(var i:int = 0;i<arr.length;i++)
@@ -185,7 +191,7 @@ package view.email
 		
 		protected function deleteSuccessBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			deleteEmailBtn.visible = true;
 			deleteSuccessBtn.visible = false;
 			//隐藏删除小按钮
@@ -195,7 +201,7 @@ package view.email
 		
 		protected function deleteEmailBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			deleteEmailBtn.visible = false;
 			deleteSuccessBtn.visible = true;
 			//显示删除小按钮

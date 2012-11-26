@@ -38,6 +38,10 @@ package view.battle.fight
 		 */		
 		private var buildRangeEffect:MovieClip;
 		private var _setBuildRangeEffectVisible:Boolean = false;
+		/**
+		 *建筑炮塔的开火特效
+		 */	
+		public var buildFireEffect:Sprite;
         public function FightBuildComponent(buildVO:FORTBUILDING)
         {
             super(null);
@@ -56,7 +60,6 @@ package view.battle.fight
             x = buildVO.x;
             y = buildVO.y;
             cwList.push(BindingUtils.bindSetter(stateChange, buildVO, "state"));
-			
         }
 
         private function stateChange(value:*):void
@@ -72,8 +75,13 @@ package view.battle.fight
 
             _buildSp = ClassUtil.getObject(className);
             if (turretMC)
-                turretMC.gotoAndStop(1);
+			{
+				turretMC.gotoAndStop(1);
+				buildFireEffect = turretMC.getChildByName("point") as Sprite;
+			}
+                
 
+			
             addChild(_buildSp);
 			addChild(infoComp);
         }
@@ -102,7 +110,11 @@ package view.battle.fight
 
             var flagStr:String = "d" + r;
             if (turretMC)
-                turretMC.gotoAndStop(flagStr);
+			{
+				turretMC.gotoAndStop(flagStr);
+				buildFireEffect = turretMC.getChildByName("point") as Sprite;
+			}
+                
         }
 
 		public function get itemVO():FORTBUILDING

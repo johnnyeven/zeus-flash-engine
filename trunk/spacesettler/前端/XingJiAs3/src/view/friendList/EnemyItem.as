@@ -44,11 +44,11 @@ package view.friendList
 				playerNameLabel.text = _data.nickname;
 				ageLevelLabel.text = FriendListCardEnum.getKeJiShiDaiNameByKeJiShiDaiLevel(_data.age_level);
 				var str:String = "<p><s>攻打时间：</s><s>{0}</s></p>";
-				str = StringUtil.formatString(str,DateFormatter.formatterTimeNYR(_data.attack_time));
+				str = StringUtil.formatString(str,DateFormatter.formatterTimeNYR(_data.attack_time*1000));
 				attackTimeLabel.text = str;
 				var str1:String = "<p><s>被攻要塞坐标：</s><s>{0}</s><s>:</s><s>{1}</s><s>:</s><s>{2}</s></p>";
-				str = StringUtil.formatString(str,_data.x,_data.y,_data.z);
-				pointLabel.text = str;
+				str1 = StringUtil.formatString(str1,_data.x,_data.y,_data.z);
+				pointLabel.text = str1;
 			}
 		}
 	}

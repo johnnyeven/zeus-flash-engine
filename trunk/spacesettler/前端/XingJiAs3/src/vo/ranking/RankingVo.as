@@ -30,9 +30,14 @@ package vo.ranking
 		public var show:int;
 		
 		/**
-		 * 排名
+		 * 这次的排名
 		 */		
 		public var rank:int;
+		
+		/**
+		 * 排名的升降名次 负的为下降 正的为上升
+		 */		
+		public var rank_rise:uint;
 		
 		public function RankingVo()
 		{

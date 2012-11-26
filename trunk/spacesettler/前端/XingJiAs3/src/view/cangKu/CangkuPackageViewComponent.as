@@ -134,7 +134,6 @@ package view.cangKu
             container.layout = new HTileLayout(container);
             container.x = 12.5;
             container.y = 147.5;
-            addChild(container);
 
             container.addEventListener(MouseEvent.ROLL_OVER, mouseOverHandler);
             container.addEventListener(MouseEvent.ROLL_OUT, mouseOutHandler);
@@ -146,6 +145,8 @@ package view.cangKu
             vScrollBar.alpahaTweenlite(0);
 
             sortChildIndex();
+			
+			addChild(container);
 			addChild(vScrollBar);
 
             buyBtn.addEventListener(MouseEvent.CLICK, buyBtn_clickHandler);

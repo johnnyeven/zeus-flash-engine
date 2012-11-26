@@ -4,16 +4,23 @@ package mediator.battleEnter
     import com.greensock.easing.Linear;
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.SoundUtil;
-    import enum.factory.FactoryEnum;
+    
+    import controller.EnterMainSenceViewCommand;
+    
     import enum.SoundEnum;
+    import enum.factory.FactoryEnum;
+    
     import events.battle.BattleEnterEvent;
     
     import flash.events.Event;
+    import flash.utils.setTimeout;
     
     import mediator.BaseMediator;
     import mediator.battle.BattleFightMediator;
     import mediator.battle.BottomViewComponentMediator;
+    import mediator.factory.FactoryChangeComponentMediator;
     import mediator.factory.FactoryMakeAndServiceComponentMediator;
+    import mediator.mainView.MainViewMediator;
     import mediator.prompt.PromptSureMediator;
     import mediator.prompt.PromptWeiXiuMediator;
     import mediator.shangCheng.ShangChengComponentMediator;
@@ -106,58 +113,84 @@ package mediator.battleEnter
 
             facade.removeMediator(getMediatorName());
         }
+		
+		private function weiXiuShow():void
+		{
+			sendNotification(FactoryChangeComponentMediator.SHOW_NOTE);
+		}
+		
+		private function showZhanChang():void
+		{
+			sendNotification(BattleFightMediator.SHOW_NOTE,PlantioidProxy.selectedVO.map_type);
+		}
 
         protected function battleEnterHandler(event:BattleEnterEvent):void
         {
             var battleProxy:BattleProxy = getProxy(BattleProxy);
 			var factoryProxy:FactoryProxy = getProxy(FactoryProxy);
 			var userProxy:UserInfoProxy = getProxy(UserInfoProxy);
-			if(event.selectedZhanChe.current_endurance>0)
-			{ 
-				battleProxy.enterBattle(event.selectedZhanChe.id, function():void
-	            {
-	                sendNotification(BattleFightMediator.SHOW_NOTE,PlantioidProxy.selectedVO.map_type);
-	                sendNotification(DESTROY_NOTE);
-	            });				
+			if(event.selectedZhanChe.attack<=0||!event.selectedZhanChe.attack)
+			{
+				var obj1:Object={};//判断有无武器挂件！
+				obj1.infoLable="提示";
+				obj1.showLable="战车未装载武器挂件，不能进行攻击！";
+				obj1.okCallBack=function():void
+				{
+					Main.addBG();
+					sendNotification(EnterMainSenceViewCommand.ENTER_MAIN_SENCE_VIEW_COMMAND);
+					sendNotification(MainViewMediator.SHOW_RENWU_VIEW_NOTE);
+					setTimeout(weiXiuShow,1500);
+				}
+				sendNotification(PromptSureMediator.SHOW_NOTE,obj1);
 			}else
 			{
-				var obj:Object={};
-				obj.showLable=MultilanguageManager.getString("naijiuweiling");
-				obj.mediatorLevel = level;
-				obj.okCallBack = function():void
+				if(event.selectedZhanChe.current_endurance>0)//能量大于0 才能进入战场
+				{ 
+					battleProxy.enterBattle(event.selectedZhanChe.id, function():void
+					{
+						sendNotification(DESTROY_NOTE);
+						setTimeout(showZhanChang,500);
+					});				
+				}else
 				{
-					//判断资源是否足够维修
-					if(event.selectedZhanChe.repair_cost_broken_crystal >userProxy.userInfoVO.broken_crysta)
+					var obj:Object={};
+					obj.infoLable=MultilanguageManager.getString("naijiuweiling");
+					obj.showLable="维修需要物资："+String(event.selectedZhanChe.repair_cost_broken_crystal)+"暗物质";
+					obj.mediatorLevel = level;
+					obj.okCallBack = function():void
 					{
-						var obj:Object = {infoLable:MultilanguageManager.getString("notEnoughSourceTitle"),showLable:MultilanguageManager.getString("notEnoughSourceInfor"),mediatorLevel:level+2,
-							              okCallBack:function():void
-						                  {
-											  var shangChengObj:Object ={mediatorLevel:level+2} 
-											  sendNotification(ShangChengComponentMediator.SHOW_NOTE,shangChengObj);
-						                  } };    
-						sendNotification(PromptSureMediator.SHOW_NOTE,obj);
-					}
-					else
-					{
-						factoryProxy.repair(event.selectedZhanChe.id,function():void
+						//判断资源是否足够维修
+						if(event.selectedZhanChe.repair_cost_broken_crystal >userProxy.userInfoVO.broken_crysta)
 						{
-							//更新战车数据
-							var battleProxy:BattleProxy = getProxy(BattleProxy);
-							battleProxy.getAllZhanCheList(function():void
+							var obj:Object = {infoLable:MultilanguageManager.getString("notEnoughSourceTitle"),showLable:MultilanguageManager.getString("notEnoughSourceInfor"),mediatorLevel:level+2,
+								okCallBack:function():void
+								{
+									var shangChengObj:Object ={mediatorLevel:level+2} 
+									sendNotification(ShangChengComponentMediator.SHOW_NOTE,shangChengObj);
+								} };    
+							sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+						}
+						else
+						{
+							factoryProxy.repair(event.selectedZhanChe.id,function():void
 							{
-								comp.infoComp.setZhanCheList(battleProxy.allZhanCheList);
-							   //提示维修完成
-							    var obj:Object = {infoLable:MultilanguageManager.getString("wei_Xiu_Wan_Cheng_Title"),showLable:MultilanguageManager.getString("wei_Xiu_Wan_Cheng_Title_Infor")};
-							    sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+								//更新战车数据
+								var battleProxy:BattleProxy = getProxy(BattleProxy);
+								battleProxy.getAllZhanCheList(function():void
+								{
+									comp.infoComp.setZhanCheList(battleProxy.allZhanCheList);
+									//提示维修完成
+									var obj:Object = {infoLable:MultilanguageManager.getString("wei_Xiu_Wan_Cheng_Title"),showLable:MultilanguageManager.getString("wei_Xiu_Wan_Cheng_Title_Infor"),mediatorLevel:level+2};
+									sendNotification(PromptSureMediator.SHOW_NOTE,obj);
+								});
+								
 							});
-	                       
-						});
-					}
-					
-				};
-				sendNotification(PromptWeiXiuMediator.SHOW_NOTE,obj);
-			}
-           
+						}					
+					};
+					sendNotification(PromptWeiXiuMediator.SHOW_NOTE,obj);
+				}           
+			}			
+			
         }
 		
 		private function selectedZhanCheTipsHandler(event:Event):void

@@ -25,7 +25,7 @@ package utils
 		 */
 		public static function resLabelChange(label:Label, toValue:int, valve:int=1):void
 		{
-			TweenLite.killTweensOf(label);
+			TweenLite.killTweensOf(label,true);
 
 			if (StringUtil.isEmpty(label.text))
 			{

@@ -31,6 +31,10 @@ package vo.allView
 		 */	
 		public var startCountTxt:int;
 		/**
+		 * 占据小行星数记录：
+		 */	
+		public var startCountRecord:int;
+		/**
 		 * 军衔
 		 */	
 		public var junXianTxt:String = "";

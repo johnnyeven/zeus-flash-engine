@@ -31,8 +31,10 @@ package mediator.battle
     import proxy.timeMachine.TimeMachineProxy;
     import proxy.userInfo.UserInfoProxy;
     
+    import ui.components.Label;
     import ui.managers.PopUpManager;
     
+    import view.battle.build.BattleBuildTimeBarComponent;
     import view.battle.build.BattleEditSelectorViewComponent;
     import view.buildingView.SelectorViewComponent;
     
@@ -111,7 +113,10 @@ package mediator.battle
 
                 viewComp.x = buildVO.x;
                 viewComp.y = buildVO.y;
-
+				//TODO: LW:此处测试坐标
+				var label:Label = new Label();
+				label.text = "X:"+buildVO.x +","+"Y:"+buildVO.y +"";
+				viewComp.addChild(label);
                 viewComp.addEventListener(BattleEidtSelectorViewEvent.UP_EVENT, upHandler);
                 viewComp.addEventListener(BattleEidtSelectorViewEvent.DOWN_EVENT, downHandler);
                 viewComp.addEventListener(BattleEidtSelectorViewEvent.RIGHT_EVENT, rightHandler);
@@ -121,7 +126,7 @@ package mediator.battle
 
 				var battleEditMed:BattleEditMediator=getMediator(BattleEditMediator);
 				battleEditMed.addSelctedComp(viewComp);
-
+				
                 viewComp.start();
             }
 
@@ -129,6 +134,17 @@ package mediator.battle
 
         public override function destroy():void
         {
+			if(viewComp)
+			{
+				viewComp.removeEventListener(BattleEidtSelectorViewEvent.UP_EVENT, upHandler);
+				viewComp.removeEventListener(BattleEidtSelectorViewEvent.DOWN_EVENT, downHandler);
+				viewComp.removeEventListener(BattleEidtSelectorViewEvent.RIGHT_EVENT, rightHandler);
+				viewComp.removeEventListener(BattleEidtSelectorViewEvent.LEFT_EVENT, leftHandler);
+				viewComp.addEventListener(BattleEditorConditionInforEvent.BATTLE_EDITOR_CONDITION_INFOR_EVENT, battleEditorConditionInforHandler);
+			}
+			
+			var battleEditMed:BattleEditMediator=getMediator(BattleEditMediator);
+			
             for (var i:int; i < _arr.length; i++)
             {
                 var comp:BattleEditSelectorViewComponent = _arr[i];

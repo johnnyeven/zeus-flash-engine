@@ -2,9 +2,9 @@ package vo.cangKu
 {
     import com.zn.multilanguage.MultilanguageManager;
     import com.zn.utils.StringUtil;
-
+    
     import ui.vo.ValueObject;
-
+    
     import vo.scienceResearch.ScienceResearchVO;
 
     /**
@@ -19,6 +19,11 @@ package vo.cangKu
          * 是否使用
          */
         public var in_using:int;
+		
+		/**
+		 * 是否是从聊天来的数据
+		 */
+		public var isChatData:Boolean = false;
 
         /**
          * 暗能水晶消耗

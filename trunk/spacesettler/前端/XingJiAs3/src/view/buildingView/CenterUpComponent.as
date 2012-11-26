@@ -169,9 +169,9 @@ package view.buildingView
             
 			if(allViewProxy.allViewVO)
 			{
-				shuiJingKuangCLLabel.text = allViewProxy.allViewVO.jinJingCountTxt +"/h";
-				chuanQingCLLabel.text = allViewProxy.allViewVO.chuanQiCountTxt +"/h";
-				anWuZhiCLLabel.text = allViewProxy.allViewVO.anWuZhiCountTxt +"/h";
+				shuiJingKuangCLLabel.text =String( allViewProxy.allViewVO.jinJingCountTxt) +"/h";
+				chuanQingCLLabel.text = String(allViewProxy.allViewVO.chuanQiCountTxt) +"/h";
+				anWuZhiCLLabel.text = String(allViewProxy.allViewVO.anWuZhiCountTxt) +"/h";
 			}
 			
             upLevelButton.addEventListener(MouseEvent.CLICK, upLevelButton_clickHandler);
@@ -198,7 +198,9 @@ package view.buildingView
 
         protected function upLevelButton_clickHandler(event:MouseEvent):void
         {
-			if(conditionBtn.visible==true)
+			buildType=BuildTypeEnum.CENTER;
+			
+			if(conditionArr.length>0)
 				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 			else
 			{
@@ -226,7 +228,7 @@ package view.buildingView
             var buildProxy:BuildProxy = ApplicationFacade.getProxy(BuildProxy);
             _buildVO = buildProxy.getBuild(value);
             _keJiBuild = buildProxy.getBuild(BuildTypeEnum.KEJI);
-
+			conditionBtn.visible=false;
             var userInfoVO:UserInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			var contentInfoVO:ContentProxy=ApplicationFacade.getProxy(ContentProxy);
 			var contentObj:Object=contentInfoVO.contentData;

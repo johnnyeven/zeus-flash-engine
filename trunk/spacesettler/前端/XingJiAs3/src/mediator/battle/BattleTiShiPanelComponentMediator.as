@@ -8,6 +8,11 @@ package mediator.battle
 	
 	import view.battle.fightView.BattleTiShiPanelComponent;
 
+	/**
+	 * 时间或其他紧急提示
+	 * @author rl
+	 * 
+	 */	
 	public class BattleTiShiPanelComponentMediator extends BaseMediator implements IMediator
 	{
 		public static const NAME:String="BattleTiShiPanelComponentMediator";

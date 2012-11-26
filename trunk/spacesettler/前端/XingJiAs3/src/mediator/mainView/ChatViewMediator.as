@@ -96,6 +96,10 @@ package mediator.mainView
 		 * 退出军团时的数据处理
 		 */
 		public static const GO_OUT_ARMY_GROUP:String="goOut" + NAME + "armyGroup";
+		/**
+		 * 从主界面隐藏聊天表情界面
+		 */
+		public static const DESTOR_CHAT_FACE_COMPONENT:String = "destory" +NAME+"chatFaceComponent";
 
 		private var chatProxy:ChatProxy;
 
@@ -125,6 +129,7 @@ package mediator.mainView
 		//再次发送时间已过，是否能发送信息
 		private var _canChat:Boolean=true;
 
+		private var _recipesText:String;
 		public function ChatViewMediator(obj:ChatViewComponent)
 		{
 			super(NAME, obj);
@@ -140,6 +145,9 @@ package mediator.mainView
 
 			comp.addEventListener(TalkEvent.SHOW_BAG_COMPONENT_EVENT, showBagComponentHandler);
 			comp.addEventListener("tipsInChatArmyGroup", tipsHandler);
+			comp.addEventListener("noPrivateChatName",noPrivateChatNameHandler);
+			comp.addEventListener("noChatInfor",noChatInforHandler);
+			
 
 		}
 
@@ -150,7 +158,7 @@ package mediator.mainView
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [SHOW_NOTE, DESTROY_NOTE, INFOR_NOTE, SHOW_ZHANCHE, SHOW_CHECKID, SHOW_PRIVATE_TALK, SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST, ADD_INTO_ARMY_GROUP, GO_OUT_ARMY_GROUP, SHOW_COPY_INFOR];
+			return [SHOW_NOTE, DESTROY_NOTE, INFOR_NOTE, SHOW_ZHANCHE, SHOW_CHECKID, SHOW_PRIVATE_TALK, SHOW_PRIVATE_TALK_SELECTED_BY_FRIENDLIST, ADD_INTO_ARMY_GROUP, GO_OUT_ARMY_GROUP, SHOW_COPY_INFOR,DESTOR_CHAT_FACE_COMPONENT];
 		}
 
 		/**
@@ -227,35 +235,20 @@ package mediator.mainView
 				{
 					//加入军团时的数据处理
 					comp.deletedData();
+					break;
 				}
 				case GO_OUT_ARMY_GROUP:
 				{
 					//退出军团时的数据处理
 					comp.deletedData();
 					comp.changeArmyGroupBtn();
+					break;
 				}
-				/*				case SHOW_GUAJIAN:
-								{
-									//挂件的展示
-									var guaJianInfoVO:GuaJianInfoVO = note.getBody() as GuaJianInfoVO;
-									name = guaJianInfoVO.name;
-									itemDic[name] = guaJianInfoVO;
-									itemDic[name].type = 2;
-
-									comp.setLabel(("["+name+"]"));
-									break;
-								}
-								case SHOW_TUZHI:
-								{
-									//图纸的展示
-									var tuZhiVO:ItemVO = note.getBody() as ItemVO;
-									name = tuZhiVO.name;
-									itemDic[name] = tuZhiVO;
-									itemDic[name].type = 3;
-
-									comp.setLabel(("["+name+"]"));
-									break;
-								}*/
+				case DESTOR_CHAT_FACE_COMPONENT:
+				{
+					comp.closeBtnInChatFaceHandler(null);
+					break;
+				}
 			}
 		}
 
@@ -276,28 +269,43 @@ package mediator.mainView
 			{
 				var pattern:RegExp=new RegExp(key, "g");
 				var item:BaseItemVO=itemDic[key];
-				var arr:Array=[];
-				arr=text.match(pattern);
-				for (var i:int=0; i < arr.length; i++)
-				{
+//				var arr:Array=[];
+//				arr=text.match(pattern);
+//				for (var i:int=0; i < arr.length; i++)
+//				{
 					if (item.item_type == ItemEnum.Chariot)
 					{
 
-						text=text.replace(key, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "ZhanChe_" + (item as ZhanCheInfoVO).id, (item as ZhanCheInfoVO).name));
+						text=text.replace(pattern, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "ZhanChe_" + (item as ZhanCheInfoVO).id, (item as ZhanCheInfoVO).name));
 					}
 					else if (item.item_type == ItemEnum.TankPart)
 					{
-						text=text.replace(key, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "GuaJian_" + (item as GuaJianInfoVO).id, (item as GuaJianInfoVO).name));
+						text=text.replace(pattern, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "GuaJian_" + (item as GuaJianInfoVO).id, (item as GuaJianInfoVO).name));
+						
 					}
 					else if (item.item_type == ItemEnum.recipes)
 					{
-						text=text.replace(key, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "TuZhi_" + (item as ItemVO).id, (item as ItemVO).name));
+						var recipeObj:Object=new Object();
+						recipeObj.isChatData=true;
+						recipeObj.id=(item as ItemVO).id;
+						recipeObj.item_type=(item as ItemVO).item_type;
+						recipeObj.category=(item as ItemVO).category;
+						recipeObj.enhanced=(item as ItemVO).enhanced;
+						recipeObj.type=(item as ItemVO).type;
+						recipeObj.recipe_type=(item as ItemVO).recipe_type;
+//						obj.des=(item as ItemVO).description;
+//						obj.condition=(item as ItemVO).techPropertyDes;
+						_recipesText=JSON.stringify(recipeObj);
+						var txt:String=String.fromCharCode(11);
+						_recipesText=_recipesText.replace(/\"/g, txt);
+						text=text.replace(pattern, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", 
+							"TuZhi_" + _recipesText, (item as ItemVO).name));
 					}
 					else if (item.item_type == ItemEnum.item)
 					{
-						text=text.replace(key, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "Item_" + (item as ItemVO).category, (item as ItemVO).name));
+						text=text.replace(pattern, StringUtil.formatString("</s><a value = '{0}'><s color = '0x7d2df4'>{1}</s></a><s>", "Item_" + (item as ItemVO).category, (item as ItemVO).name));
 					}
-				}
+//				}
 
 
 			}
@@ -427,8 +435,12 @@ package mediator.mainView
 			}
 			else if (event.text.indexOf("TuZhi_") != -1)
 			{
-				idString=event.text.replace("TuZhi_", "");
-				packageViewproxy.getDaoJuVOByID(idString, function():void
+				var recipesStr:String=event.text.replace("TuZhi_", "");
+				var t:String=String.fromCharCode(11);
+				var re:RegExp=new RegExp(t,"g");
+				recipesStr=recipesStr.replace(re,'"');
+				var obj:Object=JSON.parse(recipesStr);
+				packageViewproxy.getTuZhiDaoJuVOByID(obj,true, function():void
 				{
 					sendNotification(ChaKanTuZhiViewComponentMediator.DESTROY_NOTE);
 					sendNotification(ChaKanTuZhiViewComponentMediator.SHOW_NOTE);
@@ -446,9 +458,9 @@ package mediator.mainView
 			else
 			{
 				//将特殊字符转换回来
-				var t:String=String.fromCharCode(11);
-				var re:RegExp=new RegExp(t, "g");
-				event.text=event.text.replace(re, '"');
+				var t1:String=String.fromCharCode(11);
+				var re1:RegExp=new RegExp(t1, "g");
+				event.text=event.text.replace(re1, '"');
 				var obj1:Object={};
 				obj1=JSON.parse(event.text);
 				if (obj1.otherID)
@@ -530,6 +542,17 @@ package mediator.mainView
 			sendNotification(PromptSureMediator.SHOW_NOTE, obj);
 		}
 
+		private function noPrivateChatNameHandler(event:Event):void
+		{
+			var obj:Object={infoLable: MultilanguageManager.getString("titleInChatNoPrivateChatName"), showLable: MultilanguageManager.getString("inforInChatNoPrivateChatName")};
+			sendNotification(PromptSureMediator.SHOW_NOTE, obj);
+		}
+		
+		private function noChatInforHandler(event:Event):void
+		{
+			var obj:Object={infoLable: MultilanguageManager.getString("titleInChatNoChatInfor"), showLable: MultilanguageManager.getString("inforInChatNoChatInfor")};
+			sendNotification(PromptSureMediator.SHOW_NOTE, obj);
+		}
 		/***********************************************************
 		 *
 		 * 功能方法

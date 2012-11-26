@@ -39,7 +39,7 @@ package view.task
 		public var boxSp:Sprite;
 		public var lightSp:Sprite;
 		public var npcMC:MovieClip;
-		
+		public var backSp:Component;
 		private var _desComp:TaskDescripComponent;
 		private var _goalComp:TaskGoalAndRewardComponent;
 		
@@ -57,17 +57,19 @@ package view.task
 			
 
 //			_desXML=new XML(_taskProxy.taskInfoVO.des);
+			backSp=createUI(Component,"backSp");
 
-			taskNumLabel=createUI(Label,"taskNum");
-			taskNameLabel=createUI(Label,"taskName");
-			prevBtn=createUI(Button,"prevBtn");
-			nextBtn=createUI(Button,"nextBtn");
-			okBtn=createUI(Button,"okBtn");
-			completeBtn=createUI(Button,"completeBtn");
-			shiJianBtn=createUI(Button,"shiJianBtn");
-			boxSp=getSkin("boxSp");
+			taskNumLabel=backSp.createUI(Label,"taskNum");
+			taskNameLabel=backSp.createUI(Label,"taskName");
+			prevBtn=backSp.createUI(Button,"prevBtn");
+			nextBtn=backSp.createUI(Button,"nextBtn");
+			okBtn=backSp.createUI(Button,"okBtn");
+			completeBtn=backSp.createUI(Button,"completeBtn");
+			shiJianBtn=backSp.createUI(Button,"shiJianBtn");
+			boxSp=backSp.getSkin("boxSp");
+			npcMC=backSp.getSkin("npcSp");
 			lightSp=getSkin("lightSp");
-			npcMC=getSkin("npcSp");
+			backSp.sortChildIndex();
 			sortChildIndex();
 			
 			npcMC.gotoAndStop(1);		

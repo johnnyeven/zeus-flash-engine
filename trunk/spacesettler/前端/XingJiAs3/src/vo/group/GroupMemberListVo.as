@@ -45,6 +45,11 @@ package vo.group
 		 */		
 		public var donate_dark_matter:int;
 		
+		/**
+		 *团员获得暗能水晶
+		 */		
+		public var reward_dark_crystal:int;
+		
 		private var _job:String;
 		public function GroupMemberListVo()
 		{

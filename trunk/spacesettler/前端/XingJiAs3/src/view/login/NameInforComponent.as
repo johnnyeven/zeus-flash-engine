@@ -6,7 +6,9 @@ package view.login
 	import events.login.NameInforEvent;
 	
 	import flash.events.MouseEvent;
+	import flash.events.TextEvent;
 	import flash.text.TextField;
+	import flash.utils.ByteArray;
 	
 	import proxy.login.LoginProxy;
 	
@@ -39,6 +41,7 @@ package view.login
 			
 			nameTextInput=getSkin("nameInput");
 			nameTextInput.restrict = "a-zA-Z0-9\u4e00-\u9fa5_-";
+			nameTextInput.maxChars=16;
 //			nameTextInput.restrict = "^[a-zA-Z0-9\u4e00-\u9fa5_-]{6,16}$";
 			emailTextInput=getSkin("emaillInput");
 //			emailTextInput.restrict = "^(?:[a-z\d]+[_\-\+\.]?)*[a-z\d]+@(?:([a-z\d]+\-?)*[a-z\d]+\.)+([a-z]{2,})+$";
@@ -62,7 +65,34 @@ package view.login
 			sortChildIndex();
 			returnBtn.addEventListener(MouseEvent.CLICK,returnBtn_clickHandler);
 			nextBtn.addEventListener(MouseEvent.CLICK,nextBtn_clickHandler);
+			nameTextInput.addEventListener(TextEvent.TEXT_INPUT, nameInputEvent);
         }
+		
+		private function nameInputEvent(e:TextEvent):void
+		{
+			
+			if((getStringBytesLength(nameTextInput.text,"gb2312") +
+				
+				getStringBytesLength(e.text,'gb2312')) > nameTextInput.maxChars)
+			{
+				e.preventDefault();
+				return; 
+			}
+		}
+		
+		private function getStringBytesLength(str:String,charSet:String):int
+		{
+			
+			var bytes:ByteArray = new ByteArray();
+			
+			bytes.writeMultiByte(str, charSet);
+			
+			bytes.position = 0;
+			
+			return bytes.length;
+			
+		}
+		
 		
 		protected function nextBtn_clickHandler(event:MouseEvent):void
 		{

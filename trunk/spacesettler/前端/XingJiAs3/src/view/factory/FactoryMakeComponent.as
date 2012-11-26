@@ -1,10 +1,13 @@
 package view.factory
 {
+	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.utils.ClassUtil;
 	
 	import enum.ResEnum;
 	import enum.factory.FactoryEnum;
+	import enum.item.ItemEnum;
 	
+	import events.buildingView.ConditionEvent;
 	import events.factory.FactoryEvent;
 	import events.factory.FactoryItemEvent;
 	
@@ -14,17 +17,20 @@ package view.factory
 	import flash.utils.clearInterval;
 	
 	import proxy.packageView.PackageViewProxy;
+	import proxy.userInfo.UserInfoProxy;
 	
 	import ui.components.Button;
 	import ui.components.Container;
 	import ui.components.VScrollBar;
 	import ui.core.Component;
 	import ui.layouts.HTileLayout;
+	import ui.utils.DisposeUtil;
 	
 	import vo.cangKu.BaseItemVO;
 	import vo.cangKu.GuaJianInfoVO;
 	import vo.cangKu.ZhanCheInfoVO;
 	import vo.factory.DrawListVo;
+	import vo.userInfo.UserInfoVO;
 	
     public class FactoryMakeComponent extends Component
     {
@@ -40,15 +46,20 @@ package view.factory
 		
 		private var _packageProxy:PackageViewProxy;
 		
+		public var conditionArr:Array;
+		public var userInfoVO:UserInfoVO;
 		
 		private var _arr:Array=[];
 		private var list:Array=[];
 		private var _drawList:Array=[];
+		private var itemArr:Array=[];
+		
         public function FactoryMakeComponent()
         {
             super(ClassUtil.getObject("view.factory.FactoryMakeSkin"));
 			
 			_packageProxy=ApplicationFacade.getProxy(PackageViewProxy);
+			userInfoVO = UserInfoProxy(ApplicationFacade.getProxy(UserInfoProxy)).userInfoVO;
 			
 			fanHuiBtn=createUI(Button,"fanhui_btn");
 			vsBar=createUI(VScrollBar,"vs_bar");
@@ -73,6 +84,12 @@ package view.factory
 			dispatchEvent(new FactoryEvent(FactoryEvent.CLOSE_EVENT));
 		}
 		
+		private function clearCantainer():void
+		{
+			while(container.num>0)
+				DisposeUtil.dispose(container.removeAt(0));
+		}
+		
 		public function addContainerGuaJian(arr:Array):void
 		{
 			if(arr.length==0)
@@ -91,7 +108,6 @@ package view.factory
 				vsBar.addEventListener(MouseEvent.MOUSE_OUT,mouseOutHandler);
 			}
 				
-			
 			list.length=0;
 			_arr.length=0;
 			for(var i:int=0;i<arr.length;i++)
@@ -142,22 +158,27 @@ package view.factory
 			vsBar.viewport=container;
 		}
 		
-		protected function mouseOutHandler(event:MouseEvent):void
-		{
-			vsBar.visible=false;
-		}
-		
-		protected function mouseOverHandler(event:MouseEvent):void
-		{
-			if(_arr.length>=3)
-				vsBar.visible=true;
-		}
-		
 		private function addClickHandler(item:FactoryItem_1Component):void
 		{
 			item.zhizao_btn.addEventListener(MouseEvent.CLICK,doZhiZaoHandler);
 			item.jiasu_btn.addEventListener(MouseEvent.CLICK,doSpeedUpHandler);
 			item.info_btn.addEventListener(MouseEvent.CLICK,infoHandler);
+		}
+		
+		public function changeContainer(arr:Array):void
+		{
+			for(var i:int=0;i<arr.length;i++)
+			{
+				var dwVo:DrawListVo=arr[i] as DrawListVo;
+				for(var j:int=0;j<_arr.length;j++)
+				{
+					var item:FactoryItem_1Component=_arr[j] as FactoryItem_1Component;
+					if(item.drawVo.id==dwVo.id)
+					{
+						item.drawVo=dwVo;
+					}
+				}
+			}
 		}
 		
 		public function addContainerZhanChe(arr:Array):void
@@ -200,7 +221,8 @@ package view.factory
 				
 				var zhancheVo:ZhanCheInfoVO=_packageProxy.createZhanCheVO(drawVo);
 				item.anwuzhi_tf.text=zhancheVo.broken_crystal.toString();
-				item.chuanqi_tf.text=zhancheVo.tritium .toString();
+				item.chuanqi_tf.text=zhancheVo.tritium.toString();
+				
 				item.zhancheVo=zhancheVo;
 				if(zhancheVo.dark_crystal!=0)
 				{
@@ -244,32 +266,80 @@ package view.factory
 			}
 		}
 		
+		protected function mouseOutHandler(event:MouseEvent):void
+		{
+			vsBar.visible=false;
+		}
+		
+		protected function mouseOverHandler(event:MouseEvent):void
+		{
+			if(_arr.length>=3)
+				vsBar.visible=true;
+		}
+		
 		protected function doSpeedUpHandler(event:MouseEvent):void
 		{
 			var item:FactoryItem_1Component=event.target.parent as FactoryItem_1Component;
-			for(var i:int;i<_arr.length;i++)
+			dispatchEvent(new FactoryEvent(FactoryEvent.SPEEDUP_EVENT,item));
+			/*for(var i:int;i<_arr.length;i++)
 			{
 				if(item==_arr[i])
 				{
 					FactoryEnum.CURRENT_VO=list[i] as BaseItemVO;
-//					FactoryEnum.CURRENT_DRAWVO=_drawList[i] as DrawListVo;
-					dispatchEvent(new FactoryEvent(FactoryEvent.SPEEDUP_EVENT,item));
 				}
-			}
+			}*/
 		}
 		
 		protected function doZhiZaoHandler(event:MouseEvent):void
 		{
 			var item:FactoryItem_1Component=event.target.parent as FactoryItem_1Component;
-			for(var i:int;i<_arr.length;i++)
+			var zhancheVo:ZhanCheInfoVO=_packageProxy.createZhanCheVO(item.drawVo);
+			var guajianVo:GuaJianInfoVO=_packageProxy.createGuaJianVO(item.drawVo);
+			//不足的条件
+			conditionArr=[];
+			if(item.zhancheVo)
 			{
-				if(item==_arr[i])
+				if(zhancheVo.broken_crystal>userInfoVO.broken_crysta)
 				{
-					var packageProxy:PackageViewProxy=ApplicationFacade.getProxy(PackageViewProxy);
-					var baseItemVO:BaseItemVO=packageProxy.chakanVO=list[i] as BaseItemVO;
-					dispatchEvent(new FactoryEvent(FactoryEvent.MAKE_EVENT,item,null));
+					var obj1:Object=new Object();
+					obj1.imgSource=ResEnum.getConditionIconURL+"1.png";
+					obj1.content=MultilanguageManager.getString("broken_crysta")+int(userInfoVO.broken_crysta)+"/"+zhancheVo.broken_crystal;
+					obj1.btnLabel=MultilanguageManager.getString("buy_click");
+					conditionArr.push(obj1);
+				}
+				if(zhancheVo.tritium>userInfoVO.tritium)
+				{
+					var obj2:Object=new Object();
+					obj2.imgSource=ResEnum.getConditionIconURL+"3.png";
+					obj2.content=MultilanguageManager.getString("tritium")+int(userInfoVO.tritium)+"/"+zhancheVo.tritium;
+					obj2.btnLabel=MultilanguageManager.getString("buy_click");
+					conditionArr.push(obj2);
 				}
 			}
+			else
+			{
+				if(guajianVo.broken_crystal>userInfoVO.broken_crysta)
+				{
+					var obj3:Object=new Object();
+					obj3.imgSource=ResEnum.getConditionIconURL+"1.png";
+					obj3.content=MultilanguageManager.getString("broken_crysta")+int(userInfoVO.broken_crysta)+"/"+guajianVo.broken_crystal;
+					obj3.btnLabel=MultilanguageManager.getString("buy_click");
+					conditionArr.push(obj3);
+				}
+				if(guajianVo.tritium>userInfoVO.tritium)
+				{
+					var obj4:Object=new Object();
+					obj4.imgSource=ResEnum.getConditionIconURL+"3.png";
+					obj4.content=MultilanguageManager.getString("tritium")+int(userInfoVO.tritium)+"/"+guajianVo.tritium;
+					obj4.btnLabel=MultilanguageManager.getString("buy_click");
+					conditionArr.push(obj4);
+				}
+			}
+			
+			if(conditionArr.length==0)
+				dispatchEvent(new FactoryEvent(FactoryEvent.MAKE_EVENT,item,null));
+			else
+				dispatchEvent(new ConditionEvent(ConditionEvent.ADDCONDITIONVIEW_EVENT,conditionArr));
 		}
 		
 		

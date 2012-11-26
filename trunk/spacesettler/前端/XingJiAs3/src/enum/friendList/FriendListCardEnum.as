@@ -7,6 +7,9 @@ package enum.friendList
 	 */	
 	public class FriendListCardEnum
 	{
+		
+		public static var friendListarr:Array=[];
+		
 		public function FriendListCardEnum()
 		{
 		}

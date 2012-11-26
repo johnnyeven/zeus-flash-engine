@@ -3,6 +3,7 @@ package view.factory
 	import com.zn.utils.ClassUtil;
 	
 	import enum.ResEnum;
+	import enum.item.SlotEnum;
 	
 	import events.factory.FactoryEvent;
 	
@@ -25,6 +26,8 @@ package view.factory
 		public var tf_1:Label;
 		
 		public var mc_3:Sprite;
+		public var mc_2:Sprite;
+		public var mc_1:Sprite;
 		
 		public var title_tf:Label;
 		
@@ -45,7 +48,10 @@ package view.factory
 			fanhui_btn=createUI(Button,"fanhui_btn");
 			
 			mc_3=getSkin("mc_3");
+			mc_2=getSkin("mc_2");
+			mc_1=getSkin("mc_1");
 			
+			mc_3.visible=mc_2.visible=mc_1.visible=false;
 			sortChildIndex();
 			
 			fanhui_btn.addEventListener(MouseEvent.CLICK,closeHandler);
@@ -58,9 +64,8 @@ package view.factory
 		
 		public function upDataGuaJian(itemVo:GuaJianInfoVO):void
 		{
-			isGuaJian();
 			item_sp.source=ResEnum.senceEquipment+itemVo.item_type+"_"+itemVo.category+".png";
-			
+			isGuaJian(itemVo.slot_type);
 			title_tf.text=itemVo.name;
 			tf_1.text=itemVo.description;
 			tf_2.text=itemVo.propertyDes;			
@@ -68,7 +73,6 @@ package view.factory
 		
 		public function upDataZhanChe(itemVo:ZhanCheInfoVO):void
 		{
-			isZhanChe();
 			item_sp.source=ResEnum.senceEquipment+itemVo.item_type+"_"+itemVo.category+".png";
 			
 			title_tf.text=itemVo.name;
@@ -76,14 +80,14 @@ package view.factory
 			tf_2.text=itemVo.propertyDes;			
 		}
 		
-		private function isZhanChe():void
+		private function isGuaJian(index:int):void
 		{
-			mc_3.visible=false;
-		}
-		
-		private function isGuaJian():void
-		{
-			mc_3.visible=true;
+			if(index==SlotEnum.BIG)
+				mc_3.visible=true;
+			if(index==SlotEnum.MID)
+				mc_2.visible=true;
+			if(index==SlotEnum.SMALL)
+				mc_1.visible=true;
 		}
 		
 	}

@@ -47,7 +47,7 @@ package controller.groupFight
             if (med)
             {
 				SoundUtil.stopAll();
-				SoundUtil.play(SoundEnum.group_bg_music,true);
+				SoundUtil.play(SoundEnum.group_bg_music,true,true,true);
 				
 				med.show();
             }
@@ -68,8 +68,8 @@ package controller.groupFight
         {
             var med:GroupFightComponentMediator = new GroupFightComponentMediator();
 
-			SoundUtil.stopAll();
-			SoundUtil.play(SoundEnum.group_bg_music,true);
+//			SoundUtil.stopAll();
+//			SoundUtil.play(SoundEnum.group_bg_music,true,true,true);
             //注册界面的中介
             facade.registerMediator(med);
 			med.show();

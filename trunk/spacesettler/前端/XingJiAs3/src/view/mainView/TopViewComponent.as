@@ -139,7 +139,7 @@ package view.mainView
 		
 		private function buffChange1(value:*):void
 		{
-			if(value)
+			if(value&&value.value>0)
 			{
 				buff1.visible=true;	
 				buff1.toolTipData=MultilanguageManager.getString("buffType")+MultilanguageManager.getString("buffType1")+String(value.value*100)+"%";				
@@ -150,7 +150,7 @@ package view.mainView
 		}
 		private function buffChange2(value:*):void
 		{
-			if(value)
+			if(value&&value.value>0)
 			{
 				buff2.visible=true;	
 				buff2.toolTipData=MultilanguageManager.getString("buffType")+MultilanguageManager.getString("buffType2")+String(value.value*100)+"%";				
@@ -159,7 +159,7 @@ package view.mainView
 		}
 		private function buffChange3(value:*):void
 		{
-			if(value)
+			if(value&&value.value>0)
 			{
 				buff3.visible=true;	
 				buff3.toolTipData=MultilanguageManager.getString("buffType")+MultilanguageManager.getString("buffType3")+String(value.value*100)+"%";				

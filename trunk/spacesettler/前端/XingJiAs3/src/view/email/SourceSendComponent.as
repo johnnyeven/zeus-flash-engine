@@ -7,6 +7,7 @@ package view.email
 	
 	import events.email.EmailEvent;
 	
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TextEvent;
@@ -39,6 +40,9 @@ package view.email
 		public var countTxt:TextField;
 		public var costLabel:Label;
 		
+		public var vipMc:Sprite;
+		public var numLable:Label;
+		
 		private var container:Container;
 		private var userInforProxy:UserInfoProxy;
 		//当前选中的条目
@@ -60,6 +64,8 @@ package view.email
 			container.y = 45;
 			addChild(container);
 			
+			vipMc = getSkin("vipMc");
+			numLable = createUI(Label,"numLable")
 			closeBtn = createUI(Button,"closeBtn");
 			okBtn = createUI(Button,"okBtn");
 			sourceImage = createUI(LoaderImage,"sourceImage");
@@ -70,9 +76,11 @@ package view.email
 			countTxt.addEventListener(MouseEvent.CLICK,countTxt_clickHandler);
 			costLabel = createUI(Label,"costLabel");
 			costLabel.text = "0";
+			vipMc.visible=numLable.visible=false;
 			
 			sortChildIndex();
 			
+			vipTiShiShow();
 			removeCWList();
 			
 			var arr:Array = [];
@@ -96,6 +104,15 @@ package view.email
 			okBtn.addEventListener(MouseEvent.CLICK,okBtn_clickHandler);
 			closeBtn.addEventListener(MouseEvent.CLICK,closedHandler);
         }
+		
+		private function vipTiShiShow():void
+		{
+			if(userInforProxy.userInfoVO.vip_mail>0)
+			{
+				numLable.text=String(userInforProxy.userInfoVO.vip_mail);
+				vipMc.visible=numLable.visible=true;
+			}
+		}
 		
 		private function setData(data:Array):void
 		{

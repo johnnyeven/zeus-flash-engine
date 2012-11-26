@@ -8,6 +8,7 @@ package proxy.friendList
 	
 	import flash.net.URLRequestMethod;
 	
+	import mediator.friendList.SearchPlayerComponentMediator;
 	import mediator.prompt.PromptMediator;
 	import mediator.prompt.PromptSureMediator;
 	
@@ -261,9 +262,13 @@ package proxy.friendList
 			}
 			if(data.message_type == "make_friend")
 			{
-				var obj:Object = {infoLable:MultilanguageManager.getString("makeFriendTitle"),showLable:MultilanguageManager.getString("makeFriendInfor"),mediatorLevel:3};
+				var obj:Object = {infoLable:MultilanguageManager.getString("makeFriendTitle"),
+					showLable:MultilanguageManager.getString("makeFriendInfor"),
+					mediatorLevel:3,
+					okCallBack:function ():void{sendNotification(SearchPlayerComponentMediator.DESTROY_NOTE);}};
 				sendNotification(PromptSureMediator.SHOW_NOTE,obj);
 			}
+			getFriendList(userInforProxy.userInfoVO.player_id);
 			getFriendInfoResult(data);
 			searchPlayerResult(searchData);
 			

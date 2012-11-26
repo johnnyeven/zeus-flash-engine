@@ -82,19 +82,19 @@ package view.battle.fight
 
 			var p:Point=movePathList[movePathIndex];
 
-			if (init)
-			{
-				var objDic:Object=ObjectUtil.CreateDic(BattleFightComponent.daFeiJiCompList, "movePathIndex");
-				do
-				{
-					movePathIndex=RandomUtil.getRangeInt(0, movePathList.length - 1);
-				} while (objDic[movePathIndex]);
-
-				p=movePathList[movePathIndex];
-				x=p.x;
-				y=p.y;
-				movePathIndex++;
-			}
+//			if (init)
+//			{
+//				var objDic:Object=ObjectUtil.CreateDic(BattleFightComponent.daFeiJiCompList, "movePathIndex");
+////				do
+////				{
+////					movePathIndex=RandomUtil.getRangeInt(0, movePathList.length - 1);
+////				} while (objDic[movePathIndex]);
+//
+//				p=movePathList[movePathIndex];
+//				x=p.x;
+//				y=p.y;
+//				movePathIndex++;
+//			}
 
 			p=movePathList[movePathIndex];
 			var cP:Point=new Point(x, y);

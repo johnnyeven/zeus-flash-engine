@@ -141,11 +141,10 @@ package view.mainSence
         public function set buildInfoVo(value:BuildInfoVo):void
         {
             _buildInfoVo = value;
-
+			removeCWList();
             cwList.push(BindingUtils.bindSetter(showBuild, this, [ "buildInfoVo", "eventID" ]));
         }
-
-
+		
         /**
          *显示建筑 *
          */

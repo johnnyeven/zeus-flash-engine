@@ -97,6 +97,20 @@ package mediator.login
 			sendNotification(DESTROY_NOTE);
 		}
 		
+		private function strLength(str:String):int
+		{
+			var length:int=0;
+			for (var i:int = 0; i < str.length; i++)
+			{  
+				if(str.charCodeAt(i)<10000)
+					length+=1;
+				else
+					length+=2;
+//				trace(str.charAt(i), "-", str.charCodeAt(i));
+			}
+			return length;
+		}
+		
 		private function nextHandler(event:NameInforEvent):void
 		{
 			var emailReg:RegExp=new RegExp("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$","g");
@@ -111,7 +125,7 @@ package mediator.login
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registNameEmpty"));
 				return;
 			}
-			else if(event.name.length <6)
+			else if(strLength(event.name)<6)
 			{
 				sendNotification(PromptMediator.SHOW_LOGIN_INFO_NOTE, MultilanguageManager.getString("registNameError"));
 				return;

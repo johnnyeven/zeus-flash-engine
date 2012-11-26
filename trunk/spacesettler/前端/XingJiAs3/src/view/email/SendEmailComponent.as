@@ -10,6 +10,7 @@ package view.email
 	
 	import events.email.EmailEvent;
 	
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -63,6 +64,9 @@ package view.email
 		public var sourceCountLabel:Label;
 		public var costMoneyLabel:Label;
 		
+		public var vipMc:Sprite;
+		public var numLable:Label;
+		
 		//组装数据
 		private var obj:Object = {};
 		private var hasFuJian:Boolean = false;
@@ -92,7 +96,9 @@ package view.email
 			friendListBtn = createUI(Button,"friendListBtn");
 			groupListBtn = createUI(Button,"groupListBtn");
 			sendBtn = createUI(Button,"sendBtn");
+			numLable = createUI(Label,"numLable")
 			
+			vipMc = getSkin("vipMc");
 			titleTxt = getSkin("titleTxt");
 			titleTxt.mouseEnabled = true;
 			contentTxt = getSkin("contentTxt");
@@ -115,7 +121,7 @@ package view.email
 			sendObjBtn = btnSprite.createUI(Button,"sendObjBtn");
 			btnSprite.sortChildIndex();
 			btnSprite.visible = true;
-			
+			vipMc.visible=numLable.visible=false;
 			inforSprivate = otherSprite.createUI(Component,"inforSprivate");
 			dirtBtn = inforSprivate.createUI(Button,"dirtBtn");
 			sourceImage = inforSprivate.createUI(LoaderImage,"sourceImage");
@@ -140,6 +146,7 @@ package view.email
 			
 			friendListBtn.addEventListener(MouseEvent.CLICK,friendListBtn_clickHandler);
 			
+			vipTiShiShow();
 			removeCWList();
 			cwList.push(BindingUtils.bindSetter(function():void
 			{
@@ -172,7 +179,10 @@ package view.email
 			inforSprivate.visible = true;
 			sourceImage.source = EmailTypeEnum.getSourceImageByEmailType(sourceData.attachment_type);
 			sourceCountLabel.text = sourceData.attachment_count +"";
-			costMoneyLabel.text = sourceData.costMoney +"";
+			if(userInforProxy.userInfoVO.vip_mail>0)
+				costMoneyLabel.text="0";
+			else
+				costMoneyLabel.text = sourceData.costMoney +"";
 			hasFuJian = true;
 //			receiverLabel.text = titleTxt.text;
 			//选择了资源
@@ -186,7 +196,10 @@ package view.email
 			sourceImage.source = EmailTypeEnum.getEquipImageByEmailType(baseItemData.item_type,baseItemData.category);
 	
 			sourceCountLabel.text = "X"+baseItemData.count +"";
-			costMoneyLabel.text =  EmailTypeEnum.getItemCostByItemInfor(baseItemData.value,baseItemData.level,baseItemData.enhanced) +"";
+			if(userInforProxy.userInfoVO.vip_mail>0)
+				costMoneyLabel.text="0";
+			else
+				costMoneyLabel.text =  EmailTypeEnum.getItemCostByItemInfor(baseItemData.value,baseItemData.level,baseItemData.enhanced) +"";
 			hasFuJian = true;
 //			receiverLabel.text = titleTxt.text;
 			//选择了武器或者挂件
@@ -255,9 +268,10 @@ package view.email
 			else
 			{
 				obj.title = titleTxt.text;
+				obj.content=contentTxt.text;
 			}
 //			var obj:Object = {type:EmailTypeEnum.PERSONEL_TYPE,sender:senderLabel.text,receiver:receiverLabel.text,title:titleTxt.text,content:contentTxt.text,attachment_type:null,attachment_count:0,attachment_id:null};
-			
+			obj.receiver=receiverLabel.text;
 			dispatchEvent(new EmailEvent(EmailEvent.SEND_NEW_EMAIL_EVENT,obj));
 		}
 		
@@ -279,6 +293,15 @@ package view.email
 			dispatchEvent(new Event("showItemListEvent"));
 		}
 		
+		private function vipTiShiShow():void
+		{
+			if(userInforProxy.userInfoVO.vip_mail>0)
+			{
+				numLable.text=String(userInforProxy.userInfoVO.vip_mail);
+				vipMc.visible=numLable.visible=true;
+			}
+		}
+		
 		private function sendSourceBtn_clickHandler(event:MouseEvent):void
 		{
 			if(scienceLevel < 10)
@@ -287,6 +310,7 @@ package view.email
 				dispatchEvent(new Event("scienceLevelEvent"));
 				return;
 			}
+			
 			//资源
 			dispatchEvent(new Event("showSourceListEvent"));
 		}

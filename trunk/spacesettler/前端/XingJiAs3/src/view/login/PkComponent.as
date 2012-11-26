@@ -83,6 +83,15 @@ package view.login
 
 		}
 		
+		override public function dispose():void
+		{
+			alliance.removeEventListener(MouseEvent.CLICK,allianceBtn_clickHandler);
+			haiDao.removeEventListener(MouseEvent.CLICK,haiDaoBtn_clickHandler);
+			super.dispose();
+		}
+		
+		
+		
 		public function get currentSelectedCamp():MovieClip
 		{
 			return _currentSelectedCamp;

@@ -74,7 +74,7 @@ package view.email
 			{
 				headImage.source = EmailTypeEnum.getHeadImageByEmailType(_data.type);
 				typeImage.source = EmailTypeEnum.getTypeImageByEmailType(_data.type);
-				timeLabel.text = DateFormatter.formatterTimeAll(_data.created_at);
+				timeLabel.text = DateFormatter.formatterTimeAll(_data.created_at*1000);
 				sendNameLabel.text = _data.sender;
 				titleNameLabel.text = _data.title;
 				if(_data.is_read == true)

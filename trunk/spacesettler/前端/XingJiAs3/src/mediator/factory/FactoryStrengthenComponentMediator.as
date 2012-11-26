@@ -47,7 +47,7 @@ package mediator.factory
 		protected function qiangHuaHandler(event:FactoryEvent):void
 		{
 			_type=event.qiangHuatype;
-			factoryProxy.enhance_chariot(FactoryEnum.CURRENT_ZHANCHE_VO.id,_type,function():void
+			factoryProxy.enhance_chariot(FactoryEnum.CURRENT_ZHANCHE_VO.id,_type,event.count,function():void
 			{
 				comp.upData(FactoryEnum.CURRENT_ZHANCHE_VO);
 			});

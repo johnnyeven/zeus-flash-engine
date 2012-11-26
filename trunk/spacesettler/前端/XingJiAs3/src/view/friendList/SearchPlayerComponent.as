@@ -7,9 +7,11 @@ package view.friendList
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.ui.Keyboard;
 	
 	import mx.binding.utils.BindingUtils;
 	
@@ -98,6 +100,7 @@ package view.friendList
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,close_handler);
 			searchBtn.addEventListener(MouseEvent.CLICK,searchBtn_clickHandler);
+			addEventListener(KeyboardEvent.KEY_DOWN,keyDownHandler);
         }
 		
 		private function itemVOListChange(value:*):void
@@ -128,9 +131,15 @@ package view.friendList
 			currentSelected = (event.currentTarget as FriendItem);
 		}
 		
+		protected function keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode==Keyboard.ENTER)
+				searchBtn_clickHandler(null);
+		}
+		
 		protected function searchBtn_clickHandler(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dispatchEvent(new FriendListEvent(FriendListEvent.SEARCH_PLATER_EVENT,playerNameTxt.text));
 		}
 		

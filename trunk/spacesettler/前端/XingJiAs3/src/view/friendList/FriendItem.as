@@ -47,7 +47,7 @@ package view.friendList
 				playerNameLabel.text = _data.nickname;
 				ageLevelLabel.text = FriendListCardEnum.getKeJiShiDaiNameByKeJiShiDaiLevel(_data.age_level);
 				var str:String = "<p><s>最后一次登录时间:</s><s>{0}</s></p>";
-				str = StringUtil.formatString(str,DateFormatter.formatterTimeNYR(_data.last_login_time));
+				str = StringUtil.formatString(str,DateFormatter.formatterTimeNYR(_data.last_login_time*1000));
 				lastLoginLabel.text = str;
 			}
 		}

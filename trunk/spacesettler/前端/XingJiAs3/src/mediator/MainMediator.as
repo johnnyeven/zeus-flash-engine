@@ -5,12 +5,15 @@ package mediator
 	
 	import mediator.battle.BattleEditSelectorViewComponentMediator;
 	import mediator.buildingView.SelectorViewComponentMediator;
+	import mediator.mainView.ChatViewMediator;
 	
 	import org.puremvc.as3.interfaces.IMediator;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import ui.managers.SystemManager;
+	
+	import view.mainView.ChatFaceComponent;
 
 
 	public class MainMediator extends Mediator implements IMediator
@@ -76,7 +79,9 @@ package mediator
 		protected function mainClickHandler(event:MouseEvent):void
 		{
 			sendNotification(SelectorViewComponentMediator.DESTROY_NOTE);			
-			sendNotification(BattleEditSelectorViewComponentMediator.DESTROY_NOTE);			
+			sendNotification(BattleEditSelectorViewComponentMediator.DESTROY_NOTE);	
+			//销毁聊天表情界面
+			sendNotification(ChatViewMediator.DESTOR_CHAT_FACE_COMPONENT);
 		}
 	}
 }

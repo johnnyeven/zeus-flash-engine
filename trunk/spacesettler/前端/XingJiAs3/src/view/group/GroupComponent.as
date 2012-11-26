@@ -86,6 +86,7 @@ package view.group
 		public var downMc:Sprite;
 		public var upMc:Sprite;
 		public var gapNum:int;
+		public var groupVo:GroupListVo;
 		
 		private var _current_warship:int=1;
 		
@@ -125,7 +126,7 @@ package view.group
 			
 			sortChildIndex();
 			
-			star1.alpha=star2.alpha=star3.alpha=star4.alpha=0.5;
+			star1.visible=star2.visible=star3.visible=star4.visible=false;
 			
 			closeBtn.addEventListener(MouseEvent.CLICK,closeClickHandler);
 			chaKanTuanYuanBtn.addEventListener(MouseEvent.CLICK,lookMemberHandler);
@@ -146,14 +147,14 @@ package view.group
 		public function upData(groupInfoVo:GroupListVo,bool1:Boolean,bool2:Boolean,bool3:Boolean,bool4:Boolean):void
 		{
 			if(bool1)
-				star1.alpha=1;
+				star1.visible=true;
 			if(bool2)
-				star2.alpha=1;
+				star2.visible=true;
 			if(bool3)
-				star3.alpha=1;
+				star3.visible=true;
 			if(bool4)
-				star4.alpha=1;
-			
+				star4.visible=true;
+			groupVo=groupInfoVo;
 			if(groupInfoVo.username==userProxy.userInfoVO.nickname)
 			{
 				isGroupLeader();
@@ -170,7 +171,7 @@ package view.group
 			junTuanZhangText.text=groupInfoVo.username;
 			topText.text="top"+groupInfoVo.rank;
 			groupNameText.text=groupInfoVo.groupname;
-			timeText.text="["+DateFormatter.formatterTimeNYR(groupInfoVo.current_time)+"]";
+			timeText.text="["+DateFormatter.formatterTimeNYR(groupInfoVo.current_time*1000)+"]";
 			if(groupInfoVo.desc!="")
 			{
 				gongGaoText.text=groupInfoVo.desc;

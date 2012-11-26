@@ -44,6 +44,8 @@ package view.plantioid
 
         public var plantY:int;
 
+        private var plantInfoComp:PlantioidXingQiuComponent;
+
         public function PlantSenceComponent()
         {
             super(null);
@@ -73,14 +75,15 @@ package view.plantioid
 		
         public override function dispose():void
         {
-            super.dispose();
-            plantCompList = null;
+			plantInfoComp.removeEventListener(MouseEvent.CLICK, plantInfoComp_clickHandler);
             SystemManager.rootStage.removeEventListener(MouseEvent.MOUSE_MOVE, stageMouseMoveHandler);
+            plantCompList = null;
+            super.dispose();
         }
 
         public function setPlantList(plantVOList:Array):void
         {
-            var plantInfoComp:PlantioidXingQiuComponent;
+            
             for (var i:int = 0; i < plantCompList.length; i++)
             {
                 plantInfoComp = plantCompList[i];

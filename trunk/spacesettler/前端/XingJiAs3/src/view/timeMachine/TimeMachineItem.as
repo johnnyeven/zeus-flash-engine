@@ -21,6 +21,7 @@ package view.timeMachine
 	import org.osmf.events.TimeEvent;
 	
 	import ui.components.Button;
+	import ui.components.Container;
 	import ui.components.Image;
 	import ui.components.Label;
 	import ui.components.LoaderImage;
@@ -72,7 +73,7 @@ package view.timeMachine
 			mouseChildren = mouseEnabled = true;
 			_timer = new Timer(1000);
 			_timer.addEventListener(TimerEvent.TIMER,timerHandler);
-			speedBtn.addEventListener(MouseEvent.CLICK,speedBtn_clickHAndler);
+//			speedBtn.addEventListener(MouseEvent.CLICK,speedBtn_clickHAndler);
 		}
 		
 		
@@ -108,11 +109,11 @@ package view.timeMachine
 			_timer.start();
 		}
 
-		private function speedBtn_clickHAndler(event:MouseEvent):void
-		{
-			var count:int = data.crystalCount;
-			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SPEED_EVENT,data.building_type,count,true,true));
-		}
+//		private function speedBtn_clickHAndler(event:MouseEvent):void
+//		{
+//			var count:int = data.crystalCount;
+//			dispatchEvent(new TimeMachineEvent(TimeMachineEvent.SPEED_EVENT,data.building_type,count,true,true));
+//		}
 		
 		private function timerHandler(event:TimerEvent):void
 		{
@@ -125,11 +126,11 @@ package view.timeMachine
 		
 		public override function dispose():void
 		{
-			super.dispose();
 			_timer.stop();
 			_timer.removeEventListener(TimerEvent.TIMER, timerHandler);
 			
 			_timer = null;
+			super.dispose();
 		}
 		
 		private function stopTweenLite():void

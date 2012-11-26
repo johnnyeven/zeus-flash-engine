@@ -2,6 +2,10 @@ package mediator.battle
 {
 	import com.zn.utils.ClassUtil;
 	
+	import controller.mainSence.ShowCommand;
+	
+	import enum.SenceTypeEnum;
+	
 	import events.battle.TimeViewEvent;
 	
 	import flash.events.Event;
@@ -77,7 +81,7 @@ package mediator.battle
 		 * @return
 		 *
 		 */
-		protected function get comp():TimeViewComponent
+		public function get comp():TimeViewComponent
 		{
 			return viewComponent as TimeViewComponent;
 		}
@@ -103,7 +107,8 @@ package mediator.battle
 		protected function timeOverHandler(event:TimeViewEvent):void
 		{
 			sendNotification(BattleEditMediator.DESTROY_NOTE);
-			sendNotification(PlantioidComponentMediator.SHOW_NOTE);
+			var obj1:Object={type:SenceTypeEnum.PLANT}
+			sendNotification(ShowCommand.SHOW_INTERFACE,obj1);
 		}
 	}
 }

@@ -29,7 +29,8 @@ package mediator.groupFight
 		
 		public static const CHANGE_NOTE:String="change" + NAME + "Note";
 
-		private var _senceComp:GroupFightSenceComponent;
+		public static const HIDE_NOTE:String="hide" + NAME + "Note";
+		public static const SHOW_COMP_NOTE:String="showComp" + NAME + "Note";
 		
 		public function GroupFightMapComponentMediator()
 		{
@@ -54,7 +55,7 @@ package mediator.groupFight
 		 */
 		override public function listNotificationInterests():Array
 		{
-			return [MOVE_NOTE,DESTROY_NOTE,CHANGE_NOTE];//SHOW_NOTE, 
+			return [MOVE_NOTE,DESTROY_NOTE,CHANGE_NOTE,HIDE_NOTE,SHOW_COMP_NOTE];//SHOW_NOTE, 
 		}
 
 		/**
@@ -87,6 +88,16 @@ package mediator.groupFight
 				{
 					//销毁对象
 					destroy();
+					break;
+				}
+				case HIDE_NOTE:
+				{
+					comp.visible=false;
+					break;
+				}
+				case SHOW_COMP_NOTE:
+				{
+					comp.visible=true;
 					break;
 				}
 			}

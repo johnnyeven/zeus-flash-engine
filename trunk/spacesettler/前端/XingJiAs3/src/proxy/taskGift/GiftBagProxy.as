@@ -2,6 +2,7 @@ package proxy.taskGift
 {
 	import com.zn.multilanguage.MultilanguageManager;
 	import com.zn.net.Protocol;
+	import com.zn.utils.DateFormatter;
 	
 	import enum.command.CommandEnum;
 	
@@ -201,12 +202,20 @@ package proxy.taskGift
 				if(rewardArr[i].time)
 					giftBagVO.time=rewardArr[i].time;
 				if(rewardArr[i].consumer_count)
-					giftBagVO.time=rewardArr[i].consumer_count;
+					giftBagVO.consumer_count=rewardArr[i].consumer_count;
 				if(rewardArr[i].back)
-					giftBagVO.time=rewardArr[i].back;
+					giftBagVO.back=rewardArr[i].back;
 				
 				giftBagArr.push(giftBagVO);
 			}
+		}
+		
+		public function setTime(time:Number):String
+		{
+			var date:Date=new Date(time*1000);
+			var str:String=(date.month+1)+"."+date.date;
+			
+			return str;
 		}
 	}
 }

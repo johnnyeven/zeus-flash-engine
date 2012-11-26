@@ -12,7 +12,7 @@ package view.battle.build
     import vo.battle.BattleBuildVO;
 
     /**
-     *战场建筑信息
+     *战场显示建筑信息界面
      * @author zn
      *
      */

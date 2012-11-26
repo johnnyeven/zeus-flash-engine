@@ -5,6 +5,7 @@ package view.battle.fight
 	import com.zn.utils.ClassUtil;
 	import com.zn.utils.PointUtil;
 	import com.zn.utils.RotationUtil;
+	import com.zn.utils.StringUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -31,6 +32,9 @@ package view.battle.fight
 
 		public var zhanCheMC:MovieClip;
 
+		/**
+		 * 战车的特效层
+		 */
 		public var effectSp:Sprite=new Sprite();
 
 		private var _zhanCheRotation:Number;
@@ -43,6 +47,14 @@ package view.battle.fight
 		//检测战车移动的下一个点替用的对象
 		public var disPlayObj:DisplayObject;
 		
+		/**
+		 * 战车的冒烟特效
+		 */
+		public var zhanCheMaoYaneffectMC:MovieClip;
+		/**
+		 *战车炮塔的开火特效
+		 */	
+		public var zhanCheFireEffect:Sprite;
 		public function FightZhanCheComponent(zhanCheVO:CHARIOT)
 		{
 			super(null);
@@ -56,15 +68,33 @@ package view.battle.fight
 			paoTaMC=zhanCheSP.getChildByName("taMC") as MovieClip;
 			zhanCheMC=zhanCheSP.getChildByName("zhanChe") as MovieClip;
 
+			//冒烟特效
+			zhanCheMaoYaneffectMC = ClassUtil.getObject(StringUtil.formatString("fight.ZhanCheImpairedEffectSkin"));
+			zhanCheMaoYaneffectMC.mouseChildren=zhanCheMaoYaneffectMC.mouseEnabled=false;
+			zhanCheMaoYaneffectMC.visible = false;
+			effectSp.addChild(zhanCheMaoYaneffectMC);
 			if (paoTaMC)
+			{
 				paoTaMC.gotoAndStop(1);
+				zhanCheFireEffect = paoTaMC.getChildByName("point") as Sprite;
+			}
+				
 
 			if (zhanCheMC)
 				zhanCheMC.gotoAndStop(1);
 
 			addChild(effectSp);
 		}
-
+		
+		override public function dispose():void
+		{
+			zhanCheMaoYaneffectMC=null;
+			stopMove();
+			super.dispose();
+		}
+		
+		
+		
 		public function stopMove():void
 		{
 			if (moveTweenLite)
@@ -122,7 +152,11 @@ package view.battle.fight
 
 			var flagStr:String="d" + r;
 			if (paoTaMC)
+			{
 				paoTaMC.gotoAndStop(flagStr);
+				zhanCheFireEffect = paoTaMC.getChildByName("point") as Sprite;
+			}
+				
 		}
 		
 		/**

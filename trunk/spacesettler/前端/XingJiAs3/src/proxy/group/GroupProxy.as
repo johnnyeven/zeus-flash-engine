@@ -241,11 +241,11 @@ package proxy.group
 		 *搜索军团
 		 * 参数 军团名称关键词
 		 */		
-		public function searchGroup(keyword:String=null,callBcakFun:Function=null):void
+		public function searchGroup(keyword:String="",callBcakFun:Function=null):void
 		{
 			if(!Protocol.hasProtocolFunction(CommandEnum.searchGroup, searchGroupReputation))
 				Protocol.registerProtocol(CommandEnum.searchGroup, searchGroupReputation);
-			var obj:Object = {keyword:keyword};
+			var obj:Object = {keyword:keyword,camp_id:userProxy.userInfoVO.camp-1};
 			callBcakFunction=callBcakFun;
 			ConnDebug.send(CommandEnum.searchGroup, obj);
 		}
@@ -285,7 +285,8 @@ package proxy.group
 			Protocol.deleteProtocolFunction(CommandEnum.refresJoinGroup, groupApplyListReputation);
 			if (data.hasOwnProperty("errors"))
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				if(data.errors=="MEMBER_ALREADY_IN_LEAGUE")
+					sendNotification(PromptMediator.SHOW_INFO_NOTE, "该玩家已经加入其它军团！");
 				callBcakFunction=null;
 				return;
 			}
@@ -341,6 +342,7 @@ package proxy.group
 				memberVo.rank=data.member_list[i].prestige_rank;
 				memberVo.username=data.member_list[i].nickname;
 				memberVo.vipLevel=data.member_list[i].vip_level;
+				memberVo.reward_dark_crystal=data.member_list[i].reward_dark_crystal;
 				
 				list.push(memberVo);
 			}
@@ -438,8 +440,10 @@ package proxy.group
 			for(var i:int=0;i<length;i++)
 			{
 				var grouplistvo:GroupListVo=new GroupListVo();
-				
-				grouplistvo.groupname=data.legions[i].legion_name;
+				if(data.legions[i].name)
+					grouplistvo.groupname=data.legions[i].name;
+				if(data.legions[i].legion_name)
+					grouplistvo.groupname=data.legions[i].legion_name;
 				grouplistvo.username=data.legions[i].president;
 				grouplistvo.vipLevel=data.legions[i].president_vip_level;
 				grouplistvo.rank=data.legions[i].rank;
@@ -463,7 +467,10 @@ package proxy.group
 			Protocol.deleteProtocolFunction(CommandEnum.applyjoinGroup, inviteOrapplyjoinGroupReputation);
 			if (data.hasOwnProperty("errors"))
 			{
-				sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
+				if(data.errors=="MEMBER_ALREADY_IN_LEAGUE")
+					sendNotification(PromptMediator.SHOW_INFO_NOTE, "该玩家已经加入其它军团！");
+				else
+					sendNotification(PromptMediator.SHOW_INFO_NOTE, MultilanguageManager.getString(data.errors));
 				callBcakFunction=null;
 				return;
 			}

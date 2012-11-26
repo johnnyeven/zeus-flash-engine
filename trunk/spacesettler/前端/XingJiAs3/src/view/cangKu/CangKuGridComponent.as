@@ -45,7 +45,7 @@ package view.cangKu
             grid = createUI(Button, "grid_button");
 
             sortChildIndex();
-			
+			buttonMode=true;
 			info=null;
         }
 
@@ -82,7 +82,7 @@ package view.cangKu
                         wpLevel.text = (info as GuaJianInfoVO).level + "";
                         jiLabel.visible = true;
 						image.source =info.iconURL;
-                        typeImage.source = ResEnum.getEnhanceIconURL(info.enhanced);
+                        typeImage.source = ResEnum.getEnhanceIconURL((info as GuaJianInfoVO).slot_type);
                         break;
                     }
                     case ItemEnum.recipes:

@@ -95,7 +95,7 @@ package view.groupFight
 				item.myNumTf.text=MultilanguageManager.getString("tishi")+lossReportVo.send_warships.toString()+MultilanguageManager.getString("tishi1")+
 					GroupFightEnum.CURRTENT_TO_STARVO.name+MultilanguageManager.getString("tishi2")+lossReportVo.lost_warships_1.toString()+
 					MultilanguageManager.getString("tishi3")+lossReportVo.lost_warships.toString()+MultilanguageManager.getString("tishi4");
-				item.timeTf.text=DateFormatter.formatterTimeAll((new Date).time);
+				item.timeTf.text=DateFormatter.formatterTime((new Date).time);
 				if(lossReportVo.left_warships_1==0)
 					item.myNumTf.text+=MultilanguageManager.getString("tishi5")
 				addContainer(item,container2);
